@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/administrator/DQN/Arcade-Learning-Environment/doc/examples/RLGlueAgent.c
+stdio.h
+-
+string.h
+-
+time.h
+-
+rlglue/Agent_common.h
+-
+rlglue/utils/C/RLStruct_util.h
+-
+

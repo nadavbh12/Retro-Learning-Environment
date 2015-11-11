@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/administrator/DQN/Arcade-Learning-Environment/doc/examples/RLGlueExperiment.c
+stdio.h
+-
+rlglue/RL_glue.h
+-
+

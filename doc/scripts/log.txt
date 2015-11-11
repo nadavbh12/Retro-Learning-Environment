@@ -1,0 +1,17 @@
+Linux zsp518-6a 3.13.0-66-generic #108-Ubuntu SMP Wed Oct 7 15:20:27 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+=========== [ MAKEFILE BUILD TESTS ] ===========
+USE_SDL = 0; USE_RLGLUE = 0;
+==> TEST: "make -f makefile.tmp clean"
+make: *** No rule to make target `clean'.  Stop.
+==> FAILURE!!!
+==> TEST: "make -f makefile.tmp -j16"
+make: *** No targets.  Stop.
+==> FAILURE!!!
+=========== [ SHARED LIBRARY TESTS ] ===========
+==> TEST: "make -f makefile.tmp clean"
+make: *** No rule to make target `clean'.  Stop.
+==> FAILURE!!!
+==> TEST: "make -f makefile.tmp"
+make: *** No targets.  Stop.
+==> FAILURE!!!
+Skipping TEST: ./sharedLibraryInterfaceExample
