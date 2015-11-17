@@ -35,6 +35,7 @@ if(USE_SDL)
 endif()
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x)
 set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
 
 foreach(module ${MODULES})
@@ -69,6 +70,14 @@ include_directories(
   ${SOURCE_DIR}/os_dependent
   ${SOURCE_DIR}/external
   ${SOURCE_DIR}/external/TinyMT
+  ${SNES9X_DIR}
+  ${SNES9X_DIR}/apu
+  ${SNES9X_DIR}/filter
+  ${SNES9X_DIR}/jma
+  ${SNES9X_DIR}/unix
+  ${SNES9X_DIR}/unzip
+  ${SNES9X_DIR}/apu/bapu
+
 )
 
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
@@ -114,3 +123,15 @@ if(USE_RLGLUE)
   target_link_libraries(RLGlueExperiment rlexperiment)
   target_link_libraries(RLGlueExperiment rlgluenetdev)
 endif()
+
+set(BUILD_COMMAND  make)
+#set(CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure)
+
+include(ExternalProject)
+externalproject_add(snes9x
+                    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix
+                    CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix/configure --prefix ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix/
+                    PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/snes9x
+                    BUILD_COMMAND ${BUILD_COMMAND}
+                    BUILD_IN_SOURCE 1)
+

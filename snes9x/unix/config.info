@@ -1,0 +1,18 @@
+
+build information:
+cc...............,,,. gcc
+c++.................. g++
+options.............. -O3 -fomit-frame-pointer -fno-exceptions -fno-rtti -pedantic -Wall -W -Wno-unused-parameter 
+defines.............. -DJOYSTICK_SUPPORT -DZLIB -DUNZIP_SUPPORT -DJMA_SUPPORT -DHAVE_LIBPNG -DHAVE_MKSTEMP -DHAVE_STRINGS_H -DHAVE_SYS_IOCTL_H -DHAVE_STDINT_H -DRIGHTSHIFT_IS_SAR -DUSE_THREADS
+libs................. -lz -lpng -lSM -lICE -lX11 -lXext -lpthread
+
+features:
+sound support........ yes
+screenshot support... yes
+netplay support...... no
+gamepad support...... yes
+GZIP support......... yes
+ZIP support.......... yes
+JMA support.......... yes
+debugger............. no
+
