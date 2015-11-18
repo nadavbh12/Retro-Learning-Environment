@@ -53,28 +53,31 @@ void ALEInterface::disableBufferedIO() {
 }
 
 void ALEInterface::createOSystem(std::auto_ptr<OSystem> &theOSystem,
-                          std::auto_ptr<Settings> &theSettings) {
-#if (defined(WIN32) || defined(__MINGW32__))
-  theOSystem.reset(new OSystemWin32());
-  theSettings.reset(new SettingsWin32(theOSystem.get()));
-#else
-  theOSystem.reset(new OSystemUNIX());
-  theSettings.reset(new SettingsUNIX(theOSystem.get()));
-#endif
-
-  theOSystem->settings().loadConfig();
+                          std::auto_ptr<SSettings> &theSettings) {
+//	TODO SN: check if we need the class
+//#if (defined(WIN32) || defined(__MINGW32__))
+//  theOSystem.reset(new OSystemWin32());
+//  theSettings.reset(new SettingsWin32(theOSystem.get()));
+//#else
+//  theOSystem.reset(new OSystemUNIX());
+//  theSettings.reset(new SettingsUNIX(theOSystem.get()));
+//#endif
+//
+//  theOSystem->settings().loadConfig();
 }
 
 void ALEInterface::loadSettings(const string& romfile,
                                 std::auto_ptr<OSystem> &theOSystem) {
+
+//  SN: config file is Stella-specific
   // Load the configuration from a config file (passed on the command
   //  line), if provided
-  string configFile = theOSystem->settings().getString("config", false);
+//  string configFile = theOSystem->settings().getString("config", false);
 
-  if (!configFile.empty())
-    theOSystem->settings().loadConfig(configFile.c_str());
+//  if (!configFile.empty())
+//    theOSystem->settings().loadConfig(configFile.c_str());
 
-  theOSystem->settings().validate();
+//  theOSystem->settings().validate();
   theOSystem->create();
 
   // Attempt to load the ROM
@@ -84,18 +87,20 @@ void ALEInterface::loadSettings(const string& romfile,
     exit(1);
   } else if (theOSystem->createConsole(romfile))  {
     Logger::Info << "Running ROM file..." << std::endl;
-    theOSystem->settings().setString("rom_file", romfile);
+//    TODO SN: see if we need rom specific settings
+//    theOSystem->settings().setString("rom_file", romfile);
   } else {
     exit(1);
   }
 
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.
-  Logger::Info << "Random seed is " << theOSystem->settings().getInt("random_seed") << std::endl; 
-  theOSystem->resetRNGSeed();
+//  Logger::Info << "Random seed is " << theOSystem->settings().getInt("random_seed") << std::endl;
+//  theOSystem->resetRNGSeed();
+// TODO SN: add random seed somewhere
 
-  string currentDisplayFormat = theOSystem->console().getFormat();
-  theOSystem->colourPalette().setPalette("standard", currentDisplayFormat);
+//  string currentDisplayFormat = theOSystem->console().getFormat();
+//  theOSystem->colourPalette().setPalette("standard", currentDisplayFormat);
 }
 
 ALEInterface::ALEInterface() {
@@ -108,7 +113,8 @@ ALEInterface::ALEInterface(bool display_screen) {
   disableBufferedIO();
   Logger::Info << welcomeMessage() << std::endl;
   createOSystem(theOSystem, theSettings);
-  this->setBool("display_screen", display_screen);
+//  TODO SN: fix display screen
+//  this->setBool("display_screen", display_screen);
 }
 
 ALEInterface::~ALEInterface() {}
@@ -125,7 +131,8 @@ void ALEInterface::loadROM(string rom_file = "") {
   loadSettings(rom_file, theOSystem);
   romSettings.reset(buildRomRLWrapper(rom_file));
   environment.reset(new S9xEnvironment(theOSystem.get(), romSettings.get()));
-  max_num_frames = theOSystem->settings().getInt("max_num_frames_per_episode");
+//	TODO SN: possibly implement getMaxNumOfFrames
+  //  max_num_frames = theOSystem->settings().getInt("max_num_frames_per_episode");
   environment->reset();
 #ifndef __USE_SDL
   if (theOSystem->p_display_screen != NULL) {
@@ -137,49 +144,50 @@ void ALEInterface::loadROM(string rom_file = "") {
 #endif
 }
 
-// Get the value of a setting.
-std::string ALEInterface::getString(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getString(key);
-}
-int ALEInterface::getInt(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getInt(key);
-}
-bool ALEInterface::getBool(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getBool(key);
-}
-float ALEInterface::getFloat(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getFloat(key);
-}
-
-// Set the value of a setting.
-void ALEInterface::setString(const string& key, const string& value) {
-  assert(theSettings.get());
-  assert(theOSystem.get());
-  theSettings->setString(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setInt(const string& key, const int value) {
-  assert(theSettings.get());
-  assert(theOSystem.get());
-  theSettings->setInt(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setBool(const string& key, const bool value) {
-  assert(theSettings.get());
-  assert(theOSystem.get());
-  theSettings->setBool(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setFloat(const string& key, const float value) {
-  assert(theSettings.get());
-  assert(theOSystem.get());
-  theSettings->setFloat(key, value);
-  theSettings->validate();
-}
+// TODO SN: implement settings file and below functions
+//// Get the value of a setting.
+//std::string ALEInterface::getString(const std::string& key) {
+//  assert(theSettings.get());
+//  return theSettings->getString(key);
+//}
+//int ALEInterface::getInt(const std::string& key) {
+//  assert(theSettings.get());
+//  return theSettings->getInt(key);
+//}
+//bool ALEInterface::getBool(const std::string& key) {
+//  assert(theSettings.get());
+//  return theSettings->getBool(key);
+//}
+//float ALEInterface::getFloat(const std::string& key) {
+//  assert(theSettings.get());
+//  return theSettings->getFloat(key);
+//}
+//
+//// Set the value of a setting.
+//void ALEInterface::setString(const string& key, const string& value) {
+//  assert(theSettings.get());
+//  assert(theOSystem.get());
+//  theSettings->setString(key, value);
+//  theSettings->validate();
+//}
+//void ALEInterface::setInt(const string& key, const int value) {
+//  assert(theSettings.get());
+//  assert(theOSystem.get());
+//  theSettings->setInt(key, value);
+//  theSettings->validate();
+//}
+//void ALEInterface::setBool(const string& key, const bool value) {
+//  assert(theSettings.get());
+//  assert(theOSystem.get());
+//  theSettings->setBool(key, value);
+//  theSettings->validate();
+//}
+//void ALEInterface::setFloat(const string& key, const float value) {
+//  assert(theSettings.get());
+//  assert(theOSystem.get());
+//  theSettings->setFloat(key, value);
+//  theSettings->validate();
+//}
 
 
 // Resets the game, but not the full system.

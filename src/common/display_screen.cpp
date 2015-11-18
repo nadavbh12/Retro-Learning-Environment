@@ -128,13 +128,15 @@ void DisplayScreen::handleSDLEvent(const SDL_Event& event) {
                 case SDLK_LEFTBRACKET:
                     fprintf(stderr, "[VolumeDown]\n");
                     for (int i=0; i<5; ++i) {
-                        ((SoundSDL*)my_sound)->adjustVolume(-1);
+//                    	TODO SN: add sound support
+//                        ((SoundSDL*)my_sound)->adjustVolume(-1);
                     }
                     break;
                 case SDLK_RIGHTBRACKET:
                     fprintf(stderr, "[VolumeUp]\n");
                     for (int i=0; i<5; ++i) {
-                        ((SoundSDL*)my_sound)->adjustVolume(1);
+//                    	TODO SN: add sound support
+//                        ((SoundSDL*)my_sound)->adjustVolume(1);
                     }
                     break;
 #endif

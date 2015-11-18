@@ -7,14 +7,15 @@ extern "C" {
   // Declares int rgb_palette[256]
   ALEInterface *ALE_new() {return new ALEInterface();}
   void ALE_del(ALEInterface *ale){delete ale;}
-  const char *getString(ALEInterface *ale, const char *key){return ale->getString(key).c_str();}
-  int getInt(ALEInterface *ale,const char *key) {return ale->getInt(key);}
-  bool getBool(ALEInterface *ale,const char *key){return ale->getBool(key);}
-  float getFloat(ALEInterface *ale,const char *key){return ale->getFloat(key);}
-  void setString(ALEInterface *ale,const char *key,const char *value){ale->setString(key,value);}
-  void setInt(ALEInterface *ale,const char *key,int value){ale->setInt(key,value);}
-  void setBool(ALEInterface *ale,const char *key,bool value){ale->setBool(key,value);}
-  void setFloat(ALEInterface *ale,const char *key,float value){ale->setFloat(key,value);}
+  // TODO SN: implement after we have some settings
+//  const char *getString(ALEInterface *ale, const char *key){return ale->getString(key).c_str();}
+//  int getInt(ALEInterface *ale,const char *key) {return ale->getInt(key);}
+//  bool getBool(ALEInterface *ale,const char *key){return ale->getBool(key);}
+//  float getFloat(ALEInterface *ale,const char *key){return ale->getFloat(key);}
+//  void setString(ALEInterface *ale,const char *key,const char *value){ale->setString(key,value);}
+//  void setInt(ALEInterface *ale,const char *key,int value){ale->setInt(key,value);}
+//  void setBool(ALEInterface *ale,const char *key,bool value){ale->setBool(key,value);}
+//  void setFloat(ALEInterface *ale,const char *key,float value){ale->setFloat(key,value);}
   void loadROM(ALEInterface *ale,const char *rom_file){ale->loadROM(rom_file);}
   int act(ALEInterface *ale,int action){return ale->act((Action)action);}
   bool game_over(ALEInterface *ale){return ale->game_over();}

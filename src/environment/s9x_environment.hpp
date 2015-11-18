@@ -27,7 +27,8 @@
 #include "../games/RomSettings.hpp"
 #include "../common/ScreenExporter.hpp"
 #include "../common/Log.hpp"
-#include "/home/shai/DQN/SNES-Learning-Environment/src/common/DebugMacros.h"
+#include "../common/DebugMacros.h"
+#include "snes9x.h"
 
 #include <stack>
 

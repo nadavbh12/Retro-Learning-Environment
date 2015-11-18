@@ -17,15 +17,16 @@
 #ifndef __ROMUTILS_HPP__
 #define __ROMUTILS_HPP__
 
-class System;
+//class System;
 
+// TODO SN: implement all once we have a system substitute
 // reads a byte at a memory location between 0 and 1023
-extern int readRam(const System* system, int offset);
+//extern int readRam(const System* system, int offset);
 
 // extracts a decimal value from 1, 2, and 3 bytes respectively
-extern int getDecimalScore(int idx, const System* system);
-extern int getDecimalScore(int lo, int hi, const System* system);
-extern int getDecimalScore(int lo, int mid, int hi, const System* system);
+//extern int getDecimalScore(int idx, const System* system);
+//extern int getDecimalScore(int lo, int hi, const System* system);
+//extern int getDecimalScore(int lo, int mid, int hi, const System* system);
 
 #endif // __ROMUTILS_HPP__
 

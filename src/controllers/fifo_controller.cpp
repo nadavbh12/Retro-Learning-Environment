@@ -36,8 +36,8 @@ inline void appendByte(char *buf, uInt8 v) {
 FIFOController::FIFOController(OSystem* _osystem, bool named_pipes) :
   ALEController(_osystem),
   m_named_pipes(named_pipes) {
-  m_max_num_frames = m_osystem->settings().getInt("max_num_frames");
-  m_run_length_encoding = m_osystem->settings().getBool("run_length_encoding");
+//  m_max_num_frames = m_osystem->settings().getInt("max_num_frames");
+//  m_run_length_encoding = m_osystem->settings().getBool("run_length_encoding");
 }
 
 FIFOController::~FIFOController() {

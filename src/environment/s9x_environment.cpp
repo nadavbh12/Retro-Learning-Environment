@@ -16,50 +16,68 @@
  **************************************************************************** */
 
 #include "s9x_environment.hpp"
-#include "../emucore/m6502/src/System.hxx"
+//#include "../emucore/m6502/src/System.hxx"
 #include <sstream>
 
 
-S9xEnvironment::S9xEnvironment(OSystem* osystem, RomSettings* settings):
-  m_osystem(osystem),
-  m_settings(settings),
-  m_phosphor_blend(osystem),  
-  m_screen(m_osystem->console().mediaSource().height(),
-        m_osystem->console().mediaSource().width()),
-  m_player_a_action(PLAYER_A_NOOP),
-  m_player_b_action(PLAYER_B_NOOP) {
+S9xEnvironment::S9xEnvironment(OSystem* osystem, RomSettings* settings)
+:
+//  m_osystem(osystem),
+//  m_settings(settings),
+  m_phosphor_blend(osystem),
 
-  // Determine whether this is a paddle-based game
-  if (m_osystem->console().properties().get(Controller_Left) == "PADDLES" ||
-      m_osystem->console().properties().get(Controller_Right) == "PADDLES") {
-    m_use_paddles = true;
-    m_state.resetPaddles(m_osystem->event());
-  } else {
-    m_use_paddles = false;
-  }
-  m_num_reset_steps = 4;
-  m_cartridge_md5 = m_osystem->console().properties().get(Cartridge_MD5);
-  
-  m_max_num_frames_per_episode = m_osystem->settings().getInt("max_num_frames_per_episode");
-  m_colour_averaging = m_osystem->settings().getBool("color_averaging");
+//  m_screen(m_osystem->console().mediaSource().height(),
+//        m_osystem->console().mediaSource().width())
+//  TODO SN: replace with actual number after we have console alternative
+    m_screen(0,0)
 
-  m_repeat_action_probability = m_osystem->settings().getFloat("repeat_action_probability");
-  
-  m_frame_skip = m_osystem->settings().getInt("frame_skip");
-  if (m_frame_skip < 1) {
-    ale::Logger::Warning << "Warning: frame skip set to < 1. Setting to 1." << std::endl;
-    m_frame_skip = 1;
-  }
+//  m_player_a_action(PLAYER_A_NOOP),
+//  m_player_b_action(PLAYER_B_NOOP)
+{
+	printf("\n\nSnes9x " VERSION " for unix\n");
 
-  // If so desired, we record all emulated frames to a given directory 
-  std::string recordDir = m_osystem->settings().getString("record_screen_dir");
-  if (!recordDir.empty()) {
-    ale::Logger::Info << "Recording screens to directory: " << recordDir << std::endl;
-    
-    // Create the screen exporter
-    m_screen_exporter.reset(new ScreenExporter(m_osystem->colourPalette(), recordDir)); 
-  }
+//	snprintf(default_dir, PATH_MAX + 1, "%s%s%s", getenv("HOME"), SLASH_STR, ".snes9x");
+//	s9x_base_dir = default_dir;
+
+
+//	 ***** Stella implementation below:
+//  // Determine whether this is a paddle-based game
+//  if (m_osystem->console().properties().get(Controller_Left) == "PADDLES" ||
+//      m_osystem->console().properties().get(Controller_Right) == "PADDLES") {
+//    m_use_paddles = true;
+//    m_state.resetPaddles(m_osystem->event());
+//  } else {
+//    m_use_paddles = false;
+//  }
+//  m_num_reset_steps = 4;
+//  m_cartridge_md5 = m_osystem->console().properties().get(Cartridge_MD5);
+//
+//  m_max_num_frames_per_episode = m_osystem->settings().getInt("max_num_frames_per_episode");
+//  m_colour_averaging = m_osystem->settings().getBool("color_averaging");
+//
+//  m_repeat_action_probability = m_osystem->settings().getFloat("repeat_action_probability");
+//
+//  m_frame_skip = m_osystem->settings().getInt("frame_skip");
+//  if (m_frame_skip < 1) {
+//    ale::Logger::Warning << "Warning: frame skip set to < 1. Setting to 1." << std::endl;
+//    m_frame_skip = 1;
+//  }
+//
+//  // If so desired, we record all emulated frames to a given directory
+//  std::string recordDir = m_osystem->settings().getString("record_screen_dir");
+//  if (!recordDir.empty()) {
+//    ale::Logger::Info << "Recording screens to directory: " << recordDir << std::endl;
+//
+//    // Create the screen exporter
+//    m_screen_exporter.reset(new ScreenExporter(m_osystem->colourPalette(), recordDir));
+//  }
 }
+
+
+
+
+
+
 //shai: comment out actual implementation, will be replaced with our implementation
 
 /** Resets the system to its start state. */

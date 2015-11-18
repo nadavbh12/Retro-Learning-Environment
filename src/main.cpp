@@ -37,7 +37,7 @@
 #include "ale_interface.hpp"
 
 static std::auto_ptr<OSystem> theOSystem(NULL);
-static std::auto_ptr<Settings> theSettings(NULL);
+static std::auto_ptr<SSettings> theSettings(NULL);
 
 static ALEController* createController(OSystem* osystem, std::string type) {
   if(type.empty()){
@@ -72,14 +72,16 @@ int main(int argc, char* argv[]) {
   ALEInterface::createOSystem(theOSystem, theSettings);
   // Process commandline arguments, which over-ride all possible
   // config file settings
-  std::string romfile = theOSystem->settings().loadCommandLine(argc, argv);
-  ALEInterface::loadSettings(romfile, theOSystem);
+  // TODO SN: implement after we have some settings
+//  std::string romfile = theOSystem->settings().loadCommandLine(argc, argv);
+//  ALEInterface::loadSettings(romfile, theOSystem);
 
+  // TODO SN: implement after we have some settings
   // Create the game controller
-  std::string controller_type = theOSystem->settings().getString("game_controller");
-  std::auto_ptr<ALEController> controller(createController(theOSystem.get(), controller_type));
+//  std::string controller_type = theOSystem->settings().getString("game_controller");
+//  std::auto_ptr<ALEController> controller(createController(theOSystem.get(), controller_type));
 
-  controller->run();
+//  controller->run();
 
   // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
   //  still being a valid construct)

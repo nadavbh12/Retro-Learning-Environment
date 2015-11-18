@@ -93,7 +93,7 @@ static const RomSettings *roms[]  = {
 //    new BerzerkSettings(),
 //    new BowlingSettings(),
 //    new BoxingSettings(),
-    new BreakoutSettings(),
+//    new BreakoutSettings(),
 //    new CarnivalSettings(),
 //    new CentipedeSettings(),
 //    new ChopperCommandSettings(),

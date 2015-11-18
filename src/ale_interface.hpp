@@ -63,12 +63,13 @@ public:
   bool getBool(const std::string& key);
   float getFloat(const std::string& key);
 
+  // TODO SN: implement settings file and below functions
   // Set the value of a setting. loadRom() must be called before the
   // setting will take effect.
-  void setString(const std::string& key, const std::string& value);
-  void setInt(const std::string& key, const int value);
-  void setBool(const std::string& key, const bool value);
-  void setFloat(const std::string& key, const float value);
+//  void setString(const std::string& key, const std::string& value);
+//  void setInt(const std::string& key, const int value);
+//  void setBool(const std::string& key, const bool value);
+//  void setFloat(const std::string& key, const float value);
 
   // Resets the Atari and loads a game. After this call the game
   // should be ready to play. This is necessary after changing a
@@ -142,7 +143,8 @@ public:
 
  public:
   std::auto_ptr<OSystem> theOSystem;
-  std::auto_ptr<Settings> theSettings;
+//  std::auto_ptr<Settings> theSettings;
+  std::auto_ptr<SSettings> theSettings;
   std::auto_ptr<RomSettings> romSettings;
   std::auto_ptr<S9xEnvironment> environment;
   int max_num_frames; // Maximum number of frames for each episode
@@ -151,10 +153,12 @@ public:
   // Display ALE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-  static void createOSystem(std::auto_ptr<OSystem> &theOSystem,
-                            std::auto_ptr<Settings> &theSettings);
+  static void createOSystem(std::auto_ptr<OSystem> &theOSystem
+                            ,std::auto_ptr<SSettings> &theSettings
+                            );
   static void loadSettings(const std::string& romfile,
-                           std::auto_ptr<OSystem> &theOSystem);
+                           std::auto_ptr<OSystem> &theOSystem
+                           );
 };
 
 #endif

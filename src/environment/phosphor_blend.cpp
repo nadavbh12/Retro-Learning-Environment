@@ -29,21 +29,22 @@ PhosphorBlend::PhosphorBlend(OSystem * osystem):
 void PhosphorBlend::process(ALEScreen& screen) {
   Console& console = m_osystem->console();
 
+  //	TODO SN: replace medisSource
   // Fetch current and previous frame buffers from the emulator
-  uInt8 * current_buffer  = console.mediaSource().currentFrameBuffer();
-  uInt8 * previous_buffer = console.mediaSource().previousFrameBuffer();
-
-  // Process each pixel in turn
-  for (size_t i = 0; i < screen.arraySize(); i++) { 
-    int cv = current_buffer[i];
-    int pv = previous_buffer[i];
-    
-    // Find out the corresponding rgb color 
-    uInt32 rgb = m_avg_palette[cv][pv];
-
-    // Set the corresponding pixel in the array
-    screen.getArray()[i] = rgbToNTSC(rgb);
-  }
+//  uInt8 * current_buffer  = console.mediaSource().currentFrameBuffer();
+//  uInt8 * previous_buffer = console.mediaSource().previousFrameBuffer();
+//
+//  // Process each pixel in turn
+//  for (size_t i = 0; i < screen.arraySize(); i++) {
+//    int cv = current_buffer[i];
+//    int pv = previous_buffer[i];
+//
+//    // Find out the corresponding rgb color
+//    uInt32 rgb = m_avg_palette[cv][pv];
+//
+//    // Set the corresponding pixel in the array
+//    screen.getArray()[i] = rgbToNTSC(rgb);
+//  }
 }
 void PhosphorBlend::makeAveragePalette() {
   

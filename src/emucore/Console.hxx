@@ -1,8 +1,8 @@
 //============================================================================
 //
-//   SSSS    tt          lll  lll       
-//  SS  SS   tt           ll   ll        
-//  SS     tttttt  eeee   ll   ll   aaaa 
+//   SSSS    tt          lll  lll
+//  SS  SS   tt           ll   ll
+//  SS     tttttt  eeee   ll   ll   aaaa
 //   SSSS    tt   ee  ee  ll   ll      aa
 //      SS   tt   eeeeee  ll   ll   aaaaa  --  "An Atari 2600 VCS Emulator"
 //  SS  SS   tt   ee      ll   ll  aa  aa
@@ -19,20 +19,17 @@
 #ifndef CONSOLE_HXX
 #define CONSOLE_HXX
 
-class Console;
-class Controller;
-class Event;
-class MediaSource;
-class Switches;
-class System;
+//class Console;
+//class Controller;
+//class Event;
+//class MediaSource;
+//class Switches;
+//class System;
+class OSystem;
 
-#include "m6502/src/bspf/src/bspf.hxx"
-#include "Control.hxx"
+//#include "Control.hxx"
 #include "Props.hxx"
-#include "TIA.hxx"
-#include "Cart.hxx"
-#include "M6532.hxx"
-#include "AtariVox.hxx"
+#include "../common/DebugMacros.h"
 
 /**
   This class represents the entire game console.
@@ -49,9 +46,9 @@ class Console
 
       @param osystem  The OSystem object to use
       @param cart     The cartridge to use with this console
-      @param props    The properties for the cartridge  
+      @param props    The properties for the cartridge
     */
-    Console(OSystem* osystem, Cartridge* cart, const Properties& props);
+//    Console(OSystem* osystem, Cartridge* cart, const Properties& props);
 
     /**
       Create a new console object by copying another one
@@ -59,7 +56,7 @@ class Console
       @param console The object to copy
     */
     Console(const Console& console);
- 
+
     /**
       Destructor
     */
@@ -71,43 +68,43 @@ class Console
 
       @return The specified controller
     */
-    Controller& controller(Controller::Jack jack) const
-    {
-      return (jack == Controller::Left) ? *myControllers[0] : *myControllers[1];
-    }
+//    Controller& controller(Controller::Jack jack) const
+//    {
+//      return (jack == Controller::Left) ? *myControllers[0] : *myControllers[1];
+//    }
 
     /**
       Get the MediaSource for this console
 
       @return The mediasource
     */
-    MediaSource& mediaSource() const { return *myMediaSource; }
+//    MediaSource& mediaSource() const { return *myMediaSource; }
 
     /**
       Get the properties being used by the game
 
       @return The properties being used by the game
     */
-    const Properties& properties() const { return myProperties; }
+//    const Properties& properties() const { return myProperties; }
 
     /**
       Get the console switches
 
       @return The console switches
     */
-    Switches& switches() const { return *mySwitches; }
+//    Switches& switches() const { return *mySwitches; }
 
     /**
       Get the 6502 based system used by the console to emulate the game
 
       @return The 6502 based system
     */
-    System& system() const { return *mySystem; }
+//    System& system() const { return *mySystem; }
 
     /**
       Returns the OSystem for this emulator.
-      
-      @return The OSystem. 
+
+      @return The OSystem.
     */
     OSystem& osystem() const { return *myOSystem; }
 
@@ -116,21 +113,21 @@ class Console
 
       @return The cartridge for this console
     */
-    Cartridge& cartridge() const { return *myCart; }
+//    Cartridge& cartridge() const { return *myCart; }
 
     /**
       Get the 6532 used by the console
 
       @return The 6532 for this console
     */
-    M6532& riot() const { return *myRiot; }
+//    M6532& riot() const { return *myRiot; }
 
     /**
       Set the properties to those given
 
       @param The properties to use for the current game
     */
-    void setProperties(const Properties& props);
+//    void setProperties(const Properties& props);
 
     /**
       Query some information about this console.
@@ -160,12 +157,12 @@ class Console
     /**
       Toggle between the available palettes.
     */
-    void togglePalette();
+    void togglePalette(){FUNCTION_NAME}
 
     /**
       Toggles phosphor effect.
     */
-    void togglePhosphor();
+    void togglePhosphor(){FUNCTION_NAME}
 
     /**
       Initialize the video subsystem wrt this class.
@@ -174,89 +171,89 @@ class Console
       @param full  Whether we want a full initialization,
                    or only reset certain attributes.
     */
-    void initializeVideo(bool full = true);
+    void initializeVideo(bool full = true){FUNCTION_NAME}
 
     /**
       Initialize the audio subsystem wrt this class.
       This is required any time the sound settings change.
     */
-    void initializeAudio();
+    void initializeAudio(){FUNCTION_NAME}
 
     /**
       "Fry" the Atari (mangle memory/TIA contents)
     */
-    void fry() const;
+    void fry() const{FUNCTION_NAME}
 
     /**
       Change the "Display.YStart" variable.
 
       @param direction +1 indicates increase, -1 indicates decrease.
     */
-    void changeYStart(int direction);
+    void changeYStart(int direction){FUNCTION_NAME}
 
     /**
       Change the "Display.Height" variable.
 
       @param direction +1 indicates increase, -1 indicates decrease.
     */
-    void changeHeight(int direction);
+    void changeHeight(int direction){FUNCTION_NAME}
 
     /**
       Toggles the TIA bit specified in the method name.
     */
-    void toggleP0Bit() const { toggleTIABit(TIA::P0, "P0"); }
-    void toggleP1Bit() const { toggleTIABit(TIA::P1, "P1"); }
-    void toggleM0Bit() const { toggleTIABit(TIA::M0, "M0"); }
-    void toggleM1Bit() const { toggleTIABit(TIA::M1, "M1"); }
-    void toggleBLBit() const { toggleTIABit(TIA::BL, "BL"); }
-    void togglePFBit() const { toggleTIABit(TIA::PF, "PF"); }
-    void enableBits(bool enable) const;
+//    void toggleP0Bit() const { toggleTIABit(TIA::P0, "P0"); }
+//    void toggleP1Bit() const { toggleTIABit(TIA::P1, "P1"); }
+//    void toggleM0Bit() const { toggleTIABit(TIA::M0, "M0"); }
+//    void toggleM1Bit() const { toggleTIABit(TIA::M1, "M1"); }
+//    void toggleBLBit() const { toggleTIABit(TIA::BL, "BL"); }
+//    void togglePFBit() const { toggleTIABit(TIA::PF, "PF"); }
+//    void enableBits(bool enable) const;
 
-#ifdef ATARIVOX_SUPPORT
-    AtariVox *atariVox() { return vox; }
-#endif
+//#ifdef ATARIVOX_SUPPORT
+//    AtariVox *atariVox() { return vox; }
+//#endif
 
-  private:
-    void toggleTIABit(TIA::TIABit bit, const std::string& bitname, bool show = true) const;
-
-    /**
-      Returns the framerate based on a number of factors
-      (whether 'framerate' is set, what display format is in use, etc)
-    */
-    uInt32 getFrameRate() const;
+//  private:
+//    void toggleTIABit(TIA::TIABit bit, const std::string& bitname, bool show = true) const;
+//
+//    /**
+//      Returns the framerate based on a number of factors
+//      (whether 'framerate' is set, what display format is in use, etc)
+//    */
+//    uInt32 getFrameRate() const;
 
   private:
     // Pointer to the osystem object
     OSystem* myOSystem;
 
     // Pointers to the left and right controllers
-    Controller* myControllers[2];
+//    Controller* myControllers[2];
 
     // Pointer to the event object to use
-    Event* myEvent;
+//    Event* myEvent;
 
-    // Pointer to the media source object 
-    MediaSource* myMediaSource;
+    // Pointer to the media source object
+//    MediaSource* myMediaSource;
 
     // Properties for the game
-    Properties myProperties;
+//    Properties myProperties;
 
     // Pointer to the switches on the front of the console
-    Switches* mySwitches;
- 
-    // Pointer to the 6502 based system being emulated 
-    System* mySystem;
+//    Switches* mySwitches;
+
+    // Pointer to the 6502 based system being emulated
+//    System* mySystem;
 
     // Pointer to the Cartridge (the debugger needs it)
-    Cartridge *myCart;
+//    Cartridge *myCart;
 
     // Pointer to the 6532 (aka RIOT) (the debugger needs it)
     // A RIOT of my own! (...with apologies to The Clash...)
-    M6532 *myRiot;
+//    M6532 *myRiot;
 
-#ifdef ATARIVOX_SUPPORT
-    AtariVox *vox;
-#endif
+//#ifdef ATARIVOX_SUPPORT
+//    AtariVox *vox;
+//#endif
 
     // The currently defined display format (NTSC/PAL/PAL60)
     std::string myDisplayFormat;

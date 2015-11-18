@@ -1,8 +1,8 @@
 //============================================================================
 //
-//   SSSS    tt          lll  lll       
-//  SS  SS   tt           ll   ll        
-//  SS     tttttt  eeee   ll   ll   aaaa 
+//   SSSS    tt          lll  lll
+//  SS  SS   tt           ll   ll
+//  SS     tttttt  eeee   ll   ll   aaaa
 //   SSSS    tt   ee  ee  ll   ll      aa
 //      SS   tt   eeeeee  ll   ll   aaaaa  --  "An Atari 2600 VCS Emulator"
 //  SS  SS   tt   ee      ll   ll  aa  aa
@@ -34,13 +34,17 @@ class VideoDialog;
 #include "../common/SoundNull.hxx"
 #include "Settings.hxx"
 #include "Console.hxx"
-#include "Event.hxx"  //ALE 
+#include "Event.hxx"  //ALE
 //ALE  #include "Font.hxx"
 #include "m6502/src/bspf/src/bspf.hxx"
-#include "../common/display_screen.h" 
+#include "../common/display_screen.h"
 #include "../common/ColourPalette.hpp"
 #include "../common/ScreenExporter.hpp"
 #include "../common/Log.hpp"
+#include "../common/DebugMacros.h"
+// SN additions
+#include "snes9x.h"
+#include "Random.hxx"
 
 struct Resolution {
   uInt32 width;
@@ -66,25 +70,25 @@ class OSystem
     /**
       Create a new OSystem abstract class
     */
-    OSystem();
+    OSystem(){FUNCTION_NAME}
 
     /**
       Destructor
     */
-    virtual ~OSystem();
+    virtual ~OSystem(){FUNCTION_NAME}
 
     /**
       Create all child objects which belong to this OSystem
     */
-    virtual bool create();
+    virtual bool create(){FUNCTION_NAME}
 
   public:
     /**
       Adds the specified settings object to the system.
 
-      @param settings The settings object to add 
+      @param settings The settings object to add
     */
-    void attach(Settings* settings) { mySettings = settings; }
+    void attach(SSettings* settings) { mySettings = settings; }
 
     /**
       Get the event handler of the system
@@ -93,8 +97,8 @@ class OSystem
     */
     //ALE  inline EventHandler& eventHandler() const { return *myEventHandler; }
 
-    /**  //ALE 
-      Get the event object of the system  
+    /**  //ALE
+      Get the event object of the system
 
       @return The event object
     */
@@ -119,7 +123,7 @@ class OSystem
 
       @return The settings object
     */
-    inline Settings& settings() const { return *mySettings; }
+    inline SSettings& settings() const { return *mySettings; }
 
     /**
       Get the set of game properties for the system
@@ -201,12 +205,12 @@ class OSystem
 
       @param framerate  The video framerate to use
     */
-    virtual void setFramerate(uInt32 framerate);
+    virtual void setFramerate(uInt32 framerate){FUNCTION_NAME}
 
     /**
       Set all config file paths for the OSystem.
     */
-    void setConfigPaths();
+    void setConfigPaths(){FUNCTION_NAME}
 
     /**
       Set the user-interface palette which is specified in current settings.
@@ -295,13 +299,13 @@ class OSystem
       @param romfile  The full pathname of the ROM to use
       @return  True on successful creation, otherwise false
     */
-    bool createConsole(const std::string& romfile = "");
+    bool createConsole(const std::string& romfile = ""){FUNCTION_NAME}
 
     /**
       Deletes the currently defined console, if it exists.
       Also prints some statistics (fps, total frames, etc).
     */
-    void deleteConsole();
+    void deleteConsole(){FUNCTION_NAME}
 
     /**
       Creates a new ROM launcher, to select a new ROM to emulate.
@@ -315,7 +319,7 @@ class OSystem
       @param romfile  The full pathname of the ROM to use
       @return  Some information about this ROM
     */
-    std::string getROMInfo(const std::string& romfile);
+    std::string getROMInfo(const std::string& romfile){FUNCTION_NAME}
 
     /**
       The features which are conditionally compiled into Stella.
@@ -334,7 +338,7 @@ class OSystem
       @param size   The amount of data read into the image array
       @return  False on any errors, else true
     */
-    bool openROM(const std::string& rom, std::string& md5, uInt8** image, int* size);
+    bool openROM(const std::string& rom, std::string& md5, uInt8** image, int* size){FUNCTION_NAME}
 
     /**
       Issue a quit event to the OSystem.
@@ -351,17 +355,17 @@ class OSystem
     /**
       Resets the seed for our random number generator.
     */
-    void resetRNGSeed();
+    void resetRNGSeed(){FUNCTION_NAME}
 
-    /** 
+    /**
       Serializes the OSystem state.
     */
-    bool saveState(Serializer& out);
+    bool saveState(Serializer& out){FUNCTION_NAME}
 
-    /** 
+    /**
       Deserializes the OSystem state.
     */
-    bool loadState(Deserializer& in);
+    bool loadState(Deserializer& in){FUNCTION_NAME}
 
   public:
     //////////////////////////////////////////////////////////////////////
@@ -410,7 +414,7 @@ class OSystem
     */
     //ALE  virtual void stateChanged(EventHandler::State state);
 
-    
+
   protected:
     /**
       Query the OSystem video hardware for resolution information.
@@ -421,7 +425,7 @@ class OSystem
       Set the base directory for all Stella files (these files may be
       located in other places through settings).
     */
-    void setBaseDir(const std::string& basedir);
+    void setBaseDir(const std::string& basedir){FUNCTION_NAME}
 
     /**
       Set the location of the gamelist cache file
@@ -434,11 +438,11 @@ class OSystem
     void setConfigFile(const std::string& file) { myConfigFile = file; }
 
 
-    
+
   protected:
     // Pointer to the EventHandler object
     //ALE  EventHandler* myEventHandler;
-    // Global Event object  //ALE 
+    // Global Event object  //ALE
     Event* myEvent;
 
     // Pointer to the FrameBuffer object
@@ -448,17 +452,18 @@ class OSystem
     Sound* mySound;
 
     // Pointer to the Settings object
-    Settings* mySettings;
+    SSettings* mySettings;
 
     // Pointer to the PropertiesSet object
     PropertiesSet* myPropSet;
 
+//    TODO SN: add console object
     // Pointer to the (currently defined) Console object
     Console* myConsole;
-    
+
     // Random number generator shared across the emulator's components
-    Random myRandGen; 
-    
+    Random myRandGen;
+
     // Pointer to the Menu object
     //ALE  Menu* myMenu;
 
@@ -476,7 +481,7 @@ class OSystem
 
     // Pointer to the AI object
     //ALE  AIBase *aiBase;
-    
+
     // Maximum dimensions of the desktop area
     uInt32 myDesktopWidth, myDesktopHeight;
 
@@ -513,10 +518,10 @@ class OSystem
     // The font object to use for the ROM launcher
     //ALE  GUI::Font* myLauncherFont;
 
-    // The font object to use for the console/debugger 
+    // The font object to use for the console/debugger
     //ALE  GUI::Font* myConsoleFont;
-    
-    public: //ALE 
+
+    public: //ALE
     // Time per frame for a video update, based on the current framerate
     uInt32 myTimePerFrame;
 
@@ -536,7 +541,7 @@ class OSystem
     //ALE  static uInt32 ourGUIColors[kNumUIPalettes][kNumColors-256];
   public:
     DisplayScreen* p_display_screen; //MHAUSKN
-  
+
   private:
 
     ColourPalette m_colour_palette;
@@ -553,27 +558,27 @@ class OSystem
       Creates the various sound devices available in this system
       (for now, that means either 'SDL' or 'Null').
     */
-    void createSound();
+    void createSound(){FUNCTION_NAME}
 
     /**
       Query valid info for creating a valid console.
 
       @return Success or failure for a valid console
     */
-    bool queryConsoleInfo(const uInt8* image, uInt32 size, const std::string& md5,
-                          Cartridge** cart, Properties& props);
+//    bool queryConsoleInfo(const uInt8* image, uInt32 size, const std::string& md5,
+//                          Cartridge** cart, Properties& props){FUNCTION_NAME}
 
     /**
       Initializes the timing so that the mainloop is reset to its
       initial values.
     */
-    void resetLoopTiming();
+    void resetLoopTiming(){FUNCTION_NAME}
 
     // Copy constructor isn't supported by this class so make it private
-    OSystem(const OSystem&);
+    OSystem(const OSystem&){FUNCTION_NAME}
 
     // Assignment operator isn't supported by this class so make it private
-    OSystem& operator = (const OSystem&);
+    OSystem& operator = (const OSystem&){FUNCTION_NAME}
 };
 
 #endif

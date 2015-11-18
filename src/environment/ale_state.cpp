@@ -56,7 +56,8 @@ void ALEState::load(OSystem* osystem, RomSettings* settings, std::string md5, co
     throw new std::runtime_error("Attempting to load an ALEState which does not contain "
         "system information.");
 
-  osystem->console().system().loadState(md5, deser);
+  // TODO SN: implement load
+//  osystem->console().system().loadState(md5, deser);
   // If we have osystem data, load it as well
   if (load_system)
     osystem->loadState(deser);
@@ -77,7 +78,8 @@ ALEState ALEState::save(OSystem* osystem, RomSettings* settings, std::string md5
   // We use 'save_system' as a check at load time. 
   ser.putBool(save_system);
 
-  osystem->console().system().saveState(md5, ser);
+  //	TODO SN: replace console
+//  osystem->console().system().saveState(md5, ser);
   if (save_system)
     osystem->saveState(ser);
   settings->saveState(ser);

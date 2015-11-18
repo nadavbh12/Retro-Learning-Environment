@@ -24,7 +24,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "bspf.hxx"
+//#include "bspf.hxx"
 #include "OSystem.hxx"
 #include "OSystemUNIX.hxx"
 using namespace std;

@@ -17,6 +17,7 @@
 #include <iostream>
 #include <ale_interface.hpp>
 #include <DebugMacros.h>
+#include <snes9x.h>
 
 #ifdef __USE_SDL
   #include <SDL.h>
@@ -32,15 +33,16 @@ int main(int argc, char** argv) {
 
     ALEInterface ale;
 
+//    TODO SN: implement once we have configuration alternative
     // Get & Set the desired settings
-    ale.setInt("random_seed", 123);
+//    ale.setInt("random_seed", 123);
     //The default is already 0.25, this is just an example
-    ale.setFloat("repeat_action_probability", 0.25);
+//    ale.setFloat("repeat_action_probability", 0.25);
 
 #ifdef __USE_SDL
-    ale.setBool("display_screen", true);
+//    ale.setBool("display_screen", true);
 //    ale.setBool("sound", true);
-	ale.setBool("sound", false);
+//	ale.setBool("sound", false);
 #endif
 
     // Load the ROM file. (Also resets the system for new settings to
@@ -50,7 +52,7 @@ int main(int argc, char** argv) {
     // Get the vector of legal actions
     ActionVect legal_actions = ale.getLegalActionSet();
 
-    DEBUG2("Shai is always correct");
+    DEBUG2("Shai is never correct");
     EMPTY_FUNCTION
 
     // Play 10 episodes
