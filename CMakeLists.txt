@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8)
 project(ale)
 
 option(USE_SDL "Use SDL" OFF)
@@ -35,7 +35,7 @@ if(USE_SDL)
 endif()
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x)
+set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
 set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
 
 foreach(module ${MODULES})
@@ -70,17 +70,12 @@ include_directories(
   ${SOURCE_DIR}/os_dependent
   ${SOURCE_DIR}/external
   ${SOURCE_DIR}/external/TinyMT
-  ${SNES9X_DIR}
-  ${SNES9X_DIR}/apu
-  ${SNES9X_DIR}/filter
-  ${SNES9X_DIR}/jma
-  ${SNES9X_DIR}/unix
-  ${SNES9X_DIR}/unzip
-  ${SNES9X_DIR}/apu/bapu
-
 )
 
+link_directories(${SNES9X_DIR})
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
+add_dependencies(ale-lib snes9x-next)
+target_link_libraries(ale-lib snes9x_next_libretro)
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
@@ -124,14 +119,26 @@ if(USE_RLGLUE)
   target_link_libraries(RLGlueExperiment rlgluenetdev)
 endif()
 
-set(BUILD_COMMAND  make)
+#TODO compile within cmake
+
+#include(ExternalProject)
+#externalproject_add(snes9x-next
+#		GIT_REPOSITORY https://github.com/libretro/snes9x-next.git
+#		download_dir ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
+#		prefix ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
+#		CONFIGURE_COMMAND ""
+#		build_command make
+#		build_in_source 1
+#)
+
+#set(BUILD_COMMAND  make)
 #set(CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure)
 
-include(ExternalProject)
-externalproject_add(snes9x
-                    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix
-                    CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix/configure --prefix ${CMAKE_CURRENT_SOURCE_DIR}/snes9x/unix/
-                    PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/snes9x
-                    BUILD_COMMAND ${BUILD_COMMAND}
-                    BUILD_IN_SOURCE 1)
+#include(ExternalProject)
+#externalproject_add(snes9x-next
+#                    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
+#                    CONFIGURE_COMMAND ""
+#                    PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
+#                    BUILD_COMMAND ${BUILD_COMMAND}
+#                    BUILD_IN_SOURCE 1)
 
