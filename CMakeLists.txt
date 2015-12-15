@@ -72,10 +72,12 @@ include_directories(
   ${SOURCE_DIR}/external/TinyMT
 )
 
-link_directories(${SNES9X_DIR})
+
+add_library(snes9x_next_libretro SHARED IMPORTED)
+set_property(TARGET snes9x_next_libretro PROPERTY IMPORTED_LOCATION ${SNES9X_DIR}/snes9x_next_libretro.so)
+list(APPEND LINK_LIBS snes9x_next_libretro)
+
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
-add_dependencies(ale-lib snes9x-next)
-target_link_libraries(ale-lib snes9x_next_libretro)
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
@@ -88,6 +90,7 @@ set_target_properties(ale-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURR
 target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
+
 
 if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
