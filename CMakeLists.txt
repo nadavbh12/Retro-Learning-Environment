@@ -34,6 +34,26 @@ if(USE_SDL)
   endif()
 endif()
 
+  find_package(OpenGL REQUIRED)
+  if(OPENGL_FOUND)
+	include_directories(${OPENGL_INCLUDE_DIR})
+	list(APPEND LINK_LIBS ${OPENGL_LIBRARY} ${OPENGL_MAIN_LIBRARY})
+  else()
+    MESSAGE("OpenGL not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your OpenGL path.")
+  endif()
+
+  find_package(GLEW REQUIRED)
+  if(GLEW_FOUND)
+	include_directories(${GLEW_INCLUDE_DIR})
+	list(APPEND LINK_LIBS ${GLEW_LIBRARY} ${GLEW_MAIN_LIBRARY})
+  	list(APPEND LINK_LIBS dl glfw3 asound X11 Xrandr Xinerama Xi Xxf86vm Xcursor pthread m)
+
+  else()
+    MESSAGE("glew not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your glew path.")
+  endif()
+
+
+
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
 #set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
