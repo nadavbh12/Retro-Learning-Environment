@@ -77,7 +77,9 @@ class RLGlueController : public ALEController {
 #else
 class RLGlueController : public ALEController {
   public:
-    RLGlueController(OSystem* osystem);
+    RLGlueController(
+//    		OSystem* osystem
+    		);
     virtual ~RLGlueController() {}
 
     /** This prints an error message and terminate. */

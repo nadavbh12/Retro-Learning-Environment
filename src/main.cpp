@@ -14,13 +14,13 @@
 #include <sstream>
 #include <memory>
 
-#include "emucore/m6502/src/bspf/src/bspf.hxx"
-#include "emucore/Console.hxx"
-#include "emucore/Event.hxx"
-#include "emucore/PropsSet.hxx"
-#include "emucore/Settings.hxx"
-#include "emucore/FSNode.hxx"
-#include "emucore/OSystem.hxx"
+//#include "emucore/m6502/src/bspf/src/bspf.hxx"
+//#include "emucore/Console.hxx"
+//#include "emucore/Event.hxx"
+//#include "emucore/PropsSet.hxx"
+//#include "emucore/Settings.hxx"
+//#include "emucore/FSNode.hxx"
+//#include "emucore/OSystem.hxx"
 
 #if (defined(WIN32) || defined(__MINGW32__))
 #   include "os_dependent/SettingsWin32.hxx"
@@ -36,31 +36,31 @@
 #include "common/Constants.h"
 #include "ale_interface.hpp"
 
-static std::auto_ptr<OSystem> theOSystem(NULL);
-static std::auto_ptr<SSettings> theSettings(NULL);
+//static std::auto_ptr<OSystem> theOSystem(NULL);
+//static std::auto_ptr<SSettings> theSettings(NULL);
 
-static ALEController* createController(OSystem* osystem, std::string type) {
-  if(type.empty()){
-    std::cerr << "You must specify a controller type (via -game_controller)." << std::endl;
-    exit(1);
-  }
-  else if (type == "fifo") {
-    std::cerr << "Game will be controlled through FIFO pipes." << std::endl;
-    return new FIFOController(osystem, false);
-  } 
-  else if (type == "fifo_named") {
-    std::cerr << "Game will be controlled through named FIFO pipes." << std::endl;
-    return new FIFOController(osystem, true);
-  }
-  else if (type == "rlglue") {
-    std::cerr << "Game will be controlled through RL-Glue." << std::endl;
-    return new RLGlueController(osystem); 
-  } 
-  else {
-    std::cerr << "Invalid controller type: " << type << " " << std::endl;
-    exit(1);
-  }
-}
+//static ALEController* createController(OSystem* osystem, std::string type) {
+//  if(type.empty()){
+//    std::cerr << "You must specify a controller type (via -game_controller)." << std::endl;
+//    exit(1);
+//  }
+//  else if (type == "fifo") {
+//    std::cerr << "Game will be controlled through FIFO pipes." << std::endl;
+//    return new FIFOController(osystem, false);
+//  }
+//  else if (type == "fifo_named") {
+//    std::cerr << "Game will be controlled through named FIFO pipes." << std::endl;
+//    return new FIFOController(osystem, true);
+//  }
+//  else if (type == "rlglue") {
+//    std::cerr << "Game will be controlled through RL-Glue." << std::endl;
+//    return new RLGlueController(osystem);
+//  }
+//  else {
+//    std::cerr << "Invalid controller type: " << type << " " << std::endl;
+//    exit(1);
+//  }
+//}
 
 /* application entry point */
 int main(int argc, char* argv[]) {
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
 
   std::cerr << ALEInterface::welcomeMessage() << std::endl;
 
-  ALEInterface::createOSystem(theOSystem, theSettings);
+//  ALEInterface::createOSystem(theOSystem, theSettings);
   // Process commandline arguments, which over-ride all possible
   // config file settings
   // TODO SN: implement after we have some settings
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
 
   // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
   //  still being a valid construct)
-  theOSystem.reset(NULL);
+//  theOSystem.reset(NULL);
 
   return 0;
 }

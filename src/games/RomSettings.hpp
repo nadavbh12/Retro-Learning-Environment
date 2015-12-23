@@ -34,8 +34,8 @@
 #define __ROMSETTINGS_HPP__
 
 #include "../common/Constants.h"
-#include "../emucore/Serializer.hxx"
-#include "../emucore/Deserializer.hxx"
+//#include "../emucore/Serializer.hxx"
+//#include "../emucore/Deserializer.hxx"
 
 class System;
 
@@ -66,10 +66,14 @@ struct RomSettings {
     virtual void step(const System &system) = 0;
 
     // saves the state of the rom settings
-    virtual void saveState(Serializer & ser) = 0;
+    virtual void saveState(
+//    		Serializer & ser
+    		) = 0;
 
     // loads the state of the rom settings
-    virtual void loadState(Deserializer & ser) = 0;
+    virtual void loadState(
+//    		Deserializer & ser
+    		) = 0;
 
     // is an action legal (default: yes)
     virtual bool isLegal(const Action &a) const;

@@ -27,15 +27,18 @@
 
 #include "../common/Log.hpp"
 
-RLGlueController::RLGlueController(OSystem* _osystem) :
-  ALEController(_osystem) {
-  m_max_num_frames = m_osystem->settings().getInt("max_num_frames");
-  if (m_osystem->settings().getBool("restricted_action_set")) {
-    available_actions = m_settings->getMinimalActionSet();
-  } else {
-    available_actions = m_settings->getAllActions();
-  }
-  m_send_rgb = m_osystem->settings().getBool("send_rgb");
+RLGlueController::RLGlueController(
+//		OSystem* _osystem)
+: ALEController(
+//		  _osystem
+		  ) {
+//  m_max_num_frames = m_osystem->settings().getInt("max_num_frames");
+//  if (m_osystem->settings().getBool("restricted_action_set")) {
+//    available_actions = m_settings->getMinimalActionSet();
+//  } else {
+//    available_actions = m_settings->getAllActions();
+//  }
+//  m_send_rgb = m_osystem->settings().getBool("send_rgb");
 }
 
 RLGlueController::~RLGlueController() {
@@ -289,8 +292,12 @@ reward_observation_terminal_t RLGlueController::constructRewardObservationTermin
 
 #else
 
-RLGlueController::RLGlueController(OSystem* system):
-  ALEController(system) {
+RLGlueController::RLGlueController(
+//		OSystem* system
+		):
+  ALEController(
+//		  system
+		  ) {
 }
 
 void RLGlueController::run() {

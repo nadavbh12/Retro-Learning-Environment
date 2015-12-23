@@ -21,16 +21,19 @@
 #include "display_screen.h"
 #include "../environment/ale_screen.hpp"
 
+//SN:
+#include <iostream>
+
 class ScreenExporter {
 
     public:
 
         /** Creates a new ScreenExporter which can be used to save screens using save(filename). */ 
-        ScreenExporter(ColourPalette &palette);
+//        ScreenExporter(ColourPalette &palette);
 
         /** Creates a new ScreenExporter which will save frames successively in the directory provided.
             Frames are sequentially named with 6 digits, starting at 000000. */
-        ScreenExporter(ColourPalette &palette, const std::string &path);
+//        ScreenExporter(ColourPalette &palette, const std::string &path);
 
         /** Save the given screen to the given filename. No paths are created. */
         void save(const ALEScreen &screen, const std::string &filename) const;
@@ -40,7 +43,7 @@ class ScreenExporter {
 
     private:
 
-        ColourPalette &m_palette;
+//        ColourPalette &m_palette;
 
         /** The next frame number. */
         int m_frame_number;

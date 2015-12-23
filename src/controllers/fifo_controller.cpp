@@ -28,13 +28,19 @@ static const char hexval[] = {
 };
 
 /* appends a pixels value to the string buffer, returning the number of characters written */
-inline void appendByte(char *buf, uInt8 v) {
-    *buf = hexval[(v >> 4)];
-    *(buf+1) = hexval[v & 0xF];
+inline void appendByte(char *buf
+//		,uInt8 v
+		) {
+//    *buf = hexval[(v >> 4)];
+//    *(buf+1) = hexval[v & 0xF];
 }
 
-FIFOController::FIFOController(OSystem* _osystem, bool named_pipes) :
-  ALEController(_osystem),
+FIFOController::FIFOController(
+//		OSystem* _osystem,
+		bool named_pipes) :
+  ALEController(
+//		  _osystem
+		  ),
   m_named_pipes(named_pipes) {
 //  m_max_num_frames = m_osystem->settings().getInt("max_num_frames");
 //  m_run_length_encoding = m_osystem->settings().getBool("run_length_encoding");
@@ -156,70 +162,70 @@ void FIFOController::sendScreen() {
 }
 
 int FIFOController::stringScreenRLE(const ALEScreen& screen, char* buffer) {
-  int currentColor = -1;
-  int runLength = 0;
-
-  int sn = 0;
-
-  // Process pixels in array-order
-  for (size_t i = 0; i < screen.arraySize(); i++) {
-    pixel_t col = screen.getArray()[i];
-
-    // Lengthen this run
-    if (col == currentColor && runLength < MAX_RUN_LENGTH)
-      runLength++;
-    else {
-      if (currentColor != -1) {
-        // Output it
-        appendByte(buffer + sn, currentColor);
-        appendByte(buffer + sn + 2, runLength);
-        sn += 4;
-      }
-
-      // Switch to the new color
-      currentColor = col;
-      runLength = 1;
-    }
-  }
-
-  appendByte(buffer + sn, currentColor);
-  appendByte(buffer + sn + 2, runLength);
-  sn += 4;
-
-  return sn;
+//  int currentColor = -1;
+//  int runLength = 0;
+//
+//  int sn = 0;
+//
+//  // Process pixels in array-order
+//  for (size_t i = 0; i < screen.arraySize(); i++) {
+//    pixel_t col = screen.getArray()[i];
+//
+//    // Lengthen this run
+//    if (col == currentColor && runLength < MAX_RUN_LENGTH)
+//      runLength++;
+//    else {
+//      if (currentColor != -1) {
+//        // Output it
+//        appendByte(buffer + sn, currentColor);
+//        appendByte(buffer + sn + 2, runLength);
+//        sn += 4;
+//      }
+//
+//      // Switch to the new color
+//      currentColor = col;
+//      runLength = 1;
+//    }
+//  }
+//
+//  appendByte(buffer + sn, currentColor);
+//  appendByte(buffer + sn + 2, runLength);
+//  sn += 4;
+//
+//  return sn;
 }
 
 int FIFOController::stringScreenFull(const ALEScreen& screen, char* buffer) {
-  int sn = 0;
-
-  // Iterate through pixels, put in a string
-  for (size_t i = 0; i < screen.arraySize(); i++) {
-    pixel_t col = screen.getArray()[i];
-
-    appendByte(buffer + sn, col);
-    sn += 2;
-  }
-
-  return sn;
+//  int sn = 0;
+//
+//  // Iterate through pixels, put in a string
+//  for (size_t i = 0; i < screen.arraySize(); i++) {
+//    pixel_t col = screen.getArray()[i];
+//
+//    appendByte(buffer + sn, col);
+//    sn += 2;
+//  }
+//
+//  return sn;
 }
 
 void FIFOController::sendRAM() {
-  const ALERAM& ram = m_environment.getRAM();
-
-  char buffer[204800];
-  int sn = 0;
-
-  // Convert the RAM bytes into a string
-  for (size_t i = 0; i < ram.size(); i++) {
-    byte_t b = ram.get(i);
-    appendByte(buffer + sn, b);
-    sn += 2;
-  }
-
-  // Output RAM
-  buffer[sn] = ':';
-  buffer[sn+1] = 0;
-  fputs(buffer, m_fout);
+//  const ALERAM& ram = m_environment.getRAM();
+//
+//  char buffer[204800];
+//  int sn = 0;
+//
+//  // Convert the RAM bytes into a string
+//  for (size_t i = 0; i < ram.size(); i++) {
+//    byte_t b = ram.get(i);
+//    appendByte(buffer + sn, b);
+//    sn += 2;
+//  }
+//
+//  // Output RAM
+//  buffer[sn] = ':';
+//  buffer[sn+1] = 0;
+//  fputs(buffer, m_fout);
 }
 
 void FIFOController::sendRL() {

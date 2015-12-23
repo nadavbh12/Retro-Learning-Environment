@@ -20,11 +20,15 @@
 #include <sstream>
 
 
-S9xEnvironment::S9xEnvironment(OSystem* osystem, RomSettings* settings)
+S9xEnvironment::S9xEnvironment(
+//		OSystem* osystem,
+		RomSettings* settings)
 :
 //  m_osystem(osystem),
 //  m_settings(settings),
-  m_phosphor_blend(osystem),
+  m_phosphor_blend(
+//		  osystem
+		  ),
 
 //  m_screen(m_osystem->console().mediaSource().height(),
 //        m_osystem->console().mediaSource().width())
@@ -34,7 +38,7 @@ S9xEnvironment::S9xEnvironment(OSystem* osystem, RomSettings* settings)
 //  m_player_a_action(PLAYER_A_NOOP),
 //  m_player_b_action(PLAYER_B_NOOP)
 {
-	printf("\n\nSnes9x " VERSION " for unix\n");
+//	printf("\n\nSnes9x " VERSION " for unix\n");
 
 //	snprintf(default_dir, PATH_MAX + 1, "%s%s%s", getenv("HOME"), SLASH_STR, ".snes9x");
 //	s9x_base_dir = default_dir;

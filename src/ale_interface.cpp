@@ -31,6 +31,9 @@
 #include <stdexcept>
 #include <ctime>
 
+// SN:
+#include <sstream>
+
 using namespace std;
 using namespace ale;
 // Display ALE welcome message
@@ -52,8 +55,8 @@ void ALEInterface::disableBufferedIO() {
   cout.sync_with_stdio();
 }
 
-void ALEInterface::createOSystem(std::auto_ptr<OSystem> &theOSystem,
-                          std::auto_ptr<SSettings> &theSettings) {
+//void ALEInterface::createOSystem(std::auto_ptr<OSystem> &theOSystem,
+//                          std::auto_ptr<Settings> &theSettings) {
 //	TODO SN: check if we need the class
 //#if (defined(WIN32) || defined(__MINGW32__))
 //  theOSystem.reset(new OSystemWin32());
@@ -64,10 +67,11 @@ void ALEInterface::createOSystem(std::auto_ptr<OSystem> &theOSystem,
 //#endif
 //
 //  theOSystem->settings().loadConfig();
-}
+//}
 
-void ALEInterface::loadSettings(const string& romfile,
-                                std::auto_ptr<OSystem> &theOSystem) {
+void ALEInterface::loadSettings(const string& romfile
+//                                ,std::auto_ptr<OSystem> &theOSystem
+                                ) {
 
 //  SN: config file is Stella-specific
   // Load the configuration from a config file (passed on the command
@@ -78,20 +82,20 @@ void ALEInterface::loadSettings(const string& romfile,
 //    theOSystem->settings().loadConfig(configFile.c_str());
 
 //  theOSystem->settings().validate();
-  theOSystem->create();
+//  theOSystem->create();
 
   // Attempt to load the ROM
-  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
-    Logger::Error << "No ROM File specified or the ROM file was not found."
-              << std::endl;
-    exit(1);
-  } else if (theOSystem->createConsole(romfile))  {
-    Logger::Info << "Running ROM file..." << std::endl;
-//    TODO SN: see if we need rom specific settings
-//    theOSystem->settings().setString("rom_file", romfile);
-  } else {
-    exit(1);
-  }
+//  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
+//    Logger::Error << "No ROM File specified or the ROM file was not found."
+//              << std::endl;
+//    exit(1);
+//  } else if (theOSystem->createConsole(romfile))  {
+//    Logger::Info << "Running ROM file..." << std::endl;
+////    TODO SN: see if we need rom specific settings
+////    theOSystem->settings().setString("rom_file", romfile);
+//  } else {
+//    exit(1);
+//  }
 
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.
@@ -104,15 +108,15 @@ void ALEInterface::loadSettings(const string& romfile,
 }
 
 ALEInterface::ALEInterface() {
-  disableBufferedIO();
-  Logger::Info << welcomeMessage() << std::endl;
-  createOSystem(theOSystem, theSettings);
+//  disableBufferedIO();
+//  Logger::Info << welcomeMessage() << std::endl;
+//  createOSystem(theOSystem, theSettings);
 }
 
 ALEInterface::ALEInterface(bool display_screen) {
-  disableBufferedIO();
-  Logger::Info << welcomeMessage() << std::endl;
-  createOSystem(theOSystem, theSettings);
+//  disableBufferedIO();
+//  Logger::Info << welcomeMessage() << std::endl;
+//  createOSystem(theOSystem, theSettings);
 //  TODO SN: fix display screen
 //  this->setBool("display_screen", display_screen);
 }
@@ -124,24 +128,24 @@ ALEInterface::~ALEInterface() {}
 // necessary after changing a setting. Optionally specify a new rom to
 // load.
 void ALEInterface::loadROM(string rom_file = "") {
-  assert(theOSystem.get());
-  if (rom_file.empty()) {
-    rom_file = theOSystem->romFile();
-  }
-  loadSettings(rom_file, theOSystem);
-  romSettings.reset(buildRomRLWrapper(rom_file));
-  environment.reset(new S9xEnvironment(theOSystem.get(), romSettings.get()));
+//  assert(theOSystem.get());
+//  if (rom_file.empty()) {
+//    rom_file = theOSystem->romFile();
+//  }
+//  loadSettings(rom_file, theOSystem);
+//  romSettings.reset(buildRomRLWrapper(rom_file));
+//  environment.reset(new S9xEnvironment(theOSystem.get(), romSettings.get()));
 //	TODO SN: possibly implement getMaxNumOfFrames
   //  max_num_frames = theOSystem->settings().getInt("max_num_frames_per_episode");
-  environment->reset();
-#ifndef __USE_SDL
-  if (theOSystem->p_display_screen != NULL) {
-    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
-    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
-    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
-    exit(1);
-  }
-#endif
+//  environment->reset();
+//#ifndef __USE_SDL
+//  if (theOSystem->p_display_screen != NULL) {
+//    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
+//    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
+//    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
+//    exit(1);
+//  }
+//#endif
 }
 
 // TODO SN: implement settings file and below functions
@@ -215,14 +219,14 @@ const int ALEInterface::lives() {
 // game over screen.
 reward_t ALEInterface::act(Action action) {
   reward_t reward = environment->act(action, PLAYER_B_NOOP);
-  if (theOSystem->p_display_screen != NULL) {
-    theOSystem->p_display_screen->display_screen();
-    while (theOSystem->p_display_screen->manual_control_engaged()) {
-      Action user_action = theOSystem->p_display_screen->getUserAction();
-      reward += environment->act(user_action, PLAYER_B_NOOP);
-      theOSystem->p_display_screen->display_screen();
-    }
-  }
+//  if (theOSystem->p_display_screen != NULL) {
+//    theOSystem->p_display_screen->display_screen();
+//    while (theOSystem->p_display_screen->manual_control_engaged()) {
+//      Action user_action = theOSystem->p_display_screen->getUserAction();
+//      reward += environment->act(user_action, PLAYER_B_NOOP);
+//      theOSystem->p_display_screen->display_screen();
+//    }
+//  }
   return reward;
 }
 
@@ -292,10 +296,10 @@ void ALEInterface::restoreSystemState(const ALEState& state) {
 
 void ALEInterface::saveScreenPNG(const string& filename) {
   
-  ScreenExporter exporter(theOSystem->colourPalette());
-  exporter.save(environment->getScreen(), filename);
+//  ScreenExporter exporter(theOSystem->colourPalette());
+//  exporter.save(environment->getScreen(), filename);
 }
 
 ScreenExporter *ALEInterface::createScreenExporter(const std::string &filename) const {
-    return new ScreenExporter(theOSystem->colourPalette(), filename); 
+//    return new ScreenExporter(theOSystem->colourPalette(), filename);
 }

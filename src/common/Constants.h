@@ -22,7 +22,9 @@
 #include <vector>
 #include <valarray>
 #include <cstdlib>
-#include "../emucore/m6502/src/bspf/src/bspf.hxx"
+//#include "../emucore/m6502/src/bspf/src/bspf.hxx"
+// SN:
+#include<iostream>
 
 
 // Define actions

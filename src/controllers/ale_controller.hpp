@@ -18,13 +18,15 @@
 #ifndef __ALE_CONTROLLER_HPP__
 #define __ALE_CONTROLLER_HPP__
 
-#include "../emucore/OSystem.hxx"
-#include "../emucore/m6502/src/System.hxx"
+//#include "../emucore/OSystem.hxx"
+//#include "../emucore/m6502/src/System.hxx"
 #include "../environment/s9x_environment.hpp"
 
 class ALEController {
   public:
-    ALEController(OSystem * osystem);
+    ALEController(
+//    		OSystem * osystem
+    		);
     virtual ~ALEController() {}
 
     /** Main loop. Returns once ALE terminates. */
@@ -39,7 +41,7 @@ class ALEController {
     void display();
 
   protected:
-    OSystem* m_osystem;
+//    OSystem* m_osystem;
     std::auto_ptr<RomSettings> m_settings;
     S9xEnvironment m_environment;
 };

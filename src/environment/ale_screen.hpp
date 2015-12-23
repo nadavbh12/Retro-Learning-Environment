@@ -22,6 +22,9 @@
 #include <memory>
 #include <vector>
 
+// SN:
+#include <assert.h>
+
 typedef unsigned char pixel_t;
 
 /** A simple wrapper around an Atari screen. */ 

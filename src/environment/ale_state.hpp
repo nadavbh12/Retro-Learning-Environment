@@ -18,8 +18,8 @@
 #ifndef __ALE_STATE_HPP__ 
 #define __ALE_STATE_HPP__
 
-#include "../emucore/OSystem.hxx"
-#include "../emucore/Event.hxx"
+//#include "../emucore/OSystem.hxx"
+//#include "../emucore/Event.hxx"
 #include <string>
 #include "../games/RomSettings.hpp"
 #include "../common/Log.hpp"
@@ -48,13 +48,19 @@ class ALEState {
     /** Returns true if the two states contain the same saved information */
     bool equals(ALEState &state);
 
-    void resetPaddles(Event*);
+    void resetPaddles(
+//    		Event*
+    		);
 
     /** Applies paddle actions. This actually modifies the game state by updating the paddle
       *  resistances. */
-    void applyActionPaddles(Event* event_obj, int player_a_action, int player_b_action);
+    void applyActionPaddles(
+//    		Event* event_obj,
+    		int player_a_action, int player_b_action);
     /** Sets the joystick events. No effect until the emulator is run forward. */
-    void setActionJoysticks(Event* event_obj, int player_a_action, int player_b_action);
+    void setActionJoysticks(
+//    		Event* event_obj,
+    		int player_a_action, int player_b_action);
 
     void incrementFrame(int steps = 1);
     
@@ -76,21 +82,31 @@ class ALEState {
     // The two methods below are meant to be used by StellaEnvironment.
     /** Restores the environment to a previously saved state. If load_system == true, we also
         restore system-specific information (such as the RNG state). */ 
-    void load(OSystem* osystem, RomSettings* settings, std::string md5, const ALEState &rhs,
+    void load(
+//    		OSystem* osystem,
+    		RomSettings* settings, std::string md5, const ALEState &rhs,
               bool load_system);
 
     /** Returns a "copy" of the current state, including the information necessary to restore
       *  the emulator. If save_system == true, this includes the RNG state. */
-    ALEState save(OSystem* osystem, RomSettings* settings, std::string md5, bool save_system);
+    ALEState save(
+//    		OSystem* osystem,
+    		RomSettings* settings, std::string md5, bool save_system);
 
     /** Reset key presses */
-    void resetKeys(Event* event_obj);
+    void resetKeys(
+//    		Event* event_obj
+    		);
 
     /** Sets the paddle to a given position */
-    void setPaddles(Event* event_obj, int left, int right);
+    void setPaddles(
+//    		Event* event_obj,
+    		int left, int right);
 
     /** Updates the paddle position by a delta amount. */
-    void updatePaddlePositions(Event* event_obj, int delta_x, int delta_y);
+    void updatePaddlePositions(
+//    		Event* event_obj,
+    		int delta_x, int delta_y);
 
     /** Calculates the Paddle resistance, based on the given x val */
     int calcPaddleResistance(int x_val);

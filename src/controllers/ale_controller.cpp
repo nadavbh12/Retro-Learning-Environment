@@ -22,11 +22,16 @@
 #include "../common/display_screen.h"
 #include "../common/Log.hpp"
 
-ALEController::ALEController(OSystem* osystem):
-  m_osystem(osystem),
+ALEController::ALEController(
+//		OSystem* osystem
+		)
+:
+//		m_osystem(osystem),
 //  TODO SN: retreive rom file elsewhere
 //  m_settings(buildRomRLWrapper(m_osystem->settings().getString("rom_file"))),
-  m_environment(m_osystem, m_settings.get()) {
+  m_environment(
+//		  m_osystem,
+		  m_settings.get()) {
 
   if (m_settings.get() == NULL) {
     ale::Logger::Warning << "Unsupported ROM file: " << std::endl;
@@ -39,15 +44,15 @@ ALEController::ALEController(OSystem* osystem):
 
 void ALEController::display() {
   // Display the screen if applicable
-  DisplayScreen* display = m_osystem->p_display_screen;
-  if (display) {
-    display->display_screen();
-    while (display->manual_control_engaged()) {
-      Action user_action = display->getUserAction();
-      applyActions(user_action, PLAYER_B_NOOP);
-      display->display_screen();
-    }
-  }
+//  DisplayScreen* display = m_osystem->p_display_screen;
+//  if (display) {
+//    display->display_screen();
+//    while (display->manual_control_engaged()) {
+//      Action user_action = display->getUserAction();
+//      applyActions(user_action, PLAYER_B_NOOP);
+//      display->display_screen();
+//    }
+//  }
 }
 
 reward_t ALEController::applyActions(Action player_a, Action player_b) {

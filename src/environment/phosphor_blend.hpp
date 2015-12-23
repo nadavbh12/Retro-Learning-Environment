@@ -17,29 +17,31 @@
 #ifndef __PHOSPHOR_BLEND_HPP__
 #define __PHOSPHOR_BLEND_HPP__
 
-#include "../emucore/OSystem.hxx"
+//#include "../emucore/OSystem.hxx"
 #include "ale_screen.hpp"
 
 class PhosphorBlend {
   public:
-    PhosphorBlend(OSystem *);
+    PhosphorBlend(
+//    		OSystem *
+    		);
 
     void process(ALEScreen& screen);
 
   private:
     void makeAveragePalette();
-    uInt8 getPhosphor(uInt8 v1, uInt8 v2);
-    uInt32 makeRGB(uInt8 r, uInt8 g, uInt8 b);
-    /** Converts a RGB value to an 8-bit format */
-    uInt8 rgbToNTSC(uInt32 rgb);
+//    uInt8 getPhosphor(uInt8 v1, uInt8 v2);
+//    uInt32 makeRGB(uInt8 r, uInt8 g, uInt8 b);
+//    /** Converts a RGB value to an 8-bit format */
+//    uInt8 rgbToNTSC(uInt32 rgb);
     
   private:
-    OSystem * m_osystem;
+//    OSystem * m_osystem;
 
-    uInt8 m_rgb_ntsc[64][64][64];
-
-    uInt32 m_avg_palette[256][256];
-    uInt8 m_phosphor_blend_ratio;
+//    uInt8 m_rgb_ntsc[64][64][64];
+//
+//    uInt32 m_avg_palette[256][256];
+//    uInt8 m_phosphor_blend_ratio;
 };
 
 #endif // __PHOSPHOR_BLEND_HPP__

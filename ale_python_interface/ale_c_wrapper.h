@@ -58,7 +58,7 @@ extern "C" {
     size_t screen_size = w*h;
     pixel_t *ale_screen_data = ale->getScreen().getArray();
 
-    ale->theOSystem->colourPalette().applyPaletteRGB(output_buffer, ale_screen_data, screen_size );
+//    ale->theOSystem->colourPalette().applyPaletteRGB(output_buffer, ale_screen_data, screen_size );
   }
 
   void getScreenGrayscale(ALEInterface *ale, unsigned char *output_buffer){
@@ -67,7 +67,7 @@ extern "C" {
     size_t screen_size = w*h;
     pixel_t *ale_screen_data = ale->getScreen().getArray();
 
-    ale->theOSystem->colourPalette().applyPaletteGrayscale(output_buffer, ale_screen_data, screen_size);
+//    ale->theOSystem->colourPalette().applyPaletteGrayscale(output_buffer, ale_screen_data, screen_size);
   }
 
   void saveState(ALEInterface *ale){ale->saveState();}

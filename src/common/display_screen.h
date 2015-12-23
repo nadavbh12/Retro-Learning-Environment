@@ -22,14 +22,17 @@
 
 #include "Constants.h"
 #include "ColourPalette.hpp"
-#include "../emucore/MediaSrc.hxx"
+//#include "../emucore/MediaSrc.hxx"
 
 #ifdef __USE_SDL
 #include "SDL.h"
 
 class DisplayScreen {
 public:
-    DisplayScreen(MediaSource* mediaSource, Sound* sound, ColourPalette &palette); 
+    DisplayScreen(
+//    		MediaSource* mediaSource, Sound* sound
+//    		, ColourPalette &palette
+    		);
     virtual ~DisplayScreen();
 
     // Displays the current frame buffer from the mediasource.
@@ -54,9 +57,9 @@ protected:
     static const int window_width = 428;
     // Maintains the paused/unpaused state of the game
     bool manual_control_active;
-    MediaSource* media_source;
-    Sound* my_sound;
-    ColourPalette &colour_palette;
+//    MediaSource* media_source;
+//    Sound* my_sound;
+//    ColourPalette &colour_palette;
     int screen_height, screen_width;
     SDL_Surface *screen, *image;
     float yratio, xratio;
@@ -68,7 +71,9 @@ protected:
 /** A dummy class that simply ignores display events. */
 class DisplayScreen {
   public:
-    DisplayScreen(MediaSource* mediaSource, Sound* sound, ColourPalette &palette) {}
+    DisplayScreen(
+//    		MediaSource* mediaSource, Sound* sound, ColourPalette &palette
+    		) {}
     void display_screen() {}
     bool manual_control_engaged() { return false; }
     Action getUserAction() { return UNDEFINED; }

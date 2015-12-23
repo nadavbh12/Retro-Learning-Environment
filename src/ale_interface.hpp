@@ -30,8 +30,8 @@
 #ifndef __ALE_INTERFACE_HPP__
 #define __ALE_INTERFACE_HPP__
 
-#include "emucore/FSNode.hxx"
-#include "emucore/OSystem.hxx"
+//#include "emucore/FSNode.hxx"
+//#include "emucore/OSystem.hxx"
 #include "os_dependent/SettingsWin32.hxx"
 #include "os_dependent/OSystemWin32.hxx"
 #include "os_dependent/SettingsUNIX.hxx"
@@ -44,6 +44,9 @@
 
 #include <string>
 #include <memory>
+
+//SN:
+#include <iostream>
 
 static const std::string Version = "0.5.0";
 
@@ -142,9 +145,8 @@ public:
   ScreenExporter *createScreenExporter(const std::string &path) const;
 
  public:
-  std::auto_ptr<OSystem> theOSystem;
+//  std::auto_ptr<OSystem> theOSystem;
 //  std::auto_ptr<Settings> theSettings;
-  std::auto_ptr<SSettings> theSettings;
   std::auto_ptr<RomSettings> romSettings;
   std::auto_ptr<S9xEnvironment> environment;
   int max_num_frames; // Maximum number of frames for each episode
@@ -153,11 +155,11 @@ public:
   // Display ALE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-  static void createOSystem(std::auto_ptr<OSystem> &theOSystem
-                            ,std::auto_ptr<SSettings> &theSettings
-                            );
-  static void loadSettings(const std::string& romfile,
-                           std::auto_ptr<OSystem> &theOSystem
+//  static void createOSystem(std::auto_ptr<OSystem> &theOSystem
+//                            ,std::auto_ptr<Settings> &theSettings
+//                            );
+  static void loadSettings(const std::string& romfile
+//                           ,std::auto_ptr<OSystem> &theOSystem
                            );
 };
 

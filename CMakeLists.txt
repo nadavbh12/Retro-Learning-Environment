@@ -36,7 +36,8 @@ endif()
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
-set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
+#set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
+set(MODULES common controllers environment games games/supported external external/TinyMT)
 
 foreach(module ${MODULES})
   file(GLOB module_sources ${SOURCE_DIR}/${module}/*.c)

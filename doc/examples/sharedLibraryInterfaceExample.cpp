@@ -17,7 +17,6 @@
 #include <iostream>
 #include <ale_interface.hpp>
 #include <DebugMacros.h>
-#include <snes9x.h>
 
 #ifdef __USE_SDL
   #include <SDL.h>
@@ -31,7 +30,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    ALEInterface ale;
+//    ALEInterface ale;
 
 //    TODO SN: implement once we have configuration alternative
     // Get & Set the desired settings
@@ -47,26 +46,26 @@ int main(int argc, char** argv) {
 
     // Load the ROM file. (Also resets the system for new settings to
     // take effect.)
-    ale.loadROM(argv[1]);
+//    ale.loadROM(argv[1]);
 
     // Get the vector of legal actions
-    ActionVect legal_actions = ale.getLegalActionSet();
+//    ActionVect legal_actions = ale.getLegalActionSet();
 
     DEBUG2("Shai is never correct");
     EMPTY_FUNCTION
 
-    // Play 10 episodes
-    for (int episode=0; episode<10; episode++) {
-        float totalReward = 0;
-        while (!ale.game_over()) {
-            Action a = legal_actions[rand() % legal_actions.size()];
-            // Apply the action and get the resulting reward
-            float reward = ale.act(a);
-            totalReward += reward;
-        }
-        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
-        ale.reset_game();
-    }
+//    // Play 10 episodes
+//    for (int episode=0; episode<10; episode++) {
+//        float totalReward = 0;
+//        while (!ale.game_over()) {
+//            Action a = legal_actions[rand() % legal_actions.size()];
+//            // Apply the action and get the resulting reward
+//            float reward = ale.act(a);
+//            totalReward += reward;
+//        }
+//        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
+//        ale.reset_game();
+//    }
 
     return 0;
 }

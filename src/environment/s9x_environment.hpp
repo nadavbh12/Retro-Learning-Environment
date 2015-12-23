@@ -22,13 +22,12 @@
 #include "ale_screen.hpp"
 #include "ale_ram.hpp"
 #include "phosphor_blend.hpp"
-#include "../emucore/OSystem.hxx"
-#include "../emucore/Event.hxx"
+//#include "../emucore/OSystem.hxx"
+//#include "../emucore/Event.hxx"
 #include "../games/RomSettings.hpp"
 #include "../common/ScreenExporter.hpp"
 #include "../common/Log.hpp"
 #include "../common/DebugMacros.h"
-#include "snes9x.h"
 
 #include <stack>
 
@@ -42,7 +41,9 @@
 class S9xEnvironment {
 
 	public:
-    S9xEnvironment(OSystem * system, RomSettings * settings);
+    S9xEnvironment(
+//    		OSystem * system,
+    		RomSettings * settings);
 
     /** Resets the system to its start state. */
     void reset(){FUNCTION_NAME}
@@ -103,7 +104,7 @@ class S9xEnvironment {
     void processRAM(){FUNCTION_NAME}
 
   private:
-    OSystem *m_osystem;
+//    OSystem *m_osystem;
     RomSettings *m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
     std::string m_cartridge_md5; // Necessary for saving and loading emulator state
