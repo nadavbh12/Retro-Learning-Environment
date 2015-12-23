@@ -1,1 +1,0 @@
-cmd='/home/administrator/DQN/SNES-Learning-Environment/snes9x/unix/configure;--prefix;/home/administrator/DQN/SNES-Learning-Environment/snes9x/unix/'
