@@ -56,6 +56,7 @@ endif()
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
+set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
 #set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
 set(MODULES common controllers environment games games/supported external external/TinyMT)
 
@@ -97,6 +98,10 @@ include_directories(
 add_library(snes9x_next_libretro SHARED IMPORTED)
 set_property(TARGET snes9x_next_libretro PROPERTY IMPORTED_LOCATION ${SNES9X_DIR}/snes9x_next_libretro.so)
 list(APPEND LINK_LIBS snes9x_next_libretro)
+
+add_library(stella_libretro SHARED IMPORTED)
+set_property(TARGET stella_libretro PROPERTY IMPORTED_LOCATION ${STELLA_DIR}/stella_libretro.so)
+list(APPEND LINK_LIBS stella_libretro)
 
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)

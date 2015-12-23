@@ -4,3 +4,6 @@
 [submodule "nanoarch"]
 	path = nanoarch
 	url = https://github.com/nadavbh12/nanoarch.git
+[submodule "stella-libretro"]
+	path = stella-libretro
+	url = https://github.com/libretro/stella-libretro.git
