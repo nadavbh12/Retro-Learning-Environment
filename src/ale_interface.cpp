@@ -109,7 +109,7 @@ void ALEInterface::loadSettings(const string& romfile
 
 ALEInterface::ALEInterface() {
 //  disableBufferedIO();
-//  Logger::Info << welcomeMessage() << std::endl;
+  Logger::Info << welcomeMessage() << std::endl;
 //  createOSystem(theOSystem, theSettings);
 }
 

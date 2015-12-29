@@ -22,8 +22,6 @@
 #include "ale_screen.hpp"
 #include "ale_ram.hpp"
 #include "phosphor_blend.hpp"
-//#include "../emucore/OSystem.hxx"
-//#include "../emucore/Event.hxx"
 #include "../games/RomSettings.hpp"
 #include "../common/ScreenExporter.hpp"
 #include "../common/Log.hpp"
