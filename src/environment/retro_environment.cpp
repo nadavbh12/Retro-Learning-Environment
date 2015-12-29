@@ -15,12 +15,14 @@
  *  
  **************************************************************************** */
 
-#include "s9x_environment.hpp"
+//#include "s9x_environment.hpp"
+#include "retro_environment.hpp"
+
 //#include "../emucore/m6502/src/System.hxx"
 #include <sstream>
 
 
-S9xEnvironment::S9xEnvironment(
+RetroEnvironment::RetroEnvironment(
 //		OSystem* osystem,
 		RomSettings* settings)
 :

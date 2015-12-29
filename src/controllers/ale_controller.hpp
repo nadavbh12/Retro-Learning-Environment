@@ -20,8 +20,8 @@
 
 //#include "../emucore/OSystem.hxx"
 //#include "../emucore/m6502/src/System.hxx"
-#include "../environment/s9x_environment.hpp"
-
+//#include "../environment/s9x_environment.hpp"
+#include "../environment/retro_environment.hpp"
 class ALEController {
   public:
     ALEController(
@@ -43,7 +43,7 @@ class ALEController {
   protected:
 //    OSystem* m_osystem;
     std::auto_ptr<RomSettings> m_settings;
-    S9xEnvironment m_environment;
+    RetroEnvironment m_environment;
 };
 
 

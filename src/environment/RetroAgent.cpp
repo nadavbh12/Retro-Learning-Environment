@@ -558,7 +558,7 @@ void RetroAgent::run(){
 	g_retro.retro_run();
 }
 bool RetroAgent::windowShouldClose(){
-	glfwWindowShouldClose(g_win);
+	return glfwWindowShouldClose(g_win);
 }
 
 void RetroAgent::pollEvents(){

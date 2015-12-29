@@ -83,9 +83,6 @@ include_directories(
   ${SOURCE_DIR}
   ${SOURCE_DIR}/common
   ${SOURCE_DIR}/controllers
-  ${SOURCE_DIR}/emucore
-  ${SOURCE_DIR}/emucore/m6502/src
-  ${SOURCE_DIR}/emucore/m6502/src/bspf/src
   ${SOURCE_DIR}/environment
   ${SOURCE_DIR}/games
   ${SOURCE_DIR}/games/supported

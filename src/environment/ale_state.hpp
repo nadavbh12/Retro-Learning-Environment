@@ -77,7 +77,7 @@ class ALEState {
 
   protected:
     // Let StellaEnvironment access these methods: they are needed for emulation purposes
-    friend class S9xEnvironment;
+    friend class RetroEnvironment;
 
     // The two methods below are meant to be used by StellaEnvironment.
     /** Restores the environment to a previously saved state. If load_system == true, we also

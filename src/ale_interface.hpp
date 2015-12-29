@@ -30,15 +30,17 @@
 #ifndef __ALE_INTERFACE_HPP__
 #define __ALE_INTERFACE_HPP__
 
-//#include "emucore/FSNode.hxx"
-//#include "emucore/OSystem.hxx"
 #include "os_dependent/SettingsWin32.hxx"
 #include "os_dependent/OSystemWin32.hxx"
 #include "os_dependent/SettingsUNIX.hxx"
 #include "os_dependent/OSystemUNIX.hxx"
 #include "games/Roms.hpp"
 #include "common/display_screen.h"
-#include "environment/s9x_environment.hpp"
+//#include "environment/s9x_environment.hpp"
+#include "environment/retro_environment.hpp"
+#include "os_dependent/SettingsUNIX.hxx"
+#include "os_dependent/SettingsWin32.hxx"
+
 #include "common/ScreenExporter.hpp"
 #include "common/Log.hpp"
 
@@ -66,13 +68,12 @@ public:
   bool getBool(const std::string& key);
   float getFloat(const std::string& key);
 
-  // TODO SN: implement settings file and below functions
   // Set the value of a setting. loadRom() must be called before the
   // setting will take effect.
-//  void setString(const std::string& key, const std::string& value);
-//  void setInt(const std::string& key, const int value);
-//  void setBool(const std::string& key, const bool value);
-//  void setFloat(const std::string& key, const float value);
+  void setString(const std::string& key, const std::string& value);
+  void setInt(const std::string& key, const int value);
+  void setBool(const std::string& key, const bool value);
+  void setFloat(const std::string& key, const float value);
 
   // Resets the Atari and loads a game. After this call the game
   // should be ready to play. This is necessary after changing a
@@ -146,9 +147,10 @@ public:
 
  public:
 //  std::auto_ptr<OSystem> theOSystem;
-//  std::auto_ptr<Settings> theSettings;
+  std::auto_ptr<Settings> theSettings;
+  std::auto_ptr<RetroAgent> rAgent;
   std::auto_ptr<RomSettings> romSettings;
-  std::auto_ptr<S9xEnvironment> environment;
+  std::auto_ptr<RetroEnvironment> environment;
   int max_num_frames; // Maximum number of frames for each episode
 
  public:

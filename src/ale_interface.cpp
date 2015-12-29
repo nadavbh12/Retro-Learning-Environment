@@ -108,17 +108,30 @@ void ALEInterface::loadSettings(const string& romfile
 }
 
 ALEInterface::ALEInterface() {
-//  disableBufferedIO();
+  disableBufferedIO();
   Logger::Info << welcomeMessage() << std::endl;
-//  createOSystem(theOSystem, theSettings);
+  rAgent.reset(new RetroAgent());
+#if (defined(WIN32) || defined(__MINGW32__))
+  theSettings.reset(new SettingsWin32());
+#else
+  theSettings.reset(new SettingsUNIX());
+#endif
+
+  theSettings->loadConfig("ale.cfg");
 }
 
 ALEInterface::ALEInterface(bool display_screen) {
-//  disableBufferedIO();
-//  Logger::Info << welcomeMessage() << std::endl;
-//  createOSystem(theOSystem, theSettings);
-//  TODO SN: fix display screen
-//  this->setBool("display_screen", display_screen);
+  disableBufferedIO();
+  Logger::Info << welcomeMessage() << std::endl;
+  rAgent.reset(new RetroAgent());
+#if (defined(WIN32) || defined(__MINGW32__))
+  theSettings.reset(new SettingsWin32());
+#else
+  theSettings.reset(new SettingsUNIX());
+#endif
+
+  theSettings->loadConfig("ale.cfg");
+  this->setBool("display_screen", display_screen);
 }
 
 ALEInterface::~ALEInterface() {}
@@ -148,50 +161,49 @@ void ALEInterface::loadROM(string rom_file = "") {
 //#endif
 }
 
-// TODO SN: implement settings file and below functions
 //// Get the value of a setting.
-//std::string ALEInterface::getString(const std::string& key) {
-//  assert(theSettings.get());
-//  return theSettings->getString(key);
-//}
-//int ALEInterface::getInt(const std::string& key) {
-//  assert(theSettings.get());
-//  return theSettings->getInt(key);
-//}
-//bool ALEInterface::getBool(const std::string& key) {
-//  assert(theSettings.get());
-//  return theSettings->getBool(key);
-//}
-//float ALEInterface::getFloat(const std::string& key) {
-//  assert(theSettings.get());
-//  return theSettings->getFloat(key);
-//}
-//
-//// Set the value of a setting.
-//void ALEInterface::setString(const string& key, const string& value) {
-//  assert(theSettings.get());
+std::string ALEInterface::getString(const std::string& key) {
+  assert(theSettings.get());
+  return theSettings->getString(key);
+}
+int ALEInterface::getInt(const std::string& key) {
+  assert(theSettings.get());
+  return theSettings->getInt(key);
+}
+bool ALEInterface::getBool(const std::string& key) {
+  assert(theSettings.get());
+  return theSettings->getBool(key);
+}
+float ALEInterface::getFloat(const std::string& key) {
+  assert(theSettings.get());
+  return theSettings->getFloat(key);
+}
+
+// Set the value of a setting.
+void ALEInterface::setString(const string& key, const string& value) {
+  assert(theSettings.get());
 //  assert(theOSystem.get());
-//  theSettings->setString(key, value);
-//  theSettings->validate();
-//}
-//void ALEInterface::setInt(const string& key, const int value) {
-//  assert(theSettings.get());
+  theSettings->setString(key, value);
+  theSettings->validate();
+}
+void ALEInterface::setInt(const string& key, const int value) {
+  assert(theSettings.get());
 //  assert(theOSystem.get());
-//  theSettings->setInt(key, value);
-//  theSettings->validate();
-//}
-//void ALEInterface::setBool(const string& key, const bool value) {
-//  assert(theSettings.get());
+  theSettings->setInt(key, value);
+  theSettings->validate();
+}
+void ALEInterface::setBool(const string& key, const bool value) {
+  assert(theSettings.get());
 //  assert(theOSystem.get());
-//  theSettings->setBool(key, value);
-//  theSettings->validate();
-//}
-//void ALEInterface::setFloat(const string& key, const float value) {
-//  assert(theSettings.get());
+  theSettings->setBool(key, value);
+  theSettings->validate();
+}
+void ALEInterface::setFloat(const string& key, const float value) {
+  assert(theSettings.get());
 //  assert(theOSystem.get());
-//  theSettings->setFloat(key, value);
-//  theSettings->validate();
-//}
+  theSettings->setFloat(key, value);
+  theSettings->validate();
+}
 
 
 // Resets the game, but not the full system.

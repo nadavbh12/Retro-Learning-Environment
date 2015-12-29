@@ -27,19 +27,17 @@
 #include "../common/Log.hpp"
 #include "../common/DebugMacros.h"
 
+#include "RetroAgent.h"
 #include <stack>
 
 
 // This defines the number of "random" environments
 #define NUM_RANDOM_ENVIRONMENTS (500)
 
-// shai : added macros for future use
-
-
-class S9xEnvironment {
+class RetroEnvironment {
 
 	public:
-    S9xEnvironment(
+    RetroEnvironment(
 //    		OSystem * system,
     		RomSettings * settings);
 

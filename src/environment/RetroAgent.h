@@ -1,3 +1,5 @@
+#ifndef __RETRO_AGENT_HPP__
+#define __RETRO_AGENT_HPP__
 
 #include<iostream>
 
@@ -20,3 +22,5 @@ public:
 	void videoDeinit();
 	void terminateWindow();
 };
+
+#endif // __RETRO_AGENT_HPP__

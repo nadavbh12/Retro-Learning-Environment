@@ -24,7 +24,7 @@
 
 #include <assert.h>
 
-#include "../emucore/m6502/src/bspf/src/bspf.hxx"
+#include "bspf.hxx"
 
 namespace Common {
 
