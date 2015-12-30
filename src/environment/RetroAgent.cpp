@@ -431,10 +431,10 @@ static void core_load(const char *sofile) {
 	load_retro_sym(retro_get_system_info);
 	load_retro_sym(retro_get_system_av_info);
 	load_retro_sym(retro_set_controller_port_device);
-	load_retro_sym(retro_reset);
 	load_retro_sym(retro_run);
 	load_retro_sym(retro_load_game);
 	load_retro_sym(retro_unload_game);
+	load_retro_sym(retro_reset);
 
 	load_sym(set_environment, retro_set_environment);
 	load_sym(set_video_refresh, retro_set_video_refresh);
@@ -577,6 +577,14 @@ void RetroAgent::swapBuffers(){
 	glfwSwapBuffers(g_win);
 }
 
+//void RetroAgent::audioInit(){
+//
+//}
+//
+//void RetroAgent::videoInit(){
+//
+//}
+
 void RetroAgent::audioDeinit(){
 	audio_deinit();
 }
@@ -587,4 +595,16 @@ void RetroAgent::videoDeinit(){
 
 void RetroAgent::terminateWindow(){
 	glfwTerminate();
+}
+
+int RetroAgent::getHeight(){
+	return g_video.clip_h;
+}
+
+int RetroAgent::getWidth(){
+	return g_video.clip_w;
+}
+
+void RetroAgent::reset(){
+	g_retro.retro_reset();
 }

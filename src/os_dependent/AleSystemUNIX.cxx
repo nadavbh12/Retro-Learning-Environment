@@ -45,8 +45,8 @@ using namespace std;
 */
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystemUNIX::AleSystemUNIX()
-  : AleSystem()
+AleSystemUNIX::AleSystemUNIX(RetroAgent* retroagent)
+  : AleSystem(retroagent)
 {
   //ALE  const string& basedir = string(getenv("HOME")) + "/.stella";
   string basedir = string(".");  //ALE

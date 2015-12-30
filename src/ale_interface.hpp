@@ -31,7 +31,7 @@
 #define __ALE_INTERFACE_HPP__
 
 #include "os_dependent/SettingsWin32.hxx"
-#include "os_dependent/OSystemWin32.hxx"
+//#include "os_dependent/OSystemWin32.hxx"
 #include "os_dependent/SettingsUNIX.hxx"
 #include "os_dependent/AleSystemUNIX.hxx"
 #include "games/Roms.hpp"
@@ -39,6 +39,7 @@
 #include "environment/retro_environment.hpp"
 #include "os_dependent/SettingsUNIX.hxx"
 #include "os_dependent/SettingsWin32.hxx"
+#include "environment/FSNode.hxx"
 
 #include "common/ScreenExporter.hpp"
 #include "common/Log.hpp"
@@ -147,7 +148,7 @@ public:
  public:
   std::auto_ptr<AleSystem> theAleSystem;
   std::auto_ptr<Settings> theSettings;
-  std::auto_ptr<RetroAgent> rAgent;
+  std::auto_ptr<RetroAgent> theRetroAgent;
   std::auto_ptr<RomSettings> romSettings;
   std::auto_ptr<RetroEnvironment> environment;
   int max_num_frames; // Maximum number of frames for each episode
@@ -157,7 +158,8 @@ public:
   static std::string welcomeMessage();
   static void disableBufferedIO();
   static void createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
-                            std::auto_ptr<Settings> &theSettings);
+                            std::auto_ptr<Settings> &theSettings,
+                            std::auto_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile
                            ,std::auto_ptr<AleSystem> &theSLESystem);
 };

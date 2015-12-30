@@ -18,9 +18,16 @@ public:
 	void clearWindows();
 	void videoRender();
 	void swapBuffers();
+//	void audioInit();	// TODO SN: get implementation from loadRom
+//	void videoInit();	// TODO same as above
 	void audioDeinit();
 	void videoDeinit();
 	void terminateWindow();
+
+//	Below function were added by demand
+	int	 getHeight();
+	int	 getWidth();
+	void reset();
 };
 
 #endif // __RETRO_AGENT_HPP__

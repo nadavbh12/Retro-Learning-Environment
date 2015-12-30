@@ -43,7 +43,7 @@ class RetroEnvironment {
     		RomSettings * settings);
 
     /** Resets the system to its start state. */
-    void reset(){FUNCTION_NAME}
+    void reset();
 
     /** Save/restore the environment state onto the stack. */
     void save(){FUNCTION_NAME}
@@ -104,7 +104,7 @@ class RetroEnvironment {
     AleSystem *m_alesystem;
     RomSettings *m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
-    std::string m_cartridge_md5; // Necessary for saving and loading emulator state
+//    std::string m_cartridge_md5; // Necessary for saving and loading emulator state
 
     std::stack<ALEState> m_saved_states; // States are saved on a stack
     
@@ -112,7 +112,7 @@ class RetroEnvironment {
     ALEScreen m_screen; // The current ALE screen (possibly colour-averaged)
     ALERAM m_ram; // The current ALE RAM
 
-    bool m_use_paddles;  // Whether this game uses paddles
+//    bool m_use_paddles;  // Whether this game uses paddles
     
     /** Parameters loaded from Settings. */
     int m_num_reset_steps; // Number of RESET frames per reset

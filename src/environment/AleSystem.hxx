@@ -44,6 +44,8 @@ class VideoDialog;
 #include "Random.hxx"
 #include "../common/bspf.hxx"
 
+#include "RetroAgent.h"
+
 struct Resolution {
   uInt32 width;
   uInt32 height;
@@ -68,7 +70,7 @@ class AleSystem
     /**
       Create a new AleSystem abstract class
     */
-    AleSystem();
+    AleSystem(RetroAgent* retroagent);
 
     /**
       Destructor
@@ -115,6 +117,13 @@ class AleSystem
       @return The settings object
     */
     inline Settings& settings() const { return *mySettings; }
+
+    /**
+      Get the RetroAgent object of the system
+
+      @return The RetorAgent object
+    */
+    inline RetroAgent& getRetroAgent() const { return *myRetroAgent; }
 
     /**
       Get the set of game properties for the system
@@ -423,6 +432,9 @@ class AleSystem
 
     // Pointer to the Settings object
     Settings* mySettings;
+
+    // Pointer to RetroAgent
+    RetroAgent* myRetroAgent;	// SLE
 
     // Pointer to the PropertiesSet object
 //    PropertiesSet* myPropSet;

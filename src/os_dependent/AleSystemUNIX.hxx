@@ -22,6 +22,8 @@
 #include "bspf.hxx"
 #include "environment/AleSystem.hxx"
 
+class RetroAgent;
+
 /**
   This class defines UNIX-like OS's (Linux) system specific settings.
 
@@ -34,7 +36,7 @@ class AleSystemUNIX : public AleSystem
     /**
       Create a new UNIX-specific operating system object
     */
-    AleSystemUNIX();
+    AleSystemUNIX(RetroAgent* retroagent);
 
     /**
       Destructor

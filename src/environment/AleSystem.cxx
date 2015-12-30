@@ -58,9 +58,10 @@ using namespace std;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystem::AleSystem()
+AleSystem::AleSystem(RetroAgent* retroagent)
   : 
 //    myEvent(NULL),          //ALE
+	myRetroAgent(retroagent),	//SLE
 //    mySound(NULL),
     mySettings(NULL),
 //    myPropSet(NULL),

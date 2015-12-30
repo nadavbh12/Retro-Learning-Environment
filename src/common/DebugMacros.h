@@ -41,7 +41,7 @@ using namespace std;
 
 #define FUNCTION_NAME \
 if (PRINT_FUNCTION_NAME){\
-    cout << "function: " << __func__ << endl;\
+    cout << "line: " << __LINE__ << ", function: " << __PRETTY_FUNCTION__ << endl;\
 }
 
 #define EMPTY_FUNCTION \

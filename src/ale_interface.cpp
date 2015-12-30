@@ -56,13 +56,16 @@ void ALEInterface::disableBufferedIO() {
 }
 
 void ALEInterface::createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
-                          std::auto_ptr<Settings> &theSettings) {
+                          std::auto_ptr<Settings> &theSettings,
+                          std::auto_ptr<RetroAgent> &theRetroAgent) {
 #if (defined(WIN32) || defined(__MINGW32__))
-  theAleSystem.reset(new OSystemWin32());
-  theSettings.reset(new SettingsWin32(theAleSystem.get()));
+	theRetroAgent.reset(new RetroAgent());
+	theAleSystem.reset(new OSystemWin32());
+	theSettings.reset(new SettingsWin32(theAleSystem.get()));
 #else
-  theAleSystem.reset(new AleSystemUNIX());
-  theSettings.reset(new SettingsUNIX(theAleSystem.get()));
+	theRetroAgent.reset(new RetroAgent());
+	theAleSystem.reset(new AleSystemUNIX(theRetroAgent.get()));
+	theSettings.reset(new SettingsUNIX(theAleSystem.get()));
 #endif
 
   theAleSystem->settings().loadConfig();
@@ -80,7 +83,6 @@ void ALEInterface::loadSettings(const string& romfile,
   theAleSystem->settings().validate();
   theAleSystem->create();
 
-//  TODO: maybe load rom here?
   // Attempt to load the ROM
 //  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
 //    Logger::Error << "No ROM File specified or the ROM file was not found."
@@ -92,6 +94,19 @@ void ALEInterface::loadSettings(const string& romfile,
 //  } else {
 //    exit(1);
 //  }
+  // TODO SN : replace hard coded load core to appropriate location
+    if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
+      Logger::Error << "No ROM File specified or the ROM file was not found."
+                << std::endl;
+      exit(1);
+    }else if(theAleSystem->getRetroAgent().initWindow()){
+	  theAleSystem->getRetroAgent().loadCore("stella-libretro/stella_libretro.so");
+	  theAleSystem->getRetroAgent().loadRom(romfile);
+	  Logger::Info << "Running ROM file..." << std::endl;
+	  theAleSystem->settings().setString("rom_file", romfile);
+    } else {
+      exit(1);
+    }
 
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.
@@ -106,15 +121,13 @@ void ALEInterface::loadSettings(const string& romfile,
 ALEInterface::ALEInterface() {
   disableBufferedIO();
   Logger::Info << welcomeMessage() << std::endl;
-  rAgent.reset(new RetroAgent());
-  createAleSystem(theAleSystem, theSettings);
+  createAleSystem(theAleSystem, theSettings, theRetroAgent);
 }
 
 ALEInterface::ALEInterface(bool display_screen) {
   disableBufferedIO();
   Logger::Info << welcomeMessage() << std::endl;
-  rAgent.reset(new RetroAgent());
-  createAleSystem(theAleSystem, theSettings);
+  createAleSystem(theAleSystem, theSettings, theRetroAgent);
   this->setBool("display_screen", display_screen);
 }
 
@@ -134,14 +147,14 @@ void ALEInterface::loadROM(string rom_file = "") {
   environment.reset(new RetroEnvironment(theAleSystem.get(), romSettings.get()));
   max_num_frames = theAleSystem->settings().getInt("max_num_frames_per_episode");
   environment->reset();
-#ifndef __USE_SDL
-  if (theAleSystem->p_display_screen != NULL) {
-    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
-    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
-    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
-    exit(1);
-  }
-#endif
+//#ifndef __USE_SDL
+//  if (theAleSystem->p_display_screen != NULL) {
+//    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
+//    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
+//    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
+//    exit(1);
+//  }
+//#endif
 }
 
 // Get the value of a setting.
