@@ -33,10 +33,9 @@
 #include "os_dependent/SettingsWin32.hxx"
 #include "os_dependent/OSystemWin32.hxx"
 #include "os_dependent/SettingsUNIX.hxx"
-#include "os_dependent/OSystemUNIX.hxx"
+#include "os_dependent/AleSystemUNIX.hxx"
 #include "games/Roms.hpp"
 #include "common/display_screen.h"
-//#include "environment/s9x_environment.hpp"
 #include "environment/retro_environment.hpp"
 #include "os_dependent/SettingsUNIX.hxx"
 #include "os_dependent/SettingsWin32.hxx"
@@ -146,7 +145,7 @@ public:
   ScreenExporter *createScreenExporter(const std::string &path) const;
 
  public:
-//  std::auto_ptr<OSystem> theOSystem;
+  std::auto_ptr<AleSystem> theAleSystem;
   std::auto_ptr<Settings> theSettings;
   std::auto_ptr<RetroAgent> rAgent;
   std::auto_ptr<RomSettings> romSettings;
@@ -157,12 +156,10 @@ public:
   // Display ALE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-//  static void createOSystem(std::auto_ptr<OSystem> &theOSystem
-//                            ,std::auto_ptr<Settings> &theSettings
-//                            );
+  static void createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
+                            std::auto_ptr<Settings> &theSettings);
   static void loadSettings(const std::string& romfile
-//                           ,std::auto_ptr<OSystem> &theOSystem
-                           );
+                           ,std::auto_ptr<AleSystem> &theSLESystem);
 };
 
 #endif

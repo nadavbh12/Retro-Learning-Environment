@@ -19,13 +19,14 @@
 #ifndef SETTINGS_HXX
 #define SETTINGS_HXX
 
-class OSystem;
+class AleSystem;
 
 #include <map>
 #include <stdexcept>
 
 #include "../common/Array.hxx"
 #include "../common/Log.hpp"
+#include "../common/bspf.hxx"
 
 /**
   This class provides an interface for accessing frontend specific settings.
@@ -39,7 +40,7 @@ class Settings
     /**
       Create a new settings abstract class
     */
-    Settings();
+    Settings(AleSystem* alesystem);
 
     /**
       Destructor
@@ -50,7 +51,7 @@ class Settings
     /**
       This method should be called to load the current settings from an rc file.
     */
-//    virtual void loadConfig();
+    virtual void loadConfig();
     
     /**
       This method loads the given 
@@ -60,7 +61,7 @@ class Settings
     /**
       This method should be called to save the current settings to an rc file.
     */
-//    virtual void saveConfig();
+    virtual void saveConfig();
 
     /**
       This method should be called to load the arguments from the commandline.
@@ -186,7 +187,7 @@ class Settings
 
   protected:
     // The parent OSystem object
-    OSystem* myOSystem;
+    AleSystem* myAleSystem;
 
     // Structure used for storing settings
     struct Setting

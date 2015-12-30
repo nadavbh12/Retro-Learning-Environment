@@ -292,13 +292,8 @@ reward_observation_terminal_t RLGlueController::constructRewardObservationTermin
 
 #else
 
-RLGlueController::RLGlueController(
-//		OSystem* system
-		):
-  ALEController(
-//		  system
-		  ) {
-}
+RLGlueController::RLGlueController(AleSystem* system):
+  ALEController(system){}
 
 void RLGlueController::run() {
   ale::Logger::Error << "RL-Glue interface unavailable. Please recompile with RL-Glue support." << 

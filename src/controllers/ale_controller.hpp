@@ -22,11 +22,11 @@
 //#include "../emucore/m6502/src/System.hxx"
 //#include "../environment/s9x_environment.hpp"
 #include "../environment/retro_environment.hpp"
+#include"../environment/AleSystem.hxx"
+
 class ALEController {
   public:
-    ALEController(
-//    		OSystem * osystem
-    		);
+    ALEController(AleSystem * alesystem);
     virtual ~ALEController() {}
 
     /** Main loop. Returns once ALE terminates. */
@@ -41,9 +41,9 @@ class ALEController {
     void display();
 
   protected:
-//    OSystem* m_osystem;
-    std::auto_ptr<RomSettings> m_settings;
-    RetroEnvironment m_environment;
+    AleSystem* 					m_alesystem;
+    std::auto_ptr<RomSettings> 	m_settings;
+    RetroEnvironment 			m_environment;
 };
 
 

@@ -23,10 +23,10 @@
 
 
 RetroEnvironment::RetroEnvironment(
-//		OSystem* osystem,
+		AleSystem* alesystem,
 		RomSettings* settings)
 :
-//  m_osystem(osystem),
+  m_alesystem(alesystem),
 //  m_settings(settings),
   m_phosphor_blend(
 //		  osystem

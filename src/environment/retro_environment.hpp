@@ -28,6 +28,7 @@
 #include "../common/DebugMacros.h"
 
 #include "RetroAgent.h"
+#include "AleSystem.hxx"
 #include <stack>
 
 
@@ -38,7 +39,7 @@ class RetroEnvironment {
 
 	public:
     RetroEnvironment(
-//    		OSystem * system,
+    		AleSystem * system,
     		RomSettings * settings);
 
     /** Resets the system to its start state. */
@@ -100,7 +101,7 @@ class RetroEnvironment {
     void processRAM(){FUNCTION_NAME}
 
   private:
-//    OSystem *m_osystem;
+    AleSystem *m_alesystem;
     RomSettings *m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
     std::string m_cartridge_md5; // Necessary for saving and loading emulator state

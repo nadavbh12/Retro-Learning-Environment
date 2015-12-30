@@ -27,11 +27,12 @@ using namespace std;
 #include "Version.hxx"
 #include "bspf.hxx"
 #include "Settings.hxx"
+#include "AleSystem.hxx"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Settings::Settings(){
+Settings::Settings(AleSystem* alesystem) : myAleSystem(alesystem) {
     // Add this settings object to the OSystem
-//    myOSystem->attach(this);
+    myAleSystem->attach(this);
 
     // Add options that are common to all versions of Stella
     setInternal("video", "soft");
@@ -146,10 +147,10 @@ void Settings::loadConfig(const char* config_file){
     in.close();
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void Settings::loadConfig()
-//{
-// loadConfig(myOSystem->configFile().c_str());
-//}
+void Settings::loadConfig()
+{
+ loadConfig(myAleSystem->configFile().c_str());
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 string Settings::loadCommandLine(int argc, char** argv)
@@ -329,54 +330,54 @@ void Settings::usage() {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void Settings::saveConfig()
-//{
-//  // Do a quick scan of the internal settings to see if any have
-//  // changed.  If not, we don't need to save them at all.
-//  bool settingsChanged = false;
-//  for(unsigned int i = 0; i < myInternalSettings.size(); ++i)
-//  {
-//    if(myInternalSettings[i].value != myInternalSettings[i].initialValue)
-//    {
-//      settingsChanged = true;
-//      break;
-//    }
-//  }
-//
-//  if(!settingsChanged)
-//    return;
-//
-//  ofstream out(myOSystem->configFile().c_str());
-//  if(!out || !out.is_open())
-//  {
-//    ale::Logger::Error << "Error: Couldn't save settings file\n";
-//    return;
-//  }
-//
-//  out << ";  Stella configuration file" << endl
-//      << ";" << endl
-//      << ";  Lines starting with ';' are comments and are ignored." << endl
-//      << ";  Spaces and tabs are ignored." << endl
-//      << ";" << endl
-//      << ";  Format MUST be as follows:" << endl
-//      << ";    command = value" << endl
-//      << ";" << endl
-//      << ";  Commmands are the same as those specified on the commandline," << endl
-//      << ";  without the '-' character." << endl
-//      << ";" << endl
-//      << ";  Values are the same as those allowed on the commandline." << endl
-//      << ";  Boolean values are specified as 1 (or true) and 0 (or false)" << endl
-//      << ";" << endl;
-//
-//  // Write out each of the key and value pairs
-//  for(unsigned int i = 0; i < myInternalSettings.size(); ++i)
-//  {
-//    out << myInternalSettings[i].key << " = " <<
-//           myInternalSettings[i].value << endl;
-//  }
-//
-//  out.close();
-//}
+void Settings::saveConfig()
+{
+  // Do a quick scan of the internal settings to see if any have
+  // changed.  If not, we don't need to save them at all.
+  bool settingsChanged = false;
+  for(unsigned int i = 0; i < myInternalSettings.size(); ++i)
+  {
+    if(myInternalSettings[i].value != myInternalSettings[i].initialValue)
+    {
+      settingsChanged = true;
+      break;
+    }
+  }
+
+  if(!settingsChanged)
+    return;
+
+  ofstream out(myAleSystem->configFile().c_str());
+  if(!out || !out.is_open())
+  {
+    ale::Logger::Error << "Error: Couldn't save settings file\n";
+    return;
+  }
+
+  out << ";  Stella configuration file" << endl
+      << ";" << endl
+      << ";  Lines starting with ';' are comments and are ignored." << endl
+      << ";  Spaces and tabs are ignored." << endl
+      << ";" << endl
+      << ";  Format MUST be as follows:" << endl
+      << ";    command = value" << endl
+      << ";" << endl
+      << ";  Commmands are the same as those specified on the commandline," << endl
+      << ";  without the '-' character." << endl
+      << ";" << endl
+      << ";  Values are the same as those allowed on the commandline." << endl
+      << ";  Boolean values are specified as 1 (or true) and 0 (or false)" << endl
+      << ";" << endl;
+
+  // Write out each of the key and value pairs
+  for(unsigned int i = 0; i < myInternalSettings.size(); ++i)
+  {
+    out << myInternalSettings[i].key << " = " <<
+           myInternalSettings[i].value << endl;
+  }
+
+  out.close();
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Settings::setInt(const string& key, const int value)

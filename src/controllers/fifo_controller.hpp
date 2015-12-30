@@ -21,9 +21,7 @@
 
 class FIFOController : public ALEController {
   public:
-    FIFOController(
-//    		OSystem* osystem,
-    		bool named_pipes = false);
+    FIFOController(AleSystem* osystem, bool named_pipes = false);
     virtual ~FIFOController();
 
     virtual void run();

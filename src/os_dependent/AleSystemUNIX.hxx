@@ -13,33 +13,40 @@
 // See the file "license" for information on usage and redistribution of
 // this file, and for a DISCLAIMER OF ALL WARRANTIES.
 //
-// $Id: SettingsUNIX.hxx,v 1.8 2007/01/01 18:04:55 stephena Exp $
+// $Id: AleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
 //============================================================================
 
-#ifndef SETTINGS_UNIX_HXX
-#define SETTINGS_UNIX_HXX
+#ifndef OSYSTEM_UNIX_HXX
+#define OSYSTEM_UNIX_HXX
 
-#include "../environment/Settings.hxx"
-#include "../environment/AleSystem.hxx"
+#include "bspf.hxx"
+#include "environment/AleSystem.hxx"
 
 /**
   This class defines UNIX-like OS's (Linux) system specific settings.
 
   @author  Stephen Anthony
-  @version $Id: SettingsUNIX.hxx,v 1.8 2007/01/01 18:04:55 stephena Exp $
+  @version $Id: AleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
 */
-class SettingsUNIX : public Settings
+class AleSystemUNIX : public AleSystem
 {
   public:
     /**
-      Create a new UNIX settings object
+      Create a new UNIX-specific operating system object
     */
-    SettingsUNIX(AleSystem* aleSystem);
+    AleSystemUNIX();
 
     /**
       Destructor
     */
-    virtual ~SettingsUNIX();
+    virtual ~AleSystemUNIX();
+
+    /**
+      This method returns number of ticks in microseconds.
+
+      @return Current time in microseconds.
+    */
+    uInt32 getTicks();
 };
 
 #endif

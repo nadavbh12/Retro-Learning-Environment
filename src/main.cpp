@@ -27,7 +27,7 @@
 #   include "os_dependent/OSystemWin32.hxx"
 #else
 #   include "os_dependent/SettingsUNIX.hxx"
-#   include "os_dependent/OSystemUNIX.hxx"
+#   include "os_dependent/AleSystemUNIX.hxx"
 #endif
 
 #include "controllers/ale_controller.hpp"

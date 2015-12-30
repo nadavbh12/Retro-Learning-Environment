@@ -23,7 +23,8 @@
 
 #include "SettingsUNIX.hxx"
 
-SettingsUNIX::SettingsUNIX()
+SettingsUNIX::SettingsUNIX(AleSystem* alesystem)
+  : Settings(alesystem)
 {
   setInternal("gl_lib", "libGL.so");
   // Most Linux GL implementations don't support this yet
