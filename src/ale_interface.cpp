@@ -226,12 +226,12 @@ const int ALEInterface::lives() {
 // when necessary - this method will keep pressing buttons on the
 // game over screen.
 reward_t ALEInterface::act(Action action) {
-  reward_t reward = environment->act(action, PLAYER_B_NOOP);
+  reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
   if (theAleSystem->p_display_screen != NULL) {
     theAleSystem->p_display_screen->display_screen();
     while (theAleSystem->p_display_screen->manual_control_engaged()) {
       Action user_action = theAleSystem->p_display_screen->getUserAction();
-      reward += environment->act(user_action, PLAYER_B_NOOP);
+      reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);
       theAleSystem->p_display_screen->display_screen();
     }
   }

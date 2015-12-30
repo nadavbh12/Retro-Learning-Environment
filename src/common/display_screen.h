@@ -76,7 +76,7 @@ class DisplayScreen {
     		) {}
     void display_screen() {}
     bool manual_control_engaged() { return false; }
-    Action getUserAction() { return UNDEFINED; }
+    Action getUserAction() { return RETRO_DEVICE_ID_JOYPAD_UNDEFINED; }
 };
 #endif // __USE_SDL
 

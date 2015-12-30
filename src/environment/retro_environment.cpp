@@ -27,8 +27,8 @@ RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) 
   m_phosphor_blend( ),	// TODO pass AleSystem
   m_screen(m_alesystem->getRetroAgent().getHeight(),
 		  m_alesystem->getRetroAgent().getWidth()),
-  m_player_a_action(PLAYER_A_NOOP),
-  m_player_b_action(PLAYER_B_NOOP) {
+  m_player_a_action(PLAYER_A | JOYPAD_NOOP),
+  m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
 	// TODO SN : Add support for paddle-based games
   // Determine whether this is a paddle-based game
@@ -79,9 +79,9 @@ void RetroEnvironment::reset() {
   int noopSteps;
   noopSteps = 60;
 
-  emulate(PLAYER_A_NOOP, PLAYER_B_NOOP, noopSteps);
+  emulate(PLAYER_A | JOYPAD_NOOP, PLAYER_B | JOYPAD_NOOP, noopSteps);
   // reset for n steps
-  emulate(RESET, PLAYER_B_NOOP, m_num_reset_steps);
+  emulate(JOYPAD_RESET, PLAYER_B | JOYPAD_NOOP, m_num_reset_steps);
 
   // reset the rom (after emulating, in case the NOOPs led to reward)
   m_settings->reset();
@@ -89,7 +89,7 @@ void RetroEnvironment::reset() {
   // Apply necessary actions specified by the rom itself
   ActionVect startingActions = m_settings->getStartingActions();
   for (size_t i = 0; i < startingActions.size(); i++){
-    emulate(startingActions[i], PLAYER_B_NOOP);
+    emulate(startingActions[i], PLAYER_B | JOYPAD_NOOP);
   }
 }
 
@@ -126,20 +126,20 @@ void RetroEnvironment::reset() {
 //}
 //
 //void RetroEnvironment::noopIllegalActions(Action & player_a_action, Action & player_b_action) {
-//  if (player_a_action < (Action)PLAYER_B_NOOP &&
+//  if (player_a_action < (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP &&
 //        !m_settings->isLegal(player_a_action)) {
-//    player_a_action = (Action)PLAYER_A_NOOP;
+//    player_a_action = (Action)PLAYER_A | RETRO_DEVICE_ID_JOYPAD_NOOP;
 //  }
 //  // Also drop RESET, which doesn't play nice with our clean notions of RL environments
 //  else if (player_a_action == RESET)
-//    player_a_action = (Action)PLAYER_A_NOOP;
+//    player_a_action = (Action)PLAYER_A | RETRO_DEVICE_ID_JOYPAD_NOOP;
 //
 //  if (player_b_action < (Action)RESET &&
-//        !m_settings->isLegal((Action)((int)player_b_action - PLAYER_B_NOOP))) {
-//    player_b_action = (Action)PLAYER_B_NOOP;
+//        !m_settings->isLegal((Action)((int)player_b_action - PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP))) {
+//    player_b_action = (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP;
 //  }
 //  else if (player_b_action == RESET)
-//    player_b_action = (Action)PLAYER_B_NOOP;
+//    player_b_action = (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP;
 //}
 //
 //reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {

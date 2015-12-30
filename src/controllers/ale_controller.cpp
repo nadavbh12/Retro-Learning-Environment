@@ -52,15 +52,15 @@ reward_t ALEController::applyActions(Action player_a, Action player_b) {
   reward_t sum_rewards = 0;
   // Perform different operations based on the first player's action 
   switch (player_a) {
-    case LOAD_STATE: // Load system state
+    case JOYPAD_LOAD_STATE: // Load system state
       // Note - this does not reset the game screen; so that the subsequent screen
       //  is incorrect (in fact, two screens, due to colour averaging)
       m_environment.load();
       break;
-    case SAVE_STATE: // Save system state
+    case JOYPAD_SAVE_STATE: // Save system state
       m_environment.save();
       break;
-    case SYSTEM_RESET:
+    case JOYPAD_SYSTEM_RESET:
       m_environment.reset();
       break;
     default:
