@@ -26,8 +26,8 @@
 //#include "supported/BeamRider.hpp"
 //#include "supported/Berzerk.hpp"
 //#include "supported/Bowling.hpp"
-//#include "supported/Boxing.hpp"
-#include "supported/Breakout.hpp"
+#include "supported/Boxing.hpp"
+//#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
 //#include "supported/Centipede.hpp"
 //#include "supported/ChopperCommand.hpp"
@@ -92,7 +92,7 @@ static const RomSettings *roms[]  = {
 //    new BeamRiderSettings(),
 //    new BerzerkSettings(),
 //    new BowlingSettings(),
-//    new BoxingSettings(),
+    new BoxingSettings(),
 //    new BreakoutSettings(),
 //    new CarnivalSettings(),
 //    new CentipedeSettings(),
