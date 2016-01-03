@@ -30,19 +30,14 @@
  *  reward information.
  * *****************************************************************************
  */
-#ifndef __ROMSETTINGS_HPP__
-#define __ROMSETTINGS_HPP__
+#ifndef __ATARI_SETTINGS_HPP__
+#define __ATARI_SETTINGS_HPP__
 
-#include "../common/Constants.h"
-//#include "../emucore/Serializer.hxx"
-//#include "../emucore/Deserializer.hxx"
+#include "RomSettings.hpp"
 
-class AleSystem;
-
-
-// rom support interface
-struct RomSettings {
-    virtual ~RomSettings() {}
+// rom support interface for Atari
+struct AtariSettings : public RomSettings{
+    virtual ~AtariSettings() {}
 
     // reset
     virtual void reset() = 0;
@@ -75,23 +70,11 @@ struct RomSettings {
 //    		Deserializer & ser
     		) = 0;
 
-    // is an action legal (default: yes)
-    virtual bool isLegal(const Action &a) const;
-
-    // Remaining lives.
-    virtual const int lives() { return isTerminal() ? 0 : 1; }
-
-    // Returns a restricted (minimal) set of actions. If not overriden, this is all actions.
-    virtual ActionVect getMinimalActionSet();
-
     // Returns the set of all legal actions
     // Can change according to emulation system
-    virtual ActionVect getAllActions() = 0;
+    ActionVect getAllActions();
 
-    // Returns a list of actions that are required to start the game.
-    // By default this is an empty list.
-    virtual ActionVect getStartingActions();
 };
 
 
-#endif // __ROMSETTINGS_HPP__
+#endif // __ATARI_SETTINGS_HPP__

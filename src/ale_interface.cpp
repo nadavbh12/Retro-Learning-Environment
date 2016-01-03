@@ -238,6 +238,7 @@ reward_t ALEInterface::act(Action action) {
   return reward;
 }
 
+// TODO SN : replace function with something else since the vector of all legal actions woul dbe too big
 // Returns the vector of legal actions. This should be called only
 // after the rom is loaded.
 ActionVect ALEInterface::getLegalActionSet() {

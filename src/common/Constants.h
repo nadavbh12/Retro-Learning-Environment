@@ -109,8 +109,8 @@ typedef uint32_t Action;
 #define JOYPAD_LAST_ACTION_INDEX 	(1 << 23)
 
 
-#define PLAYER_A									0
-#define PLAYER_B									(1 << 31)
+#define PLAYER_A					0
+#define PLAYER_B					(1 << 31)
 
 //#define PLAYER_A_MAX (18)
 //#define PLAYER_B_MAX (36)
@@ -126,6 +126,30 @@ typedef int reward_t;
 
 // Other constant values
 #define RAM_LENGTH 128
+
+// Atari actions
+#define JOYPAD_FIRE					JOYPAD_B	// for atari
+
+static const ActionVect AtariAllActionsVector{
+	JOYPAD_NOOP,
+	JOYPAD_FIRE,
+	JOYPAD_UP,
+	JOYPAD_RIGHT,
+	JOYPAD_LEFT,
+	JOYPAD_DOWN,
+	JOYPAD_UP | JOYPAD_RIGHT,
+	JOYPAD_UP | JOYPAD_LEFT,
+	JOYPAD_DOWN | JOYPAD_RIGHT,
+	JOYPAD_DOWN | JOYPAD_LEFT,
+	JOYPAD_UP | JOYPAD_FIRE,
+	JOYPAD_RIGHT | JOYPAD_FIRE,
+	JOYPAD_LEFT | JOYPAD_FIRE,
+	JOYPAD_DOWN | JOYPAD_FIRE,
+	JOYPAD_UP | JOYPAD_RIGHT | JOYPAD_FIRE,
+	JOYPAD_UP | JOYPAD_LEFT | JOYPAD_FIRE,
+	JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE,
+	JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE
+};
 
 #endif // __CONSTANTS_H__
 

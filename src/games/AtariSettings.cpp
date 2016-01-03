@@ -15,32 +15,15 @@
  *  reward information.
  * *****************************************************************************
  */
-#include "RomSettings.hpp"
+#include "AtariSettings.hpp"
+#include "Constants.h"
 
-bool RomSettings::isLegal(const Action& a) const {
-  return true;
-}
-
-ActionVect RomSettings::getMinimalActionSet() {
+ActionVect AtariSettings::getAllActions() {
   ActionVect actions;
-  for (int a = 0; a < (PLAYER_B | JOYPAD_NOOP); a++) {
-    if (isMinimal((Action)a) && isLegal((Action)a)) {
-      actions.push_back((Action)a);
+  for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {
+    if (isLegal(AtariAllActionsVector.at(a))) {
+      actions.push_back(AtariAllActionsVector.at(a));
     }
   }
   return actions;
-}
-
-//ActionVect RomSettings::getAllActions() {
-//  ActionVect actions;
-////  for (int a = 0; a < (PLAYER_B | JOYPAD_NOOP); a++) {
-////    if (isLegal((Action)a)) {
-////      actions.push_back((Action)a);
-////    }
-////  }
-//  return actions;
-//}
-
-ActionVect RomSettings::getStartingActions() {
-    return ActionVect();
 }

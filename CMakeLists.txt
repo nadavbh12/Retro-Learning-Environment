@@ -5,7 +5,7 @@ option(USE_SDL "Use SDL" OFF)
 option(USE_RLGLUE "Use RL-Glue" OFF)
 option(BUILD_EXAMPLES "Build Example Agents" ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wunused -fPIC -O3 -fomit-frame-pointer -D__STDC_CONSTANT_MACROS")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wunused -fPIC -O3 -fomit-frame-pointer -D__STDC_CONSTANT_MACROS -std=c++11")
 add_definitions(-DHAVE_INTTYPES)
 set(LINK_LIBS z)
 

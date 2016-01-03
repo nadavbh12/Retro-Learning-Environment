@@ -64,7 +64,7 @@ static struct {
 //	bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info, size_t num_info);
 	void (*retro_unload_game)(void);
 //	unsigned retro_get_region(void);
-//	void *retro_get_memory_data(unsigned id);
+	void* (*retro_get_memory_data)(unsigned id);
 //	size_t retro_get_memory_size(unsigned id);
 } g_retro;
 
@@ -435,6 +435,7 @@ static void core_load(const char *sofile) {
 	load_retro_sym(retro_load_game);
 	load_retro_sym(retro_unload_game);
 	load_retro_sym(retro_reset);
+	load_retro_sym(retro_get_memory_data);
 
 	load_sym(set_environment, retro_set_environment);
 	load_sym(set_video_refresh, retro_set_video_refresh);
@@ -607,4 +608,10 @@ int RetroAgent::getWidth(){
 
 void RetroAgent::reset(){
 	g_retro.retro_reset();
+}
+
+unsigned RetroAgent::readRam(unsigned id, unsigned offset){
+	// TODO SN : verify this functions works correctly!!!
+	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
+	return data[offset];
 }
