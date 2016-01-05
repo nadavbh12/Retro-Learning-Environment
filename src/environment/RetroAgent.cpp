@@ -613,16 +613,17 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
-unsigned RetroAgent::readRam(unsigned id, unsigned offset){
+int RetroAgent::readRam(unsigned id, int offset){
 	// TODO SN : verify this functions works correctly!!!
 //	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
 //	return data[offset];
    size_t size = g_retro.retro_get_memory_size(id);
    void*  data = g_retro.retro_get_memory_data(id);
-   DEBUG2("size= " << size);
-   DEBUG2("data= " << data);
    if (!size){
-	   throw AleException("Size is 0");
+	   throw AleException("Ram size is 0");
+   }else if((unsigned)offset > (size-1)){
+	   throw AleException("Offset is larger than RAM size");
+   }else{
+	   return *((int*)data+offset);
    }
-
 }

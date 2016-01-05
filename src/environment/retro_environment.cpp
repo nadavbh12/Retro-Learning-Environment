@@ -195,11 +195,11 @@ void RetroEnvironment::reset() {
 //  return m_settings->getReward();
 //}
 //
-//bool RetroEnvironment::isTerminal() {
-//  return (m_settings->isTerminal() ||
-//    (m_max_num_frames_per_episode > 0 &&
-//     m_state.getEpisodeFrameNumber() >= m_max_num_frames_per_episode));
-//}
+bool RetroEnvironment::isTerminal() {
+  return (m_settings->isTerminal() ||
+    (m_max_num_frames_per_episode > 0 &&
+     m_state.getEpisodeFrameNumber() >= m_max_num_frames_per_episode));
+}
 //
 //void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, size_t num_steps) {
 ////  Event* event = m_alesystem->event();

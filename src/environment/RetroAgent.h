@@ -28,7 +28,7 @@ public:
 	int	 getHeight();
 	int	 getWidth();
 	void reset();
-	unsigned readRam(unsigned id, unsigned offset);
+	int readRam(unsigned id, int offset);
 };
 
 #endif // __RETRO_AGENT_HPP__

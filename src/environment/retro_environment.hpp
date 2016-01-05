@@ -70,7 +70,7 @@ class RetroEnvironment {
     reward_t act(Action player_a_action, Action player_b_action){FUNCTION_NAME}
 
     /** Returns true once we reach a terminal state */
-    bool isTerminal(){FUNCTION_NAME}
+    bool isTerminal();
 
     /** Accessor methods for the environment state. */
     void setState(const ALEState & state){FUNCTION_NAME}
@@ -82,7 +82,7 @@ class RetroEnvironment {
     const ALERAM &getRAM() const {FUNCTION_NAME}//{ return m_ram; }
 
     int getFrameNumber() const {FUNCTION_NAME}//{ return m_state.getFrameNumber(); }
-    int getEpisodeFrameNumber() const {FUNCTION_NAME}//{ return m_state.getEpisodeFrameNumber(); }
+    int getEpisodeFrameNumber() const {return m_state.getEpisodeFrameNumber(); }
 
   private:
     /** This applies an action exactly one time step. Helper function to act(). */

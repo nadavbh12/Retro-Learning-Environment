@@ -65,7 +65,7 @@ using namespace std;
 /////								Below is ALE 											/////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-/*#include <unistd.h>
+#include <unistd.h>
 int main(int argc, char** argv) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " rom_file" << std::endl;
@@ -106,29 +106,28 @@ int main(int argc, char** argv) {
 //    ActionVect legal_actions = ale.getMinimalActionSet();
 
 //    // Play 10 episodes
-//    for (int episode=0; episode<10; episode++) {
-//        float totalReward = 0;
-//        while (!ale.game_over()) {
+    for (int episode=0; episode<10; episode++) {
+        float totalReward = 0;
+        while (!ale.game_over()) {
 //            Action a = legal_actions[rand() % legal_actions.size()];
 //            // Apply the action and get the resulting reward
 //            float reward = ale.act(a);
 //            totalReward += reward;
-//        }
+        }
 //        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
 //        ale.reset_game();
-//    }
+    }
 //
     return 0;
 }
-*/
 
 // testing code
-#include <unistd.h>
-int main(int argc, char** argv) {
-    ALEInterface ale;
-    ale.loadROM(argv[1]);
-
-    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SAVE_RAM, std::stoi(argv[2])) << endl;
-
-    return 0;
-}
+//#include <unistd.h>
+//int main(int argc, char** argv) {
+//    ALEInterface ale;
+//    ale.loadROM(argv[1]);
+//
+//    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SYSTEM_RAM, std::stoi(argv[2])) << endl;
+//
+//    return 0;
+//}
