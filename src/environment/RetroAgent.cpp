@@ -12,7 +12,9 @@
 #include <GLFW/glfw3.h>
 #include <alsa/asoundlib.h>
 
+#include "AleException.h"
 #include "RetroAgent.h"
+#include "DebugMacros.h"
 
 static GLFWwindow *g_win = NULL;
 static snd_pcm_t *g_pcm = NULL;
@@ -65,7 +67,7 @@ static struct {
 	void (*retro_unload_game)(void);
 //	unsigned retro_get_region(void);
 	void* (*retro_get_memory_data)(unsigned id);
-//	size_t retro_get_memory_size(unsigned id);
+	size_t (*retro_get_memory_size)(unsigned id);
 } g_retro;
 
 
@@ -436,6 +438,7 @@ static void core_load(const char *sofile) {
 	load_retro_sym(retro_unload_game);
 	load_retro_sym(retro_reset);
 	load_retro_sym(retro_get_memory_data);
+	load_retro_sym(retro_get_memory_size);
 
 	load_sym(set_environment, retro_set_environment);
 	load_sym(set_video_refresh, retro_set_video_refresh);
@@ -612,6 +615,14 @@ void RetroAgent::reset(){
 
 unsigned RetroAgent::readRam(unsigned id, unsigned offset){
 	// TODO SN : verify this functions works correctly!!!
-	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
-	return data[offset];
+//	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
+//	return data[offset];
+   size_t size = g_retro.retro_get_memory_size(id);
+   void*  data = g_retro.retro_get_memory_data(id);
+   DEBUG2("size= " << size);
+   DEBUG2("data= " << data);
+   if (!size){
+	   throw AleException("Size is 0");
+   }
+
 }

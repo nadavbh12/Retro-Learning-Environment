@@ -36,7 +36,7 @@ using namespace std;
 
 #define DEBUG2(x) \
     if(DEBUG == 1){\
-    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< (x) << COLOR_RESET << endl;}
+    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< x << COLOR_RESET << endl;}
 
 
 #define FUNCTION_NAME \

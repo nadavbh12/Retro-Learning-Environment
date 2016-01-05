@@ -65,7 +65,7 @@ using namespace std;
 /////								Below is ALE 											/////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-#include <unistd.h>
+/*#include <unistd.h>
 int main(int argc, char** argv) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " rom_file" << std::endl;
@@ -102,6 +102,8 @@ int main(int argc, char** argv) {
 
     // Get the vector of legal actions
     ActionVect legal_actions = ale.getLegalActionSet();
+    // SN: replaced legal with minimal since legal is too big
+//    ActionVect legal_actions = ale.getMinimalActionSet();
 
 //    // Play 10 episodes
 //    for (int episode=0; episode<10; episode++) {
@@ -116,5 +118,17 @@ int main(int argc, char** argv) {
 //        ale.reset_game();
 //    }
 //
+    return 0;
+}
+*/
+
+// testing code
+#include <unistd.h>
+int main(int argc, char** argv) {
+    ALEInterface ale;
+    ale.loadROM(argv[1]);
+
+    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SAVE_RAM, std::stoi(argv[2])) << endl;
+
     return 0;
 }
