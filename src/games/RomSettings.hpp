@@ -82,7 +82,7 @@ struct RomSettings {
     virtual const int lives() { return isTerminal() ? 0 : 1; }
 
     // Returns a restricted (minimal) set of actions. If not overriden, this is all actions.
-    virtual ActionVect getMinimalActionSet();
+    virtual ActionVect getMinimalActionSet() = 0;
 
     // Returns the set of all legal actions
     // Can change according to emulation system

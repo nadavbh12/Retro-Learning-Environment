@@ -104,6 +104,7 @@ void ALEInterface::loadSettings(const string& romfile,
 	  theAleSystem->getRetroAgent().loadRom(romfile);
 	  Logger::Info << "Running ROM file..." << std::endl;
 	  theAleSystem->settings().setString("rom_file", romfile);
+	  theAleSystem->p_display_screen = new DisplayScreen();
     } else {
       exit(1);
     }
@@ -228,11 +229,11 @@ const int ALEInterface::lives() {
 reward_t ALEInterface::act(Action action) {
   reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
   if (theAleSystem->p_display_screen != NULL) {
-    theAleSystem->p_display_screen->display_screen();
+    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent()); //screen not displayed, function is based on SDL
     while (theAleSystem->p_display_screen->manual_control_engaged()) {
       Action user_action = theAleSystem->p_display_screen->getUserAction();
       reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);
-      theAleSystem->p_display_screen->display_screen();
+      theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
     }
   }
   return reward;

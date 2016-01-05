@@ -67,7 +67,7 @@ class RetroEnvironment {
       *  Note that the post-act() frame number might not correspond to the pre-act() frame
       *  number plus the frame skip.
       */
-    reward_t act(Action player_a_action, Action player_b_action){FUNCTION_NAME}
+    reward_t act(Action player_a_action, Action player_b_action);
 
     /** Returns true once we reach a terminal state */
     bool isTerminal();
@@ -86,14 +86,14 @@ class RetroEnvironment {
 
   private:
     /** This applies an action exactly one time step. Helper function to act(). */
-    reward_t oneStepAct(Action player_a_action, Action player_b_action){FUNCTION_NAME}
+    reward_t oneStepAct(Action player_a_action, Action player_b_action);
 
     /** Actually emulates the emulator for a given number of steps. */
-    void emulate(Action player_a_action, Action player_b_action, size_t num_steps = 1){FUNCTION_NAME}
+    void emulate(Action player_a_action, Action player_b_action, size_t num_steps = 1);
 
     /** Drops illegal actions, such as the fire button in skiing. Note that this is different
       *   from the minimal set of actions. */
-    void noopIllegalActions(Action& player_a_action, Action& player_b_action){FUNCTION_NAME}
+    void noopIllegalActions(Action& player_a_action, Action& player_b_action);
 
     /** Processes the current emulator screen and saves it in m_screen */
     void processScreen(){FUNCTION_NAME}

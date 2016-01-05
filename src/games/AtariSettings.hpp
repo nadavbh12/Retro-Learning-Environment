@@ -70,6 +70,9 @@ struct AtariSettings : public RomSettings{
 //    		Deserializer & ser
     		) = 0;
 
+    // Returns a restricted (minimal) set of actions. If not overriden, this is all actions.
+    ActionVect getMinimalActionSet();
+
     // Returns the set of all legal actions
     // Can change according to emulation system
     ActionVect getAllActions();

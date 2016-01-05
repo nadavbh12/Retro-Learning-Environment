@@ -36,16 +36,19 @@ using namespace std;
 
 #define DEBUG2(x) \
     if(DEBUG == 1){\
-    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< x << COLOR_RESET << endl;}
+    cout << __FILE__ << " " << __FUNCTION__  << " ,line: " << __LINE__ <<" "<< x << endl;}
+//    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< x << COLOR_RESET << endl;}
 
 
 #define FUNCTION_NAME \
 if (PRINT_FUNCTION_NAME){\
-    cout << "line: " << __LINE__ << ", function: " << __PRETTY_FUNCTION__ << endl;\
+    cout << __FILE__ << " " << __FUNCTION__ << " ,line: " << __LINE__ << ", function: " << __PRETTY_FUNCTION__ << endl;\
 }
 
 #define EMPTY_FUNCTION \
-	std::cout << COLOR_BLUE <<  __FUNCTION__ << " is empty" << COLOR_RESET << endl;
+		std::cout << __FUNCTION__ << " is empty" << endl;
+//std::cout << COLOR_BLUE <<  __FUNCTION__ << " is empty" << COLOR_RESET << endl;
+
 
 
 #endif // __DEBUG_MACROS_H__

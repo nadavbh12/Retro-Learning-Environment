@@ -276,6 +276,7 @@ void ALEState::applyActionPaddles(
 void ALEState::setActionJoysticks(
 //		Event* event,
 		int player_a_action, int player_b_action) {
+
 //  // Reset keys
 //  resetKeys(event);
 //

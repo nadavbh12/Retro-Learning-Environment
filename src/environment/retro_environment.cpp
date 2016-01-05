@@ -125,111 +125,115 @@ void RetroEnvironment::reset() {
 //  m_state.load(m_alesystem, m_settings, m_cartridge_md5, target_state, true);
 //}
 //
-//void RetroEnvironment::noopIllegalActions(Action & player_a_action, Action & player_b_action) {
-//  if (player_a_action < (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP &&
-//        !m_settings->isLegal(player_a_action)) {
-//    player_a_action = (Action)PLAYER_A | RETRO_DEVICE_ID_JOYPAD_NOOP;
-//  }
-//  // Also drop RESET, which doesn't play nice with our clean notions of RL environments
-//  else if (player_a_action == RESET)
-//    player_a_action = (Action)PLAYER_A | RETRO_DEVICE_ID_JOYPAD_NOOP;
-//
-//  if (player_b_action < (Action)RESET &&
-//        !m_settings->isLegal((Action)((int)player_b_action - PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP))) {
-//    player_b_action = (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP;
-//  }
-//  else if (player_b_action == RESET)
-//    player_b_action = (Action)PLAYER_B | RETRO_DEVICE_ID_JOYPAD_NOOP;
-//}
-//
-//reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {
-//
-//  // Total reward received as we repeat the action
-//  reward_t sum_rewards = 0;
-//
-//  Random& rng = m_alesystem->rng();
-//
-//  // Apply the same action for a given number of times... note that act() will refuse to emulate
-//  //  past the terminal state
-//  for (size_t i = 0; i < m_frame_skip; i++) {
-//
-//    // Stochastically drop actions, according to m_repeat_action_probability
-//    if (rng.nextDouble() >= m_repeat_action_probability)
-//      m_player_a_action = player_a_action;
-//    // @todo Possibly optimize by avoiding call to rand() when player B is "off" ?
-//    if (rng.nextDouble() >= m_repeat_action_probability)
-//      m_player_b_action = player_b_action;
-//
-//    // If so desired, request one frame's worth of sound (this does nothing if recording
-//    // is not enabled)
+void RetroEnvironment::noopIllegalActions(Action & player_a_action, Action & player_b_action) {
+  if ( ((player_a_action & PLAYER_A) == PLAYER_A) &&
+        !m_settings->isLegal(player_a_action)) {
+    player_a_action = PLAYER_A | JOYPAD_NOOP;
+  }
+  // Also drop RESET, which doesn't play nice with our clean notions of RL environments
+  else if (player_a_action == JOYPAD_RESET)
+    player_a_action = PLAYER_A |JOYPAD_NOOP;
+
+  if ( ((player_b_action & PLAYER_B) == PLAYER_B) &&
+        !m_settings->isLegal(player_b_action) ) {
+    player_b_action = PLAYER_B | JOYPAD_NOOP;
+  }
+  else if (player_b_action == (PLAYER_B | JOYPAD_RESET))
+    player_b_action = PLAYER_B | JOYPAD_NOOP;
+}
+
+reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {
+
+  // Total reward received as we repeat the action
+  reward_t sum_rewards = 0;
+
+  Random& rng = m_alesystem->rng();
+
+  // Apply the same action for a given number of times... note that act() will refuse to emulate
+  //  past the terminal state
+  for (size_t i = 0; i < m_frame_skip; i++) {
+
+    // Stochastically drop actions, according to m_repeat_action_probability
+    if (rng.nextDouble() >= m_repeat_action_probability)
+      m_player_a_action = player_a_action;
+    // @todo Possibly optimize by avoiding call to rand() when player B is "off" ?
+    if (rng.nextDouble() >= m_repeat_action_probability)
+      m_player_b_action = player_b_action;
+
+//    TODO SN : fix record of sound
+    // If so desired, request one frame's worth of sound (this does nothing if recording
+    // is not enabled)
 //    m_alesystem->sound().recordNextFrame();
-//
-//    // Similarly record screen as needed
-//    if (m_screen_exporter.get() != NULL)
-//        m_screen_exporter->saveNext(m_screen);
-//
-//    // Use the stored actions, which may or may not have changed this frame
-//    sum_rewards += oneStepAct(m_player_a_action, m_player_b_action);
-//  }
-//
-//  return sum_rewards;
-//}
-//
-///** Applies the given actions (e.g. updating paddle positions when the paddle is used)
-//  *  and performs one simulation step in Stella. */
-//reward_t RetroEnvironment::oneStepAct(Action player_a_action, Action player_b_action) {
-//  // Once in a terminal state, refuse to go any further (special actions must be handled
-//  //  outside of this environment; in particular reset() should be called rather than passing
-//  //  RESET or SYSTEM_RESET.
-//  if (isTerminal())
-//    return 0;
-//
-//  // Convert illegal actions into NOOPs; actions such as reset are always legal
-//  noopIllegalActions(player_a_action, player_b_action);
-//
-//  // Emulate in the emulator
-//  emulate(player_a_action, player_b_action);
-//  // Increment the number of frames seen so far
-//  m_state.incrementFrame();
-//
-//  return m_settings->getReward();
-//}
-//
+
+    // Similarly record screen as needed
+    if (m_screen_exporter.get() != NULL)
+        m_screen_exporter->saveNext(m_screen);
+
+    // Use the stored actions, which may or may not have changed this frame
+    sum_rewards += oneStepAct(m_player_a_action, m_player_b_action);
+  }
+
+  return sum_rewards;
+}
+
+/** Applies the given actions (e.g. updating paddle positions when the paddle is used)
+  *  and performs one simulation step in Stella. */
+reward_t RetroEnvironment::oneStepAct(Action player_a_action, Action player_b_action) {
+  // Once in a terminal state, refuse to go any further (special actions must be handled
+  //  outside of this environment; in particular reset() should be called rather than passing
+  //  RESET or SYSTEM_RESET.
+  if (isTerminal())
+    return 0;
+
+  // Convert illegal actions into NOOPs; actions such as reset are always legal
+  noopIllegalActions(player_a_action, player_b_action);
+
+  // Emulate in the emulator
+  emulate(player_a_action, player_b_action);
+  // Increment the number of frames seen so far
+  m_state.incrementFrame();
+
+  return m_settings->getReward();
+}
+
 bool RetroEnvironment::isTerminal() {
   return (m_settings->isTerminal() ||
     (m_max_num_frames_per_episode > 0 &&
      m_state.getEpisodeFrameNumber() >= m_max_num_frames_per_episode));
 }
-//
-//void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, size_t num_steps) {
-////  Event* event = m_alesystem->event();
-//
-////  // Handle paddles separately: we have to manually update the paddle positions at each step
-////  if (m_use_paddles) {
-////    // Run emulator forward for 'num_steps'
-////    for (size_t t = 0; t < num_steps; t++) {
-////      // Update paddle position at every step
-////      m_state.applyActionPaddles(event, player_a_action, player_b_action);
-////
-////      m_alesystem->console().mediaSource().update();
-////      m_settings->step(m_alesystem->console().system());
-////    }
-////  }
-////  else {
-//    // In joystick mode we only need to set the action events once
-//    m_state.setActionJoysticks(event, player_a_action, player_b_action);
-//
+
+void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, size_t num_steps) {
+//  Event* event = m_alesystem->event();
+
+//  // Handle paddles separately: we have to manually update the paddle positions at each step
+//  if (m_use_paddles) {
+//    // Run emulator forward for 'num_steps'
 //    for (size_t t = 0; t < num_steps; t++) {
+//      // Update paddle position at every step
+//      m_state.applyActionPaddles(event, player_a_action, player_b_action);
+//
 //      m_alesystem->console().mediaSource().update();
 //      m_settings->step(m_alesystem->console().system());
 //    }
-////  }
-//
-//  // Parse screen and RAM into their respective data structures
+//  }
+//  else {
+    // In joystick mode we only need to set the action events once
+//    m_state.setActionJoysticks(player_a_action, player_b_action);
+	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+
+    for (size_t t = 0; t < num_steps; t++) {
+//      m_alesystem->console().mediaSource().update();
+//      m_settings->step(m_alesystem->console().system());
+    	m_alesystem->getRetroAgent().run();
+    }
+//  }
+
+    // TODO SN : implement functions below
+  // Parse screen and RAM into their respective data structures
 //  processScreen();
 //  processRAM();
-//}
-//
+}
+
 ///** Accessor methods for the environment state. */
 //void RetroEnvironment::setState(const ALEState& state) {
 //  m_state = state;
@@ -238,7 +242,7 @@ bool RetroEnvironment::isTerminal() {
 //const ALEState& RetroEnvironment::getState() const {
 //  return m_state;
 //}
-//
+
 //void RetroEnvironment::processScreen() {
 //  if (m_colour_averaging) {
 //    // Perform phosphor averaging; the blender stores its result in the given screen
@@ -250,10 +254,10 @@ bool RetroEnvironment::isTerminal() {
 //      m_alesystem->console().mediaSource().currentFrameBuffer(), m_screen.arraySize());
 //  }
 //}
-//
+
 //void RetroEnvironment::processRAM() {
 //  // Copy RAM over
-//  for (size_t i = 0; i < m_ram.size(); i++)
-//    *m_ram.byte(i) = m_alesystem->console().system().peek(i + 0x80);
+////  for (size_t i = 0; i < m_ram.size(); i++)
+////    *m_ram.byte(i) = m_alesystem->console().system().peek(i + 0x80);
 //}
 

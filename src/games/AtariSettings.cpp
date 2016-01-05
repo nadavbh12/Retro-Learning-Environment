@@ -18,6 +18,16 @@
 #include "AtariSettings.hpp"
 #include "Constants.h"
 
+ActionVect AtariSettings::getMinimalActionSet() {
+  ActionVect actions;
+  for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {
+    if (isMinimal(AtariAllActionsVector.at(a)) && isLegal(AtariAllActionsVector.at(a))) {
+      actions.push_back(AtariAllActionsVector.at(a));
+    }
+  }
+  return actions;
+}
+
 ActionVect AtariSettings::getAllActions() {
   ActionVect actions;
   for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {

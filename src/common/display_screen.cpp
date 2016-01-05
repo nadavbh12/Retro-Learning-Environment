@@ -49,12 +49,34 @@ DisplayScreen::DisplayScreen(
 //
 //    last_frame_time = SDL_GetTicks();
 }
+//    screen_height = media_source->height();
+//    screen_width = media_source->width();
+//    assert(window_height >= screen_height);
+//    assert(window_width >= screen_width);
+//    yratio = window_height / (float) screen_height;
+//    xratio = window_width / (float) screen_width;
+//    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+//        fprintf(stderr, "Could not initialize SDL: %s\n", SDL_GetError());
+//        exit(1);
+//    }
+//    screen = SDL_SetVideoMode(window_width, window_height, 8, SDL_HWPALETTE);
+//    if (screen == NULL) {
+//        fprintf(stderr, "Couldn't Initialize Screen: %s\n", SDL_GetError());
+//        exit(1);
+//    }
+//    SDL_WM_SetCaption("ALE Viz", NULL);
+//    fprintf(stderr, "Screen Display Active. [Manual Control Mode] 'm' "
+//            "[Slowdown] 'a' [Speedup] 's' [VolumeDown] '[' [VolumeUp] ']'.\n");
+//
+//    last_frame_time = SDL_GetTicks();
+
 
 DisplayScreen::~DisplayScreen() {
     SDL_Quit();
 }
 
-void DisplayScreen::display_screen() {
+void DisplayScreen::display_screen(RetroAgent& ragent) {
+	ragent.updateScreen();
 //    if (SDL_MUSTLOCK(screen)) {
 //      if (SDL_LockSurface(screen) < 0 ) {
 //        fprintf(stderr, "Can't lock screen: %s\n", SDL_GetError());

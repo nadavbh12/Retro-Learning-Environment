@@ -101,20 +101,21 @@ int main(int argc, char** argv) {
     ale.loadROM(argv[1]);
 
     // Get the vector of legal actions
-    ActionVect legal_actions = ale.getLegalActionSet();
+//    ActionVect legal_actions = ale.getLegalActionSet();
     // SN: replaced legal with minimal since legal is too big
-//    ActionVect legal_actions = ale.getMinimalActionSet();
+    ActionVect legal_actions = ale.getMinimalActionSet();
 
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
         while (!ale.game_over()) {
 //            Action a = legal_actions[rand() % legal_actions.size()];
+			Action a = JOYPAD_START;
 //            // Apply the action and get the resulting reward
-//            float reward = ale.act(a);
-//            totalReward += reward;
+            float reward = ale.act(a);
+            totalReward += reward;
         }
-//        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
+        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
 //        ale.reset_game();
     }
 //

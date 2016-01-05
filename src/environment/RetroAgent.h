@@ -2,6 +2,7 @@
 #define __RETRO_AGENT_HPP__
 
 #include<iostream>
+#include "Constants.h"
 
 // TODO make class singleton
 class RetroAgent{
@@ -29,6 +30,8 @@ public:
 	int	 getWidth();
 	void reset();
 	int readRam(unsigned id, int offset);
+	void SetActions(int player_a_action, int player_b_action);
+	void updateScreen();
 };
 
 #endif // __RETRO_AGENT_HPP__

@@ -23,6 +23,7 @@
 #include "Constants.h"
 #include "ColourPalette.hpp"
 //#include "../emucore/MediaSrc.hxx"
+#include "RetroAgent.h"
 
 #ifdef __USE_SDL
 #include "SDL.h"
@@ -36,7 +37,7 @@ public:
     virtual ~DisplayScreen();
 
     // Displays the current frame buffer from the mediasource.
-    void display_screen();
+    void display_screen(RetroAgent& ragent);
 
     // Has the user engaged manual control mode?
     bool manual_control_engaged() { return manual_control_active; }
@@ -76,7 +77,7 @@ class DisplayScreen {
     		) {}
     void display_screen() {}
     bool manual_control_engaged() { return false; }
-    Action getUserAction() { return RETRO_DEVICE_ID_JOYPAD_UNDEFINED; }
+    Action getUserAction() { return JOYPAD_UNDEFINED; }
 };
 #endif // __USE_SDL
 

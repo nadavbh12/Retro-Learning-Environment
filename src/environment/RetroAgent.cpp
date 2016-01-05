@@ -68,6 +68,9 @@ static struct {
 //	unsigned retro_get_region(void);
 	void* (*retro_get_memory_data)(unsigned id);
 	size_t (*retro_get_memory_size)(unsigned id);
+
+	int action_a;
+	int action_b;
 } g_retro;
 
 
@@ -77,17 +80,27 @@ struct keymap {
 };
 
 struct keymap g_binds[] = {
-	{ GLFW_KEY_X, RETRO_DEVICE_ID_JOYPAD_A },
-	{ GLFW_KEY_Z, RETRO_DEVICE_ID_JOYPAD_B },
-	{ GLFW_KEY_A, RETRO_DEVICE_ID_JOYPAD_Y },
-	{ GLFW_KEY_S, RETRO_DEVICE_ID_JOYPAD_X },
-	{ GLFW_KEY_UP, RETRO_DEVICE_ID_JOYPAD_UP },
-	{ GLFW_KEY_DOWN, RETRO_DEVICE_ID_JOYPAD_DOWN },
-	{ GLFW_KEY_LEFT, RETRO_DEVICE_ID_JOYPAD_LEFT },
-	{ GLFW_KEY_RIGHT, RETRO_DEVICE_ID_JOYPAD_RIGHT },
-	{ GLFW_KEY_ENTER, RETRO_DEVICE_ID_JOYPAD_START },
-	{ GLFW_KEY_BACKSPACE, RETRO_DEVICE_ID_JOYPAD_SELECT },
-
+//	{ GLFW_KEY_X, RETRO_DEVICE_ID_JOYPAD_A },
+//	{ GLFW_KEY_Z, RETRO_DEVICE_ID_JOYPAD_B },
+//	{ GLFW_KEY_A, RETRO_DEVICE_ID_JOYPAD_Y },
+//	{ GLFW_KEY_S, RETRO_DEVICE_ID_JOYPAD_X },
+//	{ GLFW_KEY_UP, RETRO_DEVICE_ID_JOYPAD_UP },
+//	{ GLFW_KEY_DOWN, RETRO_DEVICE_ID_JOYPAD_DOWN },
+//	{ GLFW_KEY_LEFT, RETRO_DEVICE_ID_JOYPAD_LEFT },
+//	{ GLFW_KEY_RIGHT, RETRO_DEVICE_ID_JOYPAD_RIGHT },
+//	{ GLFW_KEY_ENTER, RETRO_DEVICE_ID_JOYPAD_START },
+//	{ GLFW_KEY_BACKSPACE, RETRO_DEVICE_ID_JOYPAD_SELECT },
+//	{ 0, 0 }
+	{ JOYPAD_A		, RETRO_DEVICE_ID_JOYPAD_A 		},
+	{ JOYPAD_B		, RETRO_DEVICE_ID_JOYPAD_B 		},
+	{ JOYPAD_Y 		, RETRO_DEVICE_ID_JOYPAD_Y 		},
+	{ JOYPAD_X 		, RETRO_DEVICE_ID_JOYPAD_X 		},
+	{ JOYPAD_UP 	, RETRO_DEVICE_ID_JOYPAD_UP 	},
+	{ JOYPAD_DOWN 	, RETRO_DEVICE_ID_JOYPAD_DOWN 	},
+	{ JOYPAD_LEFT 	, RETRO_DEVICE_ID_JOYPAD_LEFT 	},
+	{ JOYPAD_RIGHT 	, RETRO_DEVICE_ID_JOYPAD_RIGHT 	},
+	{ JOYPAD_START 	, RETRO_DEVICE_ID_JOYPAD_START 	},
+	{ JOYPAD_SELECT	, RETRO_DEVICE_ID_JOYPAD_SELECT },
 	{ 0, 0 }
 };
 
@@ -388,14 +401,16 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 static void core_input_poll(void) {
 	int i;
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i)
-		g_joy[g_binds[i].rk] = (glfwGetKey(g_win, g_binds[i].k) == GLFW_PRESS);
+		g_joy[g_binds[i].rk] = (g_retro.action_a & (1 << i)) > 0;
+//		g_joy[g_binds[i].rk] = (glfwGetKey(g_win, g_binds[i].k) == GLFW_PRESS);
 }
 
 
 static int16_t core_input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
+	// player b will be supported by a different port
 	if (port || index || device != RETRO_DEVICE_JOYPAD)
 		return 0;
-
+	DEBUG2("Value of " << id << " is: " << g_joy[id]);
 	return g_joy[id];
 }
 
@@ -626,4 +641,17 @@ int RetroAgent::readRam(unsigned id, int offset){
    }else{
 	   return *((int*)data+offset);
    }
+}
+
+// TODO SN :  currently only one player is supported
+void RetroAgent::SetActions(int player_a_action, int player_b_action){
+	g_retro.action_a = player_a_action;
+	DEBUG2("g_retro.action_a is: " << g_retro.action_a);
+	g_retro.action_b = player_b_action;
+}
+
+void RetroAgent::updateScreen(){
+	glClear(GL_COLOR_BUFFER_BIT);
+	video_render();
+	glfwSwapBuffers(g_win);
 }
