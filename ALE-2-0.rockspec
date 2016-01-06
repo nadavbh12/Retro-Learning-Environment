@@ -1,4 +1,4 @@
-package = 'ale'
+package = 'ALE'
 version = '2-0'
 
 source = {
