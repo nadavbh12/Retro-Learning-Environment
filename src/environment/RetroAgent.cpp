@@ -15,6 +15,8 @@
 #include "AleException.h"
 #include "RetroAgent.h"
 #include "DebugMacros.h"
+#include <iomanip>
+#include <stdlib.h>
 
 static GLFWwindow *g_win = NULL;
 static snd_pcm_t *g_pcm = NULL;
@@ -555,6 +557,14 @@ static void core_unload() {
 
 RetroAgent::RetroAgent(){}
 
+RetroAgent::~RetroAgent(){
+	core_unload();
+	audio_deinit();
+	video_deinit();
+
+	glfwTerminate();
+}
+
 bool RetroAgent::initWindow(){
 	return glfwInit();
 }
@@ -629,18 +639,36 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
+static void printRam(void* data, size_t size){
+	system("clear");
+	uint8_t* nData = (uint8_t*)data;
+   cout << "------------------------------------------------------" << endl;
+   cout << "      ";
+   for (int i=0; i<16; i++){
+	   cout << std::setw(1) << std::hex << i << "  ";
+   }
+   for (uint8_t i = 0; i < size; i++){
+//	   cerr << +i << endl;
+	   if(i%16 == 0){
+		   cout << endl << setw(4) << std::hex << std::setfill('0') << +i << " ";
+	   }
+	   cout << std::hex << std::setw(2) << std::setfill('0')<<  +nData[i] << " ";
+   }
+   cout << endl;
+}
+
 int RetroAgent::readRam(unsigned id, int offset){
-	// TODO SN : verify this functions works correctly!!!
 //	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
 //	return data[offset];
    size_t size = g_retro.retro_get_memory_size(id);
    void*  data = g_retro.retro_get_memory_data(id);
+//   printRam(data,size);
    if (!size){
 	   throw AleException("Ram size is 0");
    }else if((unsigned)offset > (size-1)){
 	   throw AleException("Offset is larger than RAM size");
    }else{
-	   return *((int*)data+offset);
+	   return *((char*)data+offset);
    }
 }
 

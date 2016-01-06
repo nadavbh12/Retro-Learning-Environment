@@ -14,14 +14,6 @@
 #include <sstream>
 #include <memory>
 
-//#include "emucore/m6502/src/bspf/src/bspf.hxx"
-//#include "emucore/Console.hxx"
-//#include "emucore/Event.hxx"
-//#include "emucore/PropsSet.hxx"
-//#include "emucore/Settings.hxx"
-//#include "emucore/FSNode.hxx"
-//#include "emucore/OSystem.hxx"
-
 #if (defined(WIN32) || defined(__MINGW32__))
 #   include "os_dependent/SettingsWin32.hxx"
 #   include "os_dependent/OSystemWin32.hxx"
@@ -36,8 +28,9 @@
 #include "common/Constants.h"
 #include "ale_interface.hpp"
 
-//static std::auto_ptr<OSystem> theOSystem(NULL);
-//static std::auto_ptr<SSettings> theSettings(NULL);
+static std::auto_ptr<AleSystem> theAleSystem(NULL);
+static std::auto_ptr<Settings> theSettings(NULL);
+static std::auto_ptr<RetroAgent> theRetroAgent;
 
 //static ALEController* createController(OSystem* osystem, std::string type) {
 //  if(type.empty()){
@@ -69,23 +62,22 @@ int main(int argc, char* argv[]) {
 
   std::cerr << ALEInterface::welcomeMessage() << std::endl;
 
-//  ALEInterface::createOSystem(theOSystem, theSettings);
+  ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
   // Process commandline arguments, which over-ride all possible
   // config file settings
-  // TODO SN: implement after we have some settings
-//  std::string romfile = theOSystem->settings().loadCommandLine(argc, argv);
-//  ALEInterface::loadSettings(romfile, theOSystem);
+  std::string romfile = theAleSystem->settings().loadCommandLine(argc, argv);
+  ALEInterface::loadSettings(romfile, theAleSystem);
 
   // TODO SN: implement after we have some settings
   // Create the game controller
-//  std::string controller_type = theOSystem->settings().getString("game_controller");
-//  std::auto_ptr<ALEController> controller(createController(theOSystem.get(), controller_type));
+  std::string controller_type = theAleSystem->settings().getString("game_controller");
+//  std::auto_ptr<ALEController> controller(createController(theAleSystem.get(), controller_type));
 
 //  controller->run();
 
   // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
   //  still being a valid construct)
-//  theOSystem.reset(NULL);
+  theAleSystem.reset(NULL);
 
   return 0;
 }

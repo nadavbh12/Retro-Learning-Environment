@@ -8,6 +8,7 @@
 class RetroAgent{
 public:
 	RetroAgent();
+	~RetroAgent();
 	bool initWindow();
 	void loadCore(std::string coreName);
 	void unloadCore();

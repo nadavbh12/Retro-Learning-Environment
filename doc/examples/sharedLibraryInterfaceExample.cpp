@@ -105,7 +105,6 @@ int main(int argc, char** argv) {
     // SN: replaced legal with minimal since legal is too big
     ActionVect legal_actions = ale.getMinimalActionSet();
 
-    ale.act(JOYPAD_START);
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
@@ -117,7 +116,7 @@ int main(int argc, char** argv) {
             totalReward += reward;
         }
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
-//        ale.reset_game();
+        ale.reset_game();
     }
 //
     return 0;

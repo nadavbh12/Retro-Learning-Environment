@@ -17,7 +17,6 @@
 
 #include "retro_environment.hpp"
 
-//#include "../emucore/m6502/src/System.hxx"
 #include <sstream>
 
 
@@ -224,6 +223,7 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
     for (size_t t = 0; t < num_steps; t++) {
 //      m_alesystem->console().mediaSource().update();
 //      m_settings->step(m_alesystem->console().system());
+    	m_settings->step(*m_alesystem);
     	m_alesystem->getRetroAgent().run();
     }
 //  }

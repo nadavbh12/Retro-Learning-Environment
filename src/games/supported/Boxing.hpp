@@ -70,6 +70,8 @@ struct BoxingSettings : public AtariSettings {
 
         virtual const int lives() { return 0; }
 
+        virtual ActionVect getStartingActions();
+
     private:
 
         bool m_terminal;
