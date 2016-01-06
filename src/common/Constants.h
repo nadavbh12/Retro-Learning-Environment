@@ -116,7 +116,7 @@ typedef uint32_t Action;
 //#define PLAYER_B_MAX (36)
 
 // TODO SN : implement
-//std::string action_to_string(Action a){EMPTY_FUNCTION}
+std::string action_to_string(Action a);
 
 //  Define datatypes
 typedef std::vector<Action> ActionVect;

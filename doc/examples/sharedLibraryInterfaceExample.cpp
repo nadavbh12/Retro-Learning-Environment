@@ -105,13 +105,14 @@ int main(int argc, char** argv) {
     // SN: replaced legal with minimal since legal is too big
     ActionVect legal_actions = ale.getMinimalActionSet();
 
+    ale.act(JOYPAD_START);
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
         while (!ale.game_over()) {
-//            Action a = legal_actions[rand() % legal_actions.size()];
-			Action a = JOYPAD_START;
-//            // Apply the action and get the resulting reward
+            Action a = legal_actions[rand() % legal_actions.size()];
+
+        	// Apply the action and get the resulting reward
             float reward = ale.act(a);
             totalReward += reward;
         }
@@ -122,13 +123,35 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// testing code
+
+//// testing code
 //#include <unistd.h>
 //int main(int argc, char** argv) {
-//    ALEInterface ale;
-//    ale.loadROM(argv[1]);
+////	 test read RAM
+////    ALEInterface ale;
+////    ale.loadROM(argv[1]);
+////    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SYSTEM_RAM, std::stoi(argv[2])) << endl;
 //
-//    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SYSTEM_RAM, std::stoi(argv[2])) << endl;
+////	 Test action_to_str()
+//	Action a = JOYPAD_START;
+//	cout << action_to_string(a);
+//	a = JOYPAD_B;
+//	cout << action_to_string(a);
+//
+//	a = JOYPAD_B | JOYPAD_A;
+//	cout << action_to_string(a);
+//
+//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN;
+//	cout << action_to_string(a);
+//
+//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN | JOYPAD_LEFT;
+//	cout << action_to_string(a);
+//
+//	a = JOYPAD_DOWN | JOYPAD_A | JOYPAD_B | JOYPAD_LEFT;
+//	cout << action_to_string(a);
+//
+//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN | PLAYER_B;
+//	cout << action_to_string(a);
 //
 //    return 0;
 //}

@@ -401,7 +401,8 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 static void core_input_poll(void) {
 	int i;
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i)
-		g_joy[g_binds[i].rk] = (g_retro.action_a & (1 << i)) > 0;
+		g_joy[g_binds[i].rk] = (g_retro.action_a & g_binds[i].k) > 0;
+//		g_joy[g_binds[i].rk] = (g_retro.action_a & (1 << i)) > 0;
 //		g_joy[g_binds[i].rk] = (glfwGetKey(g_win, g_binds[i].k) == GLFW_PRESS);
 }
 
@@ -410,7 +411,7 @@ static int16_t core_input_state(unsigned port, unsigned device, unsigned index, 
 	// player b will be supported by a different port
 	if (port || index || device != RETRO_DEVICE_JOYPAD)
 		return 0;
-	DEBUG2("Value of " << id << " is: " << g_joy[id]);
+//	DEBUG2("Value of " << id << " is: " << g_joy[id]);
 	return g_joy[id];
 }
 
@@ -646,7 +647,7 @@ int RetroAgent::readRam(unsigned id, int offset){
 // TODO SN :  currently only one player is supported
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
 	g_retro.action_a = player_a_action;
-	DEBUG2("g_retro.action_a is: " << g_retro.action_a);
+//	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
 	g_retro.action_b = player_b_action;
 }
 
