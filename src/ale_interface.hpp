@@ -78,7 +78,9 @@ public:
   // Resets the Atari and loads a game. After this call the game
   // should be ready to play. This is necessary after changing a
   // setting for the setting to take effect.
-  void loadROM(std::string rom_file);
+  // ALE2: specify which core to load as well. Default is Atari.
+  // TODO: make atari default
+  void loadROM(std::string rom_file, string core_file = "");
 
   // Applies an action to the game and returns the reward. It is the
   // user's responsibility to check if the game has ended and reset
@@ -160,7 +162,7 @@ public:
   static void createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
                             std::auto_ptr<Settings> &theSettings,
                             std::auto_ptr<RetroAgent> &theRetroAgent);
-  static void loadSettings(const std::string& romfile
+  static void loadSettings(const std::string& romfile, const std::string& corefile
                            ,std::auto_ptr<AleSystem> &theSLESystem);
 };
 

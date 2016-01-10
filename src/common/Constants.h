@@ -151,5 +151,8 @@ static const ActionVect AtariAllActionsVector{
 	JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE
 };
 
+const string ATARI_PATH = "./stella-libretro/stella_libretro.so";
+const string SNES_PATH = "./snes9x-next/snes9x_next_libretro.so";
+
 #endif // __CONSTANTS_H__
 

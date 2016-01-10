@@ -69,6 +69,7 @@ AleSystem::AleSystem(RetroAgent* retroagent)
     myQuitLoop(false),
     mySkipEmulation(false),
     myRomFile(""),
+	myCoreFile(""),
     myFeatures(""),
     p_display_screen(NULL)
 {

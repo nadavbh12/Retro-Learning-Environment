@@ -66,7 +66,8 @@ int main(int argc, char* argv[]) {
   // Process commandline arguments, which over-ride all possible
   // config file settings
   std::string romfile = theAleSystem->settings().loadCommandLine(argc, argv);
-  ALEInterface::loadSettings(romfile, theAleSystem);
+  std::string corefile = theAleSystem->settings().loadCommandLine(argc, argv);
+  ALEInterface::loadSettings(romfile, corefile, theAleSystem);
 
   // TODO SN: implement after we have some settings
   // Create the game controller

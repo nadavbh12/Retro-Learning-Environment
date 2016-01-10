@@ -71,7 +71,7 @@ void ALEInterface::createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
   theAleSystem->settings().loadConfig();
 }
 
-void ALEInterface::loadSettings(const string& romfile,
+void ALEInterface::loadSettings(const string& romfile, const std::string& corefile,
                                 std::auto_ptr<AleSystem> &theAleSystem) {
   // Load the configuration from a config file (passed on the command
   //  line), if provided
@@ -94,14 +94,20 @@ void ALEInterface::loadSettings(const string& romfile,
 //  } else {
 //    exit(1);
 //  }
-  // TODO SN : replace hard coded load core to appropriate location
+  string corePath;
     if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
       Logger::Error << "No ROM File specified or the ROM file was not found."
                 << std::endl;
       exit(1);
     }else if(theAleSystem->getRetroAgent().initWindow()){
-	  theAleSystem->getRetroAgent().loadCore("stella-libretro/stella_libretro.so");
-	  theAleSystem->getRetroAgent().loadRom(romfile);
+	  if(corefile == "atari"){
+		  corePath = ATARI_PATH;
+	  }else if(corefile == "snes"){
+		  corePath = SNES_PATH;
+	  }
+    	theAleSystem->getRetroAgent().loadCore(corePath);
+
+    	theAleSystem->getRetroAgent().loadRom(romfile);
 	  Logger::Info << "Running ROM file..." << std::endl;
 	  theAleSystem->settings().setString("rom_file", romfile);
 	  theAleSystem->p_display_screen = new DisplayScreen();
@@ -138,12 +144,15 @@ ALEInterface::~ALEInterface() {}
 // ready to play. Resets the OSystem/Console/Environment/etc. This is
 // necessary after changing a setting. Optionally specify a new rom to
 // load.
-void ALEInterface::loadROM(string rom_file = "") {
+void ALEInterface::loadROM(string rom_file = "", string core_file) {
   assert(theAleSystem.get());
   if (rom_file.empty()) {
     rom_file = theAleSystem->romFile();
   }
-  loadSettings(rom_file, theAleSystem);
+  if (core_file.empty()) {
+	core_file = theAleSystem->coreFile();
+  }
+  loadSettings(rom_file, core_file, theAleSystem);
   romSettings.reset(buildRomRLWrapper(rom_file));
   environment.reset(new RetroEnvironment(theAleSystem.get(), romSettings.get()));
   max_num_frames = theAleSystem->settings().getInt("max_num_frames_per_episode");

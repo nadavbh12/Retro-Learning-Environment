@@ -268,6 +268,14 @@ class AleSystem
     const std::string& romFile() const { return myRomFile; }
 
     /**
+      This method should be called to get the full path of the currently
+      loaded core.
+
+      @return String representing the full path of the core file.
+    */
+    const std::string& coreFile() const { return myCoreFile; }
+
+    /**
       Switches between software and OpenGL framebuffer modes.
     */
     //ALE  void toggleFrameBuffer();
@@ -490,6 +498,7 @@ class AleSystem
 
     std::string myGameListCacheFile;
     std::string myRomFile;
+    std::string myCoreFile;
 
     std::string myFeatures;
 
