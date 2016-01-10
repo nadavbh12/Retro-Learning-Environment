@@ -145,6 +145,24 @@ if(USE_RLGLUE)
   target_link_libraries(RLGlueExperiment rlgluenetdev)
 endif()
 
+
+INSTALL(
+  FILES
+  ale_interface.hpp
+  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/ale"
+)
+
+IF(APPLE)
+  INSTALL(FILES
+          libale.a
+          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+  ELSE()
+    INSTALL(FILES
+            libale.a
+            libale.so
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+ENDIF()
+
 #TODO compile within cmake
 
 #include(ExternalProject)

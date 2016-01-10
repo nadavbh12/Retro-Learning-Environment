@@ -22,7 +22,6 @@
 
 #include "Constants.h"
 #include "ColourPalette.hpp"
-//#include "../emucore/MediaSrc.hxx"
 #include "RetroAgent.h"
 
 #ifdef __USE_SDL
