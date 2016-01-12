@@ -114,6 +114,10 @@ target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
 
+target_include_directories(ale-lib PUBLIC ${include_directories})
+target_include_directories(ale-bin PUBLIC ${include_directories})
+target_include_directories(ale-c-lib PUBLIC ${include_directories})
+
 
 if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -146,22 +150,22 @@ if(USE_RLGLUE)
 endif()
 
 
-INSTALL(
-  FILES
-  ale_interface.hpp
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/ale"
-)
+#INSTALL(
+#  FILES
+#  ale_interface.hpp
+#  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/ale"
+#)
 
-IF(APPLE)
-  INSTALL(FILES
-          libale.a
-          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-  ELSE()
-    INSTALL(FILES
-            libale.a
-            libale.so
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-ENDIF()
+#IF(APPLE)
+#  INSTALL(FILES
+#          libale.a
+#          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+#  ELSE()
+#    INSTALL(TARGETS ale-lib
+#            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+#ENDIF()
+
+#message(" cmake_install_prefix = ${CMAKE_INSTALL_PREFIX}")
 
 #TODO compile within cmake
 
