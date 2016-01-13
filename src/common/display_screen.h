@@ -22,7 +22,7 @@
 
 #include "Constants.h"
 #include "ColourPalette.hpp"
-#include "RetroAgent.h"
+#include "../environment/RetroAgent.h"
 
 #ifdef __USE_SDL
 #include "SDL.h"

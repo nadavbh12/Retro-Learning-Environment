@@ -142,6 +142,8 @@ static const RomSettings *roms[]  = {
 //    new WizardOfWorSettings(),
 //    new YarsRevengeSettings(),
 //    new ZaxxonSettings(),
+
+//	new AtariCollectionSettings()
 };
 
 

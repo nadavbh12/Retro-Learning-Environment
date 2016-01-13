@@ -19,8 +19,8 @@
 #ifndef OSYSTEM_UNIX_HXX
 #define OSYSTEM_UNIX_HXX
 
-#include "bspf.hxx"
-#include "environment/AleSystem.hxx"
+#include "../common/bspf.hxx"
+#include "../environment/AleSystem.hxx"
 
 class RetroAgent;
 

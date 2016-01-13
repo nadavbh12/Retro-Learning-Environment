@@ -95,25 +95,24 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 //    exit(1);
 //  }
   string corePath;
-    if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
-      Logger::Error << "No ROM File specified or the ROM file was not found."
-                << std::endl;
-      exit(1);
-    }else if(theAleSystem->getRetroAgent().initWindow()){
-	  if(corefile == "atari"){
-		  corePath = ATARI_PATH;
-	  }else if(corefile == "snes"){
-		  corePath = SNES_PATH;
-	  }
-    	theAleSystem->getRetroAgent().loadCore(corePath);
-
-    	theAleSystem->getRetroAgent().loadRom(romfile);
-	  Logger::Info << "Running ROM file..." << std::endl;
-	  theAleSystem->settings().setString("rom_file", romfile);
-	  theAleSystem->p_display_screen = new DisplayScreen();
-    } else {
-      exit(1);
-    }
+  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
+	Logger::Error << "No ROM File specified or the ROM file was not found."
+			<< std::endl;
+	exit(1);
+  }else if(theAleSystem->getRetroAgent().initWindow()){
+  if(corefile == "atari"){
+	  corePath = ATARI_PATH;
+  }else if(corefile == "snes"){
+	  corePath = SNES_PATH;
+  }
+	theAleSystem->getRetroAgent().loadCore(corePath);
+	theAleSystem->getRetroAgent().loadRom(romfile);
+	Logger::Info << "Running ROM file..." << std::endl;
+	theAleSystem->settings().setString("rom_file", romfile);
+	theAleSystem->p_display_screen = new DisplayScreen();
+  } else {
+    exit(1);
+  }
 
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.

@@ -2,7 +2,7 @@
 #define __RETRO_AGENT_HPP__
 
 #include<iostream>
-#include "Constants.h"
+#include "../common/Constants.h"
 
 // TODO make class singleton
 class RetroAgent{

@@ -19,7 +19,7 @@
 #ifndef RANDOM_HXX
 #define RANDOM_HXX
 
-#include "bspf.hxx"
+#include "../common/bspf.hxx"
 
 class Serializer;
 class Deserializer;
