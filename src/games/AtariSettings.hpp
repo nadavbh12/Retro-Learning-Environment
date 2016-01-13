@@ -35,6 +35,8 @@
 
 #include "RomSettings.hpp"
 
+namespace ale {
+
 // rom support interface for Atari
 struct AtariSettings : public RomSettings{
     virtual ~AtariSettings() {}
@@ -78,6 +80,8 @@ struct AtariSettings : public RomSettings{
     ActionVect getAllActions();
 
 };
+
+} // namespace ale
 
 
 #endif // __ATARI_SETTINGS_HPP__

@@ -18,6 +18,8 @@
 #include <iomanip>
 #include <stdlib.h>
 
+using namespace ale;
+
 static GLFWwindow *g_win = NULL;
 static snd_pcm_t *g_pcm = NULL;
 static float g_scale = 3;

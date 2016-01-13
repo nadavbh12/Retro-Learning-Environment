@@ -20,6 +20,8 @@
 #include <cassert>
 #include "../common/Log.hpp"
 
+using namespace ale;
+
 #define MAX_RUN_LENGTH (0xFF)
 
 static const char hexval[] = { 

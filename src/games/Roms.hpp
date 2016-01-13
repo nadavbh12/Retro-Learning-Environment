@@ -14,12 +14,15 @@
 
 #include <string>
 
+namespace ale {
+
 struct RomSettings;
 
 
 // looks for the RL wrapper corresponding to a particular rom title 
 extern RomSettings *buildRomRLWrapper(const std::string &rom);
 
+} // namespace ale
 
 #endif // __ROMS_HPP__
 

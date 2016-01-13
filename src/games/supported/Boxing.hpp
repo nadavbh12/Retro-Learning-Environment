@@ -30,6 +30,8 @@
 #include "../RomSettings.hpp"
 #include "../AtariSettings.hpp"
 
+namespace ale {
+
 /* RL wrapper for Boxing settings */
 struct BoxingSettings : public AtariSettings {
 
@@ -78,6 +80,8 @@ struct BoxingSettings : public AtariSettings {
         reward_t m_reward;
         reward_t m_score;
 };
+
+} // namespace ale
 
 #endif // __BOXING_HPP__
 

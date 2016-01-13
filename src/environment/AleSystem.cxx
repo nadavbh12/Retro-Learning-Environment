@@ -56,7 +56,7 @@ using namespace std;
 
 #include "bspf.hxx"
 
-
+using namespace ale;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 AleSystem::AleSystem(RetroAgent* retroagent)
   : 

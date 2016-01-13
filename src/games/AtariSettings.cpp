@@ -18,6 +18,8 @@
 #include "AtariSettings.hpp"
 #include "Constants.h"
 
+using namespace ale;
+
 ActionVect AtariSettings::getMinimalActionSet() {
   ActionVect actions;
   for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {

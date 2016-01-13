@@ -27,6 +27,8 @@
 
 #include "../common/Log.hpp"
 
+using namespace ale;
+
 RLGlueController::RLGlueController(
 //		OSystem* _osystem)
 : ALEController(
@@ -291,6 +293,8 @@ reward_observation_terminal_t RLGlueController::constructRewardObservationTermin
 }
 
 #else
+
+using namespace ale;
 
 RLGlueController::RLGlueController(AleSystem* system):
   ALEController(system){}

@@ -27,7 +27,20 @@
  *
  *  The shared library interface.
  **************************************************************************** */
+
 #include "ale_interface.hpp"
+#include "os_dependent/SettingsWin32.hxx"
+#include "os_dependent/SettingsUNIX.hxx"
+#include "os_dependent/AleSystemUNIX.hxx"
+#include "games/Roms.hpp"
+#include "common/display_screen.h"
+#include "environment/retro_environment.hpp"
+#include "os_dependent/SettingsUNIX.hxx"
+#include "os_dependent/SettingsWin32.hxx"
+#include "environment/FSNode.hxx"
+#include "common/ScreenExporter.hpp"
+#include "common/Log.hpp"
+#include <string>
 #include <stdexcept>
 #include <ctime>
 
@@ -35,7 +48,239 @@
 #include <sstream>
 
 using namespace std;
-using namespace ale;
+namespace ale {
+
+
+class ALEInterface::Impl{
+public:
+	Impl();
+	~Impl();
+
+	// Get the value of a setting.
+	std::string getString(const std::string& key);
+	int getInt(const std::string& key);
+	bool getBool(const std::string& key);
+	float getFloat(const std::string& key);
+
+	// Set the value of a setting. loadRom() must be called before the
+	// setting will take effect.
+	void setString(const std::string& key, const std::string& value);
+	void setInt(const std::string& key, const int value);
+	void setBool(const std::string& key, const bool value);
+	void setFloat(const std::string& key, const float value);
+
+
+	  // Resets the game, but not the full system.
+	  void reset_game();
+
+	  // Resets the Atari and loads a game. After this call the game
+	  // should be ready to play. This is necessary after changing a
+	  // setting for the setting to take effect.
+	  // ALE2: specify which core to load as well. Default is Atari.
+	  void loadROM(std::string rom_file ="", std::string core_file = "");
+
+	  // Applies an action to the game and returns the reward. It is the
+	  // user's responsibility to check if the game has ended and reset
+	  // when necessary - this method will keep pressing buttons on the
+	  // game over screen.
+	  reward_t act(Action action);
+
+	  // Indicates if the game has ended.
+	  bool game_over();
+
+	  // Returns the vector of legal actions. This should be called only
+	  // after the rom is loaded.
+	  ActionVect getLegalActionSet();
+
+	  // Returns the vector of the minimal set of actions needed to play
+	  // the game.
+	  ActionVect getMinimalActionSet();
+
+	  // Returns the frame number since the loading of the ROM
+	  int getFrameNumber();
+
+	  // The remaining number of lives.
+	  const int lives();
+
+	  // Returns the frame number since the start of the current episode
+	  int getEpisodeFrameNumber();
+
+	  // Returns the current game screen
+	  const ALEScreen &getScreen();
+
+	  // Returns the current RAM content
+	  const ALERAM &getRAM();
+
+	  // Saves the state of the system
+	  void saveState();
+
+	  // Loads the state of the system
+	  void loadState();
+
+	  // This makes a copy of the environment state. This copy does *not* include pseudorandomness,
+	  // making it suitable for planning purposes. By contrast, see cloneSystemState.
+	  ALEState cloneState();
+
+	  // Reverse operation of cloneState(). This does not restore pseudorandomness, so that repeated
+	  // calls to restoreState() in the stochastic controls setting will not lead to the same outcomes.
+	  // By contrast, see restoreSystemState.
+	  void restoreState(const ALEState& state);
+
+	  // This makes a copy of the system & environment state, suitable for serialization. This includes
+	  // pseudorandomness and so is *not* suitable for planning purposes.
+	  ALEState cloneSystemState();
+
+	  // Reverse operation of cloneSystemState.
+	  void restoreSystemState(const ALEState& state);
+
+	  // Save the current screen as a png file
+	  void saveScreenPNG(const std::string& filename);
+
+	  // Creates a ScreenExporter object which can be used to save a sequence of frames. Ownership
+	  // said object is passed to the caller. Frames are saved in the directory 'path', which needs
+	  // to exists.
+	  ScreenExporter *createScreenExporter(const std::string &path) const;
+
+	  // static functions
+	  void createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
+	                      std::shared_ptr<Settings> &theSettings,
+	                      std::shared_ptr<RetroAgent> &theRetroAgent);
+	  void loadSettings(const std::string& romfile, const std::string& corefile,
+	                     std::shared_ptr<AleSystem> &theSLESystem);
+
+
+
+private:
+	  std::shared_ptr<AleSystem> theAleSystem;
+	  std::shared_ptr<Settings> theSettings;
+	  std::shared_ptr<RetroAgent> theRetroAgent;
+	  std::shared_ptr<RomSettings> romSettings;
+	  std::shared_ptr<RetroEnvironment> environment;
+	  int max_num_frames; // Maximum number of frames for each episode
+
+};
+
+ALEInterface::Impl::Impl(){
+  ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
+}
+
+ALEInterface::Impl::~Impl() {}
+
+
+// Get the value of a setting.
+std::string ALEInterface::Impl::getString(const std::string& key) {
+  assert(theSettings);
+  return theSettings->getString(key);
+}
+int ALEInterface::Impl::getInt(const std::string& key) {
+  assert(theSettings);
+  return theSettings->getInt(key);
+}
+bool ALEInterface::Impl::getBool(const std::string& key) {
+  assert(theSettings);
+  return theSettings->getBool(key);
+}
+float ALEInterface::Impl::getFloat(const std::string& key) {
+  assert(theSettings);
+  return theSettings->getFloat(key);
+}
+
+// Set the value of a setting.
+void ALEInterface::Impl::setString(const string& key, const string& value) {
+  assert(theSettings);
+  assert(theAleSystem);
+  theSettings->setString(key, value);
+  theSettings->validate();
+}
+void ALEInterface::Impl::setInt(const string& key, const int value) {
+  assert(theSettings);
+  assert(theAleSystem);
+  theSettings->setInt(key, value);
+  theSettings->validate();
+}
+void ALEInterface::Impl::setBool(const string& key, const bool value) {
+  assert(theSettings);
+  assert(theAleSystem);
+  theSettings->setBool(key, value);
+  theSettings->validate();
+}
+void ALEInterface::Impl::setFloat(const string& key, const float value) {
+  assert(theSettings);
+  assert(theAleSystem);
+  theSettings->setFloat(key, value);
+  theSettings->validate();
+}
+
+// Get the value of a setting.
+std::string ALEInterface::getString(const std::string& key) {
+	m_pimpl->getString(key);
+}
+int ALEInterface::getInt(const std::string& key) {
+	m_pimpl->getInt(key);
+}
+bool ALEInterface::getBool(const std::string& key) {
+	m_pimpl->getBool(key);
+}
+float ALEInterface::getFloat(const std::string& key) {
+	m_pimpl->getFloat(key);
+}
+
+// Set the value of a setting.
+void ALEInterface::setString(const string& key, const string& value) {
+	m_pimpl->setString(key, value);
+}
+void ALEInterface::setInt(const string& key, const int value) {
+	m_pimpl->setInt(key, value);
+}
+void ALEInterface::setBool(const string& key, const bool value) {
+	m_pimpl->setBool(key, value);
+}
+void ALEInterface::setFloat(const string& key, const float value) {
+	m_pimpl->setFloat(key, value);
+}
+
+
+ALEInterface::ALEInterface() : m_pimpl(new ALEInterface::Impl()) {
+  disableBufferedIO();
+  Logger::Info << welcomeMessage() << std::endl;
+}
+
+ALEInterface::ALEInterface(bool display_screen) : m_pimpl(new ALEInterface::Impl())  {
+  disableBufferedIO();
+  Logger::Info << welcomeMessage() << std::endl;
+  m_pimpl->setBool("display_screen", display_screen);
+}
+
+ALEInterface::~ALEInterface() {
+//	delete m_pimpl;
+}
+
+void ALEInterface::reset_game() {
+	m_pimpl->reset_game();
+}
+
+// Resets the game, but not the full system.
+void ALEInterface::Impl::reset_game() {
+	environment->reset();
+}
+
+
+reward_t ALEInterface::act(Action action) {
+    return m_pimpl->act(action);
+}
+reward_t ALEInterface::Impl::act(Action action) {
+  reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
+  if (theAleSystem->p_display_screen != NULL) {
+    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent()); //screen not displayed, function is based on SDL
+    while (theAleSystem->p_display_screen->manual_control_engaged()) {
+      Action user_action = theAleSystem->p_display_screen->getUserAction();
+      reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);
+      theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
+    }
+  }
+  return reward;
+}
+
 // Display ALE welcome message
 std::string ALEInterface::welcomeMessage() {
   std::ostringstream oss;
@@ -55,9 +300,9 @@ void ALEInterface::disableBufferedIO() {
   cout.sync_with_stdio();
 }
 
-void ALEInterface::createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
-                          std::auto_ptr<Settings> &theSettings,
-                          std::auto_ptr<RetroAgent> &theRetroAgent) {
+void ALEInterface::createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
+                          std::shared_ptr<Settings> &theSettings,
+                          std::shared_ptr<RetroAgent> &theRetroAgent) {
 #if (defined(WIN32) || defined(__MINGW32__))
 	theRetroAgent.reset(new RetroAgent());
 	theAleSystem.reset(new OSystemWin32());
@@ -72,7 +317,7 @@ void ALEInterface::createAleSystem(std::auto_ptr<AleSystem> &theAleSystem,
 }
 
 void ALEInterface::loadSettings(const string& romfile, const std::string& corefile,
-                                std::auto_ptr<AleSystem> &theAleSystem) {
+                                std::shared_ptr<AleSystem> &theAleSystem) {
   // Load the configuration from a config file (passed on the command
   //  line), if provided
   string configFile = theAleSystem->settings().getString("config", false);
@@ -124,26 +369,15 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 //  theAleSystem->colourPalette().setPalette("standard", currentDisplayFormat);
 }
 
-ALEInterface::ALEInterface() {
-  disableBufferedIO();
-  Logger::Info << welcomeMessage() << std::endl;
-  createAleSystem(theAleSystem, theSettings, theRetroAgent);
+void ALEInterface::loadROM(string rom_file, string core_file) {
+	m_pimpl->loadROM(rom_file, core_file);
 }
-
-ALEInterface::ALEInterface(bool display_screen) {
-  disableBufferedIO();
-  Logger::Info << welcomeMessage() << std::endl;
-  createAleSystem(theAleSystem, theSettings, theRetroAgent);
-  this->setBool("display_screen", display_screen);
-}
-
-ALEInterface::~ALEInterface() {}
 
 // Loads and initializes a game. After this call the game should be
 // ready to play. Resets the OSystem/Console/Environment/etc. This is
 // necessary after changing a setting. Optionally specify a new rom to
 // load.
-void ALEInterface::loadROM(string rom_file = "", string core_file) {
+void ALEInterface::Impl::loadROM(string rom_file, string core_file) {
   assert(theAleSystem.get());
   if (rom_file.empty()) {
     rom_file = theAleSystem->romFile();
@@ -151,7 +385,7 @@ void ALEInterface::loadROM(string rom_file = "", string core_file) {
   if (core_file.empty()) {
 	core_file = theAleSystem->coreFile();
   }
-  loadSettings(rom_file, core_file, theAleSystem);
+  ALEInterface::loadSettings(rom_file, core_file, theAleSystem);
   romSettings.reset(buildRomRLWrapper(rom_file));
   environment.reset(new RetroEnvironment(theAleSystem.get(), romSettings.get()));
   max_num_frames = theAleSystem->settings().getInt("max_num_frames_per_episode");
@@ -166,158 +400,225 @@ void ALEInterface::loadROM(string rom_file = "", string core_file) {
 //#endif
 }
 
-// Get the value of a setting.
-std::string ALEInterface::getString(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getString(key);
-}
-int ALEInterface::getInt(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getInt(key);
-}
-bool ALEInterface::getBool(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getBool(key);
-}
-float ALEInterface::getFloat(const std::string& key) {
-  assert(theSettings.get());
-  return theSettings->getFloat(key);
-}
-
-// Set the value of a setting.
-void ALEInterface::setString(const string& key, const string& value) {
-  assert(theSettings.get());
-  assert(theAleSystem.get());
-  theSettings->setString(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setInt(const string& key, const int value) {
-  assert(theSettings.get());
-  assert(theAleSystem.get());
-  theSettings->setInt(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setBool(const string& key, const bool value) {
-  assert(theSettings.get());
-  assert(theAleSystem.get());
-  theSettings->setBool(key, value);
-  theSettings->validate();
-}
-void ALEInterface::setFloat(const string& key, const float value) {
-  assert(theSettings.get());
-  assert(theAleSystem.get());
-  theSettings->setFloat(key, value);
-  theSettings->validate();
-}
-
-
-// Resets the game, but not the full system.
-void ALEInterface::reset_game() {
-  environment->reset();
+bool ALEInterface::game_over() {
+	return m_pimpl->game_over();
 }
 
 // Indicates if the game has ended.
-bool ALEInterface::game_over() {
+bool ALEInterface::Impl::game_over() {
   return (environment->isTerminal() ||
           (max_num_frames > 0 && getEpisodeFrameNumber() >= max_num_frames));
 }
 
-// The remaining number of lives.
 const int ALEInterface::lives() {
+	return m_pimpl->lives();
+}
+
+// The remaining number of lives.
+const int ALEInterface::Impl::lives() {
   if (!romSettings.get()){
     throw std::runtime_error("ROM not set");
   }
   return romSettings->lives();
 }
 
-// Applies an action to the game and returns the reward. It is the
-// user's responsibility to check if the game has ended and reset
-// when necessary - this method will keep pressing buttons on the
-// game over screen.
-reward_t ALEInterface::act(Action action) {
-  reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
-  if (theAleSystem->p_display_screen != NULL) {
-    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent()); //screen not displayed, function is based on SDL
-    while (theAleSystem->p_display_screen->manual_control_engaged()) {
-      Action user_action = theAleSystem->p_display_screen->getUserAction();
-      reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);
-      theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
-    }
-  }
-  return reward;
+ActionVect ALEInterface::getLegalActionSet() {
+	return m_pimpl->getLegalActionSet();
 }
 
 // TODO SN : replace function with something else since the vector of all legal actions woul dbe too big
 // Returns the vector of legal actions. This should be called only
 // after the rom is loaded.
-ActionVect ALEInterface::getLegalActionSet() {
+ActionVect ALEInterface::Impl::getLegalActionSet() {
   if (!romSettings.get()){
     throw std::runtime_error("ROM not set");
   }
   return romSettings->getAllActions();
 }
 
+ActionVect ALEInterface::getMinimalActionSet() {
+	return m_pimpl->getMinimalActionSet();
+}
+
 // Returns the vector of the minimal set of actions needed to play
 // the game.
-ActionVect ALEInterface::getMinimalActionSet() {
+ActionVect ALEInterface::Impl::getMinimalActionSet() {
   if (!romSettings.get()){
     throw std::runtime_error("ROM not set");
   }
   return romSettings->getMinimalActionSet();
 }
 
-// Returns the frame number since the loading of the ROM
 int ALEInterface::getFrameNumber() {
+  return m_pimpl->getFrameNumber();
+}
+
+// Returns the frame number since the loading of the ROM
+int ALEInterface::Impl::getFrameNumber() {
   return environment->getFrameNumber();
 }
 
-// Returns the frame number since the start of the current episode
 int ALEInterface::getEpisodeFrameNumber() {
+  return m_pimpl->getEpisodeFrameNumber();
+}
+
+// Returns the frame number since the start of the current episode
+int ALEInterface::Impl::getEpisodeFrameNumber() {
   return environment->getEpisodeFrameNumber();
 }
 
-// Returns the current game screen
 const ALEScreen& ALEInterface::getScreen() {
+  return m_pimpl->getScreen();
+}
+
+// Returns the current game screen
+const ALEScreen& ALEInterface::Impl::getScreen() {
   return environment->getScreen();
 }
 
-// Returns the current RAM content
 const ALERAM& ALEInterface::getRAM() {
+  return m_pimpl->getRAM();
+}
+
+// Returns the current RAM content
+const ALERAM& ALEInterface::Impl::getRAM() {
   return environment->getRAM();
 }
 
-// Saves the state of the system
 void ALEInterface::saveState() {
+	m_pimpl->saveState();
+}
+
+// Saves the state of the system
+void ALEInterface::Impl::saveState() {
   environment->save();
 }
 
-// Loads the state of the system
 void ALEInterface::loadState() {
+	m_pimpl->loadState();
+}
+
+// Loads the state of the system
+void ALEInterface::Impl::loadState() {
   environment->load();
 }
 
 ALEState ALEInterface::cloneState() {
+  return m_pimpl->cloneState();
+}
+
+ALEState ALEInterface::Impl::cloneState() {
   return environment->cloneState();
 }
 
 void ALEInterface::restoreState(const ALEState& state) {
+  return m_pimpl->restoreState(state);
+}
+
+void ALEInterface::Impl::restoreState(const ALEState& state) {
   return environment->restoreState(state);
 }
 
 ALEState ALEInterface::cloneSystemState() {
+  return m_pimpl->cloneSystemState();
+}
+
+ALEState ALEInterface::Impl::cloneSystemState() {
   return environment->cloneSystemState();
 }
 
 void ALEInterface::restoreSystemState(const ALEState& state) {
+  return m_pimpl->restoreSystemState(state);
+}
+
+void ALEInterface::Impl::restoreSystemState(const ALEState& state) {
   return environment->restoreSystemState(state);
 }
 
 void ALEInterface::saveScreenPNG(const string& filename) {
+	m_pimpl->saveScreenPNG(filename);
+}
+
+void ALEInterface::Impl::saveScreenPNG(const string& filename) {
   
 //  ScreenExporter exporter(theAleSystem->colourPalette());
 //  exporter.save(environment->getScreen(), filename);
 }
 
 ScreenExporter *ALEInterface::createScreenExporter(const std::string &filename) const {
+	return m_pimpl->createScreenExporter(filename);
+}
+
+ScreenExporter *ALEInterface::Impl::createScreenExporter(const std::string &filename) const {
 //    return new ScreenExporter(theAleSystem->colourPalette(), filename);
 }
+
+/* --------------------------------------------------------------------------------------------------*/
+
+// RAM & Screen implementation
+
+ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
+
+  m_rows = rhs.m_rows;
+  m_columns = rhs.m_columns;
+
+  m_pixels = rhs.m_pixels;
+
+  return *this;
+}
+bool ALEScreen::equals(const ALEScreen &rhs) const {
+  return (m_rows == rhs.m_rows &&
+          m_columns == rhs.m_columns &&
+          (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
+}
+
+// pixel accessors, (row, column)-ordered
+inline pixel_t ALEScreen::get(int r, int c) const {
+  // Perform some bounds-checking
+  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
+  return m_pixels[r * m_columns + c];
+}
+
+inline pixel_t* ALEScreen::pixel(int r, int c) {
+  // Perform some bounds-checking
+  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
+  return &m_pixels[r * m_columns + c];
+}
+
+// Access a whole row
+inline pixel_t* ALEScreen::getRow(int r) const {
+  assert (r >= 0 && r < m_rows);
+  return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
+}
+
+
+//inline ALERAM::ALERAM() {
+//}
+
+inline ALERAM::ALERAM(const ALERAM &rhs) {
+  // Copy data over
+  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
+}
+
+inline ALERAM& ALERAM::operator=(const ALERAM &rhs) {
+  // Copy data over
+  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
+
+  return *this;
+}
+
+inline bool ALERAM::equals(const ALERAM &rhs) const {
+  return (memcmp(m_ram, rhs.m_ram, size()) == 0);
+}
+
+// Byte accessors
+inline byte_t ALERAM::get(unsigned int x) const {
+  // Wrap RAM around the first 128 bytes
+  return m_ram[x & 0x7F];
+}
+
+inline byte_t* ALERAM::byte(unsigned int x) {
+  return &m_ram[x & 0x7F];
+}
+
+} // namespace ale

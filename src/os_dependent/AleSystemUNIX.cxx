@@ -28,6 +28,7 @@
 #include "AleSystem.hxx"
 #include "AleSystemUNIX.hxx"
 using namespace std;
+using namespace ale;
 
 //ALE  #ifdef HAVE_GETTIMEOFDAY
 #include <time.h>

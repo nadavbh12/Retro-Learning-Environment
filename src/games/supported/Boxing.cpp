@@ -14,6 +14,7 @@
 #include "../RomUtils.hpp"
 #include <iomanip>
 
+using namespace ale;
 
 BoxingSettings::BoxingSettings() {
 

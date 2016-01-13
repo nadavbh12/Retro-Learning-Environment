@@ -17,6 +17,8 @@
  */
 #include "RomSettings.hpp"
 
+using namespace ale;
+
 bool RomSettings::isLegal(const Action& a) const {
   return true;
 }

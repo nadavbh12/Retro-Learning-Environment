@@ -31,6 +31,7 @@
 #include "AleSystem.hxx"
 #include <stack>
 
+namespace ale {
 
 // This defines the number of "random" environments
 #define NUM_RANDOM_ENVIRONMENTS (500)
@@ -126,5 +127,7 @@ class RetroEnvironment {
     Action m_player_a_action, m_player_b_action;
 
 };
+
+} // namespace ale
 
 #endif // __S9x_ENVIRONMENT_HPP__

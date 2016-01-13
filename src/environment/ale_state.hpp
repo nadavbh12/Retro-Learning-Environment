@@ -24,6 +24,8 @@
 #include "../games/RomSettings.hpp"
 #include "../common/Log.hpp"
 
+namespace ale {
+
 #define PADDLE_DELTA 23000
 // MGB Values taken from Paddles.cxx (Stella 3.3) - 1400000 * [5,235] / 255
 #define PADDLE_MIN 27450
@@ -121,6 +123,8 @@ class ALEState {
     std::string m_serialized_state; // The stored environment state, if this is a saved state
 
 };
+
+} // namespace ale
 
 #endif // __ALE_STATE_HPP__
 

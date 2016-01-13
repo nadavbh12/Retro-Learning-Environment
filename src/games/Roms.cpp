@@ -77,6 +77,7 @@
 //#include "supported/YarsRevenge.hpp"
 //#include "supported/Zaxxon.hpp"
 
+using namespace ale;
 
 /* list of supported games */
 static const RomSettings *roms[]  = {
@@ -148,7 +149,7 @@ static const RomSettings *roms[]  = {
 
 
 /* looks for the RL wrapper corresponding to a particular rom title */
-RomSettings *buildRomRLWrapper(const std::string &rom) {
+RomSettings *ale::buildRomRLWrapper(const std::string &rom) {
 
     size_t slash_ind = rom.find_last_of("/\\");
     std::string rom_str = rom.substr(slash_ind + 1);

@@ -28,57 +28,59 @@
 #include "common/Constants.h"
 #include "ale_interface.hpp"
 
-static std::auto_ptr<AleSystem> theAleSystem(NULL);
-static std::auto_ptr<Settings> theSettings(NULL);
-static std::auto_ptr<RetroAgent> theRetroAgent;
-
-//static ALEController* createController(OSystem* osystem, std::string type) {
-//  if(type.empty()){
-//    std::cerr << "You must specify a controller type (via -game_controller)." << std::endl;
-//    exit(1);
-//  }
-//  else if (type == "fifo") {
-//    std::cerr << "Game will be controlled through FIFO pipes." << std::endl;
-//    return new FIFOController(osystem, false);
-//  }
-//  else if (type == "fifo_named") {
-//    std::cerr << "Game will be controlled through named FIFO pipes." << std::endl;
-//    return new FIFOController(osystem, true);
-//  }
-//  else if (type == "rlglue") {
-//    std::cerr << "Game will be controlled through RL-Glue." << std::endl;
-//    return new RLGlueController(osystem);
-//  }
-//  else {
-//    std::cerr << "Invalid controller type: " << type << " " << std::endl;
-//    exit(1);
-//  }
-//}
-
-/* application entry point */
+using namespace ale;
+//
+//static std::shared_ptr<AleSystem> theAleSystem(NULL);
+//static std::shared_ptr<Settings> theSettings(NULL);
+//static std::shared_ptr<RetroAgent> theRetroAgent;
+//
+////static ALEController* createController(OSystem* osystem, std::string type) {
+////  if(type.empty()){
+////    std::cerr << "You must specify a controller type (via -game_controller)." << std::endl;
+////    exit(1);
+////  }
+////  else if (type == "fifo") {
+////    std::cerr << "Game will be controlled through FIFO pipes." << std::endl;
+////    return new FIFOController(osystem, false);
+////  }
+////  else if (type == "fifo_named") {
+////    std::cerr << "Game will be controlled through named FIFO pipes." << std::endl;
+////    return new FIFOController(osystem, true);
+////  }
+////  else if (type == "rlglue") {
+////    std::cerr << "Game will be controlled through RL-Glue." << std::endl;
+////    return new RLGlueController(osystem);
+////  }
+////  else {
+////    std::cerr << "Invalid controller type: " << type << " " << std::endl;
+////    exit(1);
+////  }
+////}
+//
+///* application entry point */
 int main(int argc, char* argv[]) {
-
-  ALEInterface::disableBufferedIO();
-
-  std::cerr << ALEInterface::welcomeMessage() << std::endl;
-
-  ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
-  // Process commandline arguments, which over-ride all possible
-  // config file settings
-  std::string romfile = theAleSystem->settings().loadCommandLine(argc, argv);
-  std::string corefile = theAleSystem->settings().loadCommandLine(argc, argv);
-  ALEInterface::loadSettings(romfile, corefile, theAleSystem);
-
-  // TODO SN: implement after we have some settings
-  // Create the game controller
-  std::string controller_type = theAleSystem->settings().getString("game_controller");
-//  std::auto_ptr<ALEController> controller(createController(theAleSystem.get(), controller_type));
-
-//  controller->run();
-
-  // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
-  //  still being a valid construct)
-  theAleSystem.reset(NULL);
-
+//
+//  ALEInterface::disableBufferedIO();
+//
+//  std::cerr << ALEInterface::welcomeMessage() << std::endl;
+//
+//  ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
+//  // Process commandline arguments, which over-ride all possible
+//  // config file settings
+//  std::string romfile = theAleSystem->settings().loadCommandLine(argc, argv);
+//  std::string corefile = theAleSystem->settings().loadCommandLine(argc, argv);
+//  ALEInterface::loadSettings(romfile, corefile, theAleSystem);
+//
+//  // TODO SN: implement after we have some settings
+//  // Create the game controller
+//  std::string controller_type = theAleSystem->settings().getString("game_controller");
+////  std::auto_ptr<ALEController> controller(createController(theAleSystem.get(), controller_type));
+//
+////  controller->run();
+//
+//  // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
+//  //  still being a valid construct)
+//  theAleSystem.reset(NULL);
+//
   return 0;
 }

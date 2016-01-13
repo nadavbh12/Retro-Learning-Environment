@@ -18,6 +18,7 @@
 
 #include "AleSystem.hxx"
 
+namespace ale {
 
 /* reads a byte at a memory location between 0 and 128 */
 
@@ -79,4 +80,4 @@ int getDecimalScore(int lower_index, int middle_index, int higher_index, const A
     return score;
 }
 
-
+} // namespace ale

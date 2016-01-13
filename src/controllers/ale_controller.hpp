@@ -24,6 +24,8 @@
 #include "../environment/retro_environment.hpp"
 #include"../environment/AleSystem.hxx"
 
+namespace ale {
+
 class ALEController {
   public:
     ALEController(AleSystem * alesystem);
@@ -46,5 +48,6 @@ class ALEController {
     RetroEnvironment 			m_environment;
 };
 
+} // namespace ale
 
 #endif // __ALE_CONTROLLER_HPP__

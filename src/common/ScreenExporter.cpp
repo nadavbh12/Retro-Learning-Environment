@@ -23,6 +23,8 @@
 // SN:
 #include <iomanip>
 
+using namespace ale;
+
 //// MGB: These methods originally belonged to ExportScreen. Possibly these should be returned to
 //// their own class, rather than be static methods. They are here to avoid exposing the gritty
 //// details of PNG generation.

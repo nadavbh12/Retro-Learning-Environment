@@ -14,6 +14,7 @@
 //#include "../emucore/Event.hxx"
 #include "../common/Constants.h"
 using namespace std;
+using namespace ale;
 
 #include <stdexcept>
 

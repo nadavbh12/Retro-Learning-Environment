@@ -24,6 +24,8 @@
 //SN:
 #include <iostream>
 
+namespace ale {
+
 class ScreenExporter {
 
     public:
@@ -54,6 +56,8 @@ class ScreenExporter {
         /** The directory where we save successive frames. */ 
         std::string m_path;
 };
+
+} // namespace ale
 
 #endif // __SCREEN_EXPORTER_HPP__ 
 

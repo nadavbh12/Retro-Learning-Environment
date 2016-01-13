@@ -22,6 +22,8 @@
 #include "../common/bspf.hxx"
 #include "../environment/AleSystem.hxx"
 
+namespace ale {
+
 class RetroAgent;
 
 /**
@@ -50,5 +52,7 @@ class AleSystemUNIX : public AleSystem
     */
     uInt32 getTicks();
 };
+
+} // namespace ale
 
 #endif

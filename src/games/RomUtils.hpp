@@ -17,6 +17,8 @@
 #ifndef __ROMUTILS_HPP__
 #define __ROMUTILS_HPP__
 
+namespace ale {
+
 class AleSystem;
 
 // TODO SN: implement all once we have a system substitute
@@ -27,6 +29,8 @@ extern int readRam(const AleSystem* system, int offset);
 extern int getDecimalScore(int idx, const AleSystem* system);
 extern int getDecimalScore(int lo, int hi, const AleSystem* system);
 extern int getDecimalScore(int lo, int mid, int hi, const AleSystem* system);
+
+} // namespace ale
 
 #endif // __ROMUTILS_HPP__
 

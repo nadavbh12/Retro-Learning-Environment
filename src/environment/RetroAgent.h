@@ -4,6 +4,8 @@
 #include<iostream>
 #include "../common/Constants.h"
 
+namespace ale {
+
 // TODO make class singleton
 class RetroAgent{
 public:
@@ -34,5 +36,7 @@ public:
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();
 };
+
+} // namespace ale
 
 #endif // __RETRO_AGENT_HPP__

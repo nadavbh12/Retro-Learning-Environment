@@ -23,6 +23,8 @@
 
 #include "SettingsUNIX.hxx"
 
+namespace ale {
+
 SettingsUNIX::SettingsUNIX(AleSystem* alesystem)
   : Settings(alesystem)
 {
@@ -35,3 +37,5 @@ SettingsUNIX::SettingsUNIX(AleSystem* alesystem)
 SettingsUNIX::~SettingsUNIX()
 {
 }
+
+} // namespace ale

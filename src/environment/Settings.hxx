@@ -19,14 +19,16 @@
 #ifndef SETTINGS_HXX
 #define SETTINGS_HXX
 
-class AleSystem;
-
 #include <map>
 #include <stdexcept>
 
 #include "../common/Array.hxx"
 #include "../common/Log.hpp"
 #include "../common/bspf.hxx"
+
+namespace ale {
+
+class AleSystem;
 
 /**
   This class provides an interface for accessing frontend specific settings.
@@ -231,5 +233,7 @@ class Settings
     // program exit.
     SettingsArray myExternalSettings;
 };
+
+} // namespace ale
 
 #endif

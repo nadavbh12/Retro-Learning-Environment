@@ -19,6 +19,8 @@
 #ifndef AleSystem_HXX
 #define AleSystem_HXX
 
+namespace ale {
+
 //class PropertiesSet;
 class GameController;
 class Menu;
@@ -27,6 +29,9 @@ class Launcher;
 class Debugger;
 class CheatManager;
 class VideoDialog;
+
+}
+
 #include "../common/Array.hxx"
 //ALE  #include "EventHandler.hxx"
 //ALE  #include "FrameBuffer.hxx"
@@ -45,6 +50,9 @@ class VideoDialog;
 #include "../common/bspf.hxx"
 
 #include "RetroAgent.h"
+
+
+namespace ale {
 
 struct Resolution {
   uInt32 width;
@@ -571,5 +579,7 @@ class AleSystem
     // Assignment operator isn't supported by this class so make it private
     AleSystem& operator = (const AleSystem&);
 };
+
+} // namespace ale
 
 #endif

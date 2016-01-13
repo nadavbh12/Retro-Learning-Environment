@@ -37,6 +37,8 @@
 //#include "../emucore/Serializer.hxx"
 //#include "../emucore/Deserializer.hxx"
 
+namespace ale {
+
 class AleSystem;
 
 
@@ -51,19 +53,19 @@ struct RomSettings {
     virtual bool isTerminal() const = 0;
 
     // get the most recently observed reward
-    virtual reward_t getReward() const = 0;
+    virtual ale::reward_t getReward() const = 0;
 
     // the rom-name
     virtual const char *rom() const = 0;
 
     // create a new instance of the rom
-    virtual RomSettings *clone() const = 0;
+    virtual ale::RomSettings *clone() const = 0;
 
     // is an action part of the minimal set?
-    virtual bool isMinimal(const Action &a) const = 0;
+    virtual bool isMinimal(const ale::Action &a) const = 0;
 
     // process the latest information from ALE
-    virtual void step(const AleSystem &system) = 0;
+    virtual void step(const ale::AleSystem &system) = 0;
 
     // saves the state of the rom settings
     virtual void saveState(
@@ -76,22 +78,23 @@ struct RomSettings {
     		) = 0;
 
     // is an action legal (default: yes)
-    virtual bool isLegal(const Action &a) const;
+    virtual bool isLegal(const ale::Action &a) const;
 
     // Remaining lives.
     virtual const int lives() { return isTerminal() ? 0 : 1; }
 
     // Returns a restricted (minimal) set of actions. If not overriden, this is all actions.
-    virtual ActionVect getMinimalActionSet() = 0;
+    virtual ale::ActionVect getMinimalActionSet() = 0;
 
     // Returns the set of all legal actions
     // Can change according to emulation system
-    virtual ActionVect getAllActions() = 0;
+    virtual ale::ActionVect getAllActions() = 0;
 
     // Returns a list of actions that are required to start the game.
     // By default this is an empty list.
-    virtual ActionVect getStartingActions();
+    virtual ale::ActionVect getStartingActions();
 };
 
+} // namespace ale
 
 #endif // __ROMSETTINGS_HPP__

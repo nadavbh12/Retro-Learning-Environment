@@ -22,6 +22,8 @@
 #include "../common/display_screen.h"
 #include "../common/Log.hpp"
 
+using namespace ale;
+
 ALEController::ALEController(AleSystem* alesystem) : m_alesystem(alesystem),
 //  TODO SN: retreive rom file elsewhere
 //  m_settings(buildRomRLWrapper(m_osystem->settings().getString("rom_file"))),

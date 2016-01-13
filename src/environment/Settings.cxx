@@ -29,6 +29,8 @@ using namespace std;
 #include "Settings.hxx"
 #include "AleSystem.hxx"
 
+using namespace ale;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Settings::Settings(AleSystem* alesystem) : myAleSystem(alesystem) {
     // Add this settings object to the OSystem

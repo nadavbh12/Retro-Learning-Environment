@@ -27,6 +27,8 @@
 #ifdef __USE_SDL
 #include "SDL.h"
 
+namespace ale {
+
 class DisplayScreen {
 public:
     DisplayScreen(
@@ -42,7 +44,7 @@ public:
     bool manual_control_engaged() { return manual_control_active; }
 
     // Captures the keypress of a user in manual control mode.
-    Action getUserAction();
+    ale::Action getUserAction();
 
 protected:
     // Checks for SDL events.
@@ -67,7 +69,11 @@ protected:
     // Used to calibrate delay between frames
     Uint32 last_frame_time;
 };
+
+} // namespace ale
 #else
+
+namespace ale {
 /** A dummy class that simply ignores display events. */
 class DisplayScreen {
   public:
@@ -78,6 +84,8 @@ class DisplayScreen {
     bool manual_control_engaged() { return false; }
     Action getUserAction() { return JOYPAD_UNDEFINED; }
 };
+
+} // namespace ale
 #endif // __USE_SDL
 
 #endif // DISPLAY_SCREEN

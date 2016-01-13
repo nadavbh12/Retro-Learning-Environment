@@ -22,6 +22,7 @@
 #include "../environment/Settings.hxx"
 #include "../environment/AleSystem.hxx"
 
+namespace ale {
 /**
   This class defines UNIX-like OS's (Linux) system specific settings.
 
@@ -41,5 +42,7 @@ class SettingsUNIX : public Settings
     */
     virtual ~SettingsUNIX();
 };
+
+} // namespace ale
 
 #endif

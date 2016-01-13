@@ -17,6 +17,8 @@
 #include "phosphor_blend.hpp"
 //#include "../emucore/Console.hxx"
 
+using namespace ale;
+
 PhosphorBlend::PhosphorBlend(
 //		OSystem * osystem):
 //    m_osystem(osystem
