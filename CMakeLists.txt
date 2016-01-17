@@ -114,9 +114,9 @@ target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
 
-target_include_directories(ale-lib PUBLIC ${include_directories})
-target_include_directories(ale-bin PUBLIC ${include_directories})
-target_include_directories(ale-c-lib PUBLIC ${include_directories})
+#target_include_directories(ale-lib PUBLIC ${include_directories})
+#target_include_directories(ale-bin PUBLIC ${include_directories})
+#target_include_directories(ale-c-lib PUBLIC ${include_directories})
 
 
 if(BUILD_EXAMPLES)

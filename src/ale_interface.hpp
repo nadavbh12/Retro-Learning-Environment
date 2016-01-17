@@ -34,7 +34,7 @@
 #include <vector>
 #include <memory>
 #include <cassert>
-#include "../libretro.h"
+#include "libretro.h"
 #include <string>
 
 // SN
@@ -195,7 +195,7 @@ public:
   reward_t act(Action action);
 
   // Indicates if the game has ended.
-  bool game_over();
+  bool game_over() const;
 
   // Returns the vector of legal actions. This should be called only
   // after the rom is loaded.
@@ -215,10 +215,10 @@ public:
   int getEpisodeFrameNumber();
 
   // Returns the current game screen
-  const ALEScreen &getScreen();
+  const ALEScreen &getScreen() const;
 
   // Returns the current RAM content
-  const ALERAM &getRAM();
+  const ALERAM &getRAM() const;
 
   // Saves the state of the system
   void saveState();
@@ -271,6 +271,12 @@ public:
                             std::shared_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
                            std::shared_ptr<AleSystem> &theSLESystem);
+  static void getRGB(
+      unsigned char pixel,
+      unsigned char &red,
+      unsigned char &green,
+      unsigned char &blue
+  );
 
  private:
 
