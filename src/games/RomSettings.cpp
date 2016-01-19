@@ -26,3 +26,24 @@ bool RomSettings::isLegal(const Action& a) const {
 ActionVect RomSettings::getStartingActions() {
     return ActionVect();
 }
+
+
+ActionVect RomSettings::getMinimalActionSet() {
+  ActionVect actions;
+  for (unsigned a = 0; a < AllActionsVector.size(); a++) {
+    if (isMinimal(AllActionsVector.at(a)) && isLegal(AllActionsVector.at(a))) {
+      actions.push_back(AllActionsVector.at(a));
+    }
+  }
+  return actions;
+}
+
+ActionVect RomSettings::getAllActions() {
+  ActionVect actions;
+  for (unsigned a = 0; a < AllActionsVector.size(); a++) {
+    if (isLegal(AllActionsVector.at(a))) {
+      actions.push_back(AllActionsVector.at(a));
+    }
+  }
+  return actions;
+}

@@ -19,23 +19,32 @@
 #include "Constants.h"
 
 using namespace ale;
-
-ActionVect AtariSettings::getMinimalActionSet() {
-  ActionVect actions;
-  for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {
-    if (isMinimal(AtariAllActionsVector.at(a)) && isLegal(AtariAllActionsVector.at(a))) {
-      actions.push_back(AtariAllActionsVector.at(a));
-    }
-  }
-  return actions;
+AtariSettings::AtariSettings(){
+	AllActionsVector = {
+				JOYPAD_NOOP,
+				JOYPAD_FIRE,
+				JOYPAD_UP,
+				JOYPAD_RIGHT,
+				JOYPAD_LEFT,
+				JOYPAD_DOWN,
+				JOYPAD_UP | JOYPAD_RIGHT,
+				JOYPAD_UP | JOYPAD_LEFT,
+				JOYPAD_DOWN | JOYPAD_RIGHT,
+				JOYPAD_DOWN | JOYPAD_LEFT,
+				JOYPAD_UP | JOYPAD_FIRE,
+				JOYPAD_RIGHT | JOYPAD_FIRE,
+				JOYPAD_LEFT | JOYPAD_FIRE,
+				JOYPAD_DOWN | JOYPAD_FIRE,
+				JOYPAD_UP | JOYPAD_RIGHT | JOYPAD_FIRE,
+				JOYPAD_UP | JOYPAD_LEFT | JOYPAD_FIRE,
+				JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE,
+				JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE
+			};
+//	int up,down;
+//	for(int iup = 0; iup < 1 ; iup++,up+=JOYPAD_UP){
+//		for(int idown = 0; idown == JOYPAD_UP ; idown+=JOYPAD_DOWN){
+//			AllActionsVector.push_back(up | down);
+//		}
+//	}
 }
 
-ActionVect AtariSettings::getAllActions() {
-  ActionVect actions;
-  for (unsigned a = 0; a < AtariAllActionsVector.size(); a++) {
-    if (isLegal(AtariAllActionsVector.at(a))) {
-      actions.push_back(AtariAllActionsVector.at(a));
-    }
-  }
-  return actions;
-}

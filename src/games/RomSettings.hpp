@@ -84,15 +84,17 @@ struct RomSettings {
     virtual const int lives() { return isTerminal() ? 0 : 1; }
 
     // Returns a restricted (minimal) set of actions. If not overriden, this is all actions.
-    virtual ale::ActionVect getMinimalActionSet() = 0;
+    ActionVect getMinimalActionSet();
 
     // Returns the set of all legal actions
     // Can change according to emulation system
-    virtual ale::ActionVect getAllActions() = 0;
+    ActionVect getAllActions();
 
     // Returns a list of actions that are required to start the game.
     // By default this is an empty list.
-    virtual ale::ActionVect getStartingActions();
+    virtual ActionVect getStartingActions();
+protected:
+    ActionVect AllActionsVector;
 };
 
 } // namespace ale
