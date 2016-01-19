@@ -212,7 +212,7 @@ public:
   const int lives();
 
   // Returns the frame number since the start of the current episode
-  int getEpisodeFrameNumber();
+  int getEpisodeFrameNumber() const;
 
   // Returns the current game screen
   const ALEScreen &getScreen() const;

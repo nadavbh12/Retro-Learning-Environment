@@ -103,7 +103,7 @@ public:
 	  const int lives();
 
 	  // Returns the frame number since the start of the current episode
-	  int getEpisodeFrameNumber();
+	  int getEpisodeFrameNumber() const;
 
 	  // Returns the current game screen
 	  const ALEScreen &getScreen() const;
@@ -506,12 +506,12 @@ int ALEInterface::Impl::getFrameNumber() {
   return environment->getFrameNumber();
 }
 
-int ALEInterface::getEpisodeFrameNumber() {
+int ALEInterface::getEpisodeFrameNumber() const{
   return m_pimpl->getEpisodeFrameNumber();
 }
 
 // Returns the frame number since the start of the current episode
-int ALEInterface::Impl::getEpisodeFrameNumber() {
+int ALEInterface::Impl::getEpisodeFrameNumber() const{
   return environment->getEpisodeFrameNumber();
 }
 
