@@ -27,45 +27,6 @@
 using namespace std;
 using namespace ale;
 
-//int main(int argc, char *argv[]) {
-//	if (argc < 3)
-//		cout << "usage: " << argv[0] << " <core> <game>" << endl;
-//
-//	RetroAgent rAgent;
-//
-//	if (!rAgent.initWindow())
-//		cout << "Failed to initialize glfw" << endl;
-//
-//	rAgent.loadCore(argv[1]);
-//	rAgent.loadRom(argv[2]);
-//
-//	while (!rAgent.windowShouldClose()) {
-//		rAgent.pollEvents();
-//
-//		rAgent.run();
-//
-//		rAgent.clearWindows();
-//
-//		rAgent.videoRender();
-//
-//		rAgent.swapBuffers();
-//	}
-//
-//	rAgent.unloadCore();
-//	rAgent.audioDeinit();
-//	rAgent.videoDeinit();
-//
-//	rAgent.terminateWindow();
-//	return 0;
-//}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-/////								Below is ALE 											/////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 #include <unistd.h>
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -97,10 +58,10 @@ int main(int argc, char** argv) {
     //The default is already 0.25, this is just an example
     ale.setFloat("repeat_action_probability", 0.25);
 
-//#ifdef __USE_OpenGL
+#ifdef __USE_SDL
     ale.setBool("display_screen", true);
     ale.setBool("sound", true);
-//#endif
+#endif
 
     // Load the ROM file. (Also resets the system for new settings to
     // take effect.)
@@ -110,6 +71,7 @@ int main(int argc, char** argv) {
 //    ActionVect legal_actions = ale.getLegalActionSet();
     // SN: replaced legal with minimal since legal is too big
     ActionVect legal_actions = ale.getMinimalActionSet();
+    DEBUG2("legal actions size: " << legal_actions.size());
 
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {

@@ -16,9 +16,11 @@
 #include "Constants.h"
 #include <sstream>
 
+using namespace ale;
+
 #define CAT_STR(s, x, y) if ((x & y) > 0){ if (first){first=false;s << #y ;} else {s << " | " << #y ;}}
 
-std::string action_to_string(ale::Action a) {
+std::string ale::action_to_string(ale::Action a) {
 	std::stringstream ss;
 	bool first = true;
 //	if ((a & JOYPAD_B) > 0){ if (first){first=true;ss << JOYPAD_B;} else {ss << " | " << JOYPAD_B;}}
@@ -48,7 +50,7 @@ std::string action_to_string(ale::Action a) {
 	CAT_STR(ss, a, JOYPAD_LAST_ACTION_INDEX	);
 	CAT_STR(ss, a, PLAYER_A					);
 	CAT_STR(ss, a, PLAYER_B					);
-	ss << endl;
+//	ss << endl;
 	return ss.str();
 
 //	return "no matching string";

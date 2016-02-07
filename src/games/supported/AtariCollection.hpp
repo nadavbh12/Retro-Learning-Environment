@@ -15,28 +15,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * *****************************************************************************
  * A.L.E (Arcade Learning Environment)
- * Copyright (c) 2009-2013 by Yavar Naddaf, Joel Veness, Marc G. Bellemare and 
+ * Copyright (c) 2009-2013 by Yavar Naddaf, Joel Veness, Marc G. Bellemare and
  *   the Reinforcement Learning and Artificial Intelligence Laboratory
- * Released under the GNU General Public License; see License.txt for details. 
+ * Released under the GNU General Public License; see License.txt for details.
  *
  * Based on: Stella  --  "An Atari 2600 VCS Emulator"
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
  *
  * *****************************************************************************
  */
-#ifndef __BOXING_HPP__
-#define __BOXING_HPP__
 
-#include "../AtariSettings.hpp"
+#ifndef __ATARI_COLLECTION_SETTINGS_HPP__
+#define __ATARI_COLLECTION_SETTINGS_HPP__
+/* RL wrapper for AtariCollection settings */
+
+#include "../SnesSettings.hpp"
 
 namespace ale {
 
-/* RL wrapper for Boxing settings */
-struct BoxingSettings : public AtariSettings {
+struct AtariCollectionSettings : public SnesSettings {
 
     public:
 
-        BoxingSettings();
+		AtariCollectionSettings();
 
         // reset
         void reset();
@@ -48,7 +49,7 @@ struct BoxingSettings : public AtariSettings {
         reward_t getReward() const;
 
         // the rom-name
-        const char* rom() const { return "boxing"; }
+        const char* rom() const { return "atari_collection"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
@@ -63,7 +64,7 @@ struct BoxingSettings : public AtariSettings {
         void saveState(
         		//Serializer & ser
         		);
-    
+
         // loads the state of the rom settings
         void loadState(
 //        		Deserializer & ser
@@ -82,5 +83,4 @@ struct BoxingSettings : public AtariSettings {
 
 } // namespace ale
 
-#endif // __BOXING_HPP__
-
+#endif // __ATARI_COLLECTION_SETTINGS_HPP__

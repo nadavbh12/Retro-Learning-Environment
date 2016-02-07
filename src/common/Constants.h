@@ -22,7 +22,6 @@
 #include <vector>
 #include <valarray>
 #include <cstdlib>
-//#include "../emucore/m6502/src/bspf/src/bspf.hxx"
 // SN:
 #include <iostream>
 #include "DebugMacros.h"
@@ -33,7 +32,7 @@
 
 namespace ale{
 
-std::string action_to_string(ale::Action a);
+std::string action_to_string(Action a);
 
 //static const ActionVect AtariAllActionsVector{
 //	JOYPAD_NOOP,

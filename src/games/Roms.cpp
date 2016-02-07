@@ -12,6 +12,7 @@
 #include "Roms.hpp"
 #include "RomSettings.hpp"
 #include "RomUtils.hpp"
+#include "supported/AtariCollection.hpp"
 
 // include the game implementations
 //#include "supported/AirRaid.hpp"
@@ -144,7 +145,7 @@ static const RomSettings *roms[]  = {
 //    new YarsRevengeSettings(),
 //    new ZaxxonSettings(),
 
-//	new AtariCollectionSettings()
+	new AtariCollectionSettings()
 };
 
 

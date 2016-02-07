@@ -677,7 +677,7 @@ int RetroAgent::readRam(unsigned id, int offset){
 // TODO SN :  currently only one player is supported
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
 	g_retro.action_a = player_a_action;
-//	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
+	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
 	g_retro.action_b = player_b_action;
 }
 

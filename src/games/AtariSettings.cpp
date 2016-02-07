@@ -40,11 +40,5 @@ AtariSettings::AtariSettings(){
 				JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE,
 				JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE
 			};
-//	int up,down;
-//	for(int iup = 0; iup < 1 ; iup++,up+=JOYPAD_UP){
-//		for(int idown = 0; idown == JOYPAD_UP ; idown+=JOYPAD_DOWN){
-//			AllActionsVector.push_back(up | down);
-//		}
-//	}
 }
 
