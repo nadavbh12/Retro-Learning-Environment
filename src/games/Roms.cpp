@@ -62,7 +62,7 @@
 //#include "supported/RiverRaid.hpp"
 //#include "supported/RoadRunner.hpp"
 //#include "supported/RoboTank.hpp"
-//#include "supported/Seaquest.hpp"
+#include "supported/Seaquest.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -129,7 +129,7 @@ static const RomSettings *roms[]  = {
 //    new RiverRaidSettings(),
 //    new RoadRunnerSettings(),
 //    new RoboTankSettings(),
-//    new SeaquestSettings(),
+    new SeaquestSettings(),
 //    new SkiingSettings(),
 //    new SolarisSettings(),
 //    new SpaceInvadersSettings(),

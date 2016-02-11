@@ -21,19 +21,19 @@
 #include <stdlib.h>
 
 #include "Constants.h"
-#include "ColourPalette.hpp"
+//#include "ColourPalette.hpp"
 #include "../environment/RetroAgent.h"
+#include "SDL.h"
 
 #ifdef __USE_SDL
-#include "SDL.h"
 
 namespace ale {
 
 class DisplayScreen {
 public:
-    DisplayScreen(
+    DisplayScreen(RetroAgent& ragent
 //    		MediaSource* mediaSource, Sound* sound
-//    		, ColourPalette &palette
+    	 //ColourPalette &palette
     		);
     virtual ~DisplayScreen();
 
@@ -61,7 +61,7 @@ protected:
     bool manual_control_active;
 //    MediaSource* media_source;
 //    Sound* my_sound;
-//    ColourPalette &colour_palette;
+   // ColourPalette colour_palette;
     int screen_height, screen_width;
     SDL_Surface *screen, *image;
     float yratio, xratio;

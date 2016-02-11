@@ -35,6 +35,7 @@ public:
 	int readRam(unsigned id, int offset);
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();
+	uint8_t* getCurrentBuffer();
 };
 
 } // namespace ale

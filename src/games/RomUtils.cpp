@@ -33,8 +33,8 @@ int readRam(const AleSystem* system, int offset) {
 //    return sys->peek((offset & 0x7F) + 0x80);
 
 //	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) + 0x80);
-//	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
-	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
+	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
+//	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
 }
 
 
