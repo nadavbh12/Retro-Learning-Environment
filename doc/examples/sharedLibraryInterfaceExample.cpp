@@ -74,7 +74,8 @@ int main(int argc, char** argv) {
     DEBUG2("legal actions size: " << legal_actions.size());
 
 //    // Play 10 episodes
-    for (int episode=0; episode<10; episode++) {
+//    for (int episode=0; episode<10; episode++) {
+	for (int episode=0; episode<1; episode++) {
         float totalReward = 0;
         while (!ale.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];

@@ -271,7 +271,7 @@ reward_t ALEInterface::act(Action action) {
 reward_t ALEInterface::Impl::act(Action action) {
   reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
   if (theAleSystem->p_display_screen != NULL) {
-    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent()); //screen not displayed, function is based on SDL
+    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
     while (theAleSystem->p_display_screen->manual_control_engaged()) {
       Action user_action = theAleSystem->p_display_screen->getUserAction();
       reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);

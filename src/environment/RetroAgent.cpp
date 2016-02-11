@@ -16,7 +16,6 @@
 #include "RetroAgent.h"
 #include "DebugMacros.h"
 #include <iomanip>
-#include <stdlib.h>
 
 using namespace ale;
 
@@ -154,7 +153,7 @@ static void create_window(int width, int height) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	g_win = glfwCreateWindow(width, height, "nanoarch", NULL, NULL);
+	g_win = glfwCreateWindow(width, height, "ALE", NULL, NULL);
 
 	if (!g_win)
 		die("Failed to create window.");
@@ -641,15 +640,19 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
-static void printRam(void* data, size_t size){
+static void printRam(void* data, size_t size, uint16_t limit = (uint16_t)(1 << 16)){
 	system("clear");
 	uint8_t* nData = (uint8_t*)data;
    cout << "------------------------------------------------------" << endl;
    cout << "      ";
+
+   // print table header
    for (int i=0; i<16; i++){
 	   cout << std::setw(1) << std::hex << i << "  ";
    }
-   for (uint8_t i = 0; i < size; i++){
+
+   // print ram data
+   for (uint8_t i = 0; i < size && i < limit; i++){
 //	   cerr << +i << endl;
 	   if(i%16 == 0){
 		   cout << endl << setw(4) << std::hex << std::setfill('0') << +i << " ";
@@ -664,7 +667,7 @@ int RetroAgent::readRam(unsigned id, int offset){
 //	return data[offset];
    size_t size = g_retro.retro_get_memory_size(id);
    void*  data = g_retro.retro_get_memory_data(id);
-//   printRam(data,size);
+//   printRam(data,size,0xf0);
    if (!size){
 	   throw AleException("Ram size is 0");
    }else if((unsigned)offset > (size-1)){
@@ -677,7 +680,7 @@ int RetroAgent::readRam(unsigned id, int offset){
 // TODO SN :  currently only one player is supported
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
 	g_retro.action_a = player_a_action;
-	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
+//	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
 	g_retro.action_b = player_b_action;
 }
 

@@ -19,6 +19,8 @@
 
 using namespace std;
 
+#include <string.h>
+
 #define COLOR_RESET   "\033[0m"
 #define COLOR_BLACK   "\033[30m"      /* Black */
 #define COLOR_RED     "\033[31m"      /* Red */
@@ -29,6 +31,7 @@ using namespace std;
 #define COLOR_CYAN    "\033[36m"      /* Cyan */
 #define COLOR_WHITE   "\033[37m"      /* White */
 
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 // Debug functions
 #define PRINT_FUNCTION_NAME 1
@@ -36,17 +39,17 @@ using namespace std;
 
 #define DEBUG2(x) \
     if(DEBUG == 1){\
-    cout << __FILE__ << " " << __FUNCTION__  << " ,line: " << __LINE__ <<" "<< x << endl;}
+    cout << std::dec << __FILENAME__ << " " << __FUNCTION__  << " ,line: " << __LINE__ <<" "<< std::hex <<  x << endl;}
 //    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< x << COLOR_RESET << endl;}
 
 
 #define FUNCTION_NAME \
 if (PRINT_FUNCTION_NAME){\
-    cout << __FILE__ << " " << __FUNCTION__ << " ,line: " << __LINE__ << ", function: " << __PRETTY_FUNCTION__ << endl;\
+    cout << __FILENAME__ << " " << __FUNCTION__ << " ,line: " << __LINE__ << ", function: " << __PRETTY_FUNCTION__ << endl;\
 }
 
 #define EMPTY_FUNCTION \
-		std::cout << __FUNCTION__ << " is empty" << endl;
+		std::cout << __FILENAME__ << __FUNCTION__ << " is empty" << endl;
 //std::cout << COLOR_BLUE <<  __FUNCTION__ << " is empty" << COLOR_RESET << endl;
 
 

@@ -12,8 +12,6 @@
 #include "../RomUtils.hpp"
 #include <iomanip>
 
-
-
 #include "../RomUtils.hpp"
 #include "AtariCollection.hpp"
 
@@ -37,28 +35,26 @@ RomSettings* AtariCollectionSettings::clone() const {
 
 /* process the latest information from ALE */
 void AtariCollectionSettings::step(const AleSystem& system) {
+//	system("clear");
     // update the reward
-    int my_score   = getDecimalScore(0x92, &system);
-    int oppt_score = getDecimalScore(0x93, &system);
-//    DEBUG2("Score is: " <<  std::hex << std::setw(2) << my_score << ", " << oppt_score);
-
-    // handle KO
-    if (readRam(&system, 0x92) == 0xC0) my_score   = 100;
-    if (readRam(&system, 0x93) == 0xC0) oppt_score = 100;
-    reward_t score = my_score - oppt_score;
+    reward_t score = getDecimalScore(0x52, 0x53, &system);
+    score *= 10;
     m_reward = score - m_score;
+    // Deal with score wrapping. In truth this should be done for all games and in a more
+    // uniform fashion.
+    if (m_reward < 0) {
+        const int WRAP_SCORE = 100000;
+        m_reward += WRAP_SCORE;
+    }
     m_score = score;
+	DEBUG2("Byte 0x52: " << readRam(&system, 0x52));
+	DEBUG2("Byte 0x53: " << readRam(&system, 0x53));
+	DEBUG2("score: " << std::dec <<  m_score);
 
     // update terminal status
-    // if either is KO, the game is over
-    if (my_score == 100 || oppt_score == 100) {
-        m_terminal = true;
-    } else {  // otherwise check to see if out of time
-        int minutes = readRam(&system, 0x90) >> 4;
-        int seconds = (readRam(&system, 0x91) & 0xF) +
-                      (readRam(&system, 0x91) >> 4) * 10;
-        m_terminal = minutes == 0 && seconds == 0;
-//        DEBUG2("Time is: minutes " <<  std::dec << std::setw(2) << minutes << ", seconds: " << seconds);
+    if((readRam(&system, 0x33)  & 0xff) == 0xff){
+		m_lives = readRam(&system, 0x57);
+		m_terminal = (m_lives == 0);
     }
 }
 
@@ -112,6 +108,7 @@ void AtariCollectionSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
+    m_lives    = 4;
 }
 
 
@@ -136,7 +133,19 @@ void AtariCollectionSettings::loadState(
 
 
 ActionVect AtariCollectionSettings::getStartingActions(){
-	ActionVect startingActions = {JOYPAD_B, JOYPAD_B};
+	int i,j, num_of_xs(4),num_of_nops(80);
+	ActionVect startingActions;
+	startingActions.reserve(num_of_xs*num_of_nops);
+	for(j = 0; j<num_of_xs; j++){
+		startingActions.push_back(JOYPAD_X);
+		for(i = 0; i<num_of_nops; i++){
+			startingActions.push_back(JOYPAD_NOOP);
+		}
+	}
+	for(i = 0; i<2*num_of_nops; i++){
+				startingActions.push_back(JOYPAD_NOOP);
+	}
+
 	return startingActions;
 }
 
