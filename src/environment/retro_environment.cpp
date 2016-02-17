@@ -251,6 +251,10 @@ void RetroEnvironment::processScreen() {
     // Copy screen over and we're done!
     memcpy(m_screen.getArray(),
       m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
+//	pixel_t* frameBuffer = m_alesystem->getCurrentFrameBuffer();
+//	int bufferSize = m_alesystem->getBufferSize();
+//	std::copy(frameBuffer, frameBuffer + bufferSize/8, m_ram.array().begin());
+
 //  }
 }
 

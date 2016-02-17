@@ -77,7 +77,7 @@ class RetroEnvironment {
     void setState(const ALEState & state){FUNCTION_NAME}
     const ALEState &getState() const{FUNCTION_NAME}
 
-    /** Returns the current screen after processing (e.g. colour averaging) */
+    /** Returns the current screen after processing (e.g. color averaging) */
 
     const ALEScreen &getScreen() const { return m_screen; }
     const ALERAM &getRAM() const { return m_ram; }

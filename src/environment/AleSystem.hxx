@@ -87,6 +87,10 @@ class AleSystem
     uint8_t* getCurrentFrameBuffer() const { return (uint8_t*)myRetroAgent->getCurrentBuffer();}
 
     /**
+      Returns the size of the buffer in bytes;
+    */
+    int getBufferSize() const { return myRetroAgent->getBufferSize();}
+    /**
       Get the sound object of the system
 
       @return The sound object

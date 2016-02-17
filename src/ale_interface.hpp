@@ -119,6 +119,7 @@ class ALEScreen {
 
     /** Access the whole array */
     pixel_t *getArray() const { return const_cast<pixel_t *>(&m_pixels[0]); }
+//    std::vector<pixel_t>& getArray() { return m_pixels; }
 
     /** Dimensionality information */
     size_t height() const { return m_rows; }
@@ -152,15 +153,16 @@ class ALERAM {
     byte_t *byte(unsigned int x);
 
     /** Returns the whole array. */
-    std::vector<byte_t> array() { return m_ram;}
+//    std::vector<byte_t> array() const { return m_ram;}
+    byte_t* array() const { return m_ram;}
 
     size_t size() const { return sizeof(m_ram); }
     /** Returns whether two copies of the RAM are equal */
     bool equals(const ALERAM &rhs) const;
 
   protected:
-//    byte_t m_ram[RAM_SIZE];
-    std::vector<byte_t> m_ram;
+    byte_t* m_ram;
+//    std::vector<byte_t> m_ram;
 };
 
 
@@ -210,7 +212,7 @@ public:
   int getFrameNumber();
 
   // The remaining number of lives.
-  const int lives();
+  const int lives() const;
 
   // Returns the frame number since the start of the current episode
   int getEpisodeFrameNumber() const;

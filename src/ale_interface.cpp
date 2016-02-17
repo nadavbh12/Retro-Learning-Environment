@@ -99,7 +99,7 @@ public:
 	  int getFrameNumber();
 
 	  // The remaining number of lives.
-	  const int lives();
+	  const int lives() const;
 
 	  // Returns the frame number since the start of the current episode
 	  int getEpisodeFrameNumber() const;
@@ -454,12 +454,12 @@ bool ALEInterface::Impl::game_over() const{
           (max_num_frames > 0 && getEpisodeFrameNumber() >= max_num_frames));
 }
 
-const int ALEInterface::lives() {
+const int ALEInterface::lives() const {
 	return m_pimpl->lives();
 }
 
 // The remaining number of lives.
-const int ALEInterface::Impl::lives() {
+const int ALEInterface::Impl::lives() const{
   if (!romSettings.get()){
     throw std::runtime_error("ROM not set");
   }
@@ -658,8 +658,8 @@ inline bool ALERAM::equals(const ALERAM &rhs) const {
 // Byte accessors
 inline byte_t ALERAM::get(unsigned int x) const {
   // Wrap RAM around the first 128 bytes
-//  return m_ram[x & 0x7F];
-  return m_ram.at(x);
+  return m_ram[x & 0x7F];
+//  return m_ram.at(x);
 }
 
 //inline byte_t* ALERAM::byte(unsigned int x) {

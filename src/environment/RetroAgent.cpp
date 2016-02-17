@@ -85,8 +85,6 @@ static struct {
 	int action_a;
 	int action_b;
 	uint8_t* currentBuffer;
-//	void* currentBuffer;
-
 } g_retro;
 
 
@@ -482,4 +480,8 @@ void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, u
 	gmask = g_video.gmask;
 	bmask = g_video.bmask;
 	amask = g_video.amask;
+}
+
+uint32_t RetroAgent::getBufferSize() const{
+	return g_video.pitch * g_video.rGeom.base_height;
 }
