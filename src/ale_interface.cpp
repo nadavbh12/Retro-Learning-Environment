@@ -271,11 +271,11 @@ reward_t ALEInterface::act(Action action) {
 reward_t ALEInterface::Impl::act(Action action) {
   reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
   if (theAleSystem->p_display_screen != NULL) {
-    theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
+    theAleSystem->p_display_screen->display_screen();
     while (theAleSystem->p_display_screen->manual_control_engaged()) {
       Action user_action = theAleSystem->p_display_screen->getUserAction();
       reward += environment->act(user_action, PLAYER_B | JOYPAD_NOOP);
-      theAleSystem->p_display_screen->display_screen(theAleSystem->getRetroAgent());
+      theAleSystem->p_display_screen->display_screen();
     }
   }
   return reward;
@@ -344,7 +344,7 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 	Logger::Error << "No ROM File specified or the ROM file was not found."
 			<< std::endl;
 	exit(1);
-  }else if(theAleSystem->getRetroAgent().initWindow()){
+  }
   if(corefile == "atari"){
 	  corePath = ATARI_PATH;
   }else if(corefile == "snes"){
@@ -354,10 +354,7 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 	theAleSystem->getRetroAgent().loadRom(romfile);
 	Logger::Info << "Running ROM file..." << std::endl;
 	theAleSystem->settings().setString("rom_file", romfile);
-	theAleSystem->p_display_screen = new DisplayScreen(theAleSystem->getRetroAgent());
-  } else {
-    exit(1);
-  }
+	theAleSystem->p_display_screen = new DisplayScreen(&theAleSystem->getRetroAgent());
 
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.

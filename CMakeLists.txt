@@ -21,9 +21,9 @@ if(USE_SDL)
   find_package(SDL)
   if(SDL_FOUND AND ${SDL_VERSION_STRING} VERSION_LESS 2)
     include_directories(${SDL_INCLUDE_DIR})
-    list(APPEND LINK_LIBS ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY})
+    list(APPEND LINK_LIBS ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY} SDL_gfx)
+    message("sdl_library:" ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY})
   else()
-    MESSAGE("SDL 1.2 not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your SDL path.")
     # Uncomment below to specify the path to your SDL library. Run "locate libSDL" if unsure.
     # link_directories(path_to_your_SDL)
     if(APPLE)
@@ -33,26 +33,15 @@ if(USE_SDL)
       list(APPEND LINK_LIBS SDL)
     endif()
   endif()
+
+#  find_package(sdlGfx REQUIRED)
+#  if(SDL_GFX_FOUND)
+#	include_directories(${SDL_gfx_INCLUDE_DIR})
+#	list(APPEND LINK_LIBS ${SDL_gfx_LIBRARY} ${SDL_gfx_MAIN_LIBRARY})
+#  else()
+#    MESSAGE("SDL_gfx not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your SDL_gfx path.")
+#  endif()
 endif()
-
-  find_package(OpenGL REQUIRED)
-  if(OPENGL_FOUND)
-	include_directories(${OPENGL_INCLUDE_DIR})
-	list(APPEND LINK_LIBS ${OPENGL_LIBRARY} ${OPENGL_MAIN_LIBRARY})
-  else()
-    MESSAGE("OpenGL not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your OpenGL path.")
-  endif()
-
-  find_package(GLEW REQUIRED)
-  if(GLEW_FOUND)
-	include_directories(${GLEW_INCLUDE_DIR})
-	list(APPEND LINK_LIBS ${GLEW_LIBRARY} ${GLEW_MAIN_LIBRARY})
-  	list(APPEND LINK_LIBS dl glfw3 asound X11 Xrandr Xinerama Xi Xxf86vm Xcursor pthread m)
-
-  else()
-    MESSAGE("glew not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your glew path.")
-  endif()
-
 
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -79,6 +68,11 @@ if(WINDOWS OR MINGW)
 else()
   list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsUNIX.cxx ${SOURCE_DIR}/os_dependent/AleSystemUNIX.cxx ${SOURCE_DIR}/os_dependent/FSNodePOSIX.cxx)
 endif()
+
+if(UNIX)
+    list(APPEND LINK_LIBS dl)
+endif()
+
 
 include_directories(
   ${SOURCE_DIR}

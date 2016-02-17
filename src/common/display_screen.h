@@ -21,24 +21,22 @@
 #include <stdlib.h>
 
 #include "Constants.h"
-//#include "ColourPalette.hpp"
 #include "../environment/RetroAgent.h"
-#include "SDL.h"
 
 #ifdef __USE_SDL
+#include "SDL.h"
+#include "SDL/SDL_rotozoom.h"
 
 namespace ale {
 
 class DisplayScreen {
 public:
-    DisplayScreen(RetroAgent& ragent
-//    		MediaSource* mediaSource, Sound* sound
-    	 //ColourPalette &palette
-    		);
+	// todo save RetroAgent as shared_ptr
+    DisplayScreen(RetroAgent* ragent );
     virtual ~DisplayScreen();
 
     // Displays the current frame buffer from the mediasource.
-    void display_screen(RetroAgent& ragent);
+    void display_screen();
 
     // Has the user engaged manual control mode?
     bool manual_control_engaged() { return manual_control_active; }
@@ -59,15 +57,15 @@ protected:
     static const int window_width = 428;
     // Maintains the paused/unpaused state of the game
     bool manual_control_active;
-//    MediaSource* media_source;
-//    Sound* my_sound;
-   // ColourPalette colour_palette;
     int screen_height, screen_width;
     SDL_Surface *screen, *image;
     float yratio, xratio;
     Uint32 delay_msec;
     // Used to calibrate delay between frames
     Uint32 last_frame_time;
+
+    Uint8 bpp;
+    RetroAgent* ragent;
 };
 
 } // namespace ale

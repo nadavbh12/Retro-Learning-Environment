@@ -35,7 +35,6 @@ RomSettings* AtariCollectionSettings::clone() const {
 
 /* process the latest information from ALE */
 void AtariCollectionSettings::step(const AleSystem& system) {
-//	system("clear");
     // update the reward
     reward_t score = getDecimalScore(0x52, 0x53, &system);
     score *= 10;
@@ -47,9 +46,6 @@ void AtariCollectionSettings::step(const AleSystem& system) {
         m_reward += WRAP_SCORE;
     }
     m_score = score;
-	DEBUG2("Byte 0x52: " << readRam(&system, 0x52));
-	DEBUG2("Byte 0x53: " << readRam(&system, 0x53));
-	DEBUG2("score: " << std::dec <<  m_score);
 
     // update terminal status
     if((readRam(&system, 0x33)  & 0xff) == 0xff){

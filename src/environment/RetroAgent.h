@@ -11,22 +11,14 @@ class RetroAgent{
 public:
 	RetroAgent();
 	~RetroAgent();
-	bool initWindow();
 	void loadCore(std::string coreName);
 	void unloadCore();
 	void loadRom(std::string romName);
 	void unloadRom();
 	void run();
-	bool windowShouldClose();
-	void pollEvents();
-	void clearWindows();
 	void videoRender();
 	void swapBuffers();
-//	void audioInit();	// TODO SN: get implementation from loadRom
-//	void videoInit();	// TODO same as above
-	void audioDeinit();
 	void videoDeinit();
-	void terminateWindow();
 
 //	Below function were added by demand
 	int	 getHeight();
@@ -35,7 +27,10 @@ public:
 	int readRam(unsigned id, int offset);
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();
-	uint8_t* getCurrentBuffer();
+	void* getCurrentBuffer();
+	uint8_t getBpp() const;
+	void getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, uint32_t& amask) const;
+	uint32_t getPitch() const;
 };
 
 } // namespace ale
