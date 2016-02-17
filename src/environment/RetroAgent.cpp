@@ -432,19 +432,28 @@ void RetroAgent::reset(){
 
 
 int RetroAgent::readRam(unsigned id, int offset){
-//	unsigned* data = (unsigned*)g_retro.retro_get_memory_data(id);
-//	return data[offset];
-   size_t size = g_retro.retro_get_memory_size(id);
-   void*  data = g_retro.retro_get_memory_data(id);
-//   printRam(data,size);
-   if (!size){
-	   throw AleException("Ram size is 0");
-   }else if((unsigned)offset > (size-1)){
-	   throw AleException("Offset is larger than RAM size");
-   }else{
-	   return *((char*)data+offset);
-   }
+	assert( offset < getRamSize());
+	assert( offset > 0);
+	return *(getRamAddress(id) + offset);
 }
+
+uint32_t* RetroAgent::getRamAddress(unsigned id){
+	   size_t size = g_retro.retro_get_memory_size(id);
+	   void*  data = g_retro.retro_get_memory_data(id);
+	//   printRam(data,size);
+	   if (!size){
+		   throw AleException("Ram size is 0");
+	   }else{
+		   return (uint32_t*)data;
+	   }
+
+}
+
+uint32_t RetroAgent::getRamSize(){
+	return (uint32_t)g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
+}
+
+
 
 // TODO SN :  currently only one player is supported
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
@@ -456,7 +465,7 @@ void RetroAgent::SetActions(int player_a_action, int player_b_action){
 void RetroAgent::updateScreen(){
 
 }
-void* RetroAgent::getCurrentBuffer(){
+void* RetroAgent::getCurrentBuffer() const{
 	return g_video.currentBuffer;
 }
 

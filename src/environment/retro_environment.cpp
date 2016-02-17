@@ -41,7 +41,6 @@ RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) 
 //  }
 
   m_num_reset_steps = 4;
-//  m_cartridge_md5 = m_alesystem->console().properties().get(Cartridge_MD5);
 
   m_max_num_frames_per_episode = m_alesystem->settings().getInt("max_num_frames_per_episode");
   m_colour_averaging = m_alesystem->settings().getBool("color_averaging");
@@ -205,7 +204,6 @@ bool RetroEnvironment::isTerminal() {
 }
 
 void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, size_t num_steps) {
-//  Event* event = m_alesystem->event();
 
 //  // Handle paddles separately: we have to manually update the paddle positions at each step
 //  if (m_use_paddles) {
@@ -224,10 +222,8 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
 
     for (size_t t = 0; t < num_steps; t++) {
-//      m_alesystem->console().mediaSource().update();
-//      m_settings->step(m_alesystem->console().system());
+    	m_alesystem->step();
     	m_settings->step(*m_alesystem);
-    	m_alesystem->getRetroAgent().run();
     }
 //  }
 
@@ -253,14 +249,22 @@ void RetroEnvironment::processScreen() {
 //  }
 //  else {
     // Copy screen over and we're done!
-//    memcpy(m_screen.getArray(),
-//      m_alesystem->console().mediaSource().currentFrameBuffer(), m_screen.arraySize());
+    memcpy(m_screen.getArray(),
+      m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
 //  }
 }
 
-//void RetroEnvironment::processRAM() {
-//  // Copy RAM over
+void RetroEnvironment::processRAM() {
+  // Copy RAM over
 ////  for (size_t i = 0; i < m_ram.size(); i++)
 ////    *m_ram.byte(i) = m_alesystem->console().system().peek(i + 0x80);
-//}
-
+//	uint32_t* memPtr = m_alesystem->getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
+//	uint32_t memSize = m_alesystem->getRetroAgent().getRamSize();
+//	DEBUG2("mem address " << memPtr);
+//	DEBUG2("mem size " << memSize );
+//	DEBUG2("value at end " << *(memPtr + memSize/8) );
+////	std::copy(memPtr, memPtr + memSize/8, m_ram.array().begin());
+//	m_ram.array().clear();
+//	m_ram.array().reserve(memSize);
+//	std::copy(memPtr, memPtr + memSize/8, m_ram.array().begin());
+}

@@ -80,7 +80,7 @@ class RetroEnvironment {
     /** Returns the current screen after processing (e.g. colour averaging) */
 
     const ALEScreen &getScreen() const { return m_screen; }
-    const ALERAM &getRAM() const {FUNCTION_NAME}//{ return m_ram; }
+    const ALERAM &getRAM() const { return m_ram; }
 
     int getFrameNumber() const{ return m_state.getFrameNumber(); }
     int getEpisodeFrameNumber() const {return m_state.getEpisodeFrameNumber(); }
@@ -100,7 +100,7 @@ class RetroEnvironment {
     void processScreen();
 
     /** Processes the emulator RAM and saves it in m_ram */
-    void processRAM(){FUNCTION_NAME}
+    void processRAM();
 
   private:
     AleSystem *m_alesystem;

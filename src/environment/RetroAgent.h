@@ -24,9 +24,11 @@ public:
 	int	 getWidth();
 	void reset();
 	int readRam(unsigned id, int offset);
+	uint32_t* getRamAddress(unsigned id);
+	uint32_t getRamSize();
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();
-	void* getCurrentBuffer();
+	void* getCurrentBuffer() const;
 	uint8_t getBpp() const;
 	void getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, uint32_t& amask) const;
 	uint32_t getPitch() const;

@@ -35,7 +35,7 @@ using namespace ale;
 Settings::Settings(AleSystem* alesystem) : myAleSystem(alesystem) {
     // Add this settings object to the OSystem
     myAleSystem->attach(this);
-
+    setInternal("sound", "false");
     setDefaultSettings();
 }
 

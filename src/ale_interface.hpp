@@ -137,7 +137,7 @@ class ALEScreen {
     std::vector<pixel_t> m_pixels;
 };
 
-#define RAM_SIZE (128)
+//#define RAM_SIZE (128)
 
 /** A simple wrapper around the Atari RAM. */
 class ALERAM {
@@ -151,15 +151,16 @@ class ALERAM {
     byte_t get(unsigned int x) const;
     byte_t *byte(unsigned int x);
 
-    /** Returns the whole array (equivalent to byte(0)). */
-    byte_t *array() const { return (byte_t*)(m_ram); }
+    /** Returns the whole array. */
+    std::vector<byte_t> array() { return m_ram;}
 
     size_t size() const { return sizeof(m_ram); }
     /** Returns whether two copies of the RAM are equal */
     bool equals(const ALERAM &rhs) const;
 
   protected:
-    byte_t m_ram[RAM_SIZE];
+//    byte_t m_ram[RAM_SIZE];
+    std::vector<byte_t> m_ram;
 };
 
 

@@ -84,7 +84,7 @@ class AleSystem
 
       @return The frame buffer
     */
-    //ALE  inline FrameBuffer& frameBuffer() const { return *myFrameBuffer; }
+    uint8_t* getCurrentFrameBuffer() const { return (uint8_t*)myRetroAgent->getCurrentBuffer();}
 
     /**
       Get the sound object of the system
@@ -106,6 +106,11 @@ class AleSystem
       @return The RetorAgent object
     */
     inline RetroAgent& getRetroAgent() const { return *myRetroAgent; }
+
+    /**
+      Perform one step in the emulator
+     */
+    void step();
 
     /**
       Set the framerate for the video system.  It's placed in this class since

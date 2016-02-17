@@ -62,6 +62,7 @@ bool AleSystem::create()
   return true;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void AleSystem::resetRNGSeed() {
 
   // We seed the random number generator. The 'time' seed is somewhat redundant, since the
@@ -111,6 +112,11 @@ void AleSystem::setBaseDir(const string& basedir)
   myBaseDir = basedir;
   if(!FilesystemNode::dirExists(myBaseDir))
     FilesystemNode::makeDir(myBaseDir);
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void AleSystem::step() {
+	myRetroAgent->run();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

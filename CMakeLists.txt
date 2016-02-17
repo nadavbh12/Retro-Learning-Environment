@@ -33,14 +33,6 @@ if(USE_SDL)
       list(APPEND LINK_LIBS SDL)
     endif()
   endif()
-
-#  find_package(sdlGfx REQUIRED)
-#  if(SDL_GFX_FOUND)
-#	include_directories(${SDL_gfx_INCLUDE_DIR})
-#	list(APPEND LINK_LIBS ${SDL_gfx_LIBRARY} ${SDL_gfx_MAIN_LIBRARY})
-#  else()
-#    MESSAGE("SDL_gfx not found: You may need to manually edit CMakeLists.txt or run \"cmake -i\" to specify your SDL_gfx path.")
-#  endif()
 endif()
 
 

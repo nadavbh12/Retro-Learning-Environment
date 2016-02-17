@@ -59,7 +59,6 @@ int main(int argc, char** argv) {
 //    ActionVect legal_actions = ale.getLegalActionSet();
     // SN: replaced legal with minimal since legal is too big
     ActionVect legal_actions = ale.getMinimalActionSet();
-    DEBUG2("legal actions size: " << legal_actions.size());
 
 //    // Play 10 episodes
 //    for (int episode=0; episode<10; episode++) {

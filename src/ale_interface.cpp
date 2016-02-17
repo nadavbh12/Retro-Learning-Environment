@@ -44,7 +44,6 @@
 #include <stdexcept>
 #include <ctime>
 
-// SN:
 #include <sstream>
 
 using namespace std;
@@ -642,28 +641,29 @@ inline pixel_t* ALEScreen::getRow(int r) const {
 
 inline ALERAM::ALERAM(const ALERAM &rhs) {
   // Copy data over
-  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
+//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
 }
 
 inline ALERAM& ALERAM::operator=(const ALERAM &rhs) {
   // Copy data over
-  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
-
+//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
+  m_ram = rhs.m_ram;
   return *this;
 }
 
 inline bool ALERAM::equals(const ALERAM &rhs) const {
-  return (memcmp(m_ram, rhs.m_ram, size()) == 0);
+  return (m_ram == rhs.m_ram);
 }
 
 // Byte accessors
 inline byte_t ALERAM::get(unsigned int x) const {
   // Wrap RAM around the first 128 bytes
-  return m_ram[x & 0x7F];
+//  return m_ram[x & 0x7F];
+  return m_ram.at(x);
 }
 
-inline byte_t* ALERAM::byte(unsigned int x) {
-  return &m_ram[x & 0x7F];
-}
+//inline byte_t* ALERAM::byte(unsigned int x) {
+//  return &m_ram[x & 0x7F];
+//}
 
 } // namespace ale
