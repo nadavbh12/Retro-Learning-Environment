@@ -168,8 +168,8 @@ reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {
 //    m_alesystem->sound().recordNextFrame();
 
     // Similarly record screen as needed
-    if (m_screen_exporter.get() != NULL)
-        m_screen_exporter->saveNext(m_screen);
+//    if (m_screen_exporter.get() != NULL)
+//        m_screen_exporter->saveNext(m_screen);
 
     // Use the stored actions, which may or may not have changed this frame
     sum_rewards += oneStepAct(m_player_a_action, m_player_b_action);
@@ -233,7 +233,7 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 
     // TODO SN : implement functions below
   // Parse screen and RAM into their respective data structures
-//  processScreen();
+  processScreen();
 //  processRAM();
 }
 
@@ -246,17 +246,17 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 //  return m_state;
 //}
 
-//void RetroEnvironment::processScreen() {
+void RetroEnvironment::processScreen() {
 //  if (m_colour_averaging) {
 //    // Perform phosphor averaging; the blender stores its result in the given screen
 //    m_phosphor_blend.process(m_screen);
 //  }
 //  else {
-//    // Copy screen over and we're done!
+    // Copy screen over and we're done!
 //    memcpy(m_screen.getArray(),
 //      m_alesystem->console().mediaSource().currentFrameBuffer(), m_screen.arraySize());
 //  }
-//}
+}
 
 //void RetroEnvironment::processRAM() {
 //  // Copy RAM over

@@ -33,15 +33,8 @@ class VideoDialog;
 }
 
 #include "../common/Array.hxx"
-//ALE  #include "EventHandler.hxx"
-//ALE  #include "FrameBuffer.hxx"
-//#include "Sound.hxx"
 #include "../common/SoundNull.hxx"
 #include "Settings.hxx"
-//#include "Console.hxx"
-//#include "Event.hxx"  //ALE
-//ALE  #include "Font.hxx"
-//#include "../bspf.hxx"
 #include "../common/display_screen.h" 
 #include "../common/ColourPalette.hpp"
 #include "../common/ScreenExporter.hpp"
@@ -61,19 +54,8 @@ struct Resolution {
 };
 typedef Common::Array<Resolution> ResolutionList;
 
-/**
-  This class provides an interface for accessing operating system specific
-  functions.  It also comprises an overall parent object, to which all the
-  other objects belong.
-
-  @author  Stephen Anthony
-  @version $Id: AleSystem.hxx,v 1.55 2007/08/12 23:05:12 stephena Exp $
-*/
 class AleSystem
 {
-  //ALE  friend class EventHandler;
-  //ALE   friend class VideoDialog;
-
   public:
     /**
       Create a new AleSystem abstract class
@@ -90,20 +72,12 @@ class AleSystem
     */
     virtual bool create();
 
-  public:
     /**
       Adds the specified settings object to the system.
 
       @param settings The settings object to add 
     */
     void attach(Settings* settings) { mySettings = settings; }
-
-    /**  //ALE 
-      Get the event object of the system  
-
-      @return The event object
-    */
-//    inline Event* event() const { return myEvent; }
 
     /**
       Get the frame buffer of the system
@@ -134,59 +108,6 @@ class AleSystem
     inline RetroAgent& getRetroAgent() const { return *myRetroAgent; }
 
     /**
-      Get the set of game properties for the system
-
-      @return The properties set object
-    */
-//    inline PropertiesSet& propSet() const { return *myPropSet; }
-
-    /**
-      Get the console of the system.
-
-      @return The console object
-    */
-//    inline Console& console(void) const { return *myConsole; }
-
-#ifdef DEBUGGER_SUPPORT
-    /**
-      Get the ROM debugger of the system.
-
-      @return The debugger object
-    */
-    inline Debugger& debugger(void) const { return *myDebugger; }
-#endif
-
-#ifdef CHEATCODE_SUPPORT
-    /**
-      Get the cheat manager of the system.
-
-      @return The cheatmanager object
-    */
-    inline CheatManager& cheat(void) const { return *myCheatManager; }
-#endif
-
-    /**
-      Get the font object of the system
-
-      @return The font reference
-    */
-    //ALE  inline const GUI::Font& font() const { return *myFont; }
-
-    /**
-      Get the launcher font object of the system
-
-      @return The font reference
-    */
-    //ALE  inline const GUI::Font& launcherFont() const { return *myLauncherFont; }
-
-    /**
-      Get the console font object of the system
-
-      @return The console font reference
-    */
-    //ALE  inline const GUI::Font& consoleFont() const { return *myConsoleFont; }
-
-    /**
       Set the framerate for the video system.  It's placed in this class since
       the mainLoop() method is defined here.
 
@@ -198,11 +119,6 @@ class AleSystem
       Set all config file paths for the AleSystem.
     */
     void setConfigPaths();
-
-    /**
-      Set the user-interface palette which is specified in current settings.
-    */
-    //ALE  void setUIPalette();
 
     /**
       Get the current framerate for the video system.
@@ -230,42 +146,11 @@ class AleSystem
     const std::string& baseDir() const { return myBaseDir; }
 
     /**
-      This method should be called to get the full path of the gamelist
-      cache file (used by the Launcher to show a listing of available games).
-
-      @return String representing the full path of the gamelist cache file.
-    */
-    const std::string& cacheFile() const { return myGameListCacheFile; }
-
-    /**
-      This method should be called to get the full path of the cheat file.
-
-      @return String representing the full path of the cheat filename.
-    */
-    const std::string& cheatFile() const { return myCheatFile; }
-
-    /**
       This method should be called to get the full path of the config file.
 
       @return String representing the full path of the config filename.
     */
     const std::string& configFile() const { return myConfigFile; }
-
-    /**
-      This method should be called to get the full path of the
-      (optional) palette file.
-
-      @return String representing the full path of the properties filename.
-    */
-    const std::string& paletteFile() const { return myPaletteFile; }
-
-    /**
-      This method should be called to get the full path of the
-      properties file (stella.pro).
-
-      @return String representing the full path of the properties filename.
-    */
-    const std::string& propertiesFile() const { return myPropertiesFile; }
 
     /**
       This method should be called to get the full path of the currently
@@ -286,54 +171,18 @@ class AleSystem
     /**
       Switches between software and OpenGL framebuffer modes.
     */
+    // TODO SN: maybe implement the options when to select how to initialize SDL in display_screen
     //ALE  void toggleFrameBuffer();
 
     /**
-      Creates a new game console from the specified romfile.
-
-      @param romfile  The full pathname of the ROM to use
-      @return  True on successful creation, otherwise false
-    */
-    bool createConsole(const std::string& romfile = "");
-
+	  Loads the emulator core.
+	*/
+	bool loadCore(const string& core);
     /**
-      Deletes the currently defined console, if it exists.
-      Also prints some statistics (fps, total frames, etc).
-    */
-    void deleteConsole();
-
-    /**
-      Creates a new ROM launcher, to select a new ROM to emulate.
-    */
-    //ALE  void createLauncher();
-
-    /**
-      Gets all possible info about the ROM by creating a temporary
-      Console object and querying it.
-
-      @param romfile  The full pathname of the ROM to use
-      @return  Some information about this ROM
-    */
-    std::string getROMInfo(const std::string& romfile);
-
-    /**
-      The features which are conditionally compiled into Stella.
-
-      @return  The supported features
-    */
-    const std::string& features() const { return myFeatures; }
-
-    /**
-      Open the given ROM and return an array containing its contents.
-
-      @param rom    The absolute pathname of the ROM file
-      @param md5    The md5 calculated from the ROM file
-      @param image  A pointer to store the ROM data
-                    Note, the calling method is responsible for deleting this
-      @param size   The amount of data read into the image array
-      @return  False on any errors, else true
-    */
-//    bool openROM(const std::string& rom, std::string& md5, uInt8** image, int* size);
+	  Loads the rom file.
+	  Must be called after openCore
+	*/
+    bool loadRom(const string& rom);
 
     /**
       Issue a quit event to the AleSystem.
@@ -373,49 +222,8 @@ class AleSystem
       @return Current time in microseconds.
     */
     virtual uInt32 getTicks() = 0;
-
-    /**
-      This method determines the default mapping of joystick buttons to
-      Stella events for a specific system/platform.
-    */
-    //ALE  virtual void setDefaultJoymap();
-
-    /**
-      This method determines the default mapping of joystick axis to
-      Stella events for a specific system/platform.
-    */
-    //ALE  virtual void setDefaultJoyAxisMap();
-
-    /**
-      This method determines the default mapping of joystick hats to
-      Stella events for a specific system/platform.
-    */
-    //ALE  virtual void setDefaultJoyHatMap();
-
-    /**
-      This method creates events from platform-specific hardware.
-    */
-    //ALE  virtual void pollEvent();
-
-    /**
-      This method answers whether the given button as already been
-      handled by the pollEvent() method, and as such should be ignored
-      in the main event handler.
-    */
-    //ALE  virtual bool joyButtonHandled(int button);
-
-    /**
-      Informs the AleSystem of a change in EventHandler state.
-    */
-    //ALE  virtual void stateChanged(EventHandler::State state);
-
     
   protected:
-    /**
-      Query the AleSystem video hardware for resolution information.
-    */
-    //ALE  virtual void queryVideoHardware();
-
     /**
       Set the base directory for all Stella files (these files may be
       located in other places through settings).
@@ -423,26 +231,10 @@ class AleSystem
     void setBaseDir(const std::string& basedir);
 
     /**
-      Set the location of the gamelist cache file
-    */
-//    void setCacheFile(const std::string& cachefile) { myGameListCacheFile = cachefile; }
-
-    /**
       Set the locations of config file
     */
     void setConfigFile(const std::string& file) { myConfigFile = file; }
-
-
     
-  protected:
-    // Pointer to the EventHandler object
-    //ALE  EventHandler* myEventHandler;
-    // Global Event object  //ALE 
-//    Event* myEvent;
-
-    // Pointer to the FrameBuffer object
-    //ALE  FrameBuffer* myFrameBuffer;
-
     // Pointer to the Sound object
 //    Sound* mySound;
 
@@ -452,33 +244,9 @@ class AleSystem
     // Pointer to RetroAgent
     RetroAgent* myRetroAgent;	// SLE
 
-    // Pointer to the PropertiesSet object
-//    PropertiesSet* myPropSet;
-
-    // Pointer to the (currently defined) Console object
-//    Console* myConsole;
-    
     // Random number generator shared across the emulator's components
     Random myRandGen; 
-    
-    // Pointer to the Menu object
-    //ALE  Menu* myMenu;
 
-    // Pointer to the CommandMenu object
-    //ALE  CommandMenu* myCommandMenu;
-
-    // Pointer to the Launcher object
-    //ALE  Launcher* myLauncher;
-
-    // Pointer to the Debugger object
-    //ALE  Debugger* myDebugger;
-
-    // Pointer to the CheatManager object
-    //ALE  CheatManager* myCheatManager;
-
-    // Pointer to the AI object
-    //ALE  AIBase *aiBase;
-    
     // Maximum dimensions of the desktop area
     uInt32 myDesktopWidth, myDesktopHeight;
 
@@ -496,29 +264,11 @@ class AleSystem
     bool mySkipEmulation;
 
   private:
-    enum { kNumUIPalettes = 2 };
     std::string myBaseDir;
-
-    std::string myCheatFile;
-    std::string myConfigFile;
-    std::string myPaletteFile;
-    std::string myPropertiesFile;
-
-    std::string myGameListCacheFile;
     std::string myRomFile;
     std::string myCoreFile;
-
+    std::string myConfigFile;
     std::string myFeatures;
-
-    //                          Cartr
-    // The font object to use for the normal in-game GUI
-    //ALE  GUI::Font* myFont;
-
-    // The font object to use for the ROM launcher
-    //ALE  GUI::Font* myLauncherFont;
-
-    // The font object to use for the console/debugger 
-    //ALE  GUI::Font* myConsoleFont;
     
     public: //ALE 
     // Time per frame for a video update, based on the current framerate
@@ -534,7 +284,6 @@ class AleSystem
     };
     TimingInfo myTimingInfo;
 
-//    ColourPalette &colourPalette() { return m_colour_palette; }
 
     // Table of RGB values for GUI elements
     //ALE  static uInt32 ourGUIColors[kNumUIPalettes][kNumColors-256];
@@ -542,16 +291,6 @@ class AleSystem
     DisplayScreen* p_display_screen; //MHAUSKN
   
   private:
-
-//    ColourPalette m_colour_palette;
-
-    /**
-      Creates the various framebuffers/renderers available in this system
-      (for now, that means either 'software' or 'opengl').
-
-      @return Success or failure of the framebuffer creation
-    */
-    //ALE  bool createFrameBuffer(bool showmessage = false);
 
     /**
       Creates the various sound devices available in this system

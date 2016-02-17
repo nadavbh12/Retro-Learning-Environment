@@ -58,8 +58,7 @@ protected:
     // Maintains the paused/unpaused state of the game
     bool manual_control_active;
     int screen_height, screen_width;
-    SDL_Surface *screen, *image;
-    float yratio, xratio;
+    SDL_Surface *screen;
     Uint32 delay_msec;
     // Used to calibrate delay between frames
     Uint32 last_frame_time;
@@ -75,9 +74,7 @@ namespace ale {
 /** A dummy class that simply ignores display events. */
 class DisplayScreen {
   public:
-    DisplayScreen(
-//    		MediaSource* mediaSource, Sound* sound, ColourPalette &palette
-    		) {}
+    DisplayScreen(RetroAgent* ragent) {}
     void display_screen() {}
     bool manual_control_engaged() { return false; }
     Action getUserAction() { return JOYPAD_UNDEFINED; }

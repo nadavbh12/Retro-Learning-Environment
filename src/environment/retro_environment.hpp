@@ -15,8 +15,8 @@
  *  
  **************************************************************************** */
 
-#ifndef __S9x_ENVIRONMENT_HPP__
-#define __S9x_ENVIRONMENT_HPP__
+#ifndef __ALE_ENVIRONMENT_HPP__
+#define __ALE_ENVIRONMENT_HPP__
 
 #include "ale_state.hpp"
 #include "ale_screen.hpp"
@@ -79,10 +79,10 @@ class RetroEnvironment {
 
     /** Returns the current screen after processing (e.g. colour averaging) */
 
-    const ALEScreen &getScreen() const {FUNCTION_NAME} //{ return m_screen; }
+    const ALEScreen &getScreen() const { return m_screen; }
     const ALERAM &getRAM() const {FUNCTION_NAME}//{ return m_ram; }
 
-    int getFrameNumber() const {FUNCTION_NAME}//{ return m_state.getFrameNumber(); }
+    int getFrameNumber() const{ return m_state.getFrameNumber(); }
     int getEpisodeFrameNumber() const {return m_state.getEpisodeFrameNumber(); }
 
   private:
@@ -97,7 +97,8 @@ class RetroEnvironment {
     void noopIllegalActions(Action& player_a_action, Action& player_b_action);
 
     /** Processes the current emulator screen and saves it in m_screen */
-    void processScreen(){FUNCTION_NAME}
+    void processScreen();
+
     /** Processes the emulator RAM and saves it in m_ram */
     void processRAM(){FUNCTION_NAME}
 
@@ -121,7 +122,7 @@ class RetroEnvironment {
     int m_max_num_frames_per_episode; // Maxmimum number of frames per episode 
     size_t m_frame_skip; // How many frames to emulate per act()
     float m_repeat_action_probability; // Stochasticity of the environment
-    std::auto_ptr<ScreenExporter> m_screen_exporter; // Automatic screen recorder
+//    std::shared_ptr<ScreenExporter> m_screen_exporter; // Automatic screen recorder
 
     // The last actions taken by our players
     Action m_player_a_action, m_player_b_action;
@@ -130,4 +131,4 @@ class RetroEnvironment {
 
 } // namespace ale
 
-#endif // __S9x_ENVIRONMENT_HPP__
+#endif // __ALE_ENVIRONMENT_HPP__

@@ -34,8 +34,6 @@
 #define __ROMSETTINGS_HPP__
 
 #include "../common/Constants.h"
-//#include "../emucore/Serializer.hxx"
-//#include "../emucore/Deserializer.hxx"
 
 namespace ale {
 

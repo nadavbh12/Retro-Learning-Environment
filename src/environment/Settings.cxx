@@ -36,67 +36,6 @@ Settings::Settings(AleSystem* alesystem) : myAleSystem(alesystem) {
     // Add this settings object to the OSystem
     myAleSystem->attach(this);
 
-    // Add options that are common to all versions of Stella
-    setInternal("video", "soft");
-
-    setInternal("gl_filter", "nearest");
-    setInternal("gl_aspect", "100");
-    setInternal("gl_fsmax", "never");
-    setInternal("gl_lib", "libGL.so");
-    setInternal("gl_vsync", "false");
-    setInternal("gl_texrect", "false");
-
-    setInternal("zoom_ui", "2");
-    setInternal("zoom_tia", "2");
-    setInternal("fullscreen", "false");
-    setInternal("fullres", "");
-    setInternal("center", "true");
-    setInternal("grabmouse", "false");
-    setInternal("palette", "standard");
-    setInternal("colorloss", "false");
-
-    setInternal("sound", "false");
-    setInternal("fragsize", "512");
-    setInternal("freq", "31400");
-    setInternal("tiafreq", "31400");
-    setInternal("volume", "100");
-    setInternal("clipvol", "true");
-
-    setInternal("keymap", "");
-    setInternal("joymap", "");
-    setInternal("joyaxismap", "");
-    setInternal("joyhatmap", "");
-    setInternal("paddle", "0");
-    setInternal("sa1", "left");
-    setInternal("sa2", "right");
-    setInternal("p0speed", "50");
-    setInternal("p1speed", "50");
-    setInternal("p2speed", "50");
-    setInternal("p3speed", "50");
-    setInternal("pthresh", "600");
-
-    setInternal("showinfo", "false");
-
-    setInternal("ssdir", string(".") + BSPF_PATH_SEPARATOR);
-    setInternal("sssingle", "false");
-
-    setInternal("romdir", "");
-    setInternal("statedir", "");
-    setInternal("cheatfile", "");
-    setInternal("palettefile", "");
-    setInternal("propsfile", "");
-    setInternal("working_dir",  string(".") + BSPF_PATH_SEPARATOR);
-    setInternal("rl_params_file",  "rl_params.txt");
-    setInternal("class_disc_params_file",  "class_disc_params.txt");
-    setInternal("rombrowse", "true");
-    setInternal("lastrom", "");
-
-    setInternal("debuggerres", "1030x690");
-    setInternal("launcherres", "400x300");
-    setInternal("uipalette", "0");
-    setInternal("mwheel", "4");
-    setInternal("autoslot", "false");
-
     setDefaultSettings();
 }
 
@@ -679,9 +618,7 @@ int Settings::setExternal(const string& key, const string& value,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Settings::Settings(const Settings&)
-{
-}
+Settings::Settings(const Settings&) {}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Settings& Settings::operator = (const Settings&)
@@ -693,9 +630,6 @@ Settings& Settings::operator = (const Settings&)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Settings::setDefaultSettings() {
-
-    // Stella settings
-    stringSettings.insert(pair<string, string>("cpu", "low")); // Reduce CPU emulation fidelity for speed
 
     // Controller settings
     intSettings.insert(pair<string, int>("max_num_frames", 0));

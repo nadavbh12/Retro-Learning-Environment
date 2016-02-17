@@ -52,7 +52,6 @@ AleSystemUNIX::AleSystemUNIX(RetroAgent* retroagent)
   //ALE  const string& basedir = string(getenv("HOME")) + "/.stella";
   string basedir = string(".");  //ALE
   setBaseDir(basedir);
-  setConfigFile(basedir + "/ale.cfg");
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

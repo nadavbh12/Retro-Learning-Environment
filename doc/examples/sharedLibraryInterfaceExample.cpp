@@ -38,18 +38,6 @@ int main(int argc, char** argv) {
     	std::cerr << "Core = atari/snes" << std::endl;
     	return 1;
     }
-
-//    char* cwd;
-//    char buff[512 + 1];
-//
-//    cout << argv[1] << endl;
-//
-//    cwd = getcwd( buff, 512+ 1 );
-//    if( cwd != NULL ) {
-//        printf( "My working directory is %s.\n", cwd );
-//    }
-
-
     ALEInterface ale;
 
 //    TODO SN: implement once we have configuration alternative

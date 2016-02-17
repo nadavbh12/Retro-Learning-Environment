@@ -6,7 +6,6 @@
 
 namespace ale {
 
-// TODO make class singleton
 class RetroAgent{
 public:
 	RetroAgent();
