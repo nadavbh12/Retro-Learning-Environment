@@ -42,3 +42,6 @@ AtariSettings::AtariSettings(){
 			};
 }
 
+int AtariSettings::readRam(const AleSystem* system, int offset){
+	RomSettings::readRam(system, offset & 0x7F );
+}

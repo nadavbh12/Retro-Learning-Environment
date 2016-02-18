@@ -33,11 +33,11 @@ RomSettings* BoxingSettings::clone() const {
 
 /* process the latest information from ALE */
 void BoxingSettings::step(const AleSystem& system) {
-//	FUNCTION_NAME
+
     // update the reward
     int my_score   = getDecimalScore(0x92, &system);
     int oppt_score = getDecimalScore(0x93, &system);
-//    DEBUG2("Score is: " <<  std::hex << std::setw(2) << my_score << ", " << oppt_score);
+//    DEBUG2("Score is: " <<  std::dec << std::setw(2) << my_score << ", " << oppt_score);
 
     // handle KO
     if (readRam(&system, 0x92) == 0xC0) my_score   = 100;

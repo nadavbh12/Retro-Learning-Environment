@@ -446,22 +446,20 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
-
-
 int RetroAgent::readRam(unsigned id, int offset){
 	assert( offset < getRamSize());
 	assert( offset > 0);
 	return *(getRamAddress(id) + offset);
 }
 
-uint32_t* RetroAgent::getRamAddress(unsigned id){
+uint8_t* RetroAgent::getRamAddress(unsigned id){
 	   size_t size = g_retro.retro_get_memory_size(id);
 	   void*  data = g_retro.retro_get_memory_data(id);
 	//   printRam(data,size);
 	   if (!size){
 		   throw AleException("Ram size is 0");
 	   }else{
-		   return (uint32_t*)data;
+		   return (uint8_t*)data;
 	   }
 
 }

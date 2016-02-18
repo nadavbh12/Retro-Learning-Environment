@@ -279,16 +279,11 @@ public:
                            std::shared_ptr<AleSystem> &theSLESystem);
   static unsigned  pixelFormat;
 
-//  static void getRGB(
   static void getRGB(
-//      unsigned char pixel,
-//      unsigned char &red,
-//      unsigned char &green,
-//      unsigned char &blue
-		    uint32_t pixel,
-		    uint8_t &red,
-		    uint8_t &green,
-		    uint8_t &blue
+	uint32_t pixel,
+	uint8_t &red,
+	uint8_t &green,
+	uint8_t &blue
   );
 
  private:

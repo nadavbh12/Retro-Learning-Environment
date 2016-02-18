@@ -16,6 +16,8 @@
  * *****************************************************************************
  */
 #include "RomSettings.hpp"
+#include "AleSystem.hxx"
+#include "../libretro.h"
 
 using namespace ale;
 
@@ -46,4 +48,58 @@ ActionVect RomSettings::getAllActions() {
     }
   }
   return actions;
+}
+
+
+int RomSettings::readRam(const AleSystem* system, int offset) {
+
+//	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
+	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
+}
+
+
+/* extracts a decimal value from a byte */
+int RomSettings::getDecimalScore(int index, const AleSystem* system) {
+
+    int score = 0;
+    int digits_val = readRam(system, index);
+    digits_val&= 0xff;				// SN: added since values may be large. TODO : handle negative numbers
+    int right_digit = digits_val & 15;
+    int left_digit = digits_val >> 4;
+    score += ((10 * left_digit) + right_digit);
+
+    return score;
+}
+
+/* extracts a decimal value from 2 bytes */
+int RomSettings::getDecimalScore(int lower_index, int higher_index, const AleSystem* system) {
+
+    int score = 0;
+    int lower_digits_val = readRam(system, lower_index);
+    lower_digits_val &= 0xff;	// SN: added since values may be large. TODO : handle negative numbers
+    int lower_right_digit = lower_digits_val & 0xf;
+    int lower_left_digit = (lower_digits_val - lower_right_digit) >> 4;
+    score += ((10 * lower_left_digit) + lower_right_digit);
+    if (higher_index < 0) {
+        return score;
+    }
+    int higher_digits_val = readRam(system, higher_index);
+    higher_digits_val &= 0xff;	// SN: added since values may be large. TODO : handle negative numbers
+    int higher_right_digit = higher_digits_val & 0xf;
+    int higher_left_digit = (higher_digits_val - higher_right_digit) >> 4;
+    score += ((1000 * higher_left_digit) + 100 * higher_right_digit);
+    return score;
+}
+
+
+/* extracts a decimal value from 3 bytes */
+int RomSettings::getDecimalScore(int lower_index, int middle_index, int higher_index, const AleSystem* system) {
+
+    int score = getDecimalScore(lower_index, middle_index, system);
+    int higher_digits_val = readRam(system, higher_index);
+    higher_digits_val &= 0xff;	// SN: added since values may be large. TODO : handle negative numbers
+    int higher_right_digit = higher_digits_val & 15;
+    int higher_left_digit = (higher_digits_val - higher_right_digit) >> 4;
+    score += ((100000 * higher_left_digit) + 10000 * higher_right_digit);
+    return score;
 }

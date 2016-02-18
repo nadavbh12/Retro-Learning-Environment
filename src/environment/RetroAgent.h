@@ -24,7 +24,7 @@ public:
 	int	 getWidth();
 	void reset();
 	int readRam(unsigned id, int offset);
-	uint32_t* getRamAddress(unsigned id);
+	uint8_t* getRamAddress(unsigned id);
 	uint32_t getRamSize();
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();

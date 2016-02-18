@@ -75,6 +75,7 @@ struct AtariSettings : public RomSettings{
 //    		Deserializer & ser
     		) = 0;
 
+	int readRam(const AleSystem* system, int offset);
 };
 
 } // namespace ale
