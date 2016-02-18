@@ -53,6 +53,11 @@ static struct {
     uint32_t bpp;
     uint32_t pitch;
     void*    currentBuffer;
+    unsigned format;
+    uint32_t rShift;
+    uint32_t gShift;
+    uint32_t bShift;
+    uint32_t aShift;
 #ifdef __USE_SDL
 	SDL_Surface* screen;
 #endif
@@ -147,6 +152,7 @@ static bool video_set_pixel_format(unsigned format) {
 //			die("Tried to change pixel format after initialization.");
 #ifdef __USE_SDL
 		// nadav
+	    g_video.format=format;
 		switch (format) {
 		case RETRO_PIXEL_FORMAT_0RGB1555:
 	        if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
@@ -160,6 +166,11 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.bmask = 0x001f;
 				g_video.amask = 0x0000;
 			}
+
+	        g_video.rShift = 0;
+	        g_video.gShift = 5;
+	        g_video.bShift = 10;
+			g_video.aShift = 15;
 			g_video.bpp = 8*sizeof(uint16_t);
 			break;
 		case RETRO_PIXEL_FORMAT_XRGB8888:
@@ -174,6 +185,10 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.bmask = 0x0000ff00;
 				g_video.amask = 0x000000ff;
 			}
+			g_video.rShift = 0;
+			g_video.gShift = 8;
+			g_video.bShift = 16;
+			g_video.aShift = 24;
 			g_video.bpp = 8*sizeof(uint32_t);
 			break;
 		case RETRO_PIXEL_FORMAT_RGB565:
@@ -188,6 +203,10 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.bmask = 0x001f;
 				g_video.amask = 0x0000;
 			}
+			g_video.rShift = 0;
+			g_video.gShift = 5;
+			g_video.bShift = 11;
+			g_video.aShift = 16;
 			g_video.bpp = 8*sizeof(uint16_t);
 			break;
 		default:
@@ -475,6 +494,9 @@ uint32_t RetroAgent::getPitch() const{
 	return g_video.pitch;
 }
 
+unsigned RetroAgent::getFormat()const{
+	return g_video.format;
+}
 void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, uint32_t& amask) const{
 	rmask = g_video.rmask;
 	gmask = g_video.gmask;
@@ -482,6 +504,28 @@ void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, u
 	amask = g_video.amask;
 }
 
+
 uint32_t RetroAgent::getBufferSize() const{
 	return g_video.pitch * g_video.rGeom.base_height;
 }
+
+void RetroAgent::getRgbShift(uint32_t& rShift, uint32_t& gShift, uint32_t& bShift, uint32_t &aShift) const{
+	rShift=g_video.rShift;
+	gShift=g_video.gShift;
+	bShift=g_video.bShift;
+	aShift=g_video.aShift;
+
+}
+void RetroAgent::getRgb (uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b ) const{
+	uint32_t rmask , bmask, gmask, amask;
+	uint32_t rShift, bShift, gShift,aShift;
+	getRgbMask( rmask,  gmask,  bmask,  amask);
+	getRgbShift(rShift, gShift, bShift, aShift);
+
+	r=(pixel & rmask) >> rShift;
+	g=(pixel & gmask) >>  gShift;
+	b=(pixel & bmask) >> bShift;
+//	a=(pixel & amask) >> aShift;
+
+}
+

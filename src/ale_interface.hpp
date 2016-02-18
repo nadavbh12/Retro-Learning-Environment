@@ -99,7 +99,8 @@ typedef std::vector<Action> ActionVect;
 // type used to represent insantanteous reward
 typedef int reward_t;
 
-typedef unsigned char pixel_t;
+typedef uint32_t pixel_t;
+
 typedef unsigned char byte_t;
 
 /** A simple wrapper around an Atari screen. */
@@ -274,11 +275,18 @@ public:
                             std::shared_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
                            std::shared_ptr<AleSystem> &theSLESystem);
+  static unsigned  pixelFormat;
+
+//  static void getRGB(
   static void getRGB(
-      unsigned char pixel,
-      unsigned char &red,
-      unsigned char &green,
-      unsigned char &blue
+//      unsigned char pixel,
+//      unsigned char &red,
+//      unsigned char &green,
+//      unsigned char &blue
+		    uint32_t pixel,
+		    uint8_t &red,
+		    uint8_t &green,
+		    uint8_t &blue
   );
 
  private:
