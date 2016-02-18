@@ -244,6 +244,11 @@ ALEInterface::ALEInterface() : m_pimpl(new ALEInterface::Impl()) {
   Logger::Info << welcomeMessage() << std::endl;
 }
 
+ALEInterface::ALEInterface(const std::string &rom_file, const std::string &core_file) :
+		ALEInterface(){
+	loadROM(rom_file, core_file);
+}
+
 ALEInterface::ALEInterface(bool display_screen) : m_pimpl(new ALEInterface::Impl())  {
   disableBufferedIO();
   Logger::Info << welcomeMessage() << std::endl;
@@ -340,18 +345,18 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 //  } else {
 //    exit(1);
 //  }
-  string corePath;
+//  string corePath;
   if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
 	Logger::Error << "No ROM File specified or the ROM file was not found."
 			<< std::endl;
 	exit(1);
   }
-  if(corefile == "atari"){
-	  corePath = ATARI_PATH;
-  }else if(corefile == "snes"){
-	  corePath = SNES_PATH;
-  }
-	theAleSystem->loadCore(corePath);
+//  if(corefile == "atari"){
+//	  corePath = ATARI_PATH;
+//  }else if(corefile == "snes"){
+//	  corePath = SNES_PATH;
+//  }
+	theAleSystem->loadCore(corefile);
 	theAleSystem->loadRom(romfile);
 	Logger::Info << "Running ROM file..." << std::endl;
 	theAleSystem->settings().setString("rom_file", romfile);

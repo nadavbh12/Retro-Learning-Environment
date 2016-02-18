@@ -127,7 +127,7 @@ class ALEScreen {
     size_t width() const { return m_columns; }
 
     /** Returns the size of the underlying array */
-    size_t arraySize() const { return m_rows * m_columns * sizeof(pixel_t); }
+    size_t arraySize() const { return m_pixels.size(); }
 
     /** Returns whether two screens are equal */
     bool equals(const ALEScreen &rhs) const;
@@ -176,6 +176,8 @@ public:
     /** create an ALEInterface. This routine is not threadsafe! */
   ALEInterface();
 
+  /** create an ALEInterface. This routine is not threadsafe! */
+  ALEInterface(const std::string &rom_file, const std::string &core_file);
 
   // Legacy constructor
   ALEInterface(bool display_screen);

@@ -30,13 +30,8 @@ using namespace ale;
 #include <unistd.h>
 int main(int argc, char** argv) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " rom_file core_name" << std::endl;
-        std::cerr << "Core = atari/snes" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " rom_file core_file" << std::endl;
         return 1;
-    }
-    if ( strcmp(argv[2],"snes") && strcmp(argv[2],"atari") ) {
-    	std::cerr << "Core = atari/snes" << std::endl;
-    	return 1;
     }
     ALEInterface ale;
 
