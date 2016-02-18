@@ -35,7 +35,6 @@ int main(int argc, char** argv) {
     }
     ALEInterface ale;
 
-//    TODO SN: implement once we have configuration alternative
     // Get & Set the desired settings
     ale.setInt("random_seed", 123);
     //The default is already 0.25, this is just an example
@@ -50,14 +49,11 @@ int main(int argc, char** argv) {
     // take effect.)
     ale.loadROM(argv[1], argv[2]);
 
-    // Get the vector of legal actions
-//    ActionVect legal_actions = ale.getLegalActionSet();
-    // SN: replaced legal with minimal since legal is too big
+    // Get the vector of minimal actions
     ActionVect legal_actions = ale.getMinimalActionSet();
 
 //    // Play 10 episodes
-//    for (int episode=0; episode<10; episode++) {
-	for (int episode=0; episode<1; episode++) {
+    for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
         while (!ale.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
@@ -69,39 +65,5 @@ int main(int argc, char** argv) {
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
         ale.reset_game();
     }
-//
     return 0;
 }
-
-
-//// testing code
-//#include <unistd.h>
-//int main(int argc, char** argv) {
-////	 test read RAM
-////    ALEInterface ale;
-////    ale.loadROM(argv[1]);
-////    cout << ale.theRetroAgent->readRam(RETRO_MEMORY_SYSTEM_RAM, std::stoi(argv[2])) << endl;
-//
-////	 Test action_to_str()
-//	Action a = JOYPAD_START;
-//	cout << action_to_string(a);
-//	a = JOYPAD_B;
-//	cout << action_to_string(a);
-//
-//	a = JOYPAD_B | JOYPAD_A;
-//	cout << action_to_string(a);
-//
-//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN;
-//	cout << action_to_string(a);
-//
-//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN | JOYPAD_LEFT;
-//	cout << action_to_string(a);
-//
-//	a = JOYPAD_DOWN | JOYPAD_A | JOYPAD_B | JOYPAD_LEFT;
-//	cout << action_to_string(a);
-//
-//	a = JOYPAD_B | JOYPAD_A | JOYPAD_DOWN | PLAYER_B;
-//	cout << action_to_string(a);
-//
-//    return 0;
-//}
