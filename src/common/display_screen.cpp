@@ -76,6 +76,7 @@ void DisplayScreen::display_screen() {
 	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
 
     SDL_Flip(screen);
+    SDL_FreeSurface(tempScreen);
     SDL_FreeSurface(screen);
     SDL_FreeSurface(zoomed);
 

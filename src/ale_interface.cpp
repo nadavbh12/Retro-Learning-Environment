@@ -256,7 +256,7 @@ ALEInterface::ALEInterface(bool display_screen) : m_pimpl(new ALEInterface::Impl
 }
 
 ALEInterface::~ALEInterface() {
-//	delete m_pimpl;
+	delete m_pimpl;
 }
 
 void ALEInterface::reset_game() {

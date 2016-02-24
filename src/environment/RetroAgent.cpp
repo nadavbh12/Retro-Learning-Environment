@@ -395,6 +395,8 @@ static void core_load_game(const char *filename) {
 	video_configure(&av.geometry);
 	audio_init(av.timing.sample_rate);
 
+	free((void*)info.data);
+
 	return;
 
 libc_error:
