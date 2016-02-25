@@ -440,8 +440,7 @@ int RetroAgent::getHeight(){
 }
 
 int RetroAgent::getWidth(){
-	return g_video.rGeom.base_width;
-
+	return g_video.rGeom.base_width; //in  pix
 }
 
 void RetroAgent::reset(){
@@ -516,7 +515,7 @@ void RetroAgent::getRgbShift(uint32_t& rShift, uint32_t& gShift, uint32_t& bShif
 	aShift=g_video.aShift;
 
 }
-void RetroAgent::getRgb (uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b ) const{
+void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b ) const{
 	uint32_t rmask , bmask, gmask, amask;
 	uint32_t rShift, bShift, gShift,aShift;
 	getRgbMask( rmask,  gmask,  bmask,  amask);
@@ -526,6 +525,5 @@ void RetroAgent::getRgb (uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b ) c
 	g=(pixel & gmask) >>  gShift;
 	b=(pixel & bmask) >> bShift;
 //	a=(pixel & amask) >> aShift;
-
 }
 

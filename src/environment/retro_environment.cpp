@@ -26,7 +26,8 @@ RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) 
   m_settings(settings),
   m_phosphor_blend( ),	// TODO pass AleSystem
   m_screen(m_alesystem->getRetroAgent().getHeight(),
-		  m_alesystem->getRetroAgent().getWidth()),
+		  m_alesystem->getRetroAgent().getWidth(),
+		  m_alesystem->getRetroAgent().getBpp()/8),
   m_player_a_action(PLAYER_A | JOYPAD_NOOP),
   m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
@@ -242,6 +243,18 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 //  return m_state;
 //}
 
+static void ale_getGray(uint8_t *obs, const uint8_t *screenArray, size_t rgb_size, size_t obs_size) {
+  assert(rgb_size == obs_size);
+
+  uint8_t r, g, b;
+//  for (uint8_t index = 0; index < obs_size; index+=Bpp) {
+  for (uint32_t index = 0; index < obs_size; index++) {
+	  uint16_t pixel = screenArray[2*index] | (screenArray[2*index+1] << 8);
+	  ALEInterface::getRGB(pixel, r, g, b);
+    obs[index] = (r + g + b)/3;
+  }
+}
+
 void RetroEnvironment::processScreen() {
 //  if (m_colour_averaging) {
 //    // Perform phosphor averaging; the blender stores its result in the given screen
@@ -249,13 +262,17 @@ void RetroEnvironment::processScreen() {
 //  }
 //  else {
     // Copy screen over and we're done!
-    memcpy(m_screen.getArray(),
-      m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
-//	pixel_t* frameBuffer = m_alesystem->getCurrentFrameBuffer();
-//	int bufferSize = m_alesystem->getBufferSize();
-//	std::copy(frameBuffer, frameBuffer + bufferSize/8, m_ram.array().begin());
+//	  FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
+    memcpy(m_screen.getArray(), m_alesystem->getCurrentFrameBuffer(), 2*m_screen.arraySize());
 
-//  }
+//	uint8_t* bufferGray = new uint8_t[m_screen.arraySize()];
+//		ale_getGray(bufferGray, m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize(), m_screen.arraySize());
+//	for (int i=0; i < m_screen.arraySize() ; i++){
+//		fprintf(a,"%d\n", bufferGray[i]);
+//	}
+//	delete[] bufferGray;
+
+//fclose(a);
 }
 
 void RetroEnvironment::processRAM() {

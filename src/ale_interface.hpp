@@ -106,8 +106,8 @@ typedef unsigned char byte_t;
 /** A simple wrapper around an Atari screen. */
 class ALEScreen {
   public:
-    ALEScreen(int h, int w) : m_rows(h), m_columns(w), m_pixels(m_rows * m_columns) {}
-    ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels) {}
+    ALEScreen(int h, int w, int Bpp) : m_rows(h), m_columns(w), m_Bpp(Bpp), m_pixels(m_rows * m_columns * Bpp) {}
+    ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_Bpp(rhs.m_Bpp), m_pixels(rhs.m_pixels) {}
 
     ALEScreen& operator=(const ALEScreen &rhs);
 
@@ -122,10 +122,10 @@ class ALEScreen {
     pixel_t *getArray() const { return const_cast<pixel_t *>(&m_pixels[0]); }
 //    std::vector<pixel_t>& getArray() { return m_pixels; }
 
-    /** Dimensionality information */
+    /** Dimensionality information - values are in pixels */
     size_t height() const { return m_rows; }
-    size_t width() const { return m_columns; }
-
+    size_t width() const { return m_columns ; }
+    size_t Bpp() const { return m_Bpp;}
     /** Returns the size of the underlying array */
     size_t arraySize() const { return m_pixels.size(); }
 
@@ -134,8 +134,8 @@ class ALEScreen {
 
   protected:
     int m_rows;
-    int m_columns;
-
+    int m_columns; // in Pixels
+    int m_Bpp; //Bytes per pixel
     std::vector<pixel_t> m_pixels;
 };
 
