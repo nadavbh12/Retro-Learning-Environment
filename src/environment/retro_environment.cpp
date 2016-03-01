@@ -243,18 +243,6 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 //  return m_state;
 //}
 
-static void ale_getGray(uint8_t *obs, const uint8_t *screenArray, size_t rgb_size, size_t obs_size) {
-  assert(rgb_size == obs_size);
-
-  uint8_t r, g, b;
-//  for (uint8_t index = 0; index < obs_size; index+=Bpp) {
-  for (uint32_t index = 0; index < obs_size; index++) {
-	  uint16_t pixel = screenArray[2*index] | (screenArray[2*index+1] << 8);
-	  ALEInterface::getRGB(pixel, r, g, b);
-    obs[index] = (r + g + b)/3;
-  }
-}
-
 void RetroEnvironment::processScreen() {
 //  if (m_colour_averaging) {
 //    // Perform phosphor averaging; the blender stores its result in the given screen
@@ -263,15 +251,37 @@ void RetroEnvironment::processScreen() {
 //  else {
     // Copy screen over and we're done!
 //	  FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
-    memcpy(m_screen.getArray(), m_alesystem->getCurrentFrameBuffer(), 2*m_screen.arraySize());
+	  // original
+    memcpy(m_screen.getArray(),(uint32_t*) m_alesystem->getCurrentFrameBuffer(), 4*m_alesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
+//    memcpy(m_screen.getArray(),   m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
 
-//	uint8_t* bufferGray = new uint8_t[m_screen.arraySize()];
-//		ale_getGray(bufferGray, m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize(), m_screen.arraySize());
+//	uint8_t* bufferGray = new uint8_t[m_alesystem->getRetroAgent().getBufferSize()];
+//	ale_getGray(bufferGray, m_alesystem->getCurrentFrameBuffer(), m_alesystem->getRetroAgent().getBufferSize(), m_alesystem->getRetroAgent().getBufferSize());
 //	for (int i=0; i < m_screen.arraySize() ; i++){
 //		fprintf(a,"%d\n", bufferGray[i]);
 //	}
 //	delete[] bufferGray;
 
+	  // nadav attempt begin
+//	int height = m_alesystem->getRetroAgent().getHeight();
+//	int width = m_alesystem->getRetroAgent().getWidth();
+////	int widthInPix = width * 2;
+////	for(int i(0);i < height; i++){
+////	  memcpy(m_screen.getArray() + i*widthInPix, m_alesystem->getCurrentFrameBuffer() + 8*i * widthInPix, widthInPix);
+////	}
+//	int widthInPix = 2*width;
+//	for(int i(0);i < height; i++){
+//	  memcpy(m_screen.getArray() + i*widthInPix, m_alesystem->getCurrentFrameBuffer() + 4*i * widthInPix, widthInPix);
+//	}
+//
+//	size_t screenSize = width * height;
+//	uint8_t* bufferGray = new uint8_t[screenSize];
+//	ale_getGray(bufferGray, (uint8_t*)m_screen.getArray() , screenSize, screenSize);
+//	for (int i=0; i < screenSize ; i++){
+//		fprintf(a,"%d\n", bufferGray[i]);
+//	}
+//	delete[] bufferGray;
+//
 //fclose(a);
 }
 
