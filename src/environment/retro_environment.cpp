@@ -250,39 +250,35 @@ void RetroEnvironment::processScreen() {
 //  }
 //  else {
     // Copy screen over and we're done!
-//	  FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
-	  // original
-    memcpy(m_screen.getArray(),(uint32_t*) m_alesystem->getCurrentFrameBuffer(), 4*m_alesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
-//    memcpy(m_screen.getArray(),   m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
+//    memcpy(m_screen.getArray(),(uint32_t*) m_alesystem->getCurrentFrameBuffer(), 4*m_alesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
+	int height = m_alesystem->getRetroAgent().getHeight();
+	int width = m_alesystem->getRetroAgent().getWidth();
+	int Bpp = m_alesystem->getRetroAgent().getBpp() / 8;
+	int pitch = m_alesystem->getRetroAgent().getPitch();
+	uint8_t* buffer = m_alesystem->getCurrentFrameBuffer();
+	for(int i = 0 ; i < height; i++){
+		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
+	}
 
-//	uint8_t* bufferGray = new uint8_t[m_alesystem->getRetroAgent().getBufferSize()];
-//	ale_getGray(bufferGray, m_alesystem->getCurrentFrameBuffer(), m_alesystem->getRetroAgent().getBufferSize(), m_alesystem->getRetroAgent().getBufferSize());
-//	for (int i=0; i < m_screen.arraySize() ; i++){
-//		fprintf(a,"%d\n", bufferGray[i]);
-//	}
-//	delete[] bufferGray;
+//	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
+	FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
+    uint8_t* originBuffer = m_alesystem->getCurrentFrameBuffer();
+    uint8_t* destBuffer = (uint8_t*)m_screen.getArray();
+    size_t size = m_alesystem->getRetroAgent().getHeight() * m_alesystem->getRetroAgent().getPitch();
+    for( int i = 0; i < height * width * Bpp ; i++){
+//    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
+//    		fprintf(a,"\n");
+//    	}
+    	if(i % (width * Bpp) == 0){
+			fprintf(b,"\n");
+		}
+//    	fprintf(a,"%x, ", originBuffer[i]);
+    	fprintf(b,"%x, ", destBuffer[i]);
+//		fprintf(a,"%d, ", i);
 
-	  // nadav attempt begin
-//	int height = m_alesystem->getRetroAgent().getHeight();
-//	int width = m_alesystem->getRetroAgent().getWidth();
-////	int widthInPix = width * 2;
-////	for(int i(0);i < height; i++){
-////	  memcpy(m_screen.getArray() + i*widthInPix, m_alesystem->getCurrentFrameBuffer() + 8*i * widthInPix, widthInPix);
-////	}
-//	int widthInPix = 2*width;
-//	for(int i(0);i < height; i++){
-//	  memcpy(m_screen.getArray() + i*widthInPix, m_alesystem->getCurrentFrameBuffer() + 4*i * widthInPix, widthInPix);
-//	}
-//
-//	size_t screenSize = width * height;
-//	uint8_t* bufferGray = new uint8_t[screenSize];
-//	ale_getGray(bufferGray, (uint8_t*)m_screen.getArray() , screenSize, screenSize);
-//	for (int i=0; i < screenSize ; i++){
-//		fprintf(a,"%d\n", bufferGray[i]);
-//	}
-//	delete[] bufferGray;
-//
-//fclose(a);
+    }
+//    fclose(a);
+    fclose(b);
 }
 
 void RetroEnvironment::processRAM() {

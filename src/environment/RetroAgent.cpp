@@ -440,7 +440,7 @@ int RetroAgent::getHeight(){
 }
 
 int RetroAgent::getWidth(){
-	return g_video.rGeom.base_width/2; //in  pix
+	return g_video.rGeom.base_width; //in  pix
 }
 
 void RetroAgent::reset(){
