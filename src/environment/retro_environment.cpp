@@ -91,7 +91,7 @@ void RetroEnvironment::reset() {
   for (size_t i = 0; i < startingActions.size(); i++){
     emulate(startingActions[i], PLAYER_B | JOYPAD_NOOP);
     // added for debug
-    //    m_alesystem->p_display_screen->display_screen(m_alesystem->getRetroAgent());
+//        m_alesystem->p_display_screen->display_screen();
   }
 }
 

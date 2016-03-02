@@ -12,9 +12,14 @@
 #include "Roms.hpp"
 #include "RomSettings.hpp"
 #include "RomUtils.hpp"
-#include "supported/AtariCollection.hpp"
 
 // include the game implementations
+
+/// snes games
+#include "supported/AtariCollection.hpp"
+#include "supported/MortalKombat.hpp"
+
+// atari games
 //#include "supported/AirRaid.hpp"
 //#include "supported/Alien.hpp"
 //#include "supported/Amidar.hpp"
@@ -145,7 +150,8 @@ static const RomSettings *roms[]  = {
 //    new YarsRevengeSettings(),
 //    new ZaxxonSettings(),
 
-	new AtariCollectionSettings()
+	new AtariCollectionSettings(),
+    new MortalKombatSettings()
 };
 
 

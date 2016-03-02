@@ -57,16 +57,20 @@ RomSettings* MortalKombatSettings::clone() const {
 
 /* process the latest information from ALE */
 void MortalKombatSettings::step(const AleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-
-//    int npcScore = 100*getDecimalScore(0x2a, 0x2b, &system);
+    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScore(0x122, &system);
 
+    int npcScore = getDecimalScore(0x2a, 0x2b, 0x2c, &system);
+    npcScore *= 100;
+//    DEBUG2("NPC Score: " << std::dec << npcScore);
+
 	// update the reward
-    reward_t score = getDecimalScore(0x26, 0x27, 0x28, &system);
-//    reward_t score = getDecimalScore(0x26, 0x27, &system);
-    score *= 100;
-   DEBUG2("Score: " << std::dec << score);
+    reward_t playerScore = getDecimalScore(0x26, 0x27, 0x28, &system);
+    playerScore *= 100;
+//    DEBUG2("Player Score: " << std::dec << playerScore);
+
+    reward_t score = playerScore - npcScore;
+//    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
 //    // Deal with score wrapping. In truth this should be done for all games and in a more

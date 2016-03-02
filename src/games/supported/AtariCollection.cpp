@@ -38,6 +38,7 @@ void AtariCollectionSettings::step(const AleSystem& system) {
     // update the reward
     reward_t score = getDecimalScore(0x52, 0x53, &system);
     score *= 10;
+//    DEBUG2("Score: " << std::dec << score);
     m_reward = score - m_score;
     // Deal with score wrapping. In truth this should be done for all games and in a more
     // uniform fashion.

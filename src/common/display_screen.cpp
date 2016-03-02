@@ -1,4 +1,4 @@
-/* *****************************************************************************#include "SDL.h
+/* *****************************************************************************
  * A.L.E (Arcade Learning Environment)
  * Copyright (c) 2009-2013 by Yavar Naddaf, Joel Veness, Marc G. Bellemare, 
  *   Matthew Hausknecht, and the Reinforcement Learning and Artificial Intelligence 
