@@ -655,9 +655,6 @@ inline pixel_t* ALEScreen::getRow(int r) const {
 }
 
 
-//inline ALERAM::ALERAM() {
-//}
-
 inline ALERAM::ALERAM(const ALERAM &rhs) {
   // Copy data over
 //  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
@@ -675,7 +672,7 @@ inline bool ALERAM::equals(const ALERAM &rhs) const {
 }
 
 // Byte accessors
-inline byte_t ALERAM::get(unsigned int x) const {
+byte_t ALERAM::get(unsigned int x) const {
   // Wrap RAM around the first 128 bytes
   return m_ram[x & 0x7F];
 //  return m_ram.at(x);

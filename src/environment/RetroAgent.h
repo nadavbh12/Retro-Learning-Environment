@@ -1,7 +1,7 @@
 #ifndef __RETRO_AGENT_HPP__
 #define __RETRO_AGENT_HPP__
 
-#include<iostream>
+#include <iostream>
 #include "../common/Constants.h"
 
 namespace ale {

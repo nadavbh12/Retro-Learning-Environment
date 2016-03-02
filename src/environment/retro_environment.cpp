@@ -260,25 +260,25 @@ void RetroEnvironment::processScreen() {
 		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
 	}
 
-//	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
-	FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
-    uint8_t* originBuffer = m_alesystem->getCurrentFrameBuffer();
-    uint8_t* destBuffer = (uint8_t*)m_screen.getArray();
-    size_t size = m_alesystem->getRetroAgent().getHeight() * m_alesystem->getRetroAgent().getPitch();
-    for( int i = 0; i < height * width * Bpp ; i++){
-//    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
-//    		fprintf(a,"\n");
-//    	}
-    	if(i % (width * Bpp) == 0){
-			fprintf(b,"\n");
-		}
-//    	fprintf(a,"%x, ", originBuffer[i]);
-    	fprintf(b,"%x, ", destBuffer[i]);
-//		fprintf(a,"%d, ", i);
-
-    }
-//    fclose(a);
-    fclose(b);
+////	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
+//	FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
+//    uint8_t* originBuffer = m_alesystem->getCurrentFrameBuffer();
+//    uint8_t* destBuffer = (uint8_t*)m_screen.getArray();
+//    size_t size = m_alesystem->getRetroAgent().getHeight() * m_alesystem->getRetroAgent().getPitch();
+//    for( int i = 0; i < height * width * Bpp ; i++){
+////    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
+////    		fprintf(a,"\n");
+////    	}
+//    	if(i % (width * Bpp) == 0){
+//			fprintf(b,"\n");
+//		}
+////    	fprintf(a,"%x, ", originBuffer[i]);
+//    	fprintf(b,"%x, ", destBuffer[i]);
+////		fprintf(a,"%d, ", i);
+//
+//    }
+////    fclose(a);
+//    fclose(b);
 }
 
 void RetroEnvironment::processRAM() {

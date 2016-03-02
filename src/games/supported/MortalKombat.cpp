@@ -41,7 +41,12 @@ MortalKombatSettings::MortalKombatSettings() {
 						JOYPAD_LEFT | JOYPAD_X,		// roundhouse
 						JOYPAD_RIGHT | JOYPAD_X,	// sweep kick
 						JOYPAD_RIGHT | JOYPAD_Y,	// throw
-						JOYPAD_LEFT | JOYPAD_Y		// throw
+						JOYPAD_LEFT | JOYPAD_Y,		// throw
+
+						JOYPAD_R | JOYPAD_LEFT,		// added to support kano's combos
+						JOYPAD_R | JOYPAD_RIGHT,
+						JOYPAD_R | JOYPAD_UP,
+						JOYPAD_R | JOYPAD_DOWN,
     };
 }
 
@@ -158,7 +163,7 @@ void MortalKombatSettings::loadState(
 
 
 ActionVect MortalKombatSettings::getStartingActions(){
-	int i,j, num_of_xs(4),num_of_nops(100);
+	int i, num_of_xs(4),num_of_nops(100);
 	ActionVect startingActions;
 	startingActions.reserve(num_of_xs*num_of_nops);
 	// wait for intro to end
