@@ -353,7 +353,9 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 	theAleSystem->loadRom(romfile);
 	Logger::Info << "Running ROM file..." << std::endl;
 	theAleSystem->settings().setString("rom_file", romfile);
+#ifdef __USE_SDL
 	theAleSystem->p_display_screen = new DisplayScreen(&theAleSystem->getRetroAgent());
+#endif
 	//Shai : added format handling for RGB
 
   // Must force the resetting of the OSystem's random seed, which is set before we change

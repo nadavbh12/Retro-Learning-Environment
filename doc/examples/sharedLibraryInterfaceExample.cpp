@@ -74,6 +74,7 @@ int main(int argc, char** argv) {
 
 
 void dispalyExample (ALEInterface *ale){
+#ifdef __USE_SDL
 	ALEScreen aleScreen = ale->getScreen();
 	size_t screen_height = (size_t)aleScreen.height();
 	size_t screen_width = (size_t)aleScreen.width();
@@ -117,5 +118,6 @@ void dispalyExample (ALEInterface *ale){
 	    }
 	//    fclose(a);
 	    fclose(b);
+#endif
 }
 
