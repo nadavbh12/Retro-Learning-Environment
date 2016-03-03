@@ -18,6 +18,7 @@
 /// snes games
 #include "supported/AtariCollection.hpp"
 #include "supported/MortalKombat.hpp"
+#include "supported/SuperMarioWorld.hpp"
 
 // atari games
 //#include "supported/AirRaid.hpp"
@@ -151,7 +152,8 @@ static const RomSettings *roms[]  = {
 //    new ZaxxonSettings(),
 
 	new AtariCollectionSettings(),
-    new MortalKombatSettings()
+    new MortalKombatSettings(),
+    new SuperMarioWorldSettings(),
 };
 
 
