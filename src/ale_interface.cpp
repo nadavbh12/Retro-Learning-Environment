@@ -599,6 +599,9 @@ bool ALEScreen::equals(const ALEScreen &rhs) const {
           (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
 }
 
+int ALEScreen::getBpp()const{
+	return m_pixelFormat->Bpp;
+}
 void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
 	uint32_t rmask, gmask, bmask;

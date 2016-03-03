@@ -124,7 +124,7 @@ class ALEScreen {
     /** Dimensionality information - values are in pixels */
     size_t height() const { return m_rows; }
     size_t width() const { return m_columns ; }
-
+    int getBpp() const;
     /** Returns the size of the underlying array */
     size_t arraySize() const { return m_pixels.size(); }
 
