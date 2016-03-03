@@ -61,12 +61,10 @@ class SeaquestSettings : public AtariSettings {
         void step(const AleSystem& system);
 
         // saves the state of the rom settings
-//        void saveState(Serializer & ser);
-		void saveState(){EMPTY_FUNCTION}
+        void saveState(Serializer & ser);
     
         // loads the state of the rom settings
-//        void loadState(Deserializer & ser);
-		void loadState(){EMPTY_FUNCTION}
+        void loadState(Deserializer & ser);
 
         virtual const int lives() { return isTerminal() ? 0 : m_lives; }
 

@@ -114,21 +114,17 @@ void BoxingSettings::reset() {
 
         
 /* saves the state of the rom settings */
-void BoxingSettings::saveState(
-//		Serializer & ser
-		) {
-//  ser.putInt(m_reward);
-//  ser.putInt(m_score);
-//  ser.putBool(m_terminal);
+void BoxingSettings::saveState( Serializer & ser ) {
+  ser.putInt(m_reward);
+  ser.putInt(m_score);
+  ser.putBool(m_terminal);
 }
 
 // loads the state of the rom settings
-void BoxingSettings::loadState(
-//		Deserializer & ser
-		) {
-//  m_reward = ser.getInt();
-//  m_score = ser.getInt();
-//  m_terminal = ser.getBool();
+void BoxingSettings::loadState( Deserializer & ser ) {
+  m_reward = ser.getInt();
+  m_score = ser.getInt();
+  m_terminal = ser.getBool();
 }
 
 ActionVect BoxingSettings::getStartingActions(){

@@ -212,12 +212,12 @@ class AleSystem
     /** 
       Serializes the AleSystem state.
     */
-//    bool saveState(Serializer& out);
+    bool saveState(Serializer& out);
 
     /** 
       Deserializes the AleSystem state.
     */
-//    bool loadState(Deserializer& in);
+    bool loadState(Deserializer& in);
 
   public:
     //////////////////////////////////////////////////////////////////////

@@ -111,21 +111,19 @@ void AtariCollectionSettings::reset() {
 
 
 /* saves the state of the rom settings */
-void AtariCollectionSettings::saveState(
-//		Serializer & ser
-		) {
-//  ser.putInt(m_reward);
-//  ser.putInt(m_score);
-//  ser.putBool(m_terminal);
+void AtariCollectionSettings::saveState( Serializer & ser ) {
+  ser.putInt(m_reward);
+  ser.putInt(m_score);
+  ser.putInt(m_lives);
+  ser.putBool(m_terminal);
 }
 
 // loads the state of the rom settings
-void AtariCollectionSettings::loadState(
-//		Deserializer & ser
-		) {
-//  m_reward = ser.getInt();
-//  m_score = ser.getInt();
-//  m_terminal = ser.getBool();
+void AtariCollectionSettings::loadState( Deserializer & des ) {
+  m_reward = des.getInt();
+  m_score = des.getInt();
+  m_lives = des.getInt();
+  m_terminal = des.getBool();
 }
 
 

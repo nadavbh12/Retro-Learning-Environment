@@ -59,12 +59,12 @@ class RetroEnvironment {
     void reset();
 
     /** Save/restore the environment state onto the stack. */
-    void save(){FUNCTION_NAME}
-    void load(){FUNCTION_NAME}
+    void save();
+    void load();
 
     /** Returns a copy of the current emulator state. Note that this doesn't include
         pseudorandomness, so that clone/restoreState are suitable for planning. */
-    ALEState cloneState(){FUNCTION_NAME}
+    ALEState cloneState();
     /** Restores a previously saved copy of the state. */
     void restoreState(const ALEState&){FUNCTION_NAME}
 

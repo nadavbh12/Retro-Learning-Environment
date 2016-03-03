@@ -62,14 +62,10 @@ struct MortalKombatSettings : public SnesSettings {
         void step(const AleSystem& system);
 
         // saves the state of the rom settings
-        void saveState(
-        		//Serializer & ser
-        		);
+        void saveState( Serializer & ser );
 
         // loads the state of the rom settings
-        void loadState(
-//        		Deserializer & ser
-        		);
+        void loadState( Deserializer & des );
 
         virtual const int lives() { return 0; }
 

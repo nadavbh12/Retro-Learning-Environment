@@ -60,14 +60,10 @@ struct BoxingSettings : public AtariSettings {
         void step(const AleSystem& system);
 
         // saves the state of the rom settings
-        void saveState(
-        		//Serializer & ser
-        		);
+        void saveState( Serializer & ser );
     
         // loads the state of the rom settings
-        void loadState(
-//        		Deserializer & ser
-        		);
+        void loadState( Deserializer & ser );
 
         virtual const int lives() { return 0; }
 

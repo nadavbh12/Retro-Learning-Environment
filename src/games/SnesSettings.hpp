@@ -63,16 +63,6 @@ struct SnesSettings : public RomSettings{
 
     // process the latest information from ALE
     virtual void step(const AleSystem &system) = 0;
-
-    // saves the state of the rom settings
-    virtual void saveState(
-//    		Serializer & ser
-    		) = 0;
-
-    // loads the state of the rom settings
-    virtual void loadState(
-//    		Deserializer & ser
-    		) = 0;
 };
 
 

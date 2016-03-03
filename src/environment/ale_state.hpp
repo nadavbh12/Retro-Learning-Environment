@@ -18,8 +18,7 @@
 #ifndef __ALE_STATE_HPP__ 
 #define __ALE_STATE_HPP__
 
-//#include "../emucore/OSystem.hxx"
-//#include "../emucore/Event.hxx"
+#include "AleSystem.hxx"
 #include <string>
 #include "../games/RomSettings.hpp"
 #include "../common/Log.hpp"
@@ -85,15 +84,15 @@ class ALEState {
     /** Restores the environment to a previously saved state. If load_system == true, we also
         restore system-specific information (such as the RNG state). */ 
     void load(
-//    		OSystem* osystem,
+    		AleSystem* alesystem,
     		RomSettings* settings, std::string md5, const ALEState &rhs,
-              bool load_system);
+            bool load_system);
 
     /** Returns a "copy" of the current state, including the information necessary to restore
       *  the emulator. If save_system == true, this includes the RNG state. */
     ALEState save(
-//    		OSystem* osystem,
-    		RomSettings* settings, std::string md5, bool save_system);
+    		AleSystem* alesystem,
+    		RomSettings* settings, bool save_system);
 
     /** Reset key presses */
     void resetKeys(

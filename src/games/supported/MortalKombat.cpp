@@ -62,7 +62,7 @@ RomSettings* MortalKombatSettings::clone() const {
 
 /* process the latest information from ALE */
 void MortalKombatSettings::step(const AleSystem& system) {
-    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
+//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScore(0x122, &system);
 
     int npcScore = getDecimalScore(0x2a, 0x2b, 0x2c, &system);
@@ -144,21 +144,21 @@ void MortalKombatSettings::reset() {
 
 
 /* saves the state of the rom settings */
-void MortalKombatSettings::saveState(
-//		Serializer & ser
-		) {
-//  ser.putInt(m_reward);
-//  ser.putInt(m_score);
-//  ser.putBool(m_terminal);
+void MortalKombatSettings::saveState( Serializer & ser ) {
+  ser.putInt(m_reward);
+  ser.putInt(m_score);
+  ser.putInt(m_wins);
+  ser.putInt(o_wins);
+  ser.putBool(m_terminal);
 }
 
 // loads the state of the rom settings
-void MortalKombatSettings::loadState(
-//		Deserializer & ser
-		) {
-//  m_reward = ser.getInt();
-//  m_score = ser.getInt();
-//  m_terminal = ser.getBool();
+void MortalKombatSettings::loadState( Deserializer & des ) {
+  m_reward = des.getInt();
+  m_score = des.getInt();
+  m_wins = des.getInt();
+  o_wins = des.getInt();
+  m_terminal = des.getBool();
 }
 
 

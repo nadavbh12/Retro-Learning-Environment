@@ -34,6 +34,8 @@
 #define __ROMSETTINGS_HPP__
 
 #include "../common/Constants.h"
+#include "Serializer.hxx"
+#include "Deserializer.hxx"
 
 namespace ale {
 
@@ -66,14 +68,10 @@ struct RomSettings {
     virtual void step(const ale::AleSystem &system) = 0;
 
     // saves the state of the rom settings
-    virtual void saveState(
-//    		Serializer & ser
-    		) = 0;
+    virtual void saveState( Serializer & ser ) = 0;
 
     // loads the state of the rom settings
-    virtual void loadState(
-//    		Deserializer & ser
-    		) = 0;
+    virtual void loadState( Deserializer & ser ) = 0;
 
     // is an action legal (default: yes)
     virtual bool isLegal(const ale::Action &a) const;

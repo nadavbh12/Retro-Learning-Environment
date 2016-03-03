@@ -76,17 +76,15 @@ void AleSystem::resetRNGSeed() {
   }
 }
 
-//bool AleSystem::saveState(Serializer& out) {
+bool AleSystem::saveState(Serializer& out) {
 
-    // Here we serialize the RNG state.
-	//EMPTY_FUNCTION;
-	//    return myRandGen.saveState(out);
-//}
+//     Here we serialize the RNG state.
+	    return myRandGen.saveState(out);
+}
 
-//bool AleSystem::loadState(Deserializer& in) {
-//	EMPTY_FUNCTION;
-//    return myRandGen.loadState(in);
-//}
+bool AleSystem::loadState(Deserializer& in) {
+    return myRandGen.loadState(in);
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //void AleSystem::setConfigPaths()

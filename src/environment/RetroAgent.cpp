@@ -24,24 +24,6 @@
 
 using namespace ale;
 
-static void printRam(const void* data, size_t size){
-	system("clear");
-	uint8_t* nData = (uint8_t*)data;
-   cout << "------------------------------------------------------" << endl;
-   cout << "      ";
-   for (int i=0; i<16; i++){
-	   cout << std::setw(1) << std::hex << i << "  ";
-   }
-   for (uint8_t i = 0; i < size; i++){
-//	   cerr << +i << endl;
-	   if(i%16 == 0){
-		   cout << endl << setw(4) << std::hex << std::setfill('0') << +i << " ";
-	   }
-	   cout << std::hex << std::setw(2) << std::setfill('0')<<  +nData[i] << " ";
-   }
-   cout << endl;
-}
-
 // holds pixel/screen settings
 static struct {
 	// nadav implementations below:
@@ -75,9 +57,9 @@ static struct {
 	void (*retro_set_controller_port_device)(unsigned port, unsigned device);
 	void (*retro_reset)(void);
 	void (*retro_run)(void);
-//	size_t retro_serialize_size(void);
-//	bool retro_serialize(void *data, size_t size);
-//	bool retro_unserialize(const void *data, size_t size);
+	size_t (*retro_serialize_size)(void);
+	bool (*retro_serialize)(void *data, size_t size);
+	bool (*retro_unserialize)(const void *data, size_t size);
 //	void retro_cheat_reset(void);
 //	void retro_cheat_set(unsigned index, bool enabled, const char *code);
 	bool (*retro_load_game)(const struct retro_game_info *game);
@@ -89,6 +71,8 @@ static struct {
 
 	int action_a;
 	int action_b;
+	const string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
+	size_t serializeSize;
 	uint8_t* currentBuffer;
 } g_retro;
 
@@ -330,11 +314,14 @@ static bool core_environment(unsigned cmd, void *data) {
 		const enum retro_pixel_format *fmt = (enum retro_pixel_format *)data; // RETRO_PIXEL_FORMAT_XRGB8888 is taken
 
 		if (*fmt > RETRO_PIXEL_FORMAT_RGB565){
-			//cout << "False Returned" << endl;
 			return false;
 		}
 		return video_set_pixel_format(*fmt);
-
+	}
+	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
+		const char* cval = (char*)data;
+		cval = g_retro.saveFolder.c_str();
+		return true;
 	}
 	default:
 		core_log(RETRO_LOG_DEBUG, "Unhandled env #%u", cmd);
@@ -398,6 +385,9 @@ static void core_load(const char *sofile) {
 	load_retro_sym(retro_get_system_av_info);
 	load_retro_sym(retro_set_controller_port_device);
 	load_retro_sym(retro_run);
+	load_retro_sym(retro_serialize_size);
+	load_retro_sym(retro_serialize);
+	load_retro_sym(retro_unserialize);
 	load_retro_sym(retro_load_game);
 	load_retro_sym(retro_unload_game);
 	load_retro_sym(retro_reset);
@@ -485,6 +475,7 @@ void RetroAgent::unloadCore(){
 }
 void RetroAgent::loadRom(std::string romName){
 	core_load_game(romName.c_str());
+	g_retro.serializeSize = g_retro.retro_serialize_size();
 }
 
 void RetroAgent::unloadRom(){
@@ -522,7 +513,6 @@ uint8_t* RetroAgent::getRamAddress(unsigned id){
 	   }else{
 		   return (uint8_t*)data;
 	   }
-
 }
 
 uint32_t RetroAgent::getRamSize(){
@@ -589,3 +579,10 @@ void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t 
 //	a=(pixel & amask) >> aShift;
 }
 
+void RetroAgent::serialize(void *data, size_t size){
+	g_retro.retro_serialize(data,size);
+}
+
+void RetroAgent::deserialize(void *data, size_t size){
+	g_retro.retro_unserialize(data, size);
+}

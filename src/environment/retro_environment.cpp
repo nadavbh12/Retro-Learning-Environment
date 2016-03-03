@@ -119,26 +119,26 @@ void RetroEnvironment::reset() {
   }
 }
 
-///** Save/restore the environment state. */
-//void RetroEnvironment::save() {
-//  // Store the current state into a new object
-//  ALEState new_state = cloneState();
-//  m_saved_states.push(new_state);
-//}
-//
-//void RetroEnvironment::load() {
-//  // Get the state on top of the stack
-//  ALEState& target_state = m_saved_states.top();
-//
-//  // Deserialize it into 'm_state'
-//  restoreState(target_state);
-//  m_saved_states.pop();
-//}
-//
-//ALEState RetroEnvironment::cloneState() {
-//  return m_state.save(m_alesystem, m_settings, m_cartridge_md5, false);
-//}
-//
+/** Save/restore the environment state. */
+void RetroEnvironment::save() {
+  // Store the current state into a new object
+  ALEState new_state = cloneState();
+  m_saved_states.push(new_state);
+}
+
+void RetroEnvironment::load() {
+  // Get the state on top of the stack
+  ALEState& target_state = m_saved_states.top();
+
+  // Deserialize it into 'm_state'
+  restoreState(target_state);
+  m_saved_states.pop();
+}
+
+ALEState RetroEnvironment::cloneState() {
+  return m_state.save(m_alesystem, m_settings, false);
+}
+
 //void RetroEnvironment::restoreState(const ALEState& target_state) {
 //  m_state.load(m_alesystem, m_settings, m_cartridge_md5, target_state, false);
 //}
