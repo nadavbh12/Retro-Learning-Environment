@@ -37,11 +37,13 @@ using namespace std;
 #define PRINT_FUNCTION_NAME 1
 #define DEBUG 1
 
-#define DEBUG2(x) \
-    if(DEBUG == 1){\
-    cout << std::dec << __FILENAME__ << " " << __FUNCTION__  << " ,line: " << __LINE__ <<" "<< std::hex <<  x << endl;}
 //    cout << COLOR_YELLOW <<  "line: " << __LINE__ <<" "<< x << COLOR_RESET << endl;}
-
+#ifdef  __DEBUG
+#define DEBUG2(x) {\
+    cout << std::dec << __FILENAME__ << " " << __FUNCTION__  << " ,line: " << __LINE__ <<" "<< std::hex <<  x << endl;}
+#else
+#define DEBUG2(x);
+#endif
 
 #define FUNCTION_NAME \
 if (PRINT_FUNCTION_NAME){\
