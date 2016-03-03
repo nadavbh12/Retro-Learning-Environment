@@ -18,9 +18,6 @@
 #ifndef __ALE_CONTROLLER_HPP__
 #define __ALE_CONTROLLER_HPP__
 
-//#include "../emucore/OSystem.hxx"
-//#include "../emucore/m6502/src/System.hxx"
-//#include "../environment/s9x_environment.hpp"
 #include "../environment/retro_environment.hpp"
 #include"../environment/AleSystem.hxx"
 

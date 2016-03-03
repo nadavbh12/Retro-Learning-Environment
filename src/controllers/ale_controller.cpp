@@ -39,15 +39,15 @@ ALEController::ALEController(AleSystem* alesystem) : m_alesystem(alesystem),
 
 void ALEController::display() {
   // Display the screen if applicable
-//  DisplayScreen* display = m_osystem->p_display_screen;
-//  if (display) {
-//    display->display_screen();
-//    while (display->manual_control_engaged()) {
-//      Action user_action = display->getUserAction();
-//      applyActions(user_action, PLAYER_B_NOOP);
-//      display->display_screen();
-//    }
-//  }
+  DisplayScreen* display = m_alesystem->p_display_screen;
+  if (display) {
+    display->display_screen();
+    while (display->manual_control_engaged()) {
+      Action user_action = display->getUserAction();
+      applyActions(user_action, PLAYER_B | JOYPAD_NOOP);
+      display->display_screen();
+    }
+  }
 }
 
 reward_t ALEController::applyActions(Action player_a, Action player_b) {

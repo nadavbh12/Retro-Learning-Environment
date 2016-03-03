@@ -106,7 +106,7 @@ typedef unsigned char byte_t;
 /** A simple wrapper around an Atari screen. */
 class ALEScreen {
   public:
-    ALEScreen(int h, int w, int Bpp) : m_rows(h), m_columns(w), m_Bpp(Bpp), m_pixels(m_rows * m_columns * Bpp) {}
+    ALEScreen(int h, int w, int Bpp) : m_rows(h), m_columns(w), m_Bpp(Bpp), m_pixels(m_rows * m_columns) {}
     ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_Bpp(rhs.m_Bpp), m_pixels(rhs.m_pixels) {}
 
     ALEScreen& operator=(const ALEScreen &rhs);
