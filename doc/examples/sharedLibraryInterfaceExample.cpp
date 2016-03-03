@@ -19,13 +19,16 @@
 #include <DebugMacros.h>
 
 #ifdef __USE_SDL
-  #include <SDL.h>
+ #include <SDL.h>
+#include "SDL/SDL_rotozoom.h"
+
 #endif
 
 #include "../../src/environment/RetroAgent.h"
 
 using namespace std;
 using namespace ale;
+void dispalyExample (ALEInterface *ale);
 
 #include <unistd.h>
 int main(int argc, char** argv) {
@@ -57,7 +60,7 @@ int main(int argc, char** argv) {
         float totalReward = 0;
         while (!ale.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
-
+//            dispalyExample(&ale);
         	// Apply the action and get the resulting reward
             float reward = ale.act(a);
             totalReward += reward;
@@ -67,3 +70,52 @@ int main(int argc, char** argv) {
     }
     return 0;
 }
+
+
+
+void dispalyExample (ALEInterface *ale){
+	ALEScreen aleScreen = ale->getScreen();
+	size_t screen_height = (size_t)aleScreen.height();
+	size_t screen_width = (size_t)aleScreen.width();
+	int window_width = 428;
+	int window_height = 321;
+	void* data = (void*)aleScreen.getArray();
+	uint32_t pitch = 2*screen_width;
+	uint32_t rmask, gmask, bmask, amask;
+	bmask = 0x001f;
+	gmask = 0x07e0;
+	rmask = 0xf800;
+	amask = 0x0000;
+
+	SDL_Surface * tempScreen = SDL_CreateRGBSurfaceFrom(data, screen_width, screen_height,
+	                            16, pitch, rmask, gmask, bmask, 0);
+	SDL_Surface* zoomed = zoomSurface(tempScreen, window_width/(double)screen_width, window_height/(double)screen_height, 0);
+
+	SDL_Surface* screen = SDL_SetVideoMode(window_width, window_height, 16, SDL_SWSURFACE);
+	SDL_BlitSurface(zoomed, NULL, screen, NULL);
+	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
+	SDL_Flip(screen);
+	SDL_FreeSurface(tempScreen);
+	SDL_FreeSurface(screen);
+	SDL_FreeSurface(zoomed);
+
+	//	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
+		FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
+//	    uint8_t* originBuffer = data;
+	    uint8_t* destBuffer =(uint8_t*) data;
+	    for( int i = 0; i < screen_height * screen_width * 2 ; i++){
+	//    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
+	//    		fprintf(a,"\n");
+	//    	}
+	    	if(i % (screen_width * 2) == 0){
+				fprintf(b,"\n");
+			}
+	//    	fprintf(a,"%x, ", originBuffer[i]);
+	    	fprintf(b,"%x, ", destBuffer[i]);
+	//		fprintf(a,"%d, ", i);
+
+	    }
+	//    fclose(a);
+	    fclose(b);
+}
+

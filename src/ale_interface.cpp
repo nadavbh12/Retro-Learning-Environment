@@ -48,8 +48,6 @@
 
 using namespace std;
 namespace ale {
- unsigned  ALEInterface::pixelFormat=0;
-
 
 class ALEInterface::Impl{
 public:
@@ -351,11 +349,6 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 			<< std::endl;
 	exit(1);
   }
-//  if(corefile == "atari"){
-//	  corePath = ATARI_PATH;
-//  }else if(corefile == "snes"){
-//	  corePath = SNES_PATH;
-//  }
 	theAleSystem->loadCore(corefile);
 	theAleSystem->loadRom(romfile);
 	Logger::Info << "Running ROM file..." << std::endl;
@@ -363,73 +356,15 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 	theAleSystem->p_display_screen = new DisplayScreen(&theAleSystem->getRetroAgent());
 	//Shai : added format handling for RGB
 
-	ALEInterface::pixelFormat=theAleSystem->getRetroAgent().getFormat();
   // Must force the resetting of the OSystem's random seed, which is set before we change
   // choose our random seed.
   Logger::Info << "Random seed is " << theAleSystem->settings().getInt("random_seed") << std::endl;
   theAleSystem->resetRNGSeed();
-//  TODO maybe add
-//  string currentDisplayFormat = theAleSystem->console().getFormat();
-//  theAleSystem->colourPalette().setPalette("standard", currentDisplayFormat);
-}
-
-
-void ALEInterface::getRGB(
-		    uint32_t pixel,
-		    uint8_t &red,
-		    uint8_t &green,
-		    uint8_t &blue
-) {
-	uint32_t rmask, gmask,  bmask,  amask;
-	uint32_t rShift, gShift,  bShift, aShift;
-
-		switch (ALEInterface::pixelFormat) {
-		case RETRO_PIXEL_FORMAT_0RGB1555:
-				rmask = 0x001f;
-				gmask = 0x03e0;
-				bmask = 0x7c00;
-				amask = 0x0000;
-			break;
-		case RETRO_PIXEL_FORMAT_XRGB8888:
-				rmask = 0x000000ff;
-				gmask = 0x0000ff00;
-				bmask = 0x00ff0000;
-				amask = 0xff000000;
-			break;
-		case RETRO_PIXEL_FORMAT_RGB565:
-
-				rmask = 0x001f;
-				gmask = 0x07e0;
-				bmask = 0xf800;
-				amask = 0x0000;
-			break;
-		}
-		switch (ALEInterface::pixelFormat) {
-		case RETRO_PIXEL_FORMAT_0RGB1555:
-				rShift=0;
-				gShift = 5;
-				bShift = 10;
-				aShift = 15;
-				break;
-		case RETRO_PIXEL_FORMAT_XRGB8888:
-				rShift = 0;
-				gShift = 8;
-				bShift = 16;
-				aShift = 24;
-				break;
-		case RETRO_PIXEL_FORMAT_RGB565:
-				rShift=0;
-				gShift = 5;
-				bShift = 11;
-				aShift = 16;
-				break;
-		}
-
-		red=(pixel & rmask) >> rShift;
-		green=(pixel & gmask) >>  gShift;
-		blue=(pixel & bmask) >> bShift;
 
 }
+
+
+
 
 void ALEInterface::loadROM(string rom_file, string core_file) {
 	m_pimpl->loadROM(rom_file, core_file);
@@ -452,14 +387,14 @@ void ALEInterface::Impl::loadROM(string rom_file, string core_file) {
   environment.reset(new RetroEnvironment(theAleSystem.get(), romSettings.get()));
   max_num_frames = theAleSystem->settings().getInt("max_num_frames_per_episode");
   environment->reset();
-//#ifndef __USE_SDL
-//  if (theAleSystem->p_display_screen != NULL) {
-//    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
-//    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
-//    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
-//    exit(1);
-//  }
-//#endif
+#ifndef __USE_SDL
+  if (theAleSystem->p_display_screen != NULL) {
+    Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
+    Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
+    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
+    exit(1);
+  }
+#endif
 }
 
 bool ALEInterface::game_over() const{
@@ -619,22 +554,70 @@ ScreenExporter *ALEInterface::Impl::createScreenExporter(const std::string &file
 /* --------------------------------------------------------------------------------------------------*/
 
 // RAM & Screen implementation
+ALEScreen::ALEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
+
+	m_pixelFormat = new  pixelFormat();
+}
+ALEScreen::ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
+
+	m_pixelFormat = new  pixelFormat();
+	m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
+	m_pixelFormat->rmask  = rhs.m_pixelFormat->rmask ;
+	m_pixelFormat->gmask  = rhs.m_pixelFormat->gmask ;
+	m_pixelFormat->bmask  = rhs.m_pixelFormat->bmask ;
+	m_pixelFormat->amask  = rhs.m_pixelFormat->amask ;
+    m_pixelFormat->rShift = rhs.m_pixelFormat->rShift;
+ 	m_pixelFormat->gShift = rhs.m_pixelFormat->gShift;
+	m_pixelFormat->bShift = rhs.m_pixelFormat->bShift;
+	m_pixelFormat->aShift = rhs.m_pixelFormat->aShift;
+
+}
 
 ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
 
+
+
   m_rows = rhs.m_rows;
   m_columns = rhs.m_columns;
-
   m_pixels = rhs.m_pixels;
+  m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
+  m_pixelFormat->rmask  = rhs.m_pixelFormat->rmask ;
+  m_pixelFormat->gmask  = rhs.m_pixelFormat->gmask ;
+  m_pixelFormat->bmask  = rhs.m_pixelFormat->bmask ;
+  m_pixelFormat->amask  = rhs.m_pixelFormat->amask ;
+  m_pixelFormat->rShift = rhs.m_pixelFormat->rShift;
+  m_pixelFormat->gShift = rhs.m_pixelFormat->gShift;
+  m_pixelFormat->bShift = rhs.m_pixelFormat->bShift;
+  m_pixelFormat->aShift = rhs.m_pixelFormat->aShift;
 
   return *this;
 }
+
 bool ALEScreen::equals(const ALEScreen &rhs) const {
   return (m_rows == rhs.m_rows &&
           m_columns == rhs.m_columns &&
           (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
 }
 
+void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
+
+	uint32_t rmask, gmask, bmask;
+	uint32_t rShift, gShift, bShift;
+
+	rmask = m_pixelFormat->rmask;
+	gmask = m_pixelFormat->gmask;
+	bmask = m_pixelFormat->bmask;
+
+	rShift = m_pixelFormat->rShift;
+	gShift = m_pixelFormat->gShift;
+	bShift = m_pixelFormat->bShift;
+
+
+	red=(pixel & rmask) >> rShift;
+	green=(pixel & gmask) >>  gShift;
+	blue=(pixel & bmask) >> bShift;
+
+}
 // pixel accessors, (row, column)-ordered
 inline pixel_t ALEScreen::get(int r, int c) const {
   // Perform some bounds-checking

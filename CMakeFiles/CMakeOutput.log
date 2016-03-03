@@ -411,3 +411,63 @@ Linking C executable cmTryCompileExec3294487731
 make[1]: Leaving directory `/home/administrator/DQN/SNES-Learning-Environment/CMakeFiles/CMakeTmp'
 
 
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec2194191938/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2194191938.dir/build.make CMakeFiles/cmTryCompileExec2194191938.dir/build
+make[1]: Entering directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2194191938.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -o CMakeFiles/cmTryCompileExec2194191938.dir/CheckIncludeFiles.c.o   -c /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTryCompileExec2194191938
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2194191938.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec2194191938.dir/CheckIncludeFiles.c.o  -o cmTryCompileExec2194191938 -rdynamic 
+make[1]: Leaving directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec3090350192/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3090350192.dir/build.make CMakeFiles/cmTryCompileExec3090350192.dir/build
+make[1]: Entering directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3090350192.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec3090350192.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec3090350192
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3090350192.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec3090350192.dir/CheckFunctionExists.c.o  -o cmTryCompileExec3090350192 -rdynamic -lpthread 
+make[1]: Leaving directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+
+
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec21118959/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec21118959.dir/build.make CMakeFiles/cmTryCompileExec21118959.dir/build
+make[1]: Entering directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec21118959.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -o CMakeFiles/cmTryCompileExec21118959.dir/CheckIncludeFiles.c.o   -c /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTryCompileExec21118959
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec21118959.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec21118959.dir/CheckIncludeFiles.c.o  -o cmTryCompileExec21118959 -rdynamic 
+make[1]: Leaving directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec3629757074/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3629757074.dir/build.make CMakeFiles/cmTryCompileExec3629757074.dir/build
+make[1]: Entering directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3629757074.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec3629757074.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec3629757074
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3629757074.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec3629757074.dir/CheckFunctionExists.c.o  -o cmTryCompileExec3629757074 -rdynamic -lpthread 
+make[1]: Leaving directory `/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/CMakeTmp'
+
+

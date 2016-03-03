@@ -6,37 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/administrator/DQN/SNES-Learning-Environment/src/emucore/unzip.c
-stdio.h
--
-stdlib.h
--
-string.h
--
-zlib.h
--
-unzip.h
-/home/administrator/DQN/SNES-Learning-Environment/src/emucore/unzip.h
-stddef.h
--
-string.h
--
-stdlib.h
--
-errno.h
--
-
-/home/administrator/DQN/SNES-Learning-Environment/src/emucore/unzip.h
-zlib.h
--
-
-/home/administrator/DQN/SNES-Learning-Environment/src/external/TinyMT/tinymt32.c
-tinymt32.h
-/home/administrator/DQN/SNES-Learning-Environment/src/external/TinyMT/tinymt32.h
-
-/home/administrator/DQN/SNES-Learning-Environment/src/external/TinyMT/tinymt32.h
-stdint.h
--
-inttypes.h
--
-

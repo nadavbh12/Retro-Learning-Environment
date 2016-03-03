@@ -36,7 +36,6 @@ class VideoDialog;
 #include "../common/SoundNull.hxx"
 #include "Settings.hxx"
 #include "../common/display_screen.h" 
-#include "../common/ColourPalette.hpp"
 #include "../common/ScreenExporter.hpp"
 #include "../common/Log.hpp"
 #include "Random.hxx"

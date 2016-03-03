@@ -55,38 +55,13 @@ RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) 
 
   // If so desired, we record all emulated frames to a given directory
   std::string recordDir = m_alesystem->settings().getString("record_screen_dir");
-
-  getPixelFormat(*m_screen.m_pixelFormat);
-
   if (!recordDir.empty()) {
     ale::Logger::Info << "Recording screens to directory: " << recordDir << std::endl;
-
 
 //    TODO SN : implement screen_exporter
     // Create the screen exporter
 //    m_screen_exporter.reset(new ScreenExporter(m_alesystem->colourPalette(), recordDir));
   }
-}
-void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
-	uint32_t rmask, gmask, bmask, amask;
-	uint32_t rShift, gShift, bShift, aShift;
-
-	pixel_format.Bpp=m_alesystem->getRetroAgent().getBpp()/8; //in bytes
-	m_alesystem->getRetroAgent().getRgbMask(rmask,  gmask,  bmask,  amask);
-	m_alesystem->getRetroAgent().getRgbShift(rShift,  gShift,  bShift,  aShift);
-	//mask
-	pixel_format.rmask=rmask;
-	pixel_format.gmask=gmask;
-	pixel_format.bmask=bmask;
-	pixel_format.amask=amask;
-	//shift
-	pixel_format.rShift=rShift;
-	pixel_format.gShift=gShift;
-	pixel_format.bShift=bShift;
-	pixel_format.aShift=aShift;
-
-
-
 }
 
 /** Resets the system to its start state. */
@@ -115,7 +90,7 @@ void RetroEnvironment::reset() {
   for (size_t i = 0; i < startingActions.size(); i++){
     emulate(startingActions[i], PLAYER_B | JOYPAD_NOOP);
     // added for debug
-//        m_alesystem->p_display_screen->display_screen();
+    //    m_alesystem->p_display_screen->display_screen(m_alesystem->getRetroAgent());
   }
 }
 
@@ -274,36 +249,13 @@ void RetroEnvironment::processScreen() {
 //  }
 //  else {
     // Copy screen over and we're done!
-//    memcpy(m_screen.getArray(),(uint32_t*) m_alesystem->getCurrentFrameBuffer(), 4*m_alesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
-	int height = m_alesystem->getRetroAgent().getHeight();
-	int width = m_alesystem->getRetroAgent().getWidth();
-	int Bpp = m_alesystem->getRetroAgent().getBpp() / 8;
-	int pitch = m_alesystem->getRetroAgent().getPitch();
-	uint8_t* buffer = m_alesystem->getCurrentFrameBuffer();
-	for(int i = 0 ; i < height; i++){
-		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
-	}
+    memcpy(m_screen.getArray(),
+      m_alesystem->getCurrentFrameBuffer(), m_screen.arraySize());
+//	pixel_t* frameBuffer = m_alesystem->getCurrentFrameBuffer();
+//	int bufferSize = m_alesystem->getBufferSize();
+//	std::copy(frameBuffer, frameBuffer + bufferSize/8, m_ram.array().begin());
 
-
-////	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
-//	FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
-//    uint8_t* originBuffer = m_alesystem->getCurrentFrameBuffer();
-//    uint8_t* destBuffer = (uint8_t*)m_screen.getArray();
-//    size_t size = m_alesystem->getRetroAgent().getHeight() * m_alesystem->getRetroAgent().getPitch();
-//    for( int i = 0; i < height * width * Bpp ; i++){
-////    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
-////    		fprintf(a,"\n");
-////    	}
-//    	if(i % (width * Bpp) == 0){
-//			fprintf(b,"\n");
-//		}
-////    	fprintf(a,"%x, ", originBuffer[i]);
-//    	fprintf(b,"%x, ", destBuffer[i]);
-////		fprintf(a,"%d, ", i);
-//
-//    }
-////    fclose(a);
-//    fclose(b);
+//  }
 }
 
 void RetroEnvironment::processRAM() {

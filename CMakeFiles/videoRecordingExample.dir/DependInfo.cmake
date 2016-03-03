@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/administrator/DQN/SNES-Learning-Environment/doc/examples/videoRecordingExample.cpp" "/home/administrator/DQN/SNES-Learning-Environment/CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o"
+  "/home/administrator/DQN/Arcade-Learning-Environment-2.0/doc/examples/videoRecordingExample.cpp" "/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -25,9 +25,6 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   "src"
   "src/common"
   "src/controllers"
-  "src/emucore"
-  "src/emucore/m6502/src"
-  "src/emucore/m6502/src/bspf/src"
   "src/environment"
   "src/games"
   "src/games/supported"

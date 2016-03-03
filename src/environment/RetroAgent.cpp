@@ -150,7 +150,48 @@ static void video_configure(const struct retro_game_geometry *geom) {
 static bool video_set_pixel_format(unsigned format) {
 //	if (!g_video.rmask)
 //			die("Tried to change pixel format after initialization.");
-#ifdef __USE_SDL
+#ifndef __USE_SDL
+    g_video.format=format;
+	switch (format) {
+	case RETRO_PIXEL_FORMAT_0RGB1555:
+		g_video.rmask = 0x7c00;
+		g_video.gmask = 0x03e0;
+		g_video.bmask = 0x001f;
+		g_video.amask = 0x0000;
+		g_video.rShift = 10;
+		g_video.gShift = 5;
+		g_video.bShift = 0;
+		g_video.aShift = 15;
+		g_video.bpp = 8*sizeof(uint16_t);
+		break;
+	case RETRO_PIXEL_FORMAT_XRGB8888:
+		g_video.rmask = 0xff000000;
+		g_video.gmask = 0x00ff0000;
+		g_video.bmask = 0x0000ff00;
+		g_video.amask = 0x000000ff;
+		g_video.rShift = 16;
+		g_video.gShift = 8;
+		g_video.bShift = 0;
+		g_video.aShift = 24;
+		g_video.bpp = 8*sizeof(uint32_t);
+		break;
+	case RETRO_PIXEL_FORMAT_RGB565:
+
+		g_video.rmask = 0xf800;
+		g_video.gmask = 0x07e0;
+		g_video.bmask = 0x001f;
+		g_video.amask = 0x0000;
+		g_video.rShift = 11;
+		g_video.gShift = 5;
+		g_video.bShift = 0;
+		g_video.aShift = 16;
+		g_video.bpp = 8*sizeof(uint16_t);
+		break;
+	default:
+		die("Unknown pixel type %u", format);
+	}
+#endif
+	#ifdef __USE_SDL
 		// nadav
 	    g_video.format=format;
 		switch (format) {
@@ -160,11 +201,20 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.gmask = 0x03e0;
 				g_video.bmask = 0x7c00;
 				g_video.amask = 0x0000;
+		        g_video.rShift = 0;
+		        g_video.gShift = 5;
+		        g_video.bShift = 10;
+				g_video.aShift = 15;
 	        }else{
 				g_video.rmask = 0x7c00;
 				g_video.gmask = 0x03e0;
 				g_video.bmask = 0x001f;
 				g_video.amask = 0x0000;
+		        g_video.rShift = 10;
+		        g_video.gShift = 5;
+		        g_video.bShift = 0;
+				g_video.aShift = 15;
+
 			}
 
 	        g_video.rShift = 0;
@@ -179,16 +229,21 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.gmask = 0x0000ff00;
 				g_video.bmask = 0x00ff0000;
 				g_video.amask = 0xff000000;
+				g_video.rShift = 0;
+				g_video.gShift = 8;
+				g_video.bShift = 16;
+				g_video.aShift = 24;
 			}else{
 				g_video.rmask = 0xff000000;
 				g_video.gmask = 0x00ff0000;
 				g_video.bmask = 0x0000ff00;
 				g_video.amask = 0x000000ff;
+				g_video.rShift = 24;
+				g_video.gShift = 16;
+				g_video.bShift = 8;
+				g_video.aShift = 0;
 			}
-			g_video.rShift = 0;
-			g_video.gShift = 8;
-			g_video.bShift = 16;
-			g_video.aShift = 24;
+
 			g_video.bpp = 8*sizeof(uint32_t);
 			break;
 		case RETRO_PIXEL_FORMAT_RGB565:
@@ -197,16 +252,21 @@ static bool video_set_pixel_format(unsigned format) {
 				g_video.gmask = 0x07e0;
 				g_video.bmask = 0xf800;
 				g_video.amask = 0x0000;
+				g_video.rShift = 0;
+				g_video.gShift = 5;
+				g_video.bShift = 11;
+				g_video.aShift = 0;
 			}else{
 				g_video.rmask = 0xf800;
 				g_video.gmask = 0x07e0;
 				g_video.bmask = 0x001f;
 				g_video.amask = 0x0000;
+				g_video.rShift = 11;
+				g_video.gShift = 5;
+				g_video.bShift = 0;
+				g_video.aShift = 0;
 			}
-			g_video.rShift = 0;
-			g_video.gShift = 5;
-			g_video.bShift = 11;
-			g_video.aShift = 16;
+
 			g_video.bpp = 8*sizeof(uint16_t);
 			break;
 		default:

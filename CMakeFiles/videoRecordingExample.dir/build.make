@@ -34,11 +34,14 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/administrator/DQN/SNES-Learning-Environment
+CMAKE_SOURCE_DIR = /home/administrator/DQN/Arcade-Learning-Environment-2.0
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/administrator/DQN/SNES-Learning-Environment
+CMAKE_BINARY_DIR = /home/administrator/DQN/Arcade-Learning-Environment-2.0
 
 # Include any dependencies generated for this target.
 include CMakeFiles/videoRecordingExample.dir/depend.make
@@ -51,17 +54,17 @@ include CMakeFiles/videoRecordingExample.dir/flags.make
 
 CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o: CMakeFiles/videoRecordingExample.dir/flags.make
 CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o: doc/examples/videoRecordingExample.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/administrator/DQN/SNES-Learning-Environment/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o -c /home/administrator/DQN/SNES-Learning-Environment/doc/examples/videoRecordingExample.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o -c /home/administrator/DQN/Arcade-Learning-Environment-2.0/doc/examples/videoRecordingExample.cpp
 
 CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/administrator/DQN/SNES-Learning-Environment/doc/examples/videoRecordingExample.cpp > CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/administrator/DQN/Arcade-Learning-Environment-2.0/doc/examples/videoRecordingExample.cpp > CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.i
 
 CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/administrator/DQN/SNES-Learning-Environment/doc/examples/videoRecordingExample.cpp -o CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/administrator/DQN/Arcade-Learning-Environment-2.0/doc/examples/videoRecordingExample.cpp -o CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.s
 
 CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o.requires:
 .PHONY : CMakeFiles/videoRecordingExample.dir/doc/examples/videoRecordingExample.cpp.o.requires
@@ -83,6 +86,8 @@ doc/examples/videoRecordingExample: CMakeFiles/videoRecordingExample.dir/doc/exa
 doc/examples/videoRecordingExample: CMakeFiles/videoRecordingExample.dir/build.make
 doc/examples/videoRecordingExample: /usr/lib/x86_64-linux-gnu/libSDLmain.a
 doc/examples/videoRecordingExample: /usr/lib/x86_64-linux-gnu/libSDL.so
+doc/examples/videoRecordingExample: snes9x-next/snes9x_next_libretro.so
+doc/examples/videoRecordingExample: stella-libretro/stella_libretro.so
 doc/examples/videoRecordingExample: CMakeFiles/videoRecordingExample.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable doc/examples/videoRecordingExample"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/videoRecordingExample.dir/link.txt --verbose=$(VERBOSE)
@@ -99,6 +104,6 @@ CMakeFiles/videoRecordingExample.dir/clean:
 .PHONY : CMakeFiles/videoRecordingExample.dir/clean
 
 CMakeFiles/videoRecordingExample.dir/depend:
-	cd /home/administrator/DQN/SNES-Learning-Environment && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/administrator/DQN/SNES-Learning-Environment /home/administrator/DQN/SNES-Learning-Environment /home/administrator/DQN/SNES-Learning-Environment /home/administrator/DQN/SNES-Learning-Environment /home/administrator/DQN/SNES-Learning-Environment/CMakeFiles/videoRecordingExample.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/administrator/DQN/Arcade-Learning-Environment-2.0 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/administrator/DQN/Arcade-Learning-Environment-2.0 /home/administrator/DQN/Arcade-Learning-Environment-2.0 /home/administrator/DQN/Arcade-Learning-Environment-2.0 /home/administrator/DQN/Arcade-Learning-Environment-2.0 /home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/videoRecordingExample.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/videoRecordingExample.dir/depend
 

@@ -33,6 +33,18 @@
 
 namespace ale {
 
+struct pixelFormat {
+   uint32_t rmask;
+   uint32_t gmask;
+   uint32_t bmask;
+   uint32_t amask;
+   uint32_t rShift;
+   uint32_t gShift;
+   uint32_t bShift;
+   uint32_t aShift;
+   int Bpp; //Bytes per pixel
+};
+
 // This defines the number of "random" environments
 #define NUM_RANDOM_ENVIRONMENTS (500)
 
@@ -101,6 +113,8 @@ class RetroEnvironment {
 
     /** Processes the emulator RAM and saves it in m_ram */
     void processRAM();
+
+    void getPixelFormat(struct pixelFormat &m_pixelFormat);
 
   private:
     AleSystem *m_alesystem;

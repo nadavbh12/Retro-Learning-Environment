@@ -46,7 +46,7 @@ static const std::string Version = "0.5.0";
 
 class AleSystem;
 class Settings;
-
+struct pixelFormat;
 struct RomSettings;
 class RetroEnvironment;
 class ALEState;
@@ -106,9 +106,8 @@ typedef unsigned char byte_t;
 /** A simple wrapper around an Atari screen. */
 class ALEScreen {
   public:
-    ALEScreen(int h, int w, int Bpp) : m_rows(h), m_columns(w), m_Bpp(Bpp), m_pixels(m_rows * m_columns) {}
-    ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_Bpp(rhs.m_Bpp), m_pixels(rhs.m_pixels) {}
-
+    ALEScreen(int h, int w);
+    ALEScreen(const ALEScreen &rhs);
     ALEScreen& operator=(const ALEScreen &rhs);
 
     /** pixel accessors, (row, column)-ordered */
@@ -125,18 +124,21 @@ class ALEScreen {
     /** Dimensionality information - values are in pixels */
     size_t height() const { return m_rows; }
     size_t width() const { return m_columns ; }
-    size_t Bpp() const { return m_Bpp;}
+
     /** Returns the size of the underlying array */
     size_t arraySize() const { return m_pixels.size(); }
 
     /** Returns whether two screens are equal */
     bool equals(const ALEScreen &rhs) const;
+    void getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const;
+
+    struct pixelFormat* m_pixelFormat;
 
   protected:
     int m_rows;
     int m_columns; // in Pixels
-    int m_Bpp; //Bytes per pixel
     std::vector<pixel_t> m_pixels;
+
 };
 
 //#define RAM_SIZE (128)
@@ -277,15 +279,6 @@ public:
                             std::shared_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
                            std::shared_ptr<AleSystem> &theSLESystem);
-  static unsigned  pixelFormat;
-
-  static void getRGB(
-	uint32_t pixel,
-	uint8_t &red,
-	uint8_t &green,
-	uint8_t &blue
-  );
-
  private:
 
    /** Copying is explicitly disallowed. */
