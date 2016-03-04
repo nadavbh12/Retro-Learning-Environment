@@ -98,6 +98,11 @@ struct RomSettings {
     int getDecimalScore(int idx, const AleSystem* system);
     int getDecimalScore(int lo, int hi, const AleSystem* system);
     int getDecimalScore(int lo, int mid, int hi, const AleSystem* system);
+    int getDecimalScoreWord(int idx, const AleSystem* system);
+	int getDecimalScoreWord(int lo, int hi, const AleSystem* system);
+	int getDecimalScoreWord(int lo, int mid, int hi, const AleSystem* system);
+	int getDecimalScoreWords(std::vector<int> indexes, const AleSystem* system);
+
 
 protected:
     ActionVect AllActionsVector;

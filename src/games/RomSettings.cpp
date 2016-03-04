@@ -103,3 +103,45 @@ int RomSettings::getDecimalScore(int lower_index, int middle_index, int higher_i
     score += ((100000 * higher_left_digit) + 10000 * higher_right_digit);
     return score;
 }
+
+/* extracts a decimal value from a byte */
+int RomSettings::getDecimalScoreWord(int index, const AleSystem* system) {
+
+    int score = 0;
+    int digits_val = readRam(system, index);
+    score += digits_val;
+    return score;
+}
+
+/* extracts a decimal value from 2 words */
+int RomSettings::getDecimalScoreWord(int lower_index, int higher_index, const AleSystem* system) {
+    int score = 0;
+    int lower_digits_val = readRam(system, lower_index);
+    int higher_digits_val = readRam(system, higher_index);
+    score += lower_digits_val;
+    score += 10 * higher_digits_val;
+    return score;
+}
+
+/* extracts a decimal value from 3 words */
+int RomSettings::getDecimalScoreWord(int lower_index, int middle_index, int higher_index, const AleSystem* system) {
+    int score = 0;
+    int lower_digits_val = readRam(system, lower_index);
+    int middle_digits_val = readRam(system, middle_index);
+    int higher_digits_val = readRam(system, higher_index);
+    score += lower_digits_val;
+    score += 10 * middle_digits_val;
+    score += 100 * higher_digits_val;
+    return score;
+}
+
+/* extracts a decimal value from words specified in vector */
+int RomSettings::getDecimalScoreWords(std::vector<int> indexes, const AleSystem* system) {
+    int score = 0;
+    int multiplier = 1;
+    for(auto ind : indexes){
+    	score += multiplier * readRam(system, ind);
+    	multiplier *= 10;
+    }
+    return score;
+}

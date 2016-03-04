@@ -89,7 +89,7 @@ void dispalyExample (ALEInterface *ale){
 	amask = 0x0000;
 
 	SDL_Surface * tempScreen = SDL_CreateRGBSurfaceFrom(data, screen_width, screen_height,
-	                            16, pitch, rmask, gmask, bmask, 0);
+	                            16, pitch, rmask, gmask, bmask, amask);
 	SDL_Surface* zoomed = zoomSurface(tempScreen, window_width/(double)screen_width, window_height/(double)screen_height, 0);
 
 	SDL_Surface* screen = SDL_SetVideoMode(window_width, window_height, 16, SDL_SWSURFACE);
@@ -104,7 +104,7 @@ void dispalyExample (ALEInterface *ale){
 		FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
 //	    uint8_t* originBuffer = data;
 	    uint8_t* destBuffer =(uint8_t*) data;
-	    for( int i = 0; i < screen_height * screen_width * 2 ; i++){
+	    for( unsigned int i = 0; i < screen_height * screen_width * 2 ; i++){
 	//    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
 	//    		fprintf(a,"\n");
 	//    	}

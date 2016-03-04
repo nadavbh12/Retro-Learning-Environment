@@ -17,6 +17,7 @@
 
 /// snes games
 #include "supported/AtariCollection.hpp"
+#include "supported/FinalFight.hpp"
 #include "supported/MortalKombat.hpp"
 #include "supported/SuperMarioWorld.hpp"
 
@@ -152,6 +153,7 @@ static const RomSettings *roms[]  = {
 //    new ZaxxonSettings(),
 
 	new AtariCollectionSettings(),
+	new FinalFightSettings(),
     new MortalKombatSettings(),
     new SuperMarioWorldSettings(),
 };

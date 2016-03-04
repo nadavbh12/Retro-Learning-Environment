@@ -25,8 +25,8 @@
  * *****************************************************************************
  */
 
-#ifndef __SUPER_MARIO_WORLD_HPP__
-#define __SUPER_MARIO_WORLD_HPP__
+#ifndef __FINAL_FIGHT_SETTINGS_HPP__
+#define __FINAL_FIGHT_SETTINGS_HPP__
 /* RL wrapper for AtariCollection settings */
 
 #include "../SnesSettings.hpp"
@@ -34,11 +34,11 @@
 
 namespace ale {
 
-struct SuperMarioWorldSettings : public SnesSettings {
+struct FinalFightSettings : public SnesSettings {
 
     public:
 
-		SuperMarioWorldSettings();
+	FinalFightSettings();
 
         // reset
         void reset();
@@ -50,7 +50,7 @@ struct SuperMarioWorldSettings : public SnesSettings {
         reward_t getReward() const;
 
         // the rom-name
-        const char* rom() const { return "super_mario_world"; }
+        const char* rom() const { return "final_fight"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
@@ -76,9 +76,10 @@ struct SuperMarioWorldSettings : public SnesSettings {
         bool m_terminal;
         reward_t m_reward;
         reward_t m_score;
-        vector<int> m_lastTime;
+        int m_wins;
+        int o_wins;
 };
 
 } // namespace ale
 
-#endif // __SUPER_MARIO_WORLD_SETTINGS_HPP__
+#endif // __FINAL_FIGHT_SETTINGS_HPP__

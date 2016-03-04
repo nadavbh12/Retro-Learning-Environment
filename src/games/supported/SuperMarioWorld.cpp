@@ -47,6 +47,10 @@ SuperMarioWorldSettings::SuperMarioWorldSettings() {
 						JOYPAD_Y | JOYPAD_A | JOYPAD_RIGHT,
 						JOYPAD_Y | JOYPAD_A | JOYPAD_LEFT,
     };
+    m_lastTime = {-1, -1, -1};
+//    m_lastTime.push_back(-1);
+//    m_lastTime.push_back(-1);
+//    m_lastTime.push_back(-1);
 }
 
 
@@ -61,29 +65,30 @@ RomSettings* SuperMarioWorldSettings::clone() const {
 
 /* process the latest information from ALE */
 void SuperMarioWorldSettings::step(const AleSystem& system) {
-    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-    int time = 100 * readRam(&system, 0xf25) + 10 * readRam(&system, 0xf26) + readRam(&system, 0xf27);
+//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
+    int time = getDecimalScoreWords({0xf27, 0xf26, 0xf25}, &system);
 //	DEBUG2("time: " << std::dec << time);
 
+    m_lastTime.erase(m_lastTime.begin());
+    m_lastTime.push_back(readRam(&system, 0xf30));
+
 	// update the reward
-    reward_t score = 10 * readRam(&system, 0xf34) + 100 * readRam(&system, 0xf34) + 100 * readRam(&system, 0xf345);
+    reward_t score = 10 * getDecimalScoreWords({0xf34, 0xf35, 0xf36}, &system);
 //    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
-//    // Deal with score wrapping. In truth this should be done for all games and in a more
-//    // uniform fashion.
-//    if (m_reward < 0) {
-//        const int WRAP_SCORE = 100000;
-//        m_reward += WRAP_SCORE;
-//    }
     m_score = score;
 
 //    update terminal status
 //    int playerLife = readRam(&system, 0x4c1);
-//    int npcLife = readRam(&system, 0x4c3);
 
     if(time == 0x1){ //shai:comparing to 1 not zero to avoid terminal upon first run
 		m_terminal=true;
+    }
+    else{ // check if the timer has stopped
+    	if ( (0 < time && time < 300) && (std::adjacent_find( m_lastTime.begin(), m_lastTime.end(), std::not_equal_to<int>() ) == m_lastTime.end()) ){
+    	    m_terminal=true;
+    	}
     }
 }
 
@@ -138,7 +143,7 @@ void SuperMarioWorldSettings::loadState( Deserializer & des ) {
 
 
 ActionVect SuperMarioWorldSettings::getStartingActions(){
-	int i, num_of_xs(4),num_of_nops(100);
+	int i, num_of_nops(100);
 	ActionVect startingActions;
 //	startingActions.reserve(num_of_xs*num_of_nops);
 	// wait for intro to end
@@ -146,30 +151,40 @@ ActionVect SuperMarioWorldSettings::getStartingActions(){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
 	startingActions.push_back(JOYPAD_B);
-	for(i = 0; i<1*num_of_nops; i++){
+	for(i = 0; i<0.3*num_of_nops; i++){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
-	// select first save slot
+//	// select first save slot
 	startingActions.push_back(JOYPAD_B);
-	for(i = 0; i<1*num_of_nops; i++){
+	for(i = 0; i<0.3*num_of_nops; i++){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
 	// select 1 player
 	startingActions.push_back(JOYPAD_B);
-	for(i = 0; i<1*num_of_nops; i++){
+	for(i = 0; i<0.3*num_of_nops; i++){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
-	// wait for intro to end
-	for(i = 0; i<18*num_of_nops; i++){
+	// wait for text to end
+	for(i = 0; i<10*num_of_nops; i++){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
-	// selec level
+	startingActions.push_back(JOYPAD_B);
+	// wait for text to end
+	for(i = 0; i<2*num_of_nops; i++){
+		startingActions.push_back(JOYPAD_NOOP);
+	}
+	// select level
 	startingActions.push_back(JOYPAD_LEFT);
-	for(i = 0; i<1*num_of_nops; i++){
+	for(i = 0; i<1.5*num_of_nops; i++){
 		startingActions.push_back(JOYPAD_NOOP);
 	}
 	// start level
 	startingActions.push_back(JOYPAD_B);
+	// wait for level to load
+	startingActions.push_back(JOYPAD_LEFT);
+	for(i = 0; i<2*num_of_nops; i++){
+		startingActions.push_back(JOYPAD_NOOP);
+	}
 
 	return startingActions;
 }
