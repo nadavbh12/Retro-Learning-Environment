@@ -71,7 +71,8 @@ static struct {
 
 	int action_a;
 	int action_b;
-	const string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
+	const char* saveFolder = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/saves/";
+	const char* sysFolder = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/system/";
 	size_t serializeSize;
 	uint8_t* currentBuffer;
 } g_retro;
@@ -289,8 +290,10 @@ static void core_log(enum retro_log_level level, const char *fmt, ...) {
 	if (level == 0)
 		return;
 
-	fprintf(stderr, "[%s] %s", levelstr[level], buffer);
-	fflush(stderr);
+//	fprintf(stderr, "[%s] %s", levelstr[level], buffer);
+//	fflush(stderr);
+	fprintf(stdout, "[%s] %s", levelstr[level], buffer);
+	fflush(stdout);
 
 	if (level == RETRO_LOG_ERROR)
 		exit(EXIT_FAILURE);
@@ -299,6 +302,7 @@ static void core_log(enum retro_log_level level, const char *fmt, ...) {
 
 static bool core_environment(unsigned cmd, void *data) {
 	bool *bval;
+//	char *cval;
 
 	switch (cmd) {
 	case RETRO_ENVIRONMENT_GET_LOG_INTERFACE: {
@@ -319,8 +323,18 @@ static bool core_environment(unsigned cmd, void *data) {
 		return video_set_pixel_format(*fmt);
 	}
 	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
-		const char* cval = (char*)data;
-		cval = g_retro.saveFolder.c_str();
+		char **cval = (char**)data;
+//		cval = g_retro.saveFolder;
+		*cval = (char*)"/home/nadav/DQN/Arcade-Learning-Environment-2.0/saves";
+		return true;
+	}
+	case RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY :{
+//		cval = (char*)data;
+//		*cval = g_retro.sysFolder
+//		return true;
+		char **cval = (char**)data;
+//		cval = g_retro.saveFolder;
+		*cval = (char*)"/home/nadav/DQN/Arcade-Learning-Environment-2.0/sys";
 		return true;
 	}
 	default:
@@ -515,8 +529,8 @@ uint8_t* RetroAgent::getRamAddress(unsigned id){
 	   }
 }
 
-uint32_t RetroAgent::getRamSize(){
-	return (uint32_t)g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
+uint32_t RetroAgent::getRamSize(unsigned id){
+	return (uint32_t)g_retro.retro_get_memory_size(id);
 }
 
 
@@ -525,6 +539,7 @@ uint32_t RetroAgent::getRamSize(){
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
 	g_retro.action_a = player_a_action;
 //	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
+//	usleep(100000);
 	g_retro.action_b = player_b_action;
 }
 

@@ -4,3 +4,6 @@
 [submodule "stella-libretro"]
 	path = stella-libretro
 	url = https://github.com/libretro/stella-libretro.git
+[submodule "nestopia"]
+	path = nestopia
+	url = https://github.com/libretro/nestopia.git

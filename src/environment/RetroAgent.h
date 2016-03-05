@@ -28,7 +28,7 @@ public:
 	void reset();
 	int readRam(unsigned id, int offset);
 	uint8_t* getRamAddress(unsigned id);
-	uint32_t getRamSize();
+	uint32_t getRamSize(unsigned id = RETRO_MEMORY_SYSTEM_RAM);
 	void SetActions(int player_a_action, int player_b_action);
 	void updateScreen();
 	void* getCurrentBuffer() const;

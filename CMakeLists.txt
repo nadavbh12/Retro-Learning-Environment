@@ -45,6 +45,7 @@ endif()
 
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(NESTOPIA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nestopia)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
 #set(MODULES common controllers emucore emucore/m6502/src emucore/m6502/src/bspf/src environment games games/supported external external/TinyMT)
@@ -86,6 +87,9 @@ include_directories(
   ${SOURCE_DIR}/external/TinyMT
 )
 
+add_library(nestopia_libretro SHARED IMPORTED)
+set_property(TARGET nestopia_libretro PROPERTY IMPORTED_LOCATION ${NESTOPIA_DIR}/libretro/nestopia_libretro.so)
+list(APPEND LINK_LIBS nestopia_libretro)
 
 add_library(snes9x_next_libretro SHARED IMPORTED)
 set_property(TARGET snes9x_next_libretro PROPERTY IMPORTED_LOCATION ${SNES9X_DIR}/snes9x_next_libretro.so)

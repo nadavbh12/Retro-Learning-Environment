@@ -15,11 +15,14 @@
 
 // include the game implementations
 
-/// snes games
+// snes games
 #include "supported/AtariCollection.hpp"
 #include "supported/FinalFight.hpp"
 #include "supported/MortalKombat.hpp"
 #include "supported/SuperMarioWorld.hpp"
+
+// nes games
+#include "supported/SuperMarioBros.hpp"
 
 // atari games
 //#include "supported/AirRaid.hpp"
@@ -152,10 +155,14 @@ static const RomSettings *roms[]  = {
 //    new YarsRevengeSettings(),
 //    new ZaxxonSettings(),
 
+	// snes games
 	new AtariCollectionSettings(),
 	new FinalFightSettings(),
     new MortalKombatSettings(),
     new SuperMarioWorldSettings(),
+
+	// nes games
+	new SuperMarioBrosSettings(),
 };
 
 
