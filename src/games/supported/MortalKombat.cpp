@@ -43,10 +43,10 @@ MortalKombatSettings::MortalKombatSettings() {
 						JOYPAD_RIGHT | JOYPAD_Y,	// throw
 						JOYPAD_LEFT | JOYPAD_Y,		// throw
 
-						JOYPAD_R | JOYPAD_LEFT,		// added to support kano's combos
-						JOYPAD_R | JOYPAD_RIGHT,
-						JOYPAD_R | JOYPAD_UP,
-						JOYPAD_R | JOYPAD_DOWN,
+//						JOYPAD_R | JOYPAD_LEFT,		// added to support kano's combos
+//						JOYPAD_R | JOYPAD_RIGHT,
+//						JOYPAD_R | JOYPAD_UP,
+//						JOYPAD_R | JOYPAD_DOWN,
     };
 }
 
@@ -98,7 +98,7 @@ void MortalKombatSettings::step(const AleSystem& system) {
     m_wins = getDecimalScore(0x196e, &system);
     o_wins = getDecimalScore(0x1aca, &system);
     if (m_wins==2){
-    	m_score = m_score + 1000*time; //shai: manually adding time bonus to win faster
+//    	m_score = m_score + 1000*time; //shai: manually adding time bonus to win faster
     	m_terminal = true;
     }
     if(o_wins == 2){
