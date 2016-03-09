@@ -18,6 +18,7 @@
 /// snes games
 #include "supported/AtariCollection.hpp"
 #include "supported/FinalFight.hpp"
+#include "supported/GradiusIII.hpp"
 #include "supported/MortalKombat.hpp"
 #include "supported/SuperMarioWorld.hpp"
 
@@ -154,6 +155,7 @@ static const RomSettings *roms[]  = {
 
 	new AtariCollectionSettings(),
 	new FinalFightSettings(),
+	new GradiusIIISettings(),
     new MortalKombatSettings(),
     new SuperMarioWorldSettings(),
 };

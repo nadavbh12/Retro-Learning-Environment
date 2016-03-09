@@ -349,7 +349,6 @@ static int16_t core_input_state(unsigned port, unsigned device, unsigned index, 
 	// player b will be supported by a different port
 	if (port || index || device != RETRO_DEVICE_JOYPAD)
 		return 0;
-//	DEBUG2("Value of " << id << " is: " << g_joy[id]);
 	return g_joy[id];
 }
 
@@ -546,6 +545,7 @@ uint32_t RetroAgent::getPitch() const{
 unsigned RetroAgent::getFormat()const{
 	return g_video.format;
 }
+
 void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, uint32_t& amask) const{
 	rmask = g_video.rmask;
 	gmask = g_video.gmask;
@@ -567,6 +567,7 @@ void RetroAgent::getRgbShift(uint32_t& rShift, uint32_t& gShift, uint32_t& bShif
 	aShift=g_video.aShift;
 
 }
+
 void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b ) const{
 	uint32_t rmask , bmask, gmask, amask;
 	uint32_t rShift, bShift, gShift,aShift;
