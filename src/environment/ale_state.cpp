@@ -20,15 +20,15 @@ using namespace ale;
 
 /** Default constructor - loads settings from system */ 
 ALEState::ALEState():
-  m_left_paddle(PADDLE_DEFAULT_VALUE),
-  m_right_paddle(PADDLE_DEFAULT_VALUE),
+//  m_left_paddle(PADDLE_DEFAULT_VALUE),
+//  m_right_paddle(PADDLE_DEFAULT_VALUE),
   m_frame_number(0),
   m_episode_frame_number(0) {
 }
 
 ALEState::ALEState(const ALEState &rhs, std::string serialized):
-  m_left_paddle(rhs.m_left_paddle),
-  m_right_paddle(rhs.m_right_paddle),
+//  m_left_paddle(rhs.m_left_paddle),
+//  m_right_paddle(rhs.m_right_paddle),
   m_frame_number(rhs.m_frame_number),
   m_episode_frame_number(rhs.m_episode_frame_number),
   m_serialized_state(serialized) {
@@ -36,8 +36,8 @@ ALEState::ALEState(const ALEState &rhs, std::string serialized):
 
 ALEState::ALEState(const std::string &serialized) {
   Deserializer des(serialized);
-  this->m_left_paddle = des.getInt();
-  this->m_right_paddle = des.getInt();
+//  this->m_left_paddle = des.getInt();
+//  this->m_right_paddle = des.getInt();
   this->m_frame_number = des.getInt();
   this->m_episode_frame_number = des.getInt();
   this->m_serialized_state = des.getString();
@@ -47,8 +47,8 @@ ALEState::ALEState(const std::string &serialized) {
 /** Restores ALE to the given previously saved state. */ 
 void ALEState::load(
 		AleSystem* alesystem,
-		RomSettings* settings, std::string md5, const ALEState &rhs,
-    bool load_system) {
+		RomSettings* settings, const ALEState &rhs,
+		bool load_system) {
   assert(rhs.m_serialized_state.length() > 0);
 
   // Deserialize the stored string into the emulator state
@@ -61,14 +61,15 @@ void ALEState::load(
 
   // TODO SN: implement load
 //  osystem->console().system().loadState(md5, deser);
+  alesystem->getRetroAgent().deserialize(deser);
   // If we have osystem data, load it as well
-  if (load_system)
-    alesystem->loadState(deser);
-  settings->loadState(deser);
+//  if (load_system)
+//    alesystem->loadState(deser);
+//  settings->loadState(deser);
 
   // Copy over other member variables
-  m_left_paddle = rhs.m_left_paddle;
-  m_right_paddle = rhs.m_right_paddle;
+//  m_left_paddle = rhs.m_left_paddle;
+//  m_right_paddle = rhs.m_right_paddle;
   m_episode_frame_number = rhs.m_episode_frame_number;
   m_frame_number = rhs.m_frame_number;
 }
@@ -85,9 +86,10 @@ ALEState ALEState::save(
 
   //	TODO SN: replace console
 //  osystem->console().system().saveState(md5, ser);
-  if (save_system)
-	  alesystem->saveState(ser);
-  settings->saveState(ser);
+  alesystem->getRetroAgent().serialize(ser);
+//  if (save_system)
+//	  alesystem->saveState(ser);
+//  settings->saveState(ser);
 
   // Now make a copy of this state, also storing the emulator serialization
   return ALEState(*this, ser.get_str());
@@ -500,8 +502,8 @@ void ALEState::resetKeys(
 
 bool ALEState::equals(ALEState &rhs) {
   return (rhs.m_serialized_state == this->m_serialized_state &&
-    rhs.m_left_paddle == this->m_left_paddle &&
-    rhs.m_right_paddle == this->m_right_paddle &&
+//    rhs.m_left_paddle == this->m_left_paddle &&
+//    rhs.m_right_paddle == this->m_right_paddle &&
     rhs.m_frame_number == this->m_frame_number &&
     rhs.m_episode_frame_number == this->m_episode_frame_number);
 }

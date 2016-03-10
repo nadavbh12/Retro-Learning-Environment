@@ -21,6 +21,8 @@
 #include "DebugMacros.h"
 #include <iomanip>
 #include <stdlib.h>
+#include "Serializer.hxx"
+#include "Deserializer.hxx"
 
 using namespace ale;
 
@@ -580,10 +582,18 @@ void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t 
 //	a=(pixel & amask) >> aShift;
 }
 
-void RetroAgent::serialize(void *data, size_t size){
-	g_retro.retro_serialize(data,size);
+void RetroAgent::serialize(Serializer& ser){
+//	sizeof(char)*g_retro.serializeSize
+	void* data = malloc(sizeof(char)*g_retro.serializeSize);
+
+	g_retro.retro_serialize(data,g_retro.serializeSize);
+	ser.putIntArray((const int*)data, g_retro.serializeSize * sizeof(int)/sizeof(uint8_t));
+	free(data);
 }
 
-void RetroAgent::deserialize(void *data, size_t size){
-	g_retro.retro_unserialize(data, size);
+void RetroAgent::deserialize(Deserializer& des){
+	void* data;
+	size_t size;
+	des.getIntArray((int*)data, size);
+	g_retro.retro_unserialize(data, size * sizeof(uint8_t)/sizeof(int));
 }

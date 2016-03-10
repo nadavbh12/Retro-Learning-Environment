@@ -139,18 +139,18 @@ ALEState RetroEnvironment::cloneState() {
   return m_state.save(m_alesystem, m_settings, false);
 }
 
-//void RetroEnvironment::restoreState(const ALEState& target_state) {
-//  m_state.load(m_alesystem, m_settings, m_cartridge_md5, target_state, false);
-//}
-//
-//ALEState RetroEnvironment::cloneSystemState() {
-//  return m_state.save(m_alesystem, m_settings, m_cartridge_md5, true);
-//}
-//
-//void RetroEnvironment::restoreSystemState(const ALEState& target_state) {
-//  m_state.load(m_alesystem, m_settings, m_cartridge_md5, target_state, true);
-//}
-//
+void RetroEnvironment::restoreState(const ALEState& target_state) {
+  m_state.load(m_alesystem, m_settings, target_state, false);
+}
+
+ALEState RetroEnvironment::cloneSystemState() {
+  return m_state.save(m_alesystem, m_settings, true);
+}
+
+void RetroEnvironment::restoreSystemState(const ALEState& target_state) {
+  m_state.load(m_alesystem, m_settings, target_state, true);
+}
+
 void RetroEnvironment::noopIllegalActions(Action & player_a_action, Action & player_b_action) {
   if ( ((player_a_action & PLAYER_A) == PLAYER_A) &&
         !m_settings->isLegal(player_a_action)) {

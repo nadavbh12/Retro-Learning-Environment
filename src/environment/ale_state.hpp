@@ -85,7 +85,7 @@ class ALEState {
         restore system-specific information (such as the RNG state). */ 
     void load(
     		AleSystem* alesystem,
-    		RomSettings* settings, std::string md5, const ALEState &rhs,
+    		RomSettings* settings, const ALEState &rhs,
             bool load_system);
 
     /** Returns a "copy" of the current state, including the information necessary to restore
@@ -113,8 +113,8 @@ class ALEState {
     int calcPaddleResistance(int x_val);
   
   private:
-    int m_left_paddle;   // Current value for the left-paddle
-    int m_right_paddle;  // Current value for the right-paddle
+//    int m_left_paddle;   // Current value for the left-paddle
+//    int m_right_paddle;  // Current value for the right-paddle
 
     int m_frame_number; // How many frames since the start
     int m_episode_frame_number; // How many frames since the beginning of this episode

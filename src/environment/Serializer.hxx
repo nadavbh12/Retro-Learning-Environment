@@ -80,6 +80,14 @@ class Serializer
     */
     void putBool(bool b);
 
+    /**
+      Writes an array of bytes to the current output stream.
+
+      @param array The array value to write to the output stream.
+      @param size The size of the current array
+    */
+    void putIntArray(const int* array, const int& size);
+
     // Accessor for myStream
     // TODO: don't copy the whole streams. 
     std::string get_str(void) const {

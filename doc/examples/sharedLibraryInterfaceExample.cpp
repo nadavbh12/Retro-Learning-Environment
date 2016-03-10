@@ -26,6 +26,9 @@
 
 #include "../../src/environment/RetroAgent.h"
 
+#include "../../src/environment/Serializer.hxx"
+#include "../../src/environment/Deserializer.hxx"
+
 using namespace std;
 using namespace ale;
 void dispalyExample (ALEInterface *ale);
@@ -37,6 +40,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     ALEInterface ale;
+
 
     // Get & Set the desired settings
     ale.setInt("random_seed", 123);
@@ -55,8 +59,10 @@ int main(int argc, char** argv) {
     // Get the vector of minimal actions
     ActionVect legal_actions = ale.getMinimalActionSet();
 
+
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
+//    	ale.saveState();
         float totalReward = 0;
         while (!ale.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
@@ -67,11 +73,37 @@ int main(int argc, char** argv) {
         }
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
         ale.reset_game();
+//        ale.loadState();
     }
     return 0;
 }
 
-
+//int main(int argc, char** argv) {
+//// test string
+////	Serializer ser;
+////	string nadav = "nadav";
+////	ser.putString(nadav);
+//////	ser.putInt(7);
+////	string debug = ser.get_str();
+////
+////	Deserializer des(ser.get_str());
+////	string newString = des.getString();
+////	cout << newString <<
+//////			des.getInt() <<
+////			endl;
+//
+//	// test ByteArray
+//	Serializer ser;
+//	int intArray[] = {4, 5};
+//	size_t size = 2;
+//	ser.putIntArray(intArray, size);
+//
+//	Deserializer des(ser.get_str());
+//	int* newArray = new int[2];
+//	des.getIntArray(newArray, size);
+//	cout << newArray[0] << ", " << newArray[1] << ", " << size << endl;
+//	delete[] newArray;
+//}
 
 void dispalyExample (ALEInterface *ale){
 #ifdef __USE_SDL

@@ -69,3 +69,24 @@ void Serializer::putBool(bool b)
     putInt(b ? TruePattern: FalsePattern);
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Serializer::putIntArray(const int* array, const int& size)
+{
+//	putInt(size);
+//	myStream.write(array, (streamsize)size);
+//	cout << myStream << endl;
+//	putInt(size);
+//	myStream.write(array, size);
+
+//	myStream.write((char*)array, size);
+//    cout << myStream << endl;
+
+//	myStream.write(array, 4);
+//	cout << myStream << endl;
+	for(int i = 0 ; i < size ; i++){
+		putInt(array[i]);
+	}
+
+    if(myStream.bad())
+        throw "Serializer: file write failed";
+}

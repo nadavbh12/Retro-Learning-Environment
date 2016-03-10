@@ -18,6 +18,7 @@
 
 #include "Deserializer.hxx"
 #include <sstream>
+#include <cstring>
 using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,4 +81,26 @@ bool Deserializer::getBool(void)
     throw "Deserializer: data corruption";
 
   return result;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Deserializer::getIntArray(int* array, size_t& size)
+{
+//  size = getInt();
+//  array = new char[size];
+//  myStream.read(&array[0], (streamsize)size);
+//  size = getInt();
+//	myStream.read(array, size);
+
+//	cout << myStream << endl;
+//	myStream.read((char*)array, size);
+
+//	myStream.read(array, size);
+
+	for(int i = 0 ; i < size ; i++){
+		array[i] = getInt();
+	}
+
+  if(myStream.bad())
+    throw "Deserializer: file read failed";
 }

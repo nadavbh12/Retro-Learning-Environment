@@ -66,13 +66,13 @@ class RetroEnvironment {
         pseudorandomness, so that clone/restoreState are suitable for planning. */
     ALEState cloneState();
     /** Restores a previously saved copy of the state. */
-    void restoreState(const ALEState&){FUNCTION_NAME}
+    void restoreState(const ALEState&);
 
     /** Returns a copy of the current emulator state. This includes RNG state information, and
         more generally should lead to exactly reproducibility. */
-    ALEState cloneSystemState(){FUNCTION_NAME}
+    ALEState cloneSystemState();
     /** Restores a previously saved copy of the state, including RNG state information. */
-    void restoreSystemState(const ALEState&){FUNCTION_NAME}
+    void restoreSystemState(const ALEState&);
 
     /** Applies the given actions (e.g. updating paddle positions when the paddle is used)
       *  and performs one simulation step in Stella. Returns the resultant reward. When 
@@ -86,8 +86,8 @@ class RetroEnvironment {
     bool isTerminal();
 
     /** Accessor methods for the environment state. */
-    void setState(const ALEState & state){FUNCTION_NAME}
-    const ALEState &getState() const{FUNCTION_NAME}
+    void setState(const ALEState & state);
+    const ALEState &getState() const;
 
     /** Returns the current screen after processing (e.g. color averaging) */
 

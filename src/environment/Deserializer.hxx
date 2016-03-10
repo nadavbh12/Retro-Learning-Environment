@@ -68,6 +68,14 @@ class Deserializer {
          */
         bool getBool(void);
         
+        /**
+          Reads an array of bytes to the current input stream.
+
+          @param array The array value to write to the output stream.
+          @param size The size of the current array
+        */
+        void getIntArray(int* array, size_t& size);
+
         bool isOpen(void) {return true;}
     private:
         // The stream to get the deserialized data from.

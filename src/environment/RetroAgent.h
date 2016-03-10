@@ -5,7 +5,8 @@
 #include "../common/Constants.h"
 
 typedef unsigned char byte_t;
-
+class Serializer;
+class Deserializer;
 
 namespace ale {
 
@@ -39,8 +40,8 @@ public:
 	void getRgbShift(uint32_t& rShift, uint32_t& gShift, uint32_t& bShift, uint32_t &aShift) const;
 	void getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t &b) const;
 	unsigned getFormat()const;
-	void serialize(void *data, size_t size);
-	void deserialize(void *data, size_t size);
+	void serialize(Serializer& ser);
+	void deserialize(Deserializer& des);
 };
 
 } // namespace ale
