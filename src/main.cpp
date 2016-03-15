@@ -71,7 +71,6 @@ int main(int argc, char* argv[]) {
   std::string corefile = theAleSystem->settings().loadCommandLine(argc, argv);
   ALEInterface::loadSettings(romfile, corefile, theAleSystem);
 
-  // TODO SN: implement after we have some settings
   // Create the game controller
   std::string controller_type = theAleSystem->settings().getString("game_controller");
   std::auto_ptr<ALEController> controller(createController(theAleSystem.get(), controller_type));

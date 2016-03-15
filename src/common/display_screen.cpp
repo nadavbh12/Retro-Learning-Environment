@@ -22,7 +22,7 @@ using namespace std;
 using namespace ale;
 
 #ifdef __USE_SDL
-DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false), delay_msec(17), ragent(rAgent) {
+DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false), delay_msec(5), ragent(rAgent) {
 
 	bpp = ragent->getBpp();
 	screen_height = ragent->getHeight();
@@ -82,6 +82,17 @@ void DisplayScreen::display_screen() {
 
 
     poll(); // Check for quit event
+
+    // Wait a while, calibrating so that the delay remains the same
+    Uint32 newTime = SDL_GetTicks();
+    Uint32 delta = newTime - min(last_frame_time, newTime);
+
+    if (delta < delay_msec) {
+        SDL_Delay(delay_msec - delta);
+    } else {
+        // Try to keep up with the delay
+        last_frame_time = SDL_GetTicks() + delta - delay_msec;
+    }
 }
 
 
@@ -103,16 +114,16 @@ void DisplayScreen::handleSDLEvent(const SDL_Event& event) {
                     manual_control_active = !manual_control_active;
                     if (manual_control_active) {
                         fprintf(stderr, "Manual Control Enabled: [Move] "
-                                "Arrow keys [Fire] Space [NO-OP] Return.\n");
+                                "Arrow keys [A] x [B] z [X] s [Y] a [R] e [L] w [NO-OP] Return.\n");
                     } else {
                         fprintf(stderr, "Manual Control Disabled\n");
                     }
                     break;
-                case SDLK_s:
+                case SDLK_KP_MINUS:
                     delay_msec = delay_msec > 5 ? delay_msec - 5 : 0;
                     fprintf(stderr, "[Speedup] %d msec delay\n", delay_msec);
                     break;
-                case SDLK_a:
+                case SDLK_KP_PLUS:
                     delay_msec = delay_msec + 5;
                     fprintf(stderr, "[Slowdown] %d msec delay\n", delay_msec);
                     break;
@@ -141,58 +152,35 @@ void DisplayScreen::handleSDLEvent(const SDL_Event& event) {
     }
 };
 
-Action DisplayScreen::getUserAction() { //shai: currently remains commented out as ale_controller is not used, if added (after consult with mark on why screen needs action) than needs be be expand
+Action DisplayScreen::getUserAction() {
     if (!manual_control_active) {
         return JOYPAD_UNDEFINED;
     }
-    Action a = JOYPAD_NOOP;
+    Action act = JOYPAD_NOOP;
     poll();
     SDL_PumpEvents();
     Uint8* keymap = SDL_GetKeyState(NULL);
     // Break out of this loop if the 'p' key is pressed
     if (keymap[SDLK_p]) {
       return JOYPAD_NOOP;
-      // Triple Actions
-    } else if (keymap[SDLK_UP] && keymap[SDLK_RIGHT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_UP | JOYPAD_RIGHT | JOYPAD_FIRE;
-    } else if (keymap[SDLK_UP] && keymap[SDLK_LEFT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_UP | JOYPAD_LEFT | JOYPAD_FIRE;
-    } else if (keymap[SDLK_DOWN] && keymap[SDLK_RIGHT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE;
-    } else if (keymap[SDLK_DOWN] && keymap[SDLK_LEFT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE;
-      // Double Actions
-    } else if (keymap[SDLK_UP] && keymap[SDLK_LEFT]) {
-      a = JOYPAD_UP | JOYPAD_LEFT;
-    } else if (keymap[SDLK_UP] && keymap[SDLK_RIGHT]) {
-      a = JOYPAD_UP | JOYPAD_RIGHT;
-    } else if (keymap[SDLK_DOWN] && keymap[SDLK_LEFT]) {
-      a = JOYPAD_DOWN | JOYPAD_LEFT;
-    } else if (keymap[SDLK_DOWN] && keymap[SDLK_RIGHT]) {
-      a = JOYPAD_DOWN | JOYPAD_RIGHT;
-    } else if (keymap[SDLK_UP] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_UP | JOYPAD_FIRE;
-    } else if (keymap[SDLK_DOWN] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_DOWN | JOYPAD_FIRE;
-    } else if (keymap[SDLK_LEFT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_LEFT | JOYPAD_FIRE;
-    } else if (keymap[SDLK_RIGHT] && keymap[SDLK_SPACE]) {
-      a = JOYPAD_RIGHT | JOYPAD_FIRE;
-      // Single Actions
-    } else if (keymap[SDLK_SPACE]) {
-      a = JOYPAD_FIRE;
-    } else if (keymap[SDLK_RETURN]) {
-      a = JOYPAD_NOOP;
-    } else if (keymap[SDLK_LEFT]) {
-      a = JOYPAD_LEFT;
-    } else if (keymap[SDLK_RIGHT]) {
-      a = JOYPAD_RIGHT;
-    } else if (keymap[SDLK_UP]) {
-      a = JOYPAD_UP;
-    } else if (keymap[SDLK_DOWN]) {
-      a = JOYPAD_DOWN;
     }
-    return a;
+
+    Uint8 up, down, left, right, a, b, x, y, r, l;
+    up = JOYPAD_UP * keymap[SDLK_UP];
+    down = JOYPAD_DOWN * keymap[SDLK_DOWN];
+    left = JOYPAD_LEFT * keymap[SDLK_LEFT];
+    right = JOYPAD_RIGHT * keymap[SDLK_RIGHT];
+    a = JOYPAD_A * keymap[SDLK_x];
+    b = JOYPAD_B * keymap[SDLK_z];
+    x = JOYPAD_X * keymap[SDLK_s];
+    y = JOYPAD_Y * keymap[SDLK_a];
+    r = JOYPAD_R * keymap[SDLK_e];
+    l = JOYPAD_L * keymap[SDLK_w];
+//    DEBUG2("keys pressed: " << a << ", " << b << ", " << x << ", " << y << ", " << r << ", " << l << ", " << up << ", " << down << ", " << left << ", " << right)
+
+    act = up | down | left | right | a | b | x | y | r | l;
+
+    return act;
 }
 
 #endif // __USE_SDL

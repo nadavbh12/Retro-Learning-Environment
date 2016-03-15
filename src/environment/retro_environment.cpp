@@ -258,14 +258,14 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 //  processRAM();
 }
 
-///** Accessor methods for the environment state. */
-//void RetroEnvironment::setState(const ALEState& state) {
-//  m_state = state;
-//}
-//
-//const ALEState& RetroEnvironment::getState() const {
-//  return m_state;
-//}
+/** Accessor methods for the environment state. */
+void RetroEnvironment::setState(const ALEState& state) {
+  m_state = state;
+}
+
+const ALEState& RetroEnvironment::getState() const {
+  return m_state;
+}
 
 void RetroEnvironment::processScreen() {
 //  if (m_colour_averaging) {
