@@ -21,20 +21,9 @@
 #include "supported/GradiusIII.hpp"
 #include "supported/MortalKombat.hpp"
 #include "supported/SuperMarioWorld.hpp"
+#include "supported/TetrisAndDrMario.hpp"
 
 // atari games
-//#include "supported/AirRaid.hpp"
-//#include "supported/Alien.hpp"
-//#include "supported/Amidar.hpp"
-//#include "supported/Assault.hpp"
-//#include "supported/Asterix.hpp"
-//#include "supported/Asteroids.hpp"
-//#include "supported/Atlantis.hpp"
-//#include "supported/BankHeist.hpp"
-//#include "supported/BattleZone.hpp"
-//#include "supported/BeamRider.hpp"
-//#include "supported/Berzerk.hpp"
-//#include "supported/Bowling.hpp"
 #include "supported/Boxing.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
@@ -158,6 +147,7 @@ static const RomSettings *roms[]  = {
 	new GradiusIIISettings(),
     new MortalKombatSettings(),
     new SuperMarioWorldSettings(),
+	new TetrisAndDrMarioSettings()
 };
 
 
