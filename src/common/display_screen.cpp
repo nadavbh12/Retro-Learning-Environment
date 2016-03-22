@@ -165,7 +165,7 @@ Action DisplayScreen::getUserAction() {
       return JOYPAD_NOOP;
     }
 
-    Uint8 up, down, left, right, a, b, x, y, r, l;
+    Uint32 up, down, left, right, a, b, x, y, r, l,res;
     up = JOYPAD_UP * keymap[SDLK_UP];
     down = JOYPAD_DOWN * keymap[SDLK_DOWN];
     left = JOYPAD_LEFT * keymap[SDLK_LEFT];
@@ -176,9 +176,10 @@ Action DisplayScreen::getUserAction() {
     y = JOYPAD_Y * keymap[SDLK_a];
     r = JOYPAD_R * keymap[SDLK_e];
     l = JOYPAD_L * keymap[SDLK_w];
-//    DEBUG2("keys pressed: " << a << ", " << b << ", " << x << ", " << y << ", " << r << ", " << l << ", " << up << ", " << down << ", " << left << ", " << right)
+    res = JOYPAD_SYSTEM_RESET * keymap[SDLK_r];
+//    DEBUG2("keys pressed: " << a << ", " << b << ", " << x << ", " << y << ", " << r << ", " << l << ", " << up << ", " << down << ", " << left << ", " << right << " , " << res);
 
-    act = up | down | left | right | a | b | x | y | r | l;
+    act = up | down | left | right | a | b | x | y | r | l | res;
 
     return act;
 }

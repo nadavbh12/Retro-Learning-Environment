@@ -99,7 +99,7 @@ void SuperMarioAllStarsSettings::reset() {
     m_score    = 0;
     m_lives	   = 6; // shai: since stopping at one, begin in 6
     m_terminal = false;
-    m_time=400;
+    m_time	  =  400;
 }
 
 
