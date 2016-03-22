@@ -26,7 +26,7 @@ using namespace ale;
 
 ALEController::ALEController(AleSystem* alesystem) : m_alesystem(alesystem),
 //  TODO SN: retreive rom file elsewhere
-//  m_settings(buildRomRLWrapper(m_osystem->settings().getString("rom_file"))),
+  m_settings(buildRomRLWrapper(m_alesystem->settings().getString("rom_file"))),
   m_environment(m_alesystem, m_settings.get()) {
   if (m_settings.get() == NULL) {
     ale::Logger::Warning << "Unsupported ROM file: " << std::endl;

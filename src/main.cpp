@@ -34,22 +34,22 @@ static std::shared_ptr<AleSystem> theAleSystem(NULL);
 static std::shared_ptr<Settings> theSettings(NULL);
 static std::shared_ptr<RetroAgent> theRetroAgent;
 
-static ALEController* createController(AleSystem* osystem, std::string type) {
+static ALEController* createController(AleSystem* alesystem, std::string type) {
   if(type.empty()){
     std::cerr << "You must specify a controller type (via -game_controller)." << std::endl;
     exit(1);
   }
   else if (type == "fifo") {
     std::cerr << "Game will be controlled through FIFO pipes." << std::endl;
-    return new FIFOController(osystem, false);
+    return new FIFOController(alesystem, false);
   }
   else if (type == "fifo_named") {
     std::cerr << "Game will be controlled through named FIFO pipes." << std::endl;
-    return new FIFOController(osystem, true);
+    return new FIFOController(alesystem, true);
   }
   else if (type == "rlglue") {
     std::cerr << "Game will be controlled through RL-Glue." << std::endl;
-    return new RLGlueController(osystem);
+    return new RLGlueController(alesystem);
   }
   else {
     std::cerr << "Invalid controller type: " << type << " " << std::endl;
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
   // Process commandline arguments, which over-ride all possible
   // config file settings
   std::string romfile = theAleSystem->settings().loadCommandLine(argc, argv);
-  std::string corefile = theAleSystem->settings().loadCommandLine(argc, argv);
+  std::string corefile = theAleSystem->settings().getString("core_file");
   ALEInterface::loadSettings(romfile, corefile, theAleSystem);
 
   // Create the game controller
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 
   // MUST delete theOSystem to avoid a segfault (theOSystem relies on Settings
   //  still being a valid construct)
-//  theAleSystem.reset(NULL);
+  theAleSystem.reset();
 
   return 0;
 }

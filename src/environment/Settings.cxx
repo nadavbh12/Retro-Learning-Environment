@@ -201,10 +201,10 @@ void Settings::usage() {
 			<< "\n"
 			" ***************************************************************************\n"
 			" * Welcome to A.L.E (Arcade Learning Environment)\n"
-			" * (Powered by Stella)\n"
+			" * (Powered by LibRetro)\n"
 			" ***************************************************************************\n"
 			"\n"
-			" Usage: ale [options ...] romfile\n"
+			" Usage: ale [options ...] -core_file corefile romfile\n"
 			"\n"
 			" Main arguments:\n"
 			"   -help -- prints out help information\n"
@@ -611,6 +611,7 @@ void Settings::setDefaultSettings() {
 	floatSettings.insert(
 			pair<string, float>("repeat_action_probability", 0.25));
 	stringSettings.insert(pair<string, string>("rom_file", ""));
+	stringSettings.insert(pair<string, string>("core_file", ""));
 
 	// Record settings
 	intSettings.insert(pair<string, int>("fragsize", 64)); // fragsize to 64 ensures proper sound sync

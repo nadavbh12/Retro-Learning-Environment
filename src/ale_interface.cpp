@@ -332,18 +332,6 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
   theAleSystem->settings().validate();
   theAleSystem->create();
 
-  // Attempt to load the ROM
-//  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
-//    Logger::Error << "No ROM File specified or the ROM file was not found."
-//              << std::endl;
-//    exit(1);
-//  } else if (theAleSystem->createConsole(romfile))  {
-//    Logger::Info << "Running ROM file..." << std::endl;
-//    theAleSystem->settings().setString("rom_file", romfile);
-//  } else {
-//    exit(1);
-//  }
-//  string corePath;
   if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
 	Logger::Error << "No ROM File specified or the ROM file was not found."
 			<< std::endl;
