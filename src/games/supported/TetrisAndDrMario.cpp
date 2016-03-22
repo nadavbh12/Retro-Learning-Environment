@@ -110,40 +110,28 @@ void TetrisAndDrMarioSettings::loadState( Deserializer & des ) {
 
 
 ActionVect TetrisAndDrMarioSettings::getStartingActions(){
-	int i, num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
 //	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
-	for(i = 0; i<3.5*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);
 	// select game
 	startingActions.push_back(JOYPAD_START);
 	// wait for character select screen
-	for(i = 0; i<0.8*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 0.8*num_of_nops, JOYPAD_NOOP);
 	// select 1 player
 	startingActions.push_back(JOYPAD_START);
-	for(i = 0; i<0.6*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 0.6*num_of_nops, JOYPAD_NOOP);
 	// select type (?)
 	startingActions.push_back(JOYPAD_START);
-	for(i = 0; i<0.6*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 0.6*num_of_nops, JOYPAD_NOOP);
 	// select level
 	startingActions.push_back(JOYPAD_START);
-	for(i = 0; i<0.6*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 0.6*num_of_nops, JOYPAD_NOOP);
 	// start the level
 	startingActions.push_back(JOYPAD_START);
-	for(i = 0; i<1*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 1*num_of_nops, JOYPAD_NOOP);
 	return startingActions;
 }
 

@@ -163,42 +163,30 @@ void MortalKombatSettings::loadState( Deserializer & des ) {
 
 
 ActionVect MortalKombatSettings::getStartingActions(){
-	int i, num_of_xs(4),num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
-	startingActions.reserve(num_of_xs*num_of_nops);
+//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
-	for(i = 0; i<16*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 16*num_of_nops, JOYPAD_NOOP);
 	// select tournament
 	startingActions.push_back(JOYPAD_X);
 	// wait for character select screen
-	for(i = 0; i<3.5*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);
 	// choose Raiden
 	startingActions.push_back(JOYPAD_DOWN);
 	startingActions.push_back(JOYPAD_DOWN);
-	for(i = 0; i<num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
 	// select character
 	startingActions.push_back(JOYPAD_X);
 	startingActions.push_back(JOYPAD_X);
-	for(i = 0; i<num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
 	// wait for game to begin
-	for(i = 0; i<4*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 4*num_of_nops, JOYPAD_NOOP);
 	// skip tournament overview
 	startingActions.push_back(JOYPAD_X);
 	// wait for game to start
-	for(i = 0; i<3.5*num_of_nops; i++){
-			startingActions.push_back(JOYPAD_NOOP);
-		}
+	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);
 
 	return startingActions;
 }

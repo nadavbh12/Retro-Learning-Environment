@@ -138,32 +138,22 @@ void GradiusIIISettings::loadState( Deserializer & des ) {
 
 
 ActionVect GradiusIIISettings::getStartingActions(){
-	int i, num_of_xs(4),num_of_nops(100);
+	int num_of_xs(4),num_of_nops(100);
 	ActionVect startingActions;
 	startingActions.reserve(num_of_xs*num_of_nops);
 	// wait for intro to end
-	for(i = 0; i<2.4*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 2.4*num_of_nops, JOYPAD_NOOP);
 	startingActions.push_back(JOYPAD_START);
 	// skip intro
-	for(i = 0; i<0.5*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 0.5*num_of_nops, JOYPAD_NOOP);
 	startingActions.push_back(JOYPAD_START);
 	// select 1 player
-	for(i = 0; i<1.5*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 1.5*num_of_nops, JOYPAD_NOOP);
 	startingActions.push_back(JOYPAD_A);
-	for(i = 0; i<1*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
 	// accept
 	startingActions.push_back(JOYPAD_A);
-	for(i = 0; i<3*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 3*num_of_nops, JOYPAD_NOOP);
 	return startingActions;
 }
 

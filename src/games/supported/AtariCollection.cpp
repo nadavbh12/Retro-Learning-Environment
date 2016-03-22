@@ -128,18 +128,13 @@ void AtariCollectionSettings::loadState( Deserializer & des ) {
 
 
 ActionVect AtariCollectionSettings::getStartingActions(){
-	int i,j, num_of_xs(4),num_of_nops(80);
+	int j, num_of_xs(4),num_of_nops(80);
 	ActionVect startingActions;
-	startingActions.reserve(num_of_xs*num_of_nops);
 	for(j = 0; j<num_of_xs; j++){
 		startingActions.push_back(JOYPAD_X);
-		for(i = 0; i<num_of_nops; i++){
-			startingActions.push_back(JOYPAD_NOOP);
-		}
+		startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
 	}
-	for(i = 0; i<2*num_of_nops; i++){
-				startingActions.push_back(JOYPAD_NOOP);
-	}
+	startingActions.insert(startingActions.end(), 2*num_of_nops, JOYPAD_NOOP);
 
 	return startingActions;
 }
