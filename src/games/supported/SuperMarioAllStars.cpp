@@ -57,13 +57,15 @@ void SuperMarioAllStarsSettings::step(const AleSystem& system) {
 	m_reward = playerScore + playerLocationBounus - m_score;
     m_score = playerScore + playerLocationBounus;
 //	DEBUG2("Score: " << std::dec << playerScore << "Location Bonus : " << playerLocationBounus);
-
-    m_lives = readRam(&system, 0x172A);
+    m_time=100*readRam(&system, 0x7E9) + 10 * readRam(&system, 0x7EA) + readRam(&system, 0x7EB);
+//    DEBUG2("time is: " << std::dec << m_time);
+	m_lives = readRam(&system, 0x172A);
 //    update terminal status
 //    int isAlive = readRam(&system, 0x125);
-    if (m_lives == 1){ // shai : set to 1, doesn't get to 0
+    if ((m_lives == 1) || (m_time == 1)){ // shai : set to 1, doesn't get to 0
     	m_terminal = true;
     }
+
 //    DEBUG2("Is terminal: " << std::dec << m_terminal);
 }
 
@@ -97,6 +99,7 @@ void SuperMarioAllStarsSettings::reset() {
     m_score    = 0;
     m_lives	   = 6; // shai: since stopping at one, begin in 6
     m_terminal = false;
+    m_time=400;
 }
 
 

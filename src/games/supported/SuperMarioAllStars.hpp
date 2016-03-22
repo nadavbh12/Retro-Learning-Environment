@@ -77,6 +77,7 @@ class SuperMarioAllStarsSettings : public SnesSettings {
         bool m_terminal;
         reward_t m_reward;
         reward_t m_score;
+        int m_time;
 };
 
 } // namespace ale
