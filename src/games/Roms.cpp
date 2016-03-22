@@ -22,8 +22,6 @@
 #include "supported/MortalKombat.hpp"
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/TetrisAndDrMario.hpp"
-
-// atari games
 #include "supported/Boxing.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
@@ -60,6 +58,7 @@
 //#include "supported/RoadRunner.hpp"
 //#include "supported/RoboTank.hpp"
 #include "supported/Seaquest.hpp"
+#include "supported/SuperMarioAllStars.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -146,6 +145,7 @@ static const RomSettings *roms[]  = {
 	new FinalFightSettings(),
 	new GradiusIIISettings(),
     new MortalKombatSettings(),
+    new SuperMarioAllStarsSettings(),
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings()
 };
