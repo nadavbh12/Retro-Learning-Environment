@@ -20,8 +20,11 @@
 #include "supported/FinalFight.hpp"
 #include "supported/GradiusIII.hpp"
 #include "supported/MortalKombat.hpp"
+#include "supported/NBAGiveNGo.hpp"
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/TetrisAndDrMario.hpp"
+
+// atari games
 #include "supported/Boxing.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
@@ -145,6 +148,7 @@ static const RomSettings *roms[]  = {
 	new FinalFightSettings(),
 	new GradiusIIISettings(),
     new MortalKombatSettings(),
+	new NBAGiveNGoSettings(),
     new SuperMarioAllStarsSettings(),
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings()
