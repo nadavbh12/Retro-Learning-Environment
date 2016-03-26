@@ -18,6 +18,8 @@
 /// snes games
 #include "supported/AtariCollection.hpp"
 #include "supported/FinalFight.hpp"
+#include "supported/FZero.hpp"
+#include "supported/FZeroNoSpeed.hpp"
 #include "supported/GradiusIII.hpp"
 #include "supported/MortalKombat.hpp"
 #include "supported/NBAGiveNGo.hpp"
@@ -62,6 +64,7 @@
 //#include "supported/RoboTank.hpp"
 #include "supported/Seaquest.hpp"
 #include "supported/SuperMarioAllStars.hpp"
+#include "supported/SuperMarioAllStarsNoRight.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -146,10 +149,13 @@ static const RomSettings *roms[]  = {
 
 	new AtariCollectionSettings(),
 	new FinalFightSettings(),
+	new FZeroSettings(),
+	new FZeroNoSpeedSettings(),
 	new GradiusIIISettings(),
     new MortalKombatSettings(),
 	new NBAGiveNGoSettings(),
     new SuperMarioAllStarsSettings(),
+    new SuperMarioAllStarsNoRightSettings(),
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings()
 };
