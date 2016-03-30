@@ -619,9 +619,9 @@ void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint
 	green=(pixel & gmask) >>  gShift;
 	blue=(pixel & bmask) >> bShift;
 
-	red = red << r8Fill;
-	green = green << g8Fill;
-	blue = blue << b8Fill;
+//	red = red << r8Fill; 	//solution commented out since previous agents were not using it
+//	green = green << g8Fill;
+//	blue = blue << b8Fill;
 
 }
 // pixel accessors, (row, column)-ordered
