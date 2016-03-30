@@ -275,7 +275,7 @@ reward_t ALEInterface::Impl::act(Action action) {
   reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
   if (theAleSystem->p_display_screen != NULL) {
     theAleSystem->p_display_screen->display_screen();
-    while (theAleSystem->p_display_screen->manual_control_engaged()) {
+    while (theAleSystem->p_display_screen->manual_control_engaged() && !game_over()) {
       Action user_action = theAleSystem->p_display_screen->getUserAction();
 	  // Used to reset game manually pressing 'r' implemneted in display screen
       if (user_action == JOYPAD_SYSTEM_RESET){

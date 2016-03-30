@@ -211,6 +211,8 @@ reward_t RetroEnvironment::oneStepAct(Action player_a_action, Action player_b_ac
   if (isTerminal())
     return 0;
 
+  if(player_a_action == JOYPAD_SYSTEM_RESET) //Shai: added return 0 upon restart
+	  return 0;
   // Convert illegal actions into NOOPs; actions such as reset are always legal
   noopIllegalActions(player_a_action, player_b_action);
 
