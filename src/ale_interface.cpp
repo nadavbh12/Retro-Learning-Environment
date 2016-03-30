@@ -599,7 +599,8 @@ int ALEScreen::getBpp()const{
 void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
 	uint32_t rmask, gmask, bmask;
-	uint32_t rShift, gShift, bShift;
+	uint32_t rShift, gShift, bShift,aShift;
+	uint32_t r8Fill, g8Fill, b8Fill; //used to create three 8bit color representation, to assure same color range
 
 	rmask = m_pixelFormat->rmask;
 	gmask = m_pixelFormat->gmask;
@@ -608,11 +609,19 @@ void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint
 	rShift = m_pixelFormat->rShift;
 	gShift = m_pixelFormat->gShift;
 	bShift = m_pixelFormat->bShift;
+	aShift = m_pixelFormat->aShift;
 
+	r8Fill = 8-(gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
+	g8Fill = 8-(rShift-gShift);
+	b8Fill = 8-(gShift-bShift);
 
 	red=(pixel & rmask) >> rShift;
 	green=(pixel & gmask) >>  gShift;
 	blue=(pixel & bmask) >> bShift;
+
+	red = red << r8Fill;
+	green = green << g8Fill;
+	blue = blue << b8Fill;
 
 }
 // pixel accessors, (row, column)-ordered
