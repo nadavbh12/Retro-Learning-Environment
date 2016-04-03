@@ -17,6 +17,7 @@
 #include <iostream>
 #include <ale_interface.hpp>
 #include <DebugMacros.h>
+#include <algorithm>
 
 #ifdef __USE_SDL
  #include <SDL.h>
@@ -40,7 +41,8 @@ int main(int argc, char** argv) {
         return 1;
     }
     ALEInterface ale;
-
+    float maxVal = 1;
+    float minVal = -1;
 
     // Get & Set the desired settings
     ale.setInt("random_seed", 123);
@@ -64,14 +66,18 @@ int main(int argc, char** argv) {
     for (int episode=0; episode<10; episode++) {
 //    	ale.saveState();
         float totalReward = 0;
+        float totalCroppedReward = 0;
         while (!ale.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
 //            dispalyExample(&ale);
         	// Apply the action and get the resulting reward
             float reward = ale.act(a);
+            float croppedReward = reward > 0 ? std::min(reward, maxVal) : std::max(reward, minVal);
+            totalCroppedReward += croppedReward;
             totalReward += reward;
         }
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
+        cout << "Episode " << episode << " ended with cropped score: " << totalCroppedReward << endl;
         ale.reset_game();
 //        ale.loadState();
     }
