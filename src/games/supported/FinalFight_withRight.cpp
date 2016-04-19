@@ -13,14 +13,14 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "FinalFight.hpp"
+#include "FinalFight_WithRight.hpp"
 
 #include "AleSystem.hxx"
 
 using namespace ale;
 
 
-FinalFightSettings::FinalFightSettings() {
+FinalFightWithRightSettings::FinalFightWithRightSettings() {
     reset();
 
     minimalActions = {	JOYPAD_NOOP,
@@ -45,23 +45,25 @@ FinalFightSettings::FinalFightSettings() {
 
 
 /* create a new instance of the rom */
-RomSettings* FinalFightSettings::clone() const {
+RomSettings* FinalFightWithRightSettings::clone() const {
 
-    RomSettings* rval = new FinalFightSettings();
+    RomSettings* rval = new FinalFightWithRightSettings();
     *rval = *this;
     return rval;
 }
 
 
 /* process the latest information from ALE */
-void FinalFightSettings::step(const AleSystem& system) {
+void FinalFightWithRightSettings::step(const AleSystem& system) {
 
 	// int time = getDecimalScoreWords({0xcbc, 0xcbd}, &system);
 
 	// update the reward
     reward_t playerScore = 100 * getDecimalScoreWords({0xc95,0xc94,0xc93}, &system);
 
-    reward_t score = playerScore;
+    reward_t rightScore = readRam(&system, 0xf4) + 256 * readRam(&system, 0xf5) ;
+
+    reward_t score = playerScore + rightScore;
 
     m_reward = score - m_score;
 
@@ -74,21 +76,21 @@ void FinalFightSettings::step(const AleSystem& system) {
 }
 
 /* is end of game */
-bool FinalFightSettings::isTerminal() const {
+bool FinalFightWithRightSettings::isTerminal() const {
 
     return m_terminal;
 };
 
 
 /* get the most recently observed reward */
-reward_t FinalFightSettings::getReward() const {
+reward_t FinalFightWithRightSettings::getReward() const {
 
     return m_reward;
 }
 
 
 /* is an action part of the minimal set? */
-bool FinalFightSettings::isMinimal(const Action &a) const {
+bool FinalFightWithRightSettings::isMinimal(const Action &a) const {
 
 	if(minimalActions.find(a) ==  minimalActions.end())
 		return false;
@@ -98,7 +100,7 @@ bool FinalFightSettings::isMinimal(const Action &a) const {
 
 
 /* reset the state of the game */
-void FinalFightSettings::reset() {
+void FinalFightWithRightSettings::reset() {
 
     m_reward   = 0;
     m_score    = 0;
@@ -109,21 +111,21 @@ void FinalFightSettings::reset() {
 
 
 /* saves the state of the rom settings */
-void FinalFightSettings::saveState( Serializer & ser ) {
+void FinalFightWithRightSettings::saveState( Serializer & ser ) {
   ser.putInt(m_reward);
   ser.putInt(m_score);
   ser.putBool(m_terminal);
 }
 
 // loads the state of the rom settings
-void FinalFightSettings::loadState( Deserializer & des ) {
+void FinalFightWithRightSettings::loadState( Deserializer & des ) {
   m_reward = des.getInt();
   m_score = des.getInt();
   m_terminal = des.getBool();
 }
 
 
-ActionVect FinalFightSettings::getStartingActions(){
+ActionVect FinalFightWithRightSettings::getStartingActions(){
 	int i, num_of_nops(100);
 	ActionVect startingActions;
 	// wait for intro to end
