@@ -76,8 +76,6 @@ struct FinalFightSettings : public SnesSettings {
         bool m_terminal;
         reward_t m_reward;
         reward_t m_score;
-        int m_wins;
-        int o_wins;
 };
 
 } // namespace ale

@@ -30,13 +30,16 @@ FinalFightSettings::FinalFightSettings() {
 						JOYPAD_RIGHT,
 						JOYPAD_UP | JOYPAD_RIGHT,
 						JOYPAD_UP | JOYPAD_LEFT,
+						JOYPAD_B | JOYPAD_RIGHT,
+						JOYPAD_B | JOYPAD_LEFT,
+						JOYPAD_B | JOYPAD_DOWN,		// knee attack when in air
+						JOYPAD_A | JOYPAD_RIGHT,	// toss enemy
+						JOYPAD_A | JOYPAD_LEFT,		// as above
 						JOYPAD_DOWN | JOYPAD_RIGHT,
 						JOYPAD_DOWN | JOYPAD_LEFT,
+						JOYPAD_A,					// punch
 						JOYPAD_B,					// jump
-						JOYPAD_Y,					// attack
-						JOYPAD_Y | JOYPAD_B,		// special attack
-						JOYPAD_RIGHT | JOYPAD_B,	// jump right
-						JOYPAD_LEFT | JOYPAD_B,		// jump left
+						JOYPAD_A | JOYPAD_B,		// special attack
     };
 }
 
@@ -52,40 +55,22 @@ RomSettings* FinalFightSettings::clone() const {
 
 /* process the latest information from ALE */
 void FinalFightSettings::step(const AleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-    int time = getDecimalScoreWord(0xcbc, 0xcbd, &system);
 
+	// int time = getDecimalScoreWords({0xcbc, 0xcbd}, &system);
 
 	// update the reward
-    reward_t playerScore = getDecimalScoreWords({0xc97, 0xc96, 0xc95, 0xc94, 0xc93, 0xc92, 0xc91, 0xc90}, &system);
-//    DEBUG2("Player Score: " << std::dec << playerScore);
+    reward_t playerScore = 100 * getDecimalScoreWords({0xc95,0xc94,0xc93}, &system);
+    DEBUG2("Player Score: " << std::dec << playerScore);
 
     reward_t score = playerScore;
 //    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
-//    // Deal with score wrapping. In truth this should be done for all games and in a more
-//    // uniform fashion.
-//    if (m_reward < 0) {
-//        const int WRAP_SCORE = 100000;
-//        m_reward += WRAP_SCORE;
-//    }
-    m_score = score;
 
 //    update terminal status
-    int playerLife = readRam(&system, 0x4c1);
-    int npcLife = readRam(&system, 0x4c3);
+    int lives = readRam(&system, 0x2456);
 
-    if(time == 0x1){ //shai:comparing to 1 not zero to avoid terminal upon first run
-    	if(playerLife == npcLife ){ // game behavior: is time is up
-    		m_terminal=true;
-    	}
-    }
-    if (m_wins==2){
-    	m_score = m_score + 1000*time; //shai: manually adding time bonus to win faster
-    	m_terminal = true;
-    }
-    if(o_wins == 2){
+    if (lives == 0){
     	m_terminal = true;
     }
 }
@@ -141,33 +126,20 @@ void FinalFightSettings::loadState( Deserializer & des ) {
 
 
 ActionVect FinalFightSettings::getStartingActions(){
-	int i, num_of_xs(4),num_of_nops(100);
+	int i, num_of_nops(100);
 	ActionVect startingActions;
-	startingActions.reserve(num_of_xs*num_of_nops);
 	// wait for intro to end
-	for(i = 0; i<16*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
-	// select tournament
-	startingActions.push_back(JOYPAD_X);
-	// wait for character select screen
-	for(i = 0; i<3*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
-	// choose default character (kano)
-	startingActions.push_back(JOYPAD_X);
-	startingActions.push_back(JOYPAD_X);
-	startingActions.push_back(JOYPAD_X);
-	// wait for game to begin
-	for(i = 0; i<4*num_of_nops; i++){
-		startingActions.push_back(JOYPAD_NOOP);
-	}
-	// skip tournament overview
-	startingActions.push_back(JOYPAD_X);
-	// wait for game to start
-	for(i = 0; i<3.5*num_of_nops; i++){
-			startingActions.push_back(JOYPAD_NOOP);
-		}
+	startingActions.insert(startingActions.end(), 2.5*num_of_nops, JOYPAD_NOOP);
+	// press start to skip intro
+	startingActions.push_back(JOYPAD_START);
+	startingActions.insert(startingActions.end(), 2*num_of_nops, JOYPAD_NOOP);
+	// press start to select character
+	startingActions.push_back(JOYPAD_START);
+	startingActions.push_back(JOYPAD_START);
+	startingActions.insert(startingActions.end(), 2.2*num_of_nops, JOYPAD_NOOP);
+	// select character
+	startingActions.push_back(JOYPAD_START);
+	startingActions.insert(startingActions.end(), 4*num_of_nops, JOYPAD_NOOP);
 
 	return startingActions;
 }
