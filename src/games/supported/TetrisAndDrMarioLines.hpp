@@ -25,8 +25,8 @@
  * *****************************************************************************
  */
 
-#ifndef __TETRIS_AND_DR_MARIO_SETTINGS_HPP__
-#define __TETRIS_AND_DR_MARIO_SETTINGS_HPP__
+#ifndef __TETRIS_AND_DR_MARIO_LINES_SETTINGS_HPP__
+#define __TETRIS_AND_DR_MARIO_LINES_SETTINGS_HPP__
 /* RL wrapper for AtariCollection settings */
 
 #include "../SnesSettings.hpp"
@@ -34,11 +34,11 @@
 
 namespace ale {
 
-class TetrisAndDrMarioSettings : public SnesSettings {
+class TetrisAndDrMarioLinesSettings : public SnesSettings {
 
     public:
 
-		TetrisAndDrMarioSettings();
+	TetrisAndDrMarioLinesSettings();
 
         // reset
         void reset();
@@ -50,7 +50,7 @@ class TetrisAndDrMarioSettings : public SnesSettings {
         reward_t getReward() const;
 
         // the rom-name
-        const char* rom() const { return "tetris_and_dr_mario"; }
+        const char* rom() const { return "tetris_and_dr_mario_lines"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
@@ -80,4 +80,4 @@ class TetrisAndDrMarioSettings : public SnesSettings {
 
 } // namespace ale
 
-#endif // __TETRIS_AND_DR_MARIO_SETTINGS_HPP__
+#endif // __TETRIS_AND_DR_MARIO_LINES_SETTINGS_HPP__

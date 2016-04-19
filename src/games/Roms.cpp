@@ -27,9 +27,6 @@
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/SuperMarioAllStars.hpp"
 #include "supported/SuperMarioAllStarsNoRight.hpp"
-#include "supported/TetrisAndDrMario.hpp"
-
-// atari games
 #include "supported/Boxing.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
@@ -66,6 +63,8 @@
 //#include "supported/RoadRunner.hpp"
 //#include "supported/RoboTank.hpp"
 #include "supported/Seaquest.hpp"
+#include "supported/TetrisAndDrMario.hpp"
+#include "supported/TetrisAndDrMarioLines.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -159,7 +158,8 @@ static const RomSettings *roms[]  = {
     new SuperMarioAllStarsSettings(),
     new SuperMarioAllStarsNoRightSettings(),
     new SuperMarioWorldSettings(),
-	new TetrisAndDrMarioSettings()
+	new TetrisAndDrMarioSettings(),
+    new TetrisAndDrMarioLinesSettings(),
 };
 
 
