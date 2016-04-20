@@ -33,13 +33,13 @@ FinalFightSettings::FinalFightSettings() {
 						JOYPAD_B | JOYPAD_RIGHT,
 						JOYPAD_B | JOYPAD_LEFT,
 						JOYPAD_B | JOYPAD_DOWN,		// knee attack when in air
-						JOYPAD_A | JOYPAD_RIGHT,	// toss enemy
-						JOYPAD_A | JOYPAD_LEFT,		// as above
+						JOYPAD_Y | JOYPAD_RIGHT,	// toss enemy
+						JOYPAD_Y | JOYPAD_LEFT,		// as above
 						JOYPAD_DOWN | JOYPAD_RIGHT,
 						JOYPAD_DOWN | JOYPAD_LEFT,
-						JOYPAD_A,					// punch
+						JOYPAD_Y,					// punch
 						JOYPAD_B,					// jump
-						JOYPAD_A | JOYPAD_B,		// special attack
+						JOYPAD_Y | JOYPAD_B,		// special attack
     };
 }
 
