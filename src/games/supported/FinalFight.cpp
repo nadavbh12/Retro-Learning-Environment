@@ -62,15 +62,16 @@ void FinalFightSettings::step(const AleSystem& system) {
     reward_t playerScore = 100 * getDecimalScoreWords({0xc95,0xc94,0xc93}, &system);
 
     reward_t score = playerScore;
-
     m_reward = score - m_score;
 
 //    update terminal status
     int lives = readRam(&system, 0x2456);
-
-    if (lives == 0){
+    if ((lives == 0) && (m_prev_lives == 1)){
     	m_terminal = true;
+    } else{
+    	m_terminal = false;
     }
+    m_prev_lives = lives;
 }
 
 /* is end of game */
@@ -102,6 +103,7 @@ void FinalFightSettings::reset() {
 
     m_reward   = 0;
     m_score    = 0;
+    m_prev_lives = 5;
     m_terminal = false;
 
 }
@@ -112,6 +114,7 @@ void FinalFightSettings::reset() {
 void FinalFightSettings::saveState( Serializer & ser ) {
   ser.putInt(m_reward);
   ser.putInt(m_score);
+  ser.putInt(m_prev_lives);
   ser.putBool(m_terminal);
 }
 
@@ -119,12 +122,13 @@ void FinalFightSettings::saveState( Serializer & ser ) {
 void FinalFightSettings::loadState( Deserializer & des ) {
   m_reward = des.getInt();
   m_score = des.getInt();
+  m_prev_lives = des.getInt();
   m_terminal = des.getBool();
 }
 
 
 ActionVect FinalFightSettings::getStartingActions(){
-	int i, num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), 2.5*num_of_nops, JOYPAD_NOOP);
