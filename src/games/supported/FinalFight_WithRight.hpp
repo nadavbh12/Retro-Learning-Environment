@@ -76,6 +76,8 @@ struct FinalFightWithRightSettings : public SnesSettings {
         bool m_terminal;
         reward_t m_reward;
         reward_t m_score;
+        reward_t m_prev_lives;
+
 };
 
 } // namespace ale

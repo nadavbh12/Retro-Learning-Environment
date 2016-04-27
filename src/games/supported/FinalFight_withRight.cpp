@@ -69,10 +69,12 @@ void FinalFightWithRightSettings::step(const AleSystem& system) {
 
 //    update terminal status
     int lives = readRam(&system, 0x2456);
-
-    if (lives == 0){
-    	m_terminal = true;
-    }
+	if ((lives == 0) && (m_prev_lives == 1)){
+		m_terminal = true;
+	} else{
+		m_terminal = false;
+	}
+	m_prev_lives = lives;
 }
 
 /* is end of game */
@@ -105,6 +107,7 @@ void FinalFightWithRightSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
+    m_prev_lives = 5;
 
 }
 
@@ -114,6 +117,7 @@ void FinalFightWithRightSettings::reset() {
 void FinalFightWithRightSettings::saveState( Serializer & ser ) {
   ser.putInt(m_reward);
   ser.putInt(m_score);
+  ser.putInt(m_prev_lives);
   ser.putBool(m_terminal);
 }
 
@@ -121,6 +125,7 @@ void FinalFightWithRightSettings::saveState( Serializer & ser ) {
 void FinalFightWithRightSettings::loadState( Deserializer & des ) {
   m_reward = des.getInt();
   m_score = des.getInt();
+  m_prev_lives = des.getInt();
   m_terminal = des.getBool();
 }
 
