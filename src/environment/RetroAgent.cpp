@@ -587,13 +587,14 @@ void RetroAgent::serialize(Serializer& ser){
 	void* data = malloc(sizeof(char)*g_retro.serializeSize);
 
 	g_retro.retro_serialize(data,g_retro.serializeSize);
-	ser.putIntArray((const int*)data, g_retro.serializeSize * sizeof(int)/sizeof(uint8_t));
+	size_t intSize = g_retro.serializeSize * sizeof(int)/sizeof(uint8_t);
+	ser.putIntArray((const int*)data, intSize);
 	free(data);
 }
 
 void RetroAgent::deserialize(Deserializer& des){
-	void* data;
-	size_t size;
-	des.getIntArray((int*)data, size);
-	g_retro.retro_unserialize(data, size * sizeof(uint8_t)/sizeof(int));
+	void* data(0);
+	size_t intSize = g_retro.serializeSize * sizeof(int)/sizeof(uint8_t);
+	des.getIntArray((int*)data, intSize);
+	g_retro.retro_unserialize(data, g_retro.serializeSize);
 }
