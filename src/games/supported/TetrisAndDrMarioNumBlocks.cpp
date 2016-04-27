@@ -14,12 +14,12 @@
 
 #include "../RomUtils.hpp"
 #include "AleSystem.hxx"
-#include "TetrisAndDrMarioLines.hpp"
+#include "TetrisAndDrMarioNumBlocks.hpp"
 
 using namespace ale;
 
 
-TetrisAndDrMarioLinesSettings::TetrisAndDrMarioLinesSettings() {
+TetrisAndDrMarioNumBlocksSettings::TetrisAndDrMarioNumBlocksSettings() {
     reset();
 
     minimalActions = {	JOYPAD_NOOP,
@@ -33,25 +33,25 @@ TetrisAndDrMarioLinesSettings::TetrisAndDrMarioLinesSettings() {
 
 
 /* create a new instance of the rom */
-RomSettings* TetrisAndDrMarioLinesSettings::clone() const {
-    RomSettings* rval = new TetrisAndDrMarioLinesSettings();
+RomSettings* TetrisAndDrMarioNumBlocksSettings::clone() const {
+    RomSettings* rval = new TetrisAndDrMarioNumBlocksSettings();
     *rval = *this;
     return rval;
 }
 
 
 /* process the latest information from ALE */
-void TetrisAndDrMarioLinesSettings::step(const AleSystem& system) {
+void TetrisAndDrMarioNumBlocksSettings::step(const AleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	// update the reward
 //	reward_t playerScore = (256 * 256) * readRam(&system, 0x272) + 256 * readRam(&system, 0x271) + readRam(&system, 0x270);
 
-	reward_t numOfLinesCompleted = readRam(&system, 0x328);
+	reward_t numBlocks = readRam(&system, 0x357) + readRam(&system, 0x359) + readRam(&system, 0x35b) + readRam(&system, 0x35D) + readRam(&system, 0x35F) + readRam(&system, 0x361) + readRam(&system, 0x363);
 
-    m_reward = numOfLinesCompleted - m_score;
-    m_score = numOfLinesCompleted;
-//    DEBUG2("score is:" << m_score);
+    m_reward = numBlocks - m_score;
+    m_score = numBlocks;
+    DEBUG2("score is:" << m_score);
 //    DEBUG2("reward is:" << m_reward);
 
 //    update terminal status
@@ -63,20 +63,20 @@ void TetrisAndDrMarioLinesSettings::step(const AleSystem& system) {
 }
 
 /* is end of game */
-bool TetrisAndDrMarioLinesSettings::isTerminal() const {
+bool TetrisAndDrMarioNumBlocksSettings::isTerminal() const {
     return m_terminal;
 };
 
 
 /* get the most recently observed reward */
-reward_t TetrisAndDrMarioLinesSettings::getReward() const {
+reward_t TetrisAndDrMarioNumBlocksSettings::getReward() const {
 
     return m_reward;
 }
 
 
 /* is an action part of the minimal set? */
-bool TetrisAndDrMarioLinesSettings::isMinimal(const Action &a) const {
+bool TetrisAndDrMarioNumBlocksSettings::isMinimal(const Action &a) const {
 
 	if(minimalActions.find(a) ==  minimalActions.end())
 		return false;
@@ -86,7 +86,7 @@ bool TetrisAndDrMarioLinesSettings::isMinimal(const Action &a) const {
 
 
 /* reset the state of the game */
-void TetrisAndDrMarioLinesSettings::reset() {
+void TetrisAndDrMarioNumBlocksSettings::reset() {
 
     m_reward   = 0;
     m_score    = 0;
@@ -96,21 +96,21 @@ void TetrisAndDrMarioLinesSettings::reset() {
 
 
 /* saves the state of the rom settings */
-void TetrisAndDrMarioLinesSettings::saveState( Serializer & ser ) {
+void TetrisAndDrMarioNumBlocksSettings::saveState( Serializer & ser ) {
   ser.putInt(m_reward);
   ser.putInt(m_score);
   ser.putBool(m_terminal);
 }
 
 // loads the state of the rom settings
-void TetrisAndDrMarioLinesSettings::loadState( Deserializer & des ) {
+void TetrisAndDrMarioNumBlocksSettings::loadState( Deserializer & des ) {
   m_reward = des.getInt();
   m_score = des.getInt();
   m_terminal = des.getBool();
 }
 
 
-ActionVect TetrisAndDrMarioLinesSettings::getStartingActions(){
+ActionVect TetrisAndDrMarioNumBlocksSettings::getStartingActions(){
 	int num_of_nops(100);
 	ActionVect startingActions;
 //	startingActions.reserve(num_of_xs*num_of_nops);

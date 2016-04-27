@@ -65,6 +65,7 @@
 #include "supported/Seaquest.hpp"
 #include "supported/TetrisAndDrMario.hpp"
 #include "supported/TetrisAndDrMarioLines.hpp"
+#include "supported/TetrisAndDrMarioNumBlocks.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -160,6 +161,7 @@ static const RomSettings *roms[]  = {
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings(),
     new TetrisAndDrMarioLinesSettings(),
+    new TetrisAndDrMarioNumBlocksSettings(),
 };
 
 
