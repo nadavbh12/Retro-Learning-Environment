@@ -48,9 +48,10 @@ void TetrisAndDrMarioNumBlocksSettings::step(const AleSystem& system) {
 //	reward_t playerScore = (256 * 256) * readRam(&system, 0x272) + 256 * readRam(&system, 0x271) + readRam(&system, 0x270);
 
 	reward_t numBlocks = readRam(&system, 0x357) + readRam(&system, 0x359) + readRam(&system, 0x35b) + readRam(&system, 0x35D) + readRam(&system, 0x35F) + readRam(&system, 0x361) + readRam(&system, 0x363);
-
     m_reward = numBlocks - m_score;
     m_score = numBlocks;
+    //shai: temp fix
+
     DEBUG2("score is:" << m_score);
 //    DEBUG2("reward is:" << m_reward);
 
