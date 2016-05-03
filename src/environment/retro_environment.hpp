@@ -104,6 +104,9 @@ class RetroEnvironment {
     /** Actually emulates the emulator for a given number of steps. */
     void emulate(Action player_a_action, Action player_b_action, size_t num_steps = 1);
 
+    /** Emulates the emulator without processing ram and screen for a given number of steps. */
+	void emulateStart(Action player_a_action, Action player_b_action, size_t num_steps = 1);
+
     /** Drops illegal actions, such as the fire button in skiing. Note that this is different
       *   from the minimal set of actions. */
     void noopIllegalActions(Action& player_a_action, Action& player_b_action);

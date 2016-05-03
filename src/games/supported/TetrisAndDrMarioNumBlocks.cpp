@@ -52,7 +52,7 @@ void TetrisAndDrMarioNumBlocksSettings::step(const AleSystem& system) {
     m_score = numBlocks;
     //shai: temp fix
 
-    DEBUG2("score is:" << m_score);
+//    DEBUG2("score is:" << m_score);
 //    DEBUG2("reward is:" << m_reward);
 
 //    update terminal status

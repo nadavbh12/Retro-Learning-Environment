@@ -103,9 +103,9 @@ void RetroEnvironment::reset() {
   int noopSteps;
   noopSteps = 60;
 
-  emulate(PLAYER_A | JOYPAD_NOOP, PLAYER_B | JOYPAD_NOOP, noopSteps);
+  emulateStart(PLAYER_A | JOYPAD_NOOP, PLAYER_B | JOYPAD_NOOP, noopSteps);
   // reset for n steps
-  emulate(JOYPAD_RESET, PLAYER_B | JOYPAD_NOOP, m_num_reset_steps);
+  emulateStart(JOYPAD_RESET, PLAYER_B | JOYPAD_NOOP, m_num_reset_steps);
 
   // reset the rom (after emulating, in case the NOOPs led to reward)
   m_settings->reset();
@@ -113,7 +113,7 @@ void RetroEnvironment::reset() {
   // Apply necessary actions specified by the rom itself
   ActionVect startingActions = m_settings->getStartingActions();
   for (size_t i = 0; i < startingActions.size(); i++){
-    emulate(startingActions[i], PLAYER_B | JOYPAD_NOOP);
+    emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
     // added for debug
 //  m_alesystem->p_display_screen->display_screen();
   }
@@ -258,6 +258,14 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
   // Parse screen and RAM into their respective data structures
   processScreen();
 //  processRAM();
+}
+
+void RetroEnvironment::emulateStart(Action player_a_action, Action player_b_action, size_t num_steps) {
+
+	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+	for (size_t t = 0; t < num_steps; t++) {
+    	m_alesystem->step();
+    }
 }
 
 /** Accessor methods for the environment state. */
