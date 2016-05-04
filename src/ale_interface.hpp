@@ -125,6 +125,7 @@ class ALEScreen {
     size_t height() const { return m_rows; }
     size_t width() const { return m_columns ; }
     int getBpp() const;
+
     /** Returns the size of the underlying array */
     size_t arraySize() const { return m_pixels.size(); }
 
@@ -274,11 +275,11 @@ public:
   // Display ALE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-  static void createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
-                            std::shared_ptr<Settings> &theSettings,
-                            std::shared_ptr<RetroAgent> &theRetroAgent);
+  static void createAleSystem(std::unique_ptr<AleSystem> &theAleSystem,
+                            std::unique_ptr<Settings> &theSettings,
+                            std::unique_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
-                           std::shared_ptr<AleSystem> &theSLESystem);
+                           std::unique_ptr<AleSystem> &theSLESystem);
  private:
 
    /** Copying is explicitly disallowed. */

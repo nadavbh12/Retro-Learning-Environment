@@ -139,20 +139,20 @@ public:
 	  ScreenExporter *createScreenExporter(const std::string &path) const;
 
 	  // static functions
-	  void createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
-	                      std::shared_ptr<Settings> &theSettings,
-	                      std::shared_ptr<RetroAgent> &theRetroAgent);
+	  void createAleSystem(std::unique_ptr<AleSystem> &theAleSystem,
+	                      std::unique_ptr<Settings> &theSettings,
+	                      std::unique_ptr<RetroAgent> &theRetroAgent);
 	  void loadSettings(const std::string& romfile, const std::string& corefile,
-	                     std::shared_ptr<AleSystem> &theSLESystem);
+	                     std::unique_ptr<AleSystem> &theSLESystem);
 
 
 
 private:
-	  std::shared_ptr<AleSystem> theAleSystem;
-	  std::shared_ptr<Settings> theSettings;
-	  std::shared_ptr<RetroAgent> theRetroAgent;
-	  std::shared_ptr<RomSettings> romSettings;
-	  std::shared_ptr<RetroEnvironment> environment;
+	  std::unique_ptr<AleSystem> theAleSystem;
+	  std::unique_ptr<Settings> theSettings;
+	  std::unique_ptr<RetroAgent> theRetroAgent;
+	  std::unique_ptr<RomSettings> romSettings;
+	  std::unique_ptr<RetroEnvironment> environment;
 	  int max_num_frames; // Maximum number of frames for each episode
 
 };
@@ -308,9 +308,9 @@ void ALEInterface::disableBufferedIO() {
   cout.sync_with_stdio();
 }
 
-void ALEInterface::createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
-                          std::shared_ptr<Settings> &theSettings,
-                          std::shared_ptr<RetroAgent> &theRetroAgent) {
+void ALEInterface::createAleSystem(std::unique_ptr<AleSystem> &theAleSystem,
+                          std::unique_ptr<Settings> &theSettings,
+                          std::unique_ptr<RetroAgent> &theRetroAgent) {
 #if (defined(WIN32) || defined(__MINGW32__))
 	theRetroAgent.reset(new RetroAgent());
 	theAleSystem.reset(new OSystemWin32());
@@ -325,7 +325,7 @@ void ALEInterface::createAleSystem(std::shared_ptr<AleSystem> &theAleSystem,
 }
 
 void ALEInterface::loadSettings(const string& romfile, const std::string& corefile,
-                                std::shared_ptr<AleSystem> &theAleSystem) {
+                                std::unique_ptr<AleSystem> &theAleSystem) {
   // Load the configuration from a config file (passed on the command
   //  line), if provided
   string configFile = theAleSystem->settings().getString("config", false);
@@ -611,17 +611,17 @@ void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint
 	bShift = m_pixelFormat->bShift;
 	aShift = m_pixelFormat->aShift;
 
-	r8Fill = 8-(gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
-	g8Fill = 8-(rShift-gShift);
-	b8Fill = 8-(gShift-bShift);
+	r8Fill = 8 - (gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
+	g8Fill = 8 - (rShift-gShift);
+	b8Fill = 8 - (gShift-bShift);
 
-	red=(pixel & rmask) >> rShift;
-	green=(pixel & gmask) >>  gShift;
-	blue=(pixel & bmask) >> bShift;
+	red   = (pixel & rmask) >> rShift;
+	green = (pixel & gmask) >>  gShift;
+	blue  = (pixel & bmask) >> bShift;
 
-	red = red << r8Fill; 	//solution commented out since previous agents were not using it
+	red   = red << r8Fill; 	//solution commented out since previous agents were not using it
 	green = green << g8Fill;
-	blue = blue << b8Fill;
+	blue  = blue << b8Fill;
 
 }
 // pixel accessors, (row, column)-ordered

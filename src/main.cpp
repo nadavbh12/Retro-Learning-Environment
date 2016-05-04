@@ -30,9 +30,9 @@
 
 using namespace ale;
 
-static std::shared_ptr<AleSystem> theAleSystem(NULL);
-static std::shared_ptr<Settings> theSettings(NULL);
-static std::shared_ptr<RetroAgent> theRetroAgent;
+static std::unique_ptr<AleSystem> theAleSystem;
+static std::unique_ptr<Settings> theSettings;
+static std::unique_ptr<RetroAgent> theRetroAgent;
 
 static ALEController* createController(AleSystem* alesystem, std::string type) {
   if(type.empty()){

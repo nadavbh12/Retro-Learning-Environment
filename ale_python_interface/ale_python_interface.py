@@ -31,7 +31,7 @@ ale_lib.setBool.argtypes = [c_void_p, c_char_p, c_bool]
 ale_lib.setBool.restype = None
 ale_lib.setFloat.argtypes = [c_void_p, c_char_p, c_float]
 ale_lib.setFloat.restype = None
-ale_lib.loadROM.argtypes = [c_void_p, c_char_p]
+ale_lib.loadROM.argtypes = [c_void_p, c_char_p, c_char_p]
 ale_lib.loadROM.restype = None
 ale_lib.act.argtypes = [c_void_p, c_int]
 ale_lib.act.restype = c_int
@@ -53,8 +53,6 @@ ale_lib.lives.argtypes = [c_void_p]
 ale_lib.lives.restype = c_int
 ale_lib.getEpisodeFrameNumber.argtypes = [c_void_p]
 ale_lib.getEpisodeFrameNumber.restype = c_int
-ale_lib.getScreen.argtypes = [c_void_p, c_void_p]
-ale_lib.getScreen.restype = None
 ale_lib.getRAM.argtypes = [c_void_p, c_void_p]
 ale_lib.getRAM.restype = None
 ale_lib.getRAMSize.argtypes = [c_void_p]
@@ -63,6 +61,8 @@ ale_lib.getScreenWidth.argtypes = [c_void_p]
 ale_lib.getScreenWidth.restype = c_int
 ale_lib.getScreenHeight.argtypes = [c_void_p]
 ale_lib.getScreenHeight.restype = c_int
+ale_lib.getScreenBpp.argtypes = [c_void_p]
+ale_lib.getScreenBpp.restype = c_int
 ale_lib.getScreenRGB.argtypes = [c_void_p, c_void_p]
 ale_lib.getScreenRGB.restype = None
 ale_lib.getScreenGrayscale.argtypes = [c_void_p, c_void_p]
@@ -112,8 +112,8 @@ class ALEInterface(object):
     def setFloat(self, key, value):
       ale_lib.setFloat(self.obj, key, value)
 
-    def loadROM(self, rom_file):
-        ale_lib.loadROM(self.obj, rom_file)
+    def loadROM(self, rom_file, core_file):
+        ale_lib.loadROM(self.obj, rom_file, core_file)
 
     def act(self, action):
         return ale_lib.act(self.obj, int(action))
@@ -151,21 +151,6 @@ class ALEInterface(object):
         width = ale_lib.getScreenWidth(self.obj)
         height = ale_lib.getScreenHeight(self.obj)
         return (width, height)
-
-    def getScreen(self, screen_data=None):
-        """This function fills screen_data with the RAW Pixel data
-        screen_data MUST be a numpy array of uint8/int8. This could be initialized like so:
-        screen_data = np.empty(w*h, dtype=np.uint8)
-        Notice,  it must be width*height in size also
-        If it is None,  then this function will initialize it
-        Note: This is the raw pixel values from the atari,  before any RGB palette transformation takes place
-        """
-        if(screen_data is None):
-            width = ale_lib.getScreenWidth(self.obj)
-            height = ale_lib.getScreenHeight(self.obj)
-            screen_data = np.zeros(width*height, dtype=np.uint8)
-        ale_lib.getScreen(self.obj, as_ctypes(screen_data))
-        return screen_data
 
     def getScreenRGB(self, screen_data=None):
         """This function fills screen_data with the data in RGB format
