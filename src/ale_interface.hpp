@@ -108,6 +108,7 @@ class ALEScreen {
   public:
     ALEScreen(int h, int w);
     ALEScreen(const ALEScreen &rhs);
+    ~ALEScreen();
     ALEScreen& operator=(const ALEScreen &rhs);
 
     /** pixel accessors, (row, column)-ordered */

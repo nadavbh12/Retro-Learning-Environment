@@ -73,9 +73,8 @@ static struct {
 
 	int action_a;
 	int action_b;
-	const string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
+//	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
 	size_t serializeSize;
-	uint8_t* currentBuffer;
 } g_retro;
 
 
@@ -320,11 +319,11 @@ static bool core_environment(unsigned cmd, void *data) {
 		}
 		return video_set_pixel_format(*fmt);
 	}
-	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
-		const char* cval = (char*)data;
-		cval = g_retro.saveFolder.c_str();
-		return true;
-	}
+//	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
+//		const char* cval = (char*)data;
+//		cval = g_retro.saveFolder.c_str();
+//		return true;
+//	}
 	default:
 		core_log(RETRO_LOG_DEBUG, "Unhandled env #%u", cmd);
 		return false;

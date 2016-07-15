@@ -346,7 +346,9 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 	Logger::Info << "Running ROM file..." << std::endl;
 	theAleSystem->settings().setString("rom_file", romfile);
 #ifdef __USE_SDL
-	theAleSystem->p_display_screen = new DisplayScreen(&theAleSystem->getRetroAgent());
+	if(theAleSystem->settings().getBool("display_screen")){
+		theAleSystem->p_display_screen = new DisplayScreen(&theAleSystem->getRetroAgent());
+	}
 #endif
 	//Shai : added format handling for RGB
 
@@ -552,6 +554,11 @@ ALEScreen::ALEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_
 
 	m_pixelFormat = new  pixelFormat();
 }
+
+ALEScreen::~ALEScreen(){
+	delete m_pixelFormat;
+}
+
 ALEScreen::ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
 
 	m_pixelFormat = new  pixelFormat();
@@ -596,6 +603,8 @@ bool ALEScreen::equals(const ALEScreen &rhs) const {
 int ALEScreen::getBpp()const{
 	return m_pixelFormat->Bpp;
 }
+
+// TODO : expand function to except alpha as well
 void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
 	uint32_t rmask, gmask, bmask;

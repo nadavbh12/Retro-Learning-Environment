@@ -67,14 +67,14 @@ RomSettings* SuperMarioWorldSettings::clone() const {
 void SuperMarioWorldSettings::step(const AleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScoreWords({0xf33, 0xf32, 0xf31}, &system);
-	DEBUG2("time: " << std::dec << time);
+//	DEBUG2("time: " << std::dec << time);
 
     m_lastTime.erase(m_lastTime.begin());
     m_lastTime.push_back(readRam(&system, 0xf30));
 
 	// update the reward
     reward_t score = 10 * getDecimalScoreWords({0xf34, 0xf35, 0xf36}, &system);
-    DEBUG2("Score: " << std::dec << score);
+//    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
     m_score = score;
