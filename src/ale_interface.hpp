@@ -54,7 +54,7 @@ class ScreenExporter;
 class RetroAgent;
 
 typedef uint32_t Action;
-// actions are represented as in uint where each bit represents whether a "button" is pressed or not.
+// actions are represented as uint's where each bit represents whether a "button" is pressed or not.
 // Each bit matches the action as defined in libretro.h under RETRO_DEVICE_ID_JOYPAD
 // For example: action = 3, means = B + Y
 // The msb defines whether the action is player a or player b

@@ -1,10 +1,11 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.02)
 project(ale)
 
 option(USE_SDL "Use SDL" OFF)
 option(USE_RLGLUE "Use RL-Glue" OFF)
 option(BUILD_EXAMPLES "Build Example Agents" ON)
 option(DEBUG "Suspend optimization & enable debugging" OFF)
+option(UNIT_TESTING "Build unit tests using Google Test" OFF)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wunused -fPIC -fomit-frame-pointer -D__STDC_CONSTANT_MACROS -std=c++11")
@@ -143,44 +144,42 @@ if(USE_RLGLUE)
   target_link_libraries(RLGlueExperiment rlgluenetdev)
 endif()
 
+if(UNIT_TESTING)
+#  find_package(GTest HINTS ./googletest)
+#  if(NOT GTest_FOUND)
+#    message("GTest not found")
+#    # We need thread support
+#    find_package(Threads REQUIRED)
+#    # Enable ExternalProject CMake module
+#    include(ExternalProject)
+#    # Download and install GoogleTest
+#    ExternalProject_Add(
+#	    gtest
+#	    GIT_REPOSITORY https://github.com/google/googletest.git
+#	    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
+#	    # Disable install step
+#	    INSTALL_COMMAND ""
+#    )
+#    # Create a libgtest target to be used as a dependency by test programs
+#    add_library(libgtest IMPORTED STATIC GLOBAL)
+#    add_dependencies(libgtest gtest)
 
-#INSTALL(
-#  FILES
-#  ale_interface.hpp
-#  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/ale"
-#)
+#    # Set gtest properties
+#    ExternalProject_Get_Property(gtest source_dir binary_dir)
+#    set_target_properties(libgtest PROPERTIES
+#                            "IMPORTED_LOCATION" "${binary_dir}/libgtest.a"
+#                            "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+#    )
 
-#IF(APPLE)
-#  INSTALL(FILES
-#          libale.a
-#          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-#  ELSE()
-#    INSTALL(TARGETS ale-lib
-#            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-#ENDIF()
+#  endif()
+    add_subdirectory(googletest)
+    enable_testing()
+    include_directories(${GTEST_INCLUDE_DIRS})
 
-#message(" cmake_install_prefix = ${CMAKE_INSTALL_PREFIX}")
+    # Add test cpp file
+    add_executable( mainTest test/mainTest.cpp test/RleTest.cpp)
 
-#TODO compile within cmake
-
-#include(ExternalProject)
-#externalproject_add(snes9x-next
-#		GIT_REPOSITORY https://github.com/libretro/snes9x-next.git
-#		download_dir ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
-#		prefix ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
-#		CONFIGURE_COMMAND ""
-#		build_command make
-#		build_in_source 1
-#)
-
-#set(BUILD_COMMAND  make)
-#set(CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure)
-
-#include(ExternalProject)
-#externalproject_add(snes9x-next
-#                    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
-#                    CONFIGURE_COMMAND ""
-#                    PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next
-#                    BUILD_COMMAND ${BUILD_COMMAND}
-#                    BUILD_IN_SOURCE 1)
-
+    # Link test executable against gtest & gtest_main
+    target_link_libraries(mainTest gtest gtest_main )
+    add_test( mainTest mainTest )
+endif()
