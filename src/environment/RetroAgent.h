@@ -14,10 +14,8 @@ class RetroAgent{
 public:
 	RetroAgent();
 	~RetroAgent();
-	void loadCore(std::string coreName);
-	void unloadCore();
-	void loadRom(std::string romName);
-	void unloadRom();
+	void loadCore(std::string corePath);
+	void loadRom(std::string romPath);
 	void run();
 	void videoRender();
 	void swapBuffers();
@@ -42,6 +40,10 @@ public:
 	unsigned getFormat()const;
 	void serialize(Serializer& ser);
 	void deserialize(Deserializer& des);
+
+private:
+	void unloadCore();
+	void unloadRom();
 };
 
 } // namespace ale

@@ -462,7 +462,8 @@ static void core_unload() {
 RetroAgent::RetroAgent(){}
 
 RetroAgent::~RetroAgent(){
-	core_unload();
+//	unloadRom();
+//	core_unload();
 }
 
 
@@ -499,7 +500,7 @@ void RetroAgent::reset(){
 }
 
 int RetroAgent::readRam(unsigned id, int offset){
-	assert( offset < getRamSize());
+	assert( (uint32_t)offset < getRamSize());
 	assert( offset > 0);
 	return *(getRamAddress(id) + offset);
 }
@@ -582,9 +583,10 @@ void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t 
 }
 
 void RetroAgent::serialize(Serializer& ser){
-//	sizeof(char)*g_retro.serializeSize
-	void* data = malloc(sizeof(char)*g_retro.serializeSize);
+	g_retro.serializeSize = g_retro.retro_serialize_size();
 
+	//	sizeof(char)*g_retro.serializeSize
+	void* data = malloc(16 * sizeof(char)*g_retro.serializeSize);
 	g_retro.retro_serialize(data,g_retro.serializeSize);
 	size_t intSize = g_retro.serializeSize * sizeof(int)/sizeof(uint8_t);
 	ser.putIntArray((const int*)data, intSize);
@@ -592,8 +594,10 @@ void RetroAgent::serialize(Serializer& ser){
 }
 
 void RetroAgent::deserialize(Deserializer& des){
-	void* data(0);
+	g_retro.serializeSize = g_retro.retro_serialize_size();
+	void* data = malloc(16 * sizeof(char)*g_retro.serializeSize);
 	size_t intSize = g_retro.serializeSize * sizeof(int)/sizeof(uint8_t);
 	des.getIntArray((int*)data, intSize);
 	g_retro.retro_unserialize(data, g_retro.serializeSize);
+	free(data);
 }

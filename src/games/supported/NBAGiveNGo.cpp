@@ -113,7 +113,7 @@ void NBAGiveNGoSettings::loadState( Deserializer & des ) {
 
 
 ActionVect NBAGiveNGoSettings::getStartingActions(){
-	int i, num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
 //	startingActions.reserve(num_of_xs*num_of_nops);
 

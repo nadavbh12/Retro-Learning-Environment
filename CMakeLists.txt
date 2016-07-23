@@ -176,10 +176,13 @@ if(UNIT_TESTING)
     enable_testing()
     include_directories(${GTEST_INCLUDE_DIRS})
 
+    file(GLOB test_sources test/*.cpp)
+    list(APPEND TEST_SOURCES ${test_sources})
+
     # Add test cpp file
-    add_executable( mainTest test/mainTest.cpp test/RleTest.cpp)
+    add_executable( mainTest ${TEST_SOURCES})
 
     # Link test executable against gtest & gtest_main
-    target_link_libraries(mainTest gtest gtest_main )
+    target_link_libraries(mainTest gtest gtest_main ale)
     add_test( mainTest mainTest )
 endif()

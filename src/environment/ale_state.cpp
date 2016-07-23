@@ -59,13 +59,11 @@ void ALEState::load(
     throw new std::runtime_error("Attempting to load an ALEState which does not contain "
         "system information.");
 
-  // TODO SN: implement load
-//  osystem->console().system().loadState(md5, deser);
   alesystem->getRetroAgent().deserialize(deser);
   // If we have osystem data, load it as well
-//  if (load_system)
-//    alesystem->loadState(deser);
-//  settings->loadState(deser);
+  if (load_system)
+    alesystem->loadState(deser);
+  settings->loadState(deser);
 
   // Copy over other member variables
 //  m_left_paddle = rhs.m_left_paddle;
@@ -84,12 +82,10 @@ ALEState ALEState::save(
   // We use 'save_system' as a check at load time.
   ser.putBool(save_system);
 
-  //	TODO SN: replace console
-//  osystem->console().system().saveState(md5, ser);
   alesystem->getRetroAgent().serialize(ser);
-//  if (save_system)
-//	  alesystem->saveState(ser);
-//  settings->saveState(ser);
+  if (save_system)
+	  alesystem->saveState(ser);
+  settings->saveState(ser);
 
   // Now make a copy of this state, also storing the emulator serialization
   return ALEState(*this, ser.get_str());
