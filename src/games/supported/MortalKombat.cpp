@@ -43,10 +43,10 @@ MortalKombatSettings::MortalKombatSettings() {
 						JOYPAD_RIGHT | JOYPAD_Y,	// throw
 						JOYPAD_LEFT | JOYPAD_Y,		// throw
 
-//						JOYPAD_R | JOYPAD_LEFT,		// added to support kano's combos
-//						JOYPAD_R | JOYPAD_RIGHT,
-//						JOYPAD_R | JOYPAD_UP,
-//						JOYPAD_R | JOYPAD_DOWN,
+						JOYPAD_R | JOYPAD_LEFT,		// added to support kano's combos
+						JOYPAD_R | JOYPAD_RIGHT,
+						JOYPAD_R | JOYPAD_UP,
+						JOYPAD_R | JOYPAD_DOWN,
     };
 }
 

@@ -113,7 +113,11 @@ void RetroEnvironment::reset() {
   // Apply necessary actions specified by the rom itself
   ActionVect startingActions = m_settings->getStartingActions();
   for (size_t i = 0; i < startingActions.size(); i++){
-    emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
+	  if((startingActions[i] & PLAYER_B) > 0){
+		  emulateStart(JOYPAD_NOOP, startingActions[i]);
+	  }else{
+		  emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
+	  }
     // added for debug
 //  m_alesystem->p_display_screen->display_screen();
   }

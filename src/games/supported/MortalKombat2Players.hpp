@@ -25,61 +25,50 @@
  * *****************************************************************************
  */
 
-#ifndef __MORTAL_KOMBAT_SETTINGS_HPP__
-#define __MORTAL_KOMBAT_SETTINGS_HPP__
+#ifndef __MORTAL_KOMBAT_TWO_PLAYERS_SETTINGS_HPP__
+#define __MORTAL_KOMBAT_TWO_PLAYERS_SETTINGS_HPP__
 /* RL wrapper for AtariCollection settings */
 
-#include "../SnesSettings.hpp"
+#include "MortalKombat.hpp"
 #include <unordered_set>
 
 namespace ale {
 
-struct MortalKombatSettings : public SnesSettings {
+struct MortalKombat2PlayersSettings : public MortalKombatSettings {
 
     public:
 
-		MortalKombatSettings();
+		MortalKombat2PlayersSettings();
 
         // reset
-        virtual void reset();
-
-        // is end of game
-        virtual bool isTerminal() const;
+        void reset();
 
         // get the most recently observed reward
-        virtual reward_t getReward() const;
+        reward_t getReward() const;
 
         // the rom-name
-        virtual const char* rom() const { return "mortal_kombat"; }
+        const char* rom() const { return "mortal_kombat_2_players"; }
 
         // create a new instance of the rom
-        virtual RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        virtual bool isMinimal(const Action& a) const;
+        RomSettings* clone() const;
 
         // process the latest information from ALE
-        virtual void step(const AleSystem& system);
+        void step(const AleSystem& system);
 
         // saves the state of the rom settings
-        virtual void saveState( Serializer & ser );
+        void saveState( Serializer & ser );
 
         // loads the state of the rom settings
-        virtual void loadState( Deserializer & des );
+        void loadState( Deserializer & des );
 
         virtual const int lives() { return 0; }
 
         virtual ActionVect getStartingActions();
 
-    protected:
-        std::unordered_set<Action> minimalActions;
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
-        int m_wins;
-        int o_wins;
+    private:
+        reward_t m_rewardB;
 };
 
 } // namespace ale
 
-#endif // __MORTAL_KOMBAT_SETTINGS_HPP__
+#endif // __MORTAL_KOMBAT_TWO_PLAYERS_SETTINGS_HPP__

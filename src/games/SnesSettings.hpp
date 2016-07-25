@@ -35,6 +35,13 @@
 
 #include "RomSettings.hpp"
 
+// below macros are useful for inserting starting actions
+#define ACTION_REPEAT_STARTING_ACIONS 6
+#define INSERT_ACTIONS(action, player, repeat) startingActions.insert(startingActions.end(), (repeat), PLAYER_##player | (action));
+#define INSERT_ACTION_SINGLE(action, player) INSERT_ACTIONS(action, player, ACTION_REPEAT_STARTING_ACIONS)
+#define INSERT_ACTION_SINGLE_A(action) INSERT_ACTION_SINGLE(action, A)
+#define INSERT_NOPS(repeat) INSERT_ACTIONS(JOYPAD_NOOP, A, repeat)
+
 namespace ale {
 
 // rom support interface for snes

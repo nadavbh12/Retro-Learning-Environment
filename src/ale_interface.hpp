@@ -202,7 +202,7 @@ public:
   // user's responsibility to check if the game has ended and reset
   // when necessary - this method will keep pressing buttons on the
   // game over screen.
-  reward_t act(Action action);
+  reward_t act(Action actionA, Action actionB = (PLAYER_B | JOYPAD_NOOP));
 
   // Indicates if the game has ended.
   bool game_over() const;

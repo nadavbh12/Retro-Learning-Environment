@@ -20,7 +20,7 @@ struct RomSettings;
 
 
 // looks for the RL wrapper corresponding to a particular rom title 
-extern RomSettings *buildRomRLWrapper(const std::string &rom);
+extern RomSettings *buildRomRLWrapper(const std::string &rom, bool twoPlayers = false);
 
 } // namespace ale
 

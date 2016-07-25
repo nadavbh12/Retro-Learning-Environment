@@ -612,6 +612,7 @@ void Settings::setDefaultSettings() {
 			pair<string, float>("repeat_action_probability", 0.25));
 	stringSettings.insert(pair<string, string>("rom_file", ""));
 	stringSettings.insert(pair<string, string>("core_file", ""));
+	boolSettings.insert(pair<string, bool>("two_players", false));
 
 	// Record settings
 	intSettings.insert(pair<string, int>("fragsize", 64)); // fragsize to 64 ensures proper sound sync

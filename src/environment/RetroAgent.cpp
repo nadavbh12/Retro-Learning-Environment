@@ -28,7 +28,6 @@ using namespace ale;
 
 // holds pixel/screen settings
 static struct {
-	// nadav implementations below:
 	struct retro_game_geometry rGeom;
     uint32_t rmask;
     uint32_t gmask;
@@ -88,6 +87,8 @@ struct keymap g_binds[] = {
 	{ JOYPAD_B		, RETRO_DEVICE_ID_JOYPAD_B 		},
 	{ JOYPAD_Y 		, RETRO_DEVICE_ID_JOYPAD_Y 		},
 	{ JOYPAD_X 		, RETRO_DEVICE_ID_JOYPAD_X 		},
+	{ JOYPAD_R 		, RETRO_DEVICE_ID_JOYPAD_R 		},
+	{ JOYPAD_L 		, RETRO_DEVICE_ID_JOYPAD_L 		},
 	{ JOYPAD_UP 	, RETRO_DEVICE_ID_JOYPAD_UP 	},
 	{ JOYPAD_DOWN 	, RETRO_DEVICE_ID_JOYPAD_DOWN 	},
 	{ JOYPAD_LEFT 	, RETRO_DEVICE_ID_JOYPAD_LEFT 	},
@@ -97,7 +98,7 @@ struct keymap g_binds[] = {
 	{ 0, 0 }
 };
 
-static unsigned g_joy[RETRO_DEVICE_ID_JOYPAD_R3+1] = { 0 };
+static unsigned g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1] = { 0 };
 
 #define load_sym(V, S) do {\
 	if (!((*(void**)&V) = dlsym(g_retro.handle, #S))) \
@@ -341,16 +342,24 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 
 static void core_input_poll(void) {
 	int i;
-	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i)
-		g_joy[g_binds[i].rk] = (g_retro.action_a & g_binds[i].k) > 0;
+	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
+		g_joy[0][g_binds[i].rk] = (g_retro.action_a & g_binds[i].k) > 0;
+//		if(g_joy[0][g_binds[i].rk]) DEBUG2("PLAYER A " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
+	}
+	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
+		g_joy[1][g_binds[i].rk] = (g_retro.action_b & g_binds[i].k) > 0;
+//		if(g_joy[1][g_binds[i].rk]) DEBUG2("PLAYER B " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
+
+	}
+
 }
 
 
+// port == player number
 static int16_t core_input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
-	// player b will be supported by a different port
-	if (port || index || device != RETRO_DEVICE_JOYPAD)
+	if (index || device != RETRO_DEVICE_JOYPAD)
 		return 0;
-	return g_joy[id];
+	return g_joy[port][id];
 }
 
 
@@ -508,7 +517,6 @@ int RetroAgent::readRam(unsigned id, int offset){
 uint8_t* RetroAgent::getRamAddress(unsigned id){
 	   size_t size = g_retro.retro_get_memory_size(id);
 	   void*  data = g_retro.retro_get_memory_data(id);
-	//   printRam(data,size);
 	   if (!size){
 		   throw AleException("Ram size is 0");
 	   }else{
@@ -520,12 +528,8 @@ uint32_t RetroAgent::getRamSize(){
 	return (uint32_t)g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
 }
 
-
-
-// TODO SN :  currently only one player is supported
 void RetroAgent::SetActions(int player_a_action, int player_b_action){
 	g_retro.action_a = player_a_action;
-//	DEBUG2("g_retro.action_a is: " << action_to_string(g_retro.action_a));
 	g_retro.action_b = player_b_action;
 }
 

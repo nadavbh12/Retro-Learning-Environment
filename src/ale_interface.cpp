@@ -80,7 +80,7 @@ public:
 	  // user's responsibility to check if the game has ended and reset
 	  // when necessary - this method will keep pressing buttons on the
 	  // game over screen.
-	  reward_t act(Action action);
+	  reward_t act(Action actionA, Action actionB);
 
 	  // Indicates if the game has ended.
 	  bool game_over() const;
@@ -267,12 +267,12 @@ void ALEInterface::Impl::reset_game() {
 }
 
 
-reward_t ALEInterface::act(Action action) {
-	return m_pimpl->act(action);
+reward_t ALEInterface::act(Action actionA, Action actionB) {
+	return m_pimpl->act(actionA, actionB);
 }
-reward_t ALEInterface::Impl::act(Action action) {
+reward_t ALEInterface::Impl::act(Action actionA, Action actionB) {
 
-  reward_t reward = environment->act(action, PLAYER_B | JOYPAD_NOOP);
+  reward_t reward = environment->act(actionA, actionB);
   if (theAleSystem->p_display_screen != NULL) {
     theAleSystem->p_display_screen->display_screen();
     while (theAleSystem->p_display_screen->manual_control_engaged() && !game_over()) {
@@ -379,7 +379,8 @@ void ALEInterface::Impl::loadROM(string rom_file, string core_file) {
 	core_file = theAleSystem->coreFile();
   }
   ALEInterface::loadSettings(rom_file, core_file, theAleSystem);
-  romSettings.reset(buildRomRLWrapper(rom_file));
+  bool twoPlayers = getBool("two_players");
+  romSettings.reset(buildRomRLWrapper(rom_file, twoPlayers));
   environment.reset(new RetroEnvironment(theAleSystem.get(), romSettings.get()));
   max_num_frames = theAleSystem->settings().getInt("max_num_frames_per_episode");
   environment->reset();

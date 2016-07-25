@@ -55,6 +55,9 @@ struct RomSettings {
     // get the most recently observed reward
     virtual ale::reward_t getReward() const = 0;
 
+    // get the most recently observed reward for player 2
+    virtual ale::reward_t getRewardPlayer2() const{return 0;};
+
     // the rom-name
     virtual const char *rom() const = 0;
 

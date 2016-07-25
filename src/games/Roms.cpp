@@ -22,7 +22,7 @@
 #include "supported/FZero.hpp"
 #include "supported/FZeroNoSpeed.hpp"
 #include "supported/GradiusIII.hpp"
-#include "supported/MortalKombat.hpp"
+#include "supported/MortalKombat2Players.hpp"
 #include "supported/NBAGiveNGo.hpp"
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/SuperMarioAllStars.hpp"
@@ -155,6 +155,7 @@ static const RomSettings *roms[]  = {
 	new FZeroNoSpeedSettings(),
 	new GradiusIIISettings(),
     new MortalKombatSettings(),
+    new MortalKombat2PlayersSettings(),
 	new NBAGiveNGoSettings(),
     new SuperMarioAllStarsSettings(),
     new SuperMarioAllStarsNoRightSettings(),
@@ -166,7 +167,7 @@ static const RomSettings *roms[]  = {
 
 
 /* looks for the RL wrapper corresponding to a particular rom title */
-RomSettings *ale::buildRomRLWrapper(const std::string &rom) {
+RomSettings *ale::buildRomRLWrapper(const std::string &rom, bool twoPlayers) {
 
     size_t slash_ind = rom.find_last_of("/\\");
     std::string rom_str = rom.substr(slash_ind + 1);
@@ -174,6 +175,9 @@ RomSettings *ale::buildRomRLWrapper(const std::string &rom) {
     rom_str = rom_str.substr(0, dot_idx);
     std::transform(rom_str.begin(), rom_str.end(), rom_str.begin(), ::tolower);
 
+    if(twoPlayers){
+    	rom_str += "_2_players";
+    }
     for (size_t i=0; i < sizeof(roms)/sizeof(roms[0]); i++) {
         if (rom_str == roms[i]->rom()) return roms[i]->clone();
     }

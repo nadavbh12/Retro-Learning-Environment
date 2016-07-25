@@ -18,7 +18,7 @@ extern "C" {
   void setBool(ALEInterface *ale,const char *key,bool value){ale->setBool(key,value);}
   void setFloat(ALEInterface *ale,const char *key,float value){ale->setFloat(key,value);}
   void loadROM(ALEInterface *ale,const char *rom_file, const char *core_file){ale->loadROM(rom_file,core_file);}
-  int act(ALEInterface *ale,int action){return ale->act((Action)action);}
+  int act(ALEInterface *ale,int actionA, int actionB){return ale->act((Action)actionA, (Action)actionB);}
   bool game_over(ALEInterface *ale){return ale->game_over();}
   void reset_game(ALEInterface *ale){ale->reset_game();}
   void getLegalActionSet(ALEInterface *ale,int *actions){
@@ -55,10 +55,10 @@ extern "C" {
 
   void saveState(ALEInterface *ale){ale->saveState();}
   void loadState(ALEInterface *ale){ale->loadState();}
-  ALEState* cloneState(ALEInterface *ale){//return new ALEState(ale->cloneState());
+  ALEState* cloneState(ALEInterface *ale){return new ALEState(ale->cloneState());
   }
   void restoreState(ALEInterface *ale, ALEState* state){ale->restoreState(*state);}
-  ALEState* cloneSystemState(ALEInterface *ale){//return new ALEState(ale->cloneSystemState());
+  ALEState* cloneSystemState(ALEInterface *ale){return new ALEState(ale->cloneSystemState());
   }
   void restoreSystemState(ALEInterface *ale, ALEState* state){ale->restoreSystemState(*state);}
   void deleteState(ALEState* state){//delete state;
