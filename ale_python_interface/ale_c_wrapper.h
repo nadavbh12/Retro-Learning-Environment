@@ -55,10 +55,10 @@ extern "C" {
 
   void saveState(ALEInterface *ale){ale->saveState();}
   void loadState(ALEInterface *ale){ale->loadState();}
-  ALEState* cloneState(ALEInterface *ale){return new ALEState(ale->cloneState());
+  ALEState* cloneState(ALEInterface *ale){//return new ALEState(ale->cloneState());
   }
   void restoreState(ALEInterface *ale, ALEState* state){ale->restoreState(*state);}
-  ALEState* cloneSystemState(ALEInterface *ale){return new ALEState(ale->cloneSystemState());
+  ALEState* cloneSystemState(ALEInterface *ale){//return new ALEState(ale->cloneSystemState());
   }
   void restoreSystemState(ALEInterface *ale, ALEState* state){ale->restoreSystemState(*state);}
   void deleteState(ALEState* state){//delete state;
