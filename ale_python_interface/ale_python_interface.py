@@ -116,7 +116,7 @@ class ALEInterface(object):
         ale_lib.loadROM(self.obj, rom_file, core_file)
 
     def act(self, actionA, actionB = 0):
-        return ale_lib.act(self.obj, int(actionA), int actionB)
+        return ale_lib.act(self.obj, int(actionA), int(actionB))
 
     def game_over(self):
         return ale_lib.game_over(self.obj)
