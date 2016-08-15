@@ -174,7 +174,7 @@ if(UNIT_TESTING)
 #  endif()
     add_subdirectory(googletest)
     enable_testing()
-    include_directories(${GTEST_INCLUDE_DIRS})
+    include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/ale_python_interface)
 
     file(GLOB test_sources test/*.cpp)
     list(APPEND TEST_SOURCES ${test_sources})
@@ -183,6 +183,6 @@ if(UNIT_TESTING)
     add_executable( mainTest ${TEST_SOURCES})
 
     # Link test executable against gtest & gtest_main
-    target_link_libraries(mainTest gtest gtest_main ale)
+    target_link_libraries(mainTest gtest gtest_main ale ale-c-lib)
     add_test( mainTest mainTest )
 endif()

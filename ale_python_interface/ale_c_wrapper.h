@@ -50,8 +50,7 @@ extern "C" {
 
   void getScreenRGB(ALEInterface *ale, unsigned char *output_buffer);
 
-  // TODO: implement, together with alewrap
-  void getScreenGrayscale(ALEInterface *ale, unsigned char *output_buffer){}
+  void getScreenGrayscale(ALEInterface *ale, unsigned char *output_buffer);
 
   void saveState(ALEInterface *ale){ale->saveState();}
   void loadState(ALEInterface *ale){ale->loadState();}
