@@ -605,33 +605,30 @@ int ALEScreen::getBpp()const{
 	return m_pixelFormat->Bpp;
 }
 
-// TODO : expand function to except alpha as well
+pixel_t ALEScreen::getRGBPixel(const uint32_t &pixel)const{
+
+	struct pixelFormat* m = m_pixelFormat;
+	uint32_t red   = (pixel & m->rmask) >> m->rShift;
+	uint32_t green = (pixel & m->gmask) >>  m->gShift;
+	uint32_t blue  = (pixel & m->bmask) >> m->bShift;
+
+	red   = red << (m->rFill + 16); 	//solution commented out since previous agents were not using it
+	green = green << (m->gFill+8);
+	blue  = blue << m->bFill;
+
+	return red | green | blue;
+
+}
 void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
-	uint32_t rmask, gmask, bmask;
-	uint32_t rShift, gShift, bShift,aShift;
-	uint32_t r8Fill, g8Fill, b8Fill; //used to create three 8bit color representation, to assure same color range
+	struct pixelFormat* m = m_pixelFormat;
+	 red   = (pixel & m->rmask) >> m->rShift;
+	 green = (pixel & m->gmask) >>  m->gShift;
+	 blue  = (pixel & m->bmask) >> m->bShift;
 
-	rmask = m_pixelFormat->rmask;
-	gmask = m_pixelFormat->gmask;
-	bmask = m_pixelFormat->bmask;
-
-	rShift = m_pixelFormat->rShift;
-	gShift = m_pixelFormat->gShift;
-	bShift = m_pixelFormat->bShift;
-	aShift = m_pixelFormat->aShift;
-
-	r8Fill = 8 - (gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
-	g8Fill = 8 - (rShift-gShift);
-	b8Fill = 8 - (gShift-bShift);
-
-	red   = (pixel & rmask) >> rShift;
-	green = (pixel & gmask) >>  gShift;
-	blue  = (pixel & bmask) >> bShift;
-
-	red   = red << r8Fill; 	//solution commented out since previous agents were not using it
-	green = green << g8Fill;
-	blue  = blue << b8Fill;
+	red   = red << m->rFill; 	//solution commented out since previous agents were not using it
+	green = green << m->gFill;
+	blue  = blue << m->bFill;
 
 }
 // pixel accessors, (row, column)-ordered

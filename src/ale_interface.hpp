@@ -132,7 +132,10 @@ class ALEScreen {
 
     /** Returns whether two screens are equal */
     bool equals(const ALEScreen &rhs) const;
-    void getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const;
+
+    /** Returns a 32bit pixel in an R|G|B Format, 8 bits each */
+    pixel_t getRGBPixel(const uint32_t &pixel)const;
+    void  getRGB(const uint32_t &pixel ,uint8_t &red, uint8_t &green, uint8_t &blue)const;
 
     struct pixelFormat* m_pixelFormat;
 

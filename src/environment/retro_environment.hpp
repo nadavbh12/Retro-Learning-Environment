@@ -42,6 +42,9 @@ struct pixelFormat {
    uint32_t gShift;
    uint32_t bShift;
    uint32_t aShift;
+   uint32_t rFill;
+   uint32_t gFill;
+   uint32_t bFill;
    int Bpp; //Bytes per pixel
 };
 
