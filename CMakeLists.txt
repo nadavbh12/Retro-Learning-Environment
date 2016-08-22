@@ -88,16 +88,16 @@ include_directories(
 
 include(ExternalProject)
 
-ExternalProject_add(snes9x_next_libretro 
-			PREFIX ${SNES9X_DIR}
+ExternalProject_add(snes9x2010_libretro
+			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
 			SOURCE_DIR ${SNES9X_DIR}
 			BINARY_DIR ${SNES9X_DIR}
 			CONFIGURE_COMMAND ""
-			BUILD_COMMAND "make"
+			BUILD_COMMAND make
 			INSTALL_COMMAND ""
 		   )
 ExternalProject_add(stella_libretro
-			PREFIX ${STELLA_DIR}
+			GIT_REPOSITORY https://github.com/libretro/stella-libretro.git
 			SOURCE_DIR ${STELLA_DIR}
 			BINARY_DIR ${STELLA_DIR}
 			CONFIGURE_COMMAND ""
@@ -108,7 +108,7 @@ ExternalProject_add(stella_libretro
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_dependencies(ale-lib snes9x_next_libretro)
+add_dependencies(ale-lib snes9x2010_libretro)
 add_dependencies(ale-lib stella_libretro)
 add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-bin PROPERTIES OUTPUT_NAME ale)
