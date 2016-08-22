@@ -2,7 +2,7 @@ package = 'ale'
 version = '2-0'
 
 source = {
-   url = ''
+   url = 'git://github.com/nadavbh12/Arcade-Learning-Environment-2.0.git'
 }
 
 description = {
