@@ -43,8 +43,7 @@ static void ale_rearrangeGrayscale(uint8_t *dst_buffer, const uint32_t *src_buff
   uint8_t r, g, b;
     for(size_t i = 0; i < src_size; ++i, ++q){
     	ale->getScreen().getRGB(((uint16_t*)src_buffer)[i], r, g, b);
-        *q = (unsigned char) (0.3*r + 0.5*g+0.2*b);   // r
-
+        *q = (unsigned char) (0.3*r + 0.5*g+0.2*b);
     }
 }
 

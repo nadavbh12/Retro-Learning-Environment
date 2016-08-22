@@ -86,18 +86,30 @@ include_directories(
   ${SOURCE_DIR}/external/TinyMT
 )
 
+include(ExternalProject)
 
-add_library(snes9x_next_libretro SHARED IMPORTED)
-set_property(TARGET snes9x_next_libretro PROPERTY IMPORTED_LOCATION ${SNES9X_DIR}/snes9x_next_libretro.so)
-list(APPEND LINK_LIBS snes9x_next_libretro)
-
-add_library(stella_libretro SHARED IMPORTED)
-set_property(TARGET stella_libretro PROPERTY IMPORTED_LOCATION ${STELLA_DIR}/stella_libretro.so)
-list(APPEND LINK_LIBS stella_libretro)
+ExternalProject_add(snes9x_next_libretro 
+			PREFIX ${SNES9X_DIR}
+			SOURCE_DIR ${SNES9X_DIR}
+			BINARY_DIR ${SNES9X_DIR}
+			CONFIGURE_COMMAND ""
+			BUILD_COMMAND "make"
+			INSTALL_COMMAND ""
+		   )
+ExternalProject_add(stella_libretro
+			PREFIX ${STELLA_DIR}
+			SOURCE_DIR ${STELLA_DIR}
+			BINARY_DIR ${STELLA_DIR}
+			CONFIGURE_COMMAND ""
+			BUILD_COMMAND "make"
+			INSTALL_COMMAND ""
+		   )
 
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_dependencies(ale-lib snes9x_next_libretro)
+add_dependencies(ale-lib stella_libretro)
 add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-bin PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
@@ -108,11 +120,6 @@ set_target_properties(ale-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURR
 target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
-
-#target_include_directories(ale-lib PUBLIC ${include_directories})
-#target_include_directories(ale-bin PUBLIC ${include_directories})
-#target_include_directories(ale-c-lib PUBLIC ${include_directories})
-
 
 if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
