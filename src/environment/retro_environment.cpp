@@ -86,8 +86,8 @@ void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
 	pixel_format.aShift=aShift;
 	// Fill
 	pixel_format.rFill = 8 - (gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
-	pixel_format.gFill = 8 - (rShift+gShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
-	pixel_format.bFill = 8 - (gShift+bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
+	pixel_format.gFill = 8 - (rShift-gShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
+	pixel_format.bFill = 8 - (gShift-bShift); // rShift+gShift+bShift - rShift = 16 - 11 = 5
 
 }
 

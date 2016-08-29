@@ -609,28 +609,29 @@ pixel_t ALEScreen::getRGBPixel(const uint32_t &pixel)const{
 
 	struct pixelFormat* m = m_pixelFormat;
 	uint32_t red   = (pixel & m->rmask) >> m->rShift;
-	uint32_t green = (pixel & m->gmask) >>  m->gShift;
+	uint32_t green = (pixel & m->gmask) >> m->gShift;
 	uint32_t blue  = (pixel & m->bmask) >> m->bShift;
 
-	red   = red << (m->rFill + 16); 	//solution commented out since previous agents were not using it
+	red   = red   << (m->rFill + 16); 	//solution commented out since previous agents were not using it
 	green = green << (m->gFill+8);
-	blue  = blue << m->bFill;
+	blue  = blue  <<  m->bFill;
 
 	return red | green | blue;
 
 }
+
 void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
 	struct pixelFormat* m = m_pixelFormat;
-	 red   = (pixel & m->rmask) >> m->rShift;
-	 green = (pixel & m->gmask) >>  m->gShift;
-	 blue  = (pixel & m->bmask) >> m->bShift;
+	red   = (pixel & m->rmask) >> m->rShift;
+	green = (pixel & m->gmask) >> m->gShift;
+	blue  = (pixel & m->bmask) >> m->bShift;
 
-	red   = red << m->rFill; 	//solution commented out since previous agents were not using it
+	red   = red   << m->rFill; 	//solution commented out since previous agents were not using it
 	green = green << m->gFill;
-	blue  = blue << m->bFill;
-
+	blue  = blue  << m->bFill;
 }
+
 // pixel accessors, (row, column)-ordered
 inline pixel_t ALEScreen::get(int r, int c) const {
   // Perform some bounds-checking
