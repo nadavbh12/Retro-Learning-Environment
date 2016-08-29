@@ -86,15 +86,23 @@ include_directories(
   ${SOURCE_DIR}/external/TinyMT
 )
 
-include(ExternalProject)
+set(INCDIR "${CMAKE_INSTALL_PREFIX}/include/ale")
+set(LIBDIR "${CMAKE_INSTALL_PREFIX}/lib")
 
+MESSAGE(STATUS "INCLUDE_DIR ${INCDIR}")
+MESSAGE(STATUS "LIBRARY_DIR ${LIBDIR}")
+
+include(ExternalProject)
 ExternalProject_add(snes9x2010_libretro
 			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
 			SOURCE_DIR ${SNES9X_DIR}
 			BINARY_DIR ${SNES9X_DIR}
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND make
-			INSTALL_COMMAND ""
+			INSTALL_DIR ${LIBDIR}
+			INSTALL_COMMAND 
+				cp snes9x2010_libretro.so 
+				${LIBDIR}
 		   )
 ExternalProject_add(stella_libretro
 			GIT_REPOSITORY https://github.com/libretro/stella-libretro.git
@@ -102,7 +110,10 @@ ExternalProject_add(stella_libretro
 			BINARY_DIR ${STELLA_DIR}
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND "make"
-			INSTALL_COMMAND ""
+			INSTALL_DIR ${LIBDIR}
+			INSTALL_COMMAND 
+				cp stella_libretro.so
+				${LIBDIR}
 		   )
 
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
@@ -120,6 +131,23 @@ set_target_properties(ale-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURR
 target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
+
+INSTALL(
+	FILES
+	src/ale_interface.hpp
+	DESTINATION "${INCDIR}"
+       )
+
+IF(APPLE)
+  INSTALL(FILES
+          libale.a
+          DESTINATION "${LIBDIR}")
+ELSE()
+    INSTALL(FILES
+            libale.so
+            DESTINATION "${LIBDIR}")
+ENDIF()
+
 
 if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
