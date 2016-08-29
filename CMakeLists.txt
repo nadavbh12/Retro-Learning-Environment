@@ -135,7 +135,7 @@ target_link_libraries(ale-c-lib ${LINK_LIBS})
 INSTALL(
 	FILES
 	src/ale_interface.hpp
-	src/libretro.hpp
+	src/libretro.h
 	DESTINATION "${INCDIR}"
        )
 
