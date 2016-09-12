@@ -6,6 +6,7 @@ option(USE_RLGLUE "Use RL-Glue" OFF)
 option(BUILD_EXAMPLES "Build Example Agents" ON)
 option(DEBUG "Suspend optimization & enable debugging" OFF)
 option(UNIT_TESTING "Build unit tests using Google Test" OFF)
+option(INSTALL_CORES "Install the core libs. Install may require sudo" OFF)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wunused -fPIC -fomit-frame-pointer -D__STDC_CONSTANT_MACROS -std=c++11")
@@ -46,7 +47,7 @@ endif()
 
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x-next)
+set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x2010)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
 set(MODULES common controllers environment games games/supported external external/TinyMT)
 
@@ -92,28 +93,39 @@ set(LIBDIR "${CMAKE_INSTALL_PREFIX}/lib")
 MESSAGE(STATUS "INCLUDE_DIR ${INCDIR}")
 MESSAGE(STATUS "LIBRARY_DIR ${LIBDIR}")
 
+IF(INSTALL_CORES)
+	set(SNES9X_INSTALL_COMMAND 
+		"cp snes9x2010_libretro.so 
+		${LIBDIR}")
+	set(STELLA_INSTALL_COMMAND 
+		"cp stella_libretro.so 
+		${LIBDIR}")
+ELSE()
+	set(SNES9X_INSTALL_COMMAND "")
+	set(STELLA_INSTALL_COMMAND "")
+ENDIF()
+
 include(ExternalProject)
 ExternalProject_add(snes9x2010_libretro
 			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
+			UPDATE_COMMAND ""
 			SOURCE_DIR ${SNES9X_DIR}
 			BINARY_DIR ${SNES9X_DIR}
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND make
 			INSTALL_DIR ${LIBDIR}
-			INSTALL_COMMAND 
-				cp snes9x2010_libretro.so 
-				${LIBDIR}
+			INSTALL_COMMAND "${SNES9X_INSTALL_COMMAND}"
+			#INSTALL_COMMAND ${SNES9X_INSTALL_COMMAND}
 		   )
 ExternalProject_add(stella_libretro
 			GIT_REPOSITORY https://github.com/libretro/stella-libretro.git
+			UPDATE_COMMAND ""
 			SOURCE_DIR ${STELLA_DIR}
 			BINARY_DIR ${STELLA_DIR}
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND "make"
 			INSTALL_DIR ${LIBDIR}
-			INSTALL_COMMAND 
-				cp stella_libretro.so
-				${LIBDIR}
+			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
 
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
@@ -132,23 +144,24 @@ target_link_libraries(ale-lib ${LINK_LIBS})
 target_link_libraries(ale-bin ${LINK_LIBS})
 target_link_libraries(ale-c-lib ${LINK_LIBS})
 
-INSTALL(
-	FILES
-	src/ale_interface.hpp
-	src/libretro.h
-	DESTINATION "${INCDIR}"
-       )
-
-IF(APPLE)
-  INSTALL(FILES
-          libale.a
-          DESTINATION "${LIBDIR}")
-ELSE()
-    INSTALL(FILES
-            libale.so
-            DESTINATION "${LIBDIR}")
+IF(INSTALL_CORES)
+	INSTALL(
+		FILES
+		src/ale_interface.hpp
+		src/libretro.h
+		DESTINATION "${INCDIR}"
+	       )
+	
+	IF(APPLE)
+	  INSTALL(FILES
+	          libale.a
+	          DESTINATION "${LIBDIR}")
+	ELSE()
+	    INSTALL(FILES
+	            libale.so
+	            DESTINATION "${LIBDIR}")
+	ENDIF()
 ENDIF()
-
 
 if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
