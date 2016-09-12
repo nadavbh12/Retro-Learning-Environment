@@ -1,0 +1,24 @@
+## RLE
+
+build
+doc/examples/*Example
+
+
+# Emacs temp files
+*~
+.*
+*#
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.d
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a

@@ -1,5 +1,0 @@
-/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/ale-bin.dir
-/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/ale-c-lib.dir
-/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/ale-lib.dir
-/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/sharedLibraryInterfaceExample.dir
-/home/administrator/DQN/Arcade-Learning-Environment-2.0/CMakeFiles/videoRecordingExample.dir
