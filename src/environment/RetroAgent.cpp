@@ -471,8 +471,8 @@ static void core_unload() {
 RetroAgent::RetroAgent(){}
 
 RetroAgent::~RetroAgent(){
-//	unloadRom();
-//	core_unload();
+	unloadRom();
+	core_unload();
 }
 
 
@@ -489,7 +489,8 @@ void RetroAgent::loadRom(std::string romName){
 }
 
 void RetroAgent::unloadRom(){
-	core_unload();
+	if (g_retro.initialized)
+		g_retro.retro_unload_game();
 }
 
 void RetroAgent::run(){

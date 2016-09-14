@@ -22,3 +22,6 @@ doc/examples/*Example
 *.lai
 *.la
 *.a
+
+# Eclipse files
+.cproject

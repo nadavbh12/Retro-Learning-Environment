@@ -254,7 +254,7 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 //    m_state.setActionJoysticks(player_a_action, player_b_action);
 	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
 
-    for (size_t t = 0; t < num_steps; t++) {
+    for (size_t t = 0; t < num_steps; ++t) {
     	m_alesystem->step();
     	m_settings->step(*m_alesystem);
     }
@@ -269,7 +269,7 @@ void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, s
 void RetroEnvironment::emulateStart(Action player_a_action, Action player_b_action, size_t num_steps) {
 
 	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
-	for (size_t t = 0; t < num_steps; t++) {
+	for (size_t t = 0; t < num_steps; ++t) {
     	m_alesystem->step();
     }
 }

@@ -247,9 +247,7 @@ ALEInterface::ALEInterface(const std::string &rom_file, const std::string &core_
 	loadROM(rom_file, core_file);
 }
 
-ALEInterface::ALEInterface(bool display_screen) : m_pimpl(new ALEInterface::Impl())  {
-  disableBufferedIO();
-  Logger::Info << welcomeMessage() << std::endl;
+ALEInterface::ALEInterface(bool display_screen) : ALEInterface()  {
   m_pimpl->setBool("display_screen", display_screen);
 }
 
