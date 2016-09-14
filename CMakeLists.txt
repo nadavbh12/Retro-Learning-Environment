@@ -95,13 +95,17 @@ MESSAGE(STATUS "LIBRARY_DIR ${LIBDIR}")
 
 IF(INSTALL_CORES)
 	set(SNES9X_INSTALL_COMMAND 
-		"cp snes9x2010_libretro.so ${LIBDIR}")
+		cp snes9x2010_libretro.so 
+		${LIBDIR})
 	set(STELLA_INSTALL_COMMAND 
-		"cp stella_libretro.so ${LIBDIR}")
+		cp stella_libretro.so 
+		${LIBDIR})
 ELSE()
 	set(SNES9X_INSTALL_COMMAND "")
 	set(STELLA_INSTALL_COMMAND "")
 ENDIF()
+
+message(${STELLA_INSTALL_COMMAND})
 
 include(ExternalProject)
 ExternalProject_add(snes9x2010_libretro
