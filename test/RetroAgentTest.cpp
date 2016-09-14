@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <iterator>
 #include <string>
+#include <thread>
 #include "gtest/gtest.h"
 
 namespace {
@@ -18,33 +19,36 @@ using namespace ale;
 // The fixture for testing class Foo.
 class RetroAgentTest : public ::testing::Test {
  protected:
-  // You can remove any or all of the following functions if its body
-  // is empty.
 
 	RetroAgentTest() {
-    // You can do set-up work for each test here.
-		adapter.loadCore("/home/nadav/DQN/Arcade-Learning-Environment-2.0/snes9x-next/snes9x_next_libretro.so");
-		adapter.loadRom("/home/nadav/DQN/roms/mortal_kombat.sfc");
-		int numSteps = 50;
-
-		for(int i=0; i< numSteps; i++){
-			adapter.run();
-		}
-
   }
 
-  // Objects declared here can be used by all tests in the test case for Foo.
-  RetroAgent adapter;
+	string corePath = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/snes9x2010/snes9x2010_libretro.so";
+	string romPath = "/home/nadav/DQN/roms/mortal_kombat.sfc";
 };
 
+static void initRetroAgent(RetroAgent* adapter, string corePath, string romPath){
+	adapter->loadCore(corePath);
+	adapter->loadRom(romPath);
+	int numSteps = 50;
+
+	for(int i=0; i< numSteps; i++){
+		adapter->run();
+	}
+}
+
+
 TEST_F(RetroAgentTest, serialization) {
+	RetroAgent adapter;
+	initRetroAgent(&adapter, corePath, romPath);
+
 	std::vector<uint8_t> dataOld;
 	std::vector<uint8_t> dataNew;
 	dataOld.assign(adapter.getRamAddress(2), adapter.getRamAddress(2) + adapter.getRamSize());
 	Serializer ser;
 	adapter.serialize(ser);
 
-	int numSteps = 50;
+	int numSteps = 500;
 	for(int i = 0 ; i < numSteps ; i++){
 		adapter.run();
 	}
@@ -56,5 +60,18 @@ TEST_F(RetroAgentTest, serialization) {
 
 	EXPECT_EQ(dataOld, dataNew);
 }
+
+TEST_F(RetroAgentTest, multiThreading) {
+	int numThreads(8);
+	RetroAgent adapter[numThreads];
+	std::vector<std::thread> threads;
+	for(int i(0); i < numThreads; ++i){
+		threads.push_back(std::thread(initRetroAgent, &adapter[i], corePath, romPath));
+	}
+	for (auto& th : threads){
+	    th.join();
+	}
+}
+
 
 }

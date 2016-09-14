@@ -5,11 +5,11 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <dlfcn.h>
+#include "Log.hpp"
+#include <fstream>
 
 #include "libretro.h"
 
-// #include <GL/glew.h>
-// #include <GLFW/glfw3.h>
 #include <alsa/asoundlib.h>
 #ifdef __USE_SDL
 #include "SDL.h"
@@ -26,8 +26,11 @@
 
 using namespace ale;
 
+std::atomic_uint RetroAgent::numAgents{0};
+thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
+
 // holds pixel/screen settings
-static struct {
+thread_local static struct {
 	struct retro_game_geometry rGeom;
     uint32_t rmask;
     uint32_t gmask;
@@ -46,43 +49,12 @@ static struct {
 #endif
 } g_video  = {0};
 
-static struct {
-	void *handle;
-	bool initialized;
-
-	void (*retro_init)(void);
-	void (*retro_deinit)(void);
-	unsigned (*retro_api_version)(void);
-	void (*retro_get_system_info)(struct retro_system_info *info);
-	void (*retro_get_system_av_info)(struct retro_system_av_info *info);
-	void (*retro_set_controller_port_device)(unsigned port, unsigned device);
-	void (*retro_reset)(void);
-	void (*retro_run)(void);
-	size_t (*retro_serialize_size)(void);
-	bool (*retro_serialize)(void *data, size_t size);
-	bool (*retro_unserialize)(const void *data, size_t size);
-//	void retro_cheat_reset(void);
-//	void retro_cheat_set(unsigned index, bool enabled, const char *code);
-	bool (*retro_load_game)(const struct retro_game_info *game);
-//	bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info, size_t num_info);
-	void (*retro_unload_game)(void);
-//	unsigned retro_get_region(void);
-	void* (*retro_get_memory_data)(unsigned id);
-	size_t (*retro_get_memory_size)(unsigned id);
-
-	Action action_a;
-	Action action_b;
-//	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
-	size_t serializeSize;
-} g_retro;
-
-
 struct keymap {
 	unsigned k;
 	unsigned rk;
 };
 
-struct keymap g_binds[] = {
+const struct keymap g_binds[] = {
 	{ JOYPAD_A		, RETRO_DEVICE_ID_JOYPAD_A 		},
 	{ JOYPAD_B		, RETRO_DEVICE_ID_JOYPAD_B 		},
 	{ JOYPAD_Y 		, RETRO_DEVICE_ID_JOYPAD_Y 		},
@@ -101,10 +73,10 @@ struct keymap g_binds[] = {
 static unsigned g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1] = { 0 };
 
 #define load_sym(V, S) do {\
-	if (!((*(void**)&V) = dlsym(g_retro.handle, #S))) \
+	if (!((*(void**)&V) = dlsym(RetroAgent::g_retro.handle, #S))) \
 		die("Failed to load symbol '" #S "'': %s", dlerror()); \
 	} while (0)
-#define load_retro_sym(S) load_sym(g_retro.S, S)
+#define load_retro_sym(S) load_sym(RetroAgent::g_retro.S, S)
 
 
 static void die(const char *fmt, ...) {
@@ -322,7 +294,7 @@ static bool core_environment(unsigned cmd, void *data) {
 	}
 //	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
 //		const char* cval = (char*)data;
-//		cval = g_retro.saveFolder.c_str();
+//		cval = RetroAgent::g_retro.saveFolder.c_str();
 //		return true;
 //	}
 	default:
@@ -343,11 +315,11 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 static void core_input_poll(void) {
 	int i;
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		g_joy[0][g_binds[i].rk] = (g_retro.action_a & g_binds[i].k) > 0;
+		g_joy[0][g_binds[i].rk] = (RetroAgent::g_retro.action_a & g_binds[i].k) > 0;
 //		if(g_joy[0][g_binds[i].rk]) DEBUG2("PLAYER A " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
 	}
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		g_joy[1][g_binds[i].rk] = (g_retro.action_b & g_binds[i].k) > 0;
+		g_joy[1][g_binds[i].rk] = (RetroAgent::g_retro.action_b & g_binds[i].k) > 0;
 //		if(g_joy[1][g_binds[i].rk]) DEBUG2("PLAYER B " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
 
 	}
@@ -379,10 +351,10 @@ static void core_load(const char *sofile) {
 	void (*set_audio_sample)(retro_audio_sample_t) = NULL;
 	void (*set_audio_sample_batch)(retro_audio_sample_batch_t) = NULL;
 
-	memset(&g_retro, 0, sizeof(g_retro));
-	g_retro.handle = dlopen(sofile, RTLD_LAZY);
+	RetroAgent::g_retro.handle = dlopen(sofile, RTLD_LAZY);
+	RetroAgent::g_retro.corePath= sofile;
 
-	if (!g_retro.handle)
+	if (!RetroAgent::g_retro.handle)
 		die("Failed to load core: %s", dlerror());
 
 	dlerror();
@@ -417,8 +389,8 @@ static void core_load(const char *sofile) {
 	set_audio_sample(core_audio_sample);
 	set_audio_sample_batch(core_audio_sample_batch);
 
-	g_retro.retro_init();
-	g_retro.initialized = true;
+	RetroAgent::g_retro.retro_init();
+	RetroAgent::g_retro.initialized = true;
 
 	puts("Core loaded");
 }
@@ -437,7 +409,7 @@ static void core_load_game(const char *filename) {
 	info.size = ftell(file);
 	rewind(file);
 
-	g_retro.retro_get_system_info(&system);
+	RetroAgent::g_retro.retro_get_system_info(&system);
 
 	if (!system.need_fullpath) {
 		info.data = malloc(info.size);
@@ -446,10 +418,10 @@ static void core_load_game(const char *filename) {
 			goto libc_error;
 	}
 
-	if (!g_retro.retro_load_game(&info))
+	if (!RetroAgent::g_retro.retro_load_game(&info))
 		die("The core failed to load the content.");
 
-	g_retro.retro_get_system_av_info(&av);
+	RetroAgent::g_retro.retro_get_system_av_info(&av);
 
 	video_configure(&av.geometry);
 	audio_init(av.timing.sample_rate);
@@ -464,37 +436,71 @@ libc_error:
 
 
 static void core_unload() {
-	if (g_retro.initialized)
-		g_retro.retro_deinit();
+	if (RetroAgent::g_retro.initialized)
+		RetroAgent::g_retro.retro_deinit();
 }
 
-RetroAgent::RetroAgent(){}
+RetroAgent::RetroAgent(){
+	agentNum = numAgents++;
+}
 
 RetroAgent::~RetroAgent(){
 	unloadRom();
 	core_unload();
+	--numAgents;
 }
 
+static bool replace(std::string& str, const std::string& from, const std::string& to) {
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
+}
+
+static void copyFile(string srcName, string dstName){
+    std::ifstream  src(srcName, std::ios::binary);
+    std::ofstream  dst(dstName,   std::ios::binary);
+
+    dst << src.rdbuf();
+}
 
 void RetroAgent::loadCore(const string& coreName){
-	core_load(coreName.c_str());
+	string suffix = ".so";
+	size_t start_pos = coreName.find(suffix);
+	if(start_pos == std::string::npos){
+		throw invalid_argument("Invalid core file path. File name must end with .so");
+	}
+	if(agentNum > 0){
+		string newCoreName = coreName;
+		string newSuffix = std::to_string(agentNum) + suffix;
+		replace(newCoreName, suffix, newSuffix);
+		if(!std::ifstream(newCoreName)){ // if doesn't file exist
+			copyFile(coreName,newCoreName);
+		}
+		core_load(newCoreName.c_str());
+	}
+	else{
+		core_load(coreName.c_str());
+	}
 }
 
 void RetroAgent::unloadCore(){
 	core_unload();
 }
+
 void RetroAgent::loadRom(const string& romName){
 	core_load_game(romName.c_str());
-	g_retro.serializeSize = g_retro.retro_serialize_size();
+	RetroAgent::g_retro.serializeSize = RetroAgent::g_retro.retro_serialize_size();
 }
 
 void RetroAgent::unloadRom(){
-	if (g_retro.initialized)
-		g_retro.retro_unload_game();
+	if (RetroAgent::g_retro.initialized)
+		RetroAgent::g_retro.retro_unload_game();
 }
 
 void RetroAgent::run(){
-	g_retro.retro_run();
+	RetroAgent::g_retro.retro_run();
 }
 
 int RetroAgent::getHeight(){

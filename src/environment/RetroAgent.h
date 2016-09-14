@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../common/Constants.h"
+#include <atomic>
 
 typedef unsigned char byte_t;
 class Serializer;
@@ -14,6 +15,7 @@ class RetroAgent{
 public:
 	RetroAgent();
 	~RetroAgent();
+	RetroAgent(const RetroAgent&) = delete;
 	void loadCore(const string& corePath);
 	void loadRom(const string& romPath);
 	void run();
@@ -41,7 +43,42 @@ public:
 	void serialize(Serializer& ser);
 	void deserialize(Deserializer& des);
 
+	struct g_retro_{
+		void *handle;
+		bool initialized;
+
+		void (*retro_init)(void);
+		void (*retro_deinit)(void);
+		unsigned (*retro_api_version)(void);
+		void (*retro_get_system_info)(struct retro_system_info *info);
+		void (*retro_get_system_av_info)(struct retro_system_av_info *info);
+		void (*retro_set_controller_port_device)(unsigned port, unsigned device);
+		void (*retro_reset)(void);
+		void (*retro_run)(void);
+		size_t (*retro_serialize_size)(void);
+		bool (*retro_serialize)(void *data, size_t size);
+		bool (*retro_unserialize)(const void *data, size_t size);
+	//	void retro_cheat_reset(void);
+	//	void retro_cheat_set(unsigned index, bool enabled, const char *code);
+		bool (*retro_load_game)(const struct retro_game_info *game);
+	//	bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info, size_t num_info);
+		void (*retro_unload_game)(void);
+	//	unsigned retro_get_region(void);
+		void* (*retro_get_memory_data)(unsigned id);
+		size_t (*retro_get_memory_size)(unsigned id);
+
+		int action_a;
+		int action_b;
+	//	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
+		string corePath;
+		size_t serializeSize;
+	};
+	thread_local static struct g_retro_ g_retro;
+
+
 private:
+	static std::atomic_uint numAgents;
+	unsigned agentNum;
 	void unloadCore();
 	void unloadRom();
 };

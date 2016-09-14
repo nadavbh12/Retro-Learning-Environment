@@ -35,7 +35,7 @@ namespace ale{
 std::string action_to_string(Action a);
 
 const string ATARI_PATH = "./stella-libretro/stella_libretro.so";
-const string SNES_PATH = "./snes9x-next/snes9x_next_libretro.so";
+const string SNES_PATH = "./snes9x2010/snes9x2010_libretro.so";
 
 } // namespace ale
 
