@@ -78,7 +78,7 @@ TEST_F(RleCInterfaceTest, getScreenGrayscale) {
 
 TEST_F(RleCInterfaceTest, setBool) {
 	ALEInterface* ale = ALE_new();
-	ale->setBool("display_screen", true);
+	setBool(ale, "display_screen", true);
 	loadAndPlay(ale);
 	reset_game(ale);
 	ALE_del(ale);

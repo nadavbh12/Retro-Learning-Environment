@@ -105,7 +105,7 @@ class RetroEnvironment {
     reward_t oneStepAct(Action player_a_action, Action player_b_action);
 
     /** Actually emulates the emulator for a given number of steps. */
-    void emulate(Action player_a_action, Action player_b_action, size_t num_steps = 1);
+    void emulate(const Action& player_a_action, const Action& player_b_action, size_t num_steps = 1);
 
     /** Emulates the emulator without processing ram and screen for a given number of steps. */
 	void emulateStart(Action player_a_action, Action player_b_action, size_t num_steps = 1);

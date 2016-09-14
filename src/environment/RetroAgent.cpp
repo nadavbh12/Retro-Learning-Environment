@@ -70,8 +70,8 @@ static struct {
 	void* (*retro_get_memory_data)(unsigned id);
 	size_t (*retro_get_memory_size)(unsigned id);
 
-	int action_a;
-	int action_b;
+	Action action_a;
+	Action action_b;
 //	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
 	size_t serializeSize;
 } g_retro;
@@ -476,14 +476,14 @@ RetroAgent::~RetroAgent(){
 }
 
 
-void RetroAgent::loadCore(std::string coreName){
+void RetroAgent::loadCore(const string& coreName){
 	core_load(coreName.c_str());
 }
 
 void RetroAgent::unloadCore(){
 	core_unload();
 }
-void RetroAgent::loadRom(std::string romName){
+void RetroAgent::loadRom(const string& romName){
 	core_load_game(romName.c_str());
 	g_retro.serializeSize = g_retro.retro_serialize_size();
 }
@@ -509,7 +509,7 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
-int RetroAgent::readRam(unsigned id, int offset){
+int RetroAgent::readRam(const unsigned& id, const int& offset){
 	assert( (uint32_t)offset < getRamSize());
 	assert( offset > 0);
 	return *(getRamAddress(id) + offset);
@@ -529,7 +529,7 @@ uint32_t RetroAgent::getRamSize(){
 	return (uint32_t)g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
 }
 
-void RetroAgent::SetActions(int player_a_action, int player_b_action){
+void RetroAgent::SetActions(const Action& player_a_action, const Action& player_b_action){
 	g_retro.action_a = player_a_action;
 	g_retro.action_b = player_b_action;
 }
@@ -562,7 +562,6 @@ void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, u
 
 
 uint32_t RetroAgent::getBufferSize() const{
-//	return g_video.pitch * g_video.rGeom.base_height;
 	return g_video.rGeom.base_width * g_video.rGeom.base_height;
 
 }
@@ -582,7 +581,7 @@ void RetroAgent::getRgb (const uint32_t& pixel, uint8_t &r, uint8_t &g ,uint8_t 
 	getRgbShift(rShift, gShift, bShift, aShift);
 
 	r=(pixel & rmask) >> rShift;
-	g=(pixel & gmask) >>  gShift;
+	g=(pixel & gmask) >> gShift;
 	b=(pixel & bmask) >> bShift;
 //	a=(pixel & amask) >> aShift;
 }

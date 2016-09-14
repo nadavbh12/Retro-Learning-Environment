@@ -121,7 +121,7 @@ void RetroEnvironment::reset() {
 		  emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
 	  }
     // added for debug
-//  m_alesystem->p_display_screen->display_screen();
+  m_alesystem->p_display_screen->display_screen();
   }
 }
 
@@ -236,7 +236,7 @@ bool RetroEnvironment::isTerminal() {
      m_state.getEpisodeFrameNumber() >= m_max_num_frames_per_episode));
 }
 
-void RetroEnvironment::emulate(Action player_a_action, Action player_b_action, size_t num_steps) {
+void RetroEnvironment::emulate(const Action& player_a_action, const Action& player_b_action, size_t num_steps) {
 
 //  // Handle paddles separately: we have to manually update the paddle positions at each step
 //  if (m_use_paddles) {
@@ -296,7 +296,7 @@ void RetroEnvironment::processScreen() {
 	int Bpp = m_alesystem->getRetroAgent().getBpp() / 8;
 	int pitch = m_alesystem->getRetroAgent().getPitch();
 	uint8_t* buffer = m_alesystem->getCurrentFrameBuffer();
-	for(int i = 0 ; i < height; i++){
+	for(int i = 0 ; i < height; ++i){
 		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
 	}
 

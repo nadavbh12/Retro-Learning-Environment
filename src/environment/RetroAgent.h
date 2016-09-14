@@ -14,8 +14,8 @@ class RetroAgent{
 public:
 	RetroAgent();
 	~RetroAgent();
-	void loadCore(std::string corePath);
-	void loadRom(std::string romPath);
+	void loadCore(const string& corePath);
+	void loadRom(const string& romPath);
 	void run();
 	void videoRender();
 	void swapBuffers();
@@ -25,10 +25,10 @@ public:
 	int	 getHeight(); //in pixels
 	int	 getWidth(); //in pixels
 	void reset();
-	int readRam(unsigned id, int offset);
+	int readRam(const unsigned& id, const int& offset);
 	uint8_t* getRamAddress(unsigned id);
 	uint32_t getRamSize();
-	void SetActions(int player_a_action, int player_b_action);
+	void SetActions(const Action& player_a_action, const Action& player_b_action);
 	void updateScreen();
 	void* getCurrentBuffer() const;
 	uint32_t getBufferSize() const;	// in pixels
