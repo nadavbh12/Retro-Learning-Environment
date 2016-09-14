@@ -168,25 +168,37 @@ ActionVect MortalKombatSettings::getStartingActions(){
 //	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
-	startingActions.insert(startingActions.end(), 16*num_of_nops, JOYPAD_NOOP);
+	INSERT_NOPS(16*num_of_nops)
+
 	// select tournament
-	startingActions.push_back(JOYPAD_X);
+	INSERT_ACTION_SINGLE_A(JOYPAD_X)
+
 	// wait for character select screen
-	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);
+	INSERT_NOPS(3.5*num_of_nops)
+
 	// choose Raiden
-	startingActions.push_back(JOYPAD_DOWN);
-	startingActions.push_back(JOYPAD_DOWN);
-	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
+	INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	INSERT_NOPS(num_of_nops)
+
+	// Select opponent: random seed for opponent is set by num of NOOPs
+//	INSERT_NOPS(0) // Johnny Cage
+//	INSERT_NOPS(5) // Sonya
+//	INSERT_NOPS(10) // sub_zero
+//	INSERT_NOPS(40) // scorpion
+
+
 	// select character
-	startingActions.push_back(JOYPAD_X);
-	startingActions.push_back(JOYPAD_X);
-	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);
+	INSERT_ACTION_SINGLE(JOYPAD_X, A)
+	INSERT_NOPS(num_of_nops)
+
 	// wait for game to begin
-	startingActions.insert(startingActions.end(), 4*num_of_nops, JOYPAD_NOOP);
+	INSERT_NOPS(4*num_of_nops)
+
 	// skip tournament overview
-	startingActions.push_back(JOYPAD_X);
+	INSERT_ACTION_SINGLE_A(JOYPAD_X)
+
 	// wait for game to start
-	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);
+	INSERT_NOPS(3.5*num_of_nops)
 
 	return startingActions;
 }

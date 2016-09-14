@@ -131,7 +131,7 @@ void FinalFightWithRightSettings::loadState( Deserializer & des ) {
 
 
 ActionVect FinalFightWithRightSettings::getStartingActions(){
-	int i, num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), 2.5*num_of_nops, JOYPAD_NOOP);

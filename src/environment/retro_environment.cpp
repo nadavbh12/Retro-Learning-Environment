@@ -120,8 +120,8 @@ void RetroEnvironment::reset() {
 	  }else{
 		  emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
 	  }
-    // added for debug
-  m_alesystem->p_display_screen->display_screen();
+    // uncomment to view screen of starting actions
+//  m_alesystem->p_display_screen->display_screen();
   }
 }
 

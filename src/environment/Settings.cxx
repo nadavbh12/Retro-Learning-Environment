@@ -596,31 +596,33 @@ Settings& Settings::operator =(const Settings&) {
 void Settings::setDefaultSettings() {
 
 	// Controller settings
-	intSettings.insert(pair<string, int>("max_num_frames", 0));
-	intSettings.insert(pair<string, int>("max_num_frames_per_episode", 0));
+	intSettings.emplace(std::make_pair("max_num_frames", 0));
+	intSettings.emplace(std::make_pair("max_num_frames_per_episode", 0));
 
 	// FIFO controller settings
-	boolSettings.insert(pair<string, bool>("run_length_encoding", true));
+	boolSettings.emplace(std::make_pair("run_length_encoding", true));
 
 	// Environment customization settings
-	boolSettings.insert(pair<string, bool>("restricted_action_set", false));
-	intSettings.insert(pair<string, int>("random_seed", 0));
-	boolSettings.insert(pair<string, bool>("color_averaging", true));
-	boolSettings.insert(pair<string, bool>("send_rgb", false));
-	intSettings.insert(pair<string, int>("frame_skip", 1));
-	floatSettings.insert(
-			pair<string, float>("repeat_action_probability", 0.25));
-	stringSettings.insert(pair<string, string>("rom_file", ""));
-	stringSettings.insert(pair<string, string>("core_file", ""));
-	boolSettings.insert(pair<string, bool>("two_players", false));
+	boolSettings.emplace(std::make_pair("restricted_action_set", false));
+	intSettings.emplace(std::make_pair("random_seed", 0));
+	boolSettings.emplace(std::make_pair("color_averaging", true));
+	boolSettings.emplace(std::make_pair("send_rgb", false));
+	intSettings.emplace(std::make_pair("frame_skip", 1));
+	floatSettings.emplace(std::make_pair("repeat_action_probability", 0.25));
+	stringSettings.emplace(std::make_pair("rom_file", ""));
+	stringSettings.emplace(std::make_pair("core_file", ""));
+	boolSettings.emplace(std::make_pair("two_players", false));
 
 	// Record settings
-	intSettings.insert(pair<string, int>("fragsize", 64)); // fragsize to 64 ensures proper sound sync
-	stringSettings.insert(pair<string, string>("record_screen_dir", ""));
-	stringSettings.insert(pair<string, string>("record_sound_filename", ""));
+	intSettings.emplace(std::make_pair("fragsize", 64)); // fragsize to 64 ensures proper sound sync
+	stringSettings.emplace(std::make_pair("record_screen_dir", ""));
+	stringSettings.emplace(std::make_pair("record_sound_filename", ""));
 
 	// Display Settings
-	boolSettings.insert(pair<string, bool>("display_screen", false));
+	boolSettings.emplace(std::make_pair("display_screen", false));
+
+	// Game-Specific Settings
+	stringSettings.emplace(std::make_pair("MK_player1_character", "Raiden"));
 
 	for (map<string, string>::iterator it = stringSettings.begin();
 			it != stringSettings.end(); it++) {

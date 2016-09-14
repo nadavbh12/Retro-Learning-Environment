@@ -73,6 +73,8 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(){
 
 	// select tournament
 	INSERT_ACTION_SINGLE_A(JOYPAD_X)
+
+	// wait for character select screen
 	INSERT_NOPS(3.5*num_of_nops)
 
 	// add second player
