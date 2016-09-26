@@ -105,8 +105,6 @@ ELSE()
 	set(STELLA_INSTALL_COMMAND "")
 ENDIF()
 
-message(${STELLA_INSTALL_COMMAND})
-
 include(ExternalProject)
 ExternalProject_add(snes9x2010_libretro
 			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
