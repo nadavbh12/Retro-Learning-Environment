@@ -9,6 +9,7 @@
 #include <string>
 #include "ale_interface.hpp"
 #include "gtest/gtest.h"
+#include "common/AleException.h"
 
 namespace {
 
@@ -75,6 +76,22 @@ TEST_F(RleTest, multiThreading) {
 	for (auto& th : threads){
 	    th.join();
 	}
+}
+
+TEST_F(RleTest, runTwoAgentsNoDelete) {
+	ale::ALEInterface ale;
+	run_example(&ale, romPath, corePath);
+
+	EXPECT_THROW(ale::ALEInterface ale2, AleException);
+}
+
+TEST_F(RleTest, runTwoAgentsWithDelete) {
+	auto ale = new ale::ALEInterface();
+	run_example(ale, romPath, corePath);
+	delete ale;
+
+	ale::ALEInterface ale2;
+	run_example(&ale2, romPath, corePath);
 }
 
 

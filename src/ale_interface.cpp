@@ -40,6 +40,7 @@
 #include "environment/FSNode.hxx"
 #include "common/ScreenExporter.hpp"
 #include "common/Log.hpp"
+#include "common/AleException.h"
 #include <string>
 #include <stdexcept>
 #include <ctime>
@@ -145,9 +146,8 @@ public:
 	  void loadSettings(const std::string& romfile, const std::string& corefile,
 	                     std::unique_ptr<AleSystem> &theSLESystem);
 
-
-
 private:
+	  thread_local static bool initialized;
 	  std::unique_ptr<AleSystem> theAleSystem;
 	  std::unique_ptr<Settings> theSettings;
 	  std::unique_ptr<RetroAgent> theRetroAgent;
@@ -157,11 +157,20 @@ private:
 
 };
 
-ALEInterface::Impl::Impl(){
+thread_local bool ALEInterface::Impl::initialized = false;
+
+ALEInterface::Impl::Impl() : max_num_frames(0){
+  if(initialized){
+	  throw AleException("An instance of ALEInterface already exists in this thread");
+  } else{
+	  initialized = true;
+  }
   ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
 }
 
-ALEInterface::Impl::~Impl() {}
+ALEInterface::Impl::~Impl() {
+	initialized = false;
+}
 
 
 // Get the value of a setting.

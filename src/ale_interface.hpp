@@ -151,7 +151,7 @@ class ALEScreen {
 /** A simple wrapper around the Atari RAM. */
 class ALERAM {
   public:
-    ALERAM(){}
+    ALERAM() : m_ram(NULL){}
     ALERAM(const ALERAM &rhs);
 
     ALERAM& operator=(const ALERAM &rhs);
@@ -180,10 +180,10 @@ class ALERAM {
 class ALEInterface {
 public:
 
-    /** create an ALEInterface. This routine is not threadsafe! */
+    /** create an ALEInterface. Cannot create two instances within one thread */
   ALEInterface();
 
-  /** create an ALEInterface. This routine is not threadsafe! */
+  /** create an ALEInterface. Cannot create two instances within one thread */
   ALEInterface(const std::string &rom_file, const std::string &core_file);
 
   // Legacy constructor
@@ -198,7 +198,7 @@ public:
   // Resets the Atari and loads a game. After this call the game
   // should be ready to play. This is necessary after changing a
   // setting for the setting to take effect.
-  // ALE2: specify which core to load as well. Default is Atari.
+  // RLE: specify which core to load as well. Default is Atari.
   void loadROM(std::string rom_file, std::string core_file = "");
 
   // Applies an action to the game and returns the reward. It is the
