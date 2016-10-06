@@ -83,7 +83,7 @@ class Random
     Impl *m_pimpl;
 
     // A static Random object. Don't use this.
-    static Random s_random;
+    thread_local static Random s_random;
 };
 #endif
 

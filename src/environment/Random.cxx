@@ -26,7 +26,7 @@
 #include "TinyMT/tinymt32.h"
 
 // A static Random object for compatibility purposes. Don't use this.
-Random Random::s_random;
+thread_local Random Random::s_random;
 
 // Implementation of Random's random number generator wrapper. 
 class Random::Impl {

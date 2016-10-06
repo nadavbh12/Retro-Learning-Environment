@@ -447,7 +447,7 @@ RetroAgent::RetroAgent(){
 RetroAgent::~RetroAgent(){
 	unloadRom();
 	core_unload();
-	--numAgents;
+//	--numAgents;
 }
 
 static bool replace(std::string& str, const std::string& from, const std::string& to) {
