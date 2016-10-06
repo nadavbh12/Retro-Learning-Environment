@@ -147,7 +147,6 @@ public:
 	                     std::unique_ptr<AleSystem> &theSLESystem);
 
 private:
-	  thread_local static bool initialized;
 	  std::unique_ptr<AleSystem> theAleSystem;
 	  std::unique_ptr<Settings> theSettings;
 	  std::unique_ptr<RetroAgent> theRetroAgent;
@@ -157,20 +156,12 @@ private:
 
 };
 
-thread_local bool ALEInterface::Impl::initialized = false;
 
 ALEInterface::Impl::Impl() : max_num_frames(0){
-  if(initialized){
-	  throw AleException("An instance of ALEInterface already exists in this thread");
-  } else{
-	  initialized = true;
-  }
   ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
 }
 
-ALEInterface::Impl::~Impl() {
-	initialized = false;
-}
+ALEInterface::Impl::~Impl() {}
 
 
 // Get the value of a setting.

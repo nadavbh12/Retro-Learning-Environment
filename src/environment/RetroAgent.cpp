@@ -8,13 +8,7 @@
 #include "Log.hpp"
 #include <fstream>
 
-#include "libretro.h"
-
 #include <alsa/asoundlib.h>
-#ifdef __USE_SDL
-#include "SDL.h"
-#include "SDL/SDL_rotozoom.h"
-#endif
 
 #include "AleException.h"
 #include "RetroAgent.h"
@@ -28,26 +22,7 @@ using namespace ale;
 
 std::atomic_uint RetroAgent::numAgents{0};
 thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
-
-// holds pixel/screen settings
-thread_local static struct {
-	struct retro_game_geometry rGeom;
-    uint32_t rmask;
-    uint32_t gmask;
-    uint32_t bmask;
-    uint32_t amask;
-    uint32_t bpp;
-    uint32_t pitch;
-    void*    currentBuffer;
-    unsigned format;
-    uint32_t rShift;
-    uint32_t gShift;
-    uint32_t bShift;
-    uint32_t aShift;
-#ifdef __USE_SDL
-	SDL_Surface* screen;
-#endif
-} g_video  = {0};
+thread_local struct RetroAgent::g_video_ RetroAgent::g_video;
 
 struct keymap {
 	unsigned k;
@@ -70,7 +45,7 @@ const struct keymap g_binds[] = {
 	{ 0, 0 }
 };
 
-static unsigned g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1] = { 0 };
+thread_local unsigned RetroAgent::g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1];
 
 #define load_sym(V, S) do {\
 	if (!((*(void**)&V) = dlsym(RetroAgent::g_retro.handle, #S))) \
@@ -97,53 +72,53 @@ static void die(const char *fmt, ...) {
 
 static void video_configure(const struct retro_game_geometry *geom) {
 
-	g_video.rGeom.base_height  = geom->base_height;
-	g_video.rGeom.base_width   = geom->base_width;
-	g_video.rGeom.max_height   = geom->max_height;
-	g_video.rGeom.max_width    = geom->max_width;
-	g_video.rGeom.aspect_ratio = geom->aspect_ratio;
+	RetroAgent::g_video.rGeom.base_height  = geom->base_height;
+	RetroAgent::g_video.rGeom.base_width   = geom->base_width;
+	RetroAgent::g_video.rGeom.max_height   = geom->max_height;
+	RetroAgent::g_video.rGeom.max_width    = geom->max_width;
+	RetroAgent::g_video.rGeom.aspect_ratio = geom->aspect_ratio;
 }
 
 
 static bool video_set_pixel_format(unsigned format) {
-//	if (!g_video.rmask)
+//	if (!RetroAgent::g_video.rmask)
 //			die("Tried to change pixel format after initialization.");
 #ifndef __USE_SDL
-    g_video.format=format;
+    RetroAgent::g_video.format=format;
 	switch (format) {
 	case RETRO_PIXEL_FORMAT_0RGB1555:
-		g_video.rmask = 0x7c00;
-		g_video.gmask = 0x03e0;
-		g_video.bmask = 0x001f;
-		g_video.amask = 0x0000;
-		g_video.rShift = 10;
-		g_video.gShift = 5;
-		g_video.bShift = 0;
-		g_video.aShift = 15;
-		g_video.bpp = 8*sizeof(uint16_t);
+		RetroAgent::g_video.rmask = 0x7c00;
+		RetroAgent::g_video.gmask = 0x03e0;
+		RetroAgent::g_video.bmask = 0x001f;
+		RetroAgent::g_video.amask = 0x0000;
+		RetroAgent::g_video.rShift = 10;
+		RetroAgent::g_video.gShift = 5;
+		RetroAgent::g_video.bShift = 0;
+		RetroAgent::g_video.aShift = 15;
+		RetroAgent::g_video.bpp = 8*sizeof(uint16_t);
 		break;
 	case RETRO_PIXEL_FORMAT_XRGB8888:
-		g_video.rmask = 0xff000000;
-		g_video.gmask = 0x00ff0000;
-		g_video.bmask = 0x0000ff00;
-		g_video.amask = 0x000000ff;
-		g_video.rShift = 16;
-		g_video.gShift = 8;
-		g_video.bShift = 0;
-		g_video.aShift = 24;
-		g_video.bpp = 8*sizeof(uint32_t);
+		RetroAgent::g_video.rmask = 0xff000000;
+		RetroAgent::g_video.gmask = 0x00ff0000;
+		RetroAgent::g_video.bmask = 0x0000ff00;
+		RetroAgent::g_video.amask = 0x000000ff;
+		RetroAgent::g_video.rShift = 16;
+		RetroAgent::g_video.gShift = 8;
+		RetroAgent::g_video.bShift = 0;
+		RetroAgent::g_video.aShift = 24;
+		RetroAgent::g_video.bpp = 8*sizeof(uint32_t);
 		break;
 	case RETRO_PIXEL_FORMAT_RGB565:
 
-		g_video.rmask = 0xf800;
-		g_video.gmask = 0x07e0;
-		g_video.bmask = 0x001f;
-		g_video.amask = 0x0000;
-		g_video.rShift = 11;
-		g_video.gShift = 5;
-		g_video.bShift = 0;
-		g_video.aShift = 16;
-		g_video.bpp = 8*sizeof(uint16_t);
+		RetroAgent::g_video.rmask = 0xf800;
+		RetroAgent::g_video.gmask = 0x07e0;
+		RetroAgent::g_video.bmask = 0x001f;
+		RetroAgent::g_video.amask = 0x0000;
+		RetroAgent::g_video.rShift = 11;
+		RetroAgent::g_video.gShift = 5;
+		RetroAgent::g_video.bShift = 0;
+		RetroAgent::g_video.aShift = 16;
+		RetroAgent::g_video.bpp = 8*sizeof(uint16_t);
 		break;
 	default:
 		die("Unknown pixel type %u", format);
@@ -151,81 +126,81 @@ static bool video_set_pixel_format(unsigned format) {
 #endif
 	#ifdef __USE_SDL
 		// nadav
-	    g_video.format=format;
+	    RetroAgent::g_video.format=format;
 		switch (format) {
 		case RETRO_PIXEL_FORMAT_0RGB1555:
 	        if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				g_video.rmask = 0x001f;
-				g_video.gmask = 0x03e0;
-				g_video.bmask = 0x7c00;
-				g_video.amask = 0x0000;
-		        g_video.rShift = 0;
-		        g_video.gShift = 5;
-		        g_video.bShift = 10;
-				g_video.aShift = 15;
+				RetroAgent::g_video.rmask = 0x001f;
+				RetroAgent::g_video.gmask = 0x03e0;
+				RetroAgent::g_video.bmask = 0x7c00;
+				RetroAgent::g_video.amask = 0x0000;
+		        RetroAgent::g_video.rShift = 0;
+		        RetroAgent::g_video.gShift = 5;
+		        RetroAgent::g_video.bShift = 10;
+				RetroAgent::g_video.aShift = 15;
 	        }else{
-				g_video.rmask = 0x7c00;
-				g_video.gmask = 0x03e0;
-				g_video.bmask = 0x001f;
-				g_video.amask = 0x0000;
-		        g_video.rShift = 10;
-		        g_video.gShift = 5;
-		        g_video.bShift = 0;
-				g_video.aShift = 15;
+				RetroAgent::g_video.rmask = 0x7c00;
+				RetroAgent::g_video.gmask = 0x03e0;
+				RetroAgent::g_video.bmask = 0x001f;
+				RetroAgent::g_video.amask = 0x0000;
+		        RetroAgent::g_video.rShift = 10;
+		        RetroAgent::g_video.gShift = 5;
+		        RetroAgent::g_video.bShift = 0;
+				RetroAgent::g_video.aShift = 15;
 
 			}
 
-	        g_video.rShift = 0;
-	        g_video.gShift = 5;
-	        g_video.bShift = 10;
-			g_video.aShift = 15;
-			g_video.bpp = 8*sizeof(uint16_t);
+	        RetroAgent::g_video.rShift = 0;
+	        RetroAgent::g_video.gShift = 5;
+	        RetroAgent::g_video.bShift = 10;
+			RetroAgent::g_video.aShift = 15;
+			RetroAgent::g_video.bpp = 8*sizeof(uint16_t);
 			break;
 		case RETRO_PIXEL_FORMAT_XRGB8888:
 			if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				g_video.rmask = 0x000000ff;
-				g_video.gmask = 0x0000ff00;
-				g_video.bmask = 0x00ff0000;
-				g_video.amask = 0xff000000;
-				g_video.rShift = 0;
-				g_video.gShift = 8;
-				g_video.bShift = 16;
-				g_video.aShift = 24;
+				RetroAgent::g_video.rmask = 0x000000ff;
+				RetroAgent::g_video.gmask = 0x0000ff00;
+				RetroAgent::g_video.bmask = 0x00ff0000;
+				RetroAgent::g_video.amask = 0xff000000;
+				RetroAgent::g_video.rShift = 0;
+				RetroAgent::g_video.gShift = 8;
+				RetroAgent::g_video.bShift = 16;
+				RetroAgent::g_video.aShift = 24;
 			}else{
-				g_video.rmask = 0xff000000;
-				g_video.gmask = 0x00ff0000;
-				g_video.bmask = 0x0000ff00;
-				g_video.amask = 0x000000ff;
-				g_video.rShift = 24;
-				g_video.gShift = 16;
-				g_video.bShift = 8;
-				g_video.aShift = 0;
+				RetroAgent::g_video.rmask = 0xff000000;
+				RetroAgent::g_video.gmask = 0x00ff0000;
+				RetroAgent::g_video.bmask = 0x0000ff00;
+				RetroAgent::g_video.amask = 0x000000ff;
+				RetroAgent::g_video.rShift = 24;
+				RetroAgent::g_video.gShift = 16;
+				RetroAgent::g_video.bShift = 8;
+				RetroAgent::g_video.aShift = 0;
 			}
 
-			g_video.bpp = 8*sizeof(uint32_t);
+			RetroAgent::g_video.bpp = 8*sizeof(uint32_t);
 			break;
 		case RETRO_PIXEL_FORMAT_RGB565:
 			if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				g_video.rmask = 0x001f;
-				g_video.gmask = 0x07e0;
-				g_video.bmask = 0xf800;
-				g_video.amask = 0x0000;
-				g_video.rShift = 0;
-				g_video.gShift = 5;
-				g_video.bShift = 11;
-				g_video.aShift = 0;
+				RetroAgent::g_video.rmask = 0x001f;
+				RetroAgent::g_video.gmask = 0x07e0;
+				RetroAgent::g_video.bmask = 0xf800;
+				RetroAgent::g_video.amask = 0x0000;
+				RetroAgent::g_video.rShift = 0;
+				RetroAgent::g_video.gShift = 5;
+				RetroAgent::g_video.bShift = 11;
+				RetroAgent::g_video.aShift = 0;
 			}else{
-				g_video.rmask = 0xf800;
-				g_video.gmask = 0x07e0;
-				g_video.bmask = 0x001f;
-				g_video.amask = 0x0000;
-				g_video.rShift = 11;
-				g_video.gShift = 5;
-				g_video.bShift = 0;
-				g_video.aShift = 0;
+				RetroAgent::g_video.rmask = 0xf800;
+				RetroAgent::g_video.gmask = 0x07e0;
+				RetroAgent::g_video.bmask = 0x001f;
+				RetroAgent::g_video.amask = 0x0000;
+				RetroAgent::g_video.rShift = 11;
+				RetroAgent::g_video.gShift = 5;
+				RetroAgent::g_video.bShift = 0;
+				RetroAgent::g_video.aShift = 0;
 			}
 
-			g_video.bpp = 8*sizeof(uint16_t);
+			RetroAgent::g_video.bpp = 8*sizeof(uint16_t);
 			break;
 		default:
 			die("Unknown pixel type %u", format);
@@ -236,12 +211,12 @@ static bool video_set_pixel_format(unsigned format) {
 
 
 static void video_refresh(const void *data, unsigned width, unsigned height, unsigned pitch) {
-	if (g_video.rGeom.base_width != width || g_video.rGeom.base_height != height) {
-		g_video.rGeom.base_height = height;
-		g_video.rGeom.base_width  = width;
+	if (RetroAgent::g_video.rGeom.base_width != width || RetroAgent::g_video.rGeom.base_height != height) {
+		RetroAgent::g_video.rGeom.base_height = height;
+		RetroAgent::g_video.rGeom.base_width  = width;
 	}
-	g_video.pitch = pitch;
-	g_video.currentBuffer = const_cast<void*>(data);
+	RetroAgent::g_video.pitch = pitch;
+	RetroAgent::g_video.currentBuffer = const_cast<void*>(data);
 }
 
 static void audio_init(int frequency) {
@@ -315,12 +290,12 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 static void core_input_poll(void) {
 	int i;
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		g_joy[0][g_binds[i].rk] = (RetroAgent::g_retro.action_a & g_binds[i].k) > 0;
-//		if(g_joy[0][g_binds[i].rk]) DEBUG2("PLAYER A " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
+		RetroAgent::g_joy[0][g_binds[i].rk] = (RetroAgent::g_retro.action_a & g_binds[i].k) > 0;
+//		if(RetroAgent::g_joy[0][g_binds[i].rk]) DEBUG2("PLAYER A " << action_to_string(g_binds[i].k) << " = " << RetroAgent::g_joy[1][g_binds[i].rk])
 	}
 	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		g_joy[1][g_binds[i].rk] = (RetroAgent::g_retro.action_b & g_binds[i].k) > 0;
-//		if(g_joy[1][g_binds[i].rk]) DEBUG2("PLAYER B " << action_to_string(g_binds[i].k) << " = " << g_joy[1][g_binds[i].rk])
+		RetroAgent::g_joy[1][g_binds[i].rk] = (RetroAgent::g_retro.action_b & g_binds[i].k) > 0;
+//		if(RetroAgent::g_joy[1][g_binds[i].rk]) DEBUG2("PLAYER B " << action_to_string(g_binds[i].k) << " = " << RetroAgent::g_joy[1][g_binds[i].rk])
 
 	}
 
@@ -331,7 +306,7 @@ static void core_input_poll(void) {
 static int16_t core_input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
 	if (index || device != RETRO_DEVICE_JOYPAD)
 		return 0;
-	return g_joy[port][id];
+	return RetroAgent::g_joy[port][id];
 }
 
 
@@ -504,11 +479,11 @@ void RetroAgent::run(){
 }
 
 int RetroAgent::getHeight(){
-	return g_video.rGeom.base_height;
+	return RetroAgent::g_video.rGeom.base_height;
 }
 
 int RetroAgent::getWidth(){
-	return g_video.rGeom.base_width; //in  pix
+	return RetroAgent::g_video.rGeom.base_width; //in  pix
 }
 
 void RetroAgent::reset(){
@@ -544,39 +519,39 @@ void RetroAgent::updateScreen(){
 
 }
 void* RetroAgent::getCurrentBuffer() const{
-	return g_video.currentBuffer;
+	return RetroAgent::g_video.currentBuffer;
 }
 
 uint8_t RetroAgent::getBpp() const{
-	return g_video.bpp;
+	return RetroAgent::g_video.bpp;
 }
 
 uint32_t RetroAgent::getPitch() const{
-	return g_video.pitch;
+	return RetroAgent::g_video.pitch;
 }
 
 unsigned RetroAgent::getFormat()const{
-	return g_video.format;
+	return RetroAgent::g_video.format;
 }
 
 void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, uint32_t& amask) const{
-	rmask = g_video.rmask;
-	gmask = g_video.gmask;
-	bmask = g_video.bmask;
-	amask = g_video.amask;
+	rmask = RetroAgent::g_video.rmask;
+	gmask = RetroAgent::g_video.gmask;
+	bmask = RetroAgent::g_video.bmask;
+	amask = RetroAgent::g_video.amask;
 }
 
 
 uint32_t RetroAgent::getBufferSize() const{
-	return g_video.rGeom.base_width * g_video.rGeom.base_height;
+	return RetroAgent::g_video.rGeom.base_width * RetroAgent::g_video.rGeom.base_height;
 
 }
 
 void RetroAgent::getRgbShift(uint32_t& rShift, uint32_t& gShift, uint32_t& bShift, uint32_t &aShift) const{
-	rShift=g_video.rShift;
-	gShift=g_video.gShift;
-	bShift=g_video.bShift;
-	aShift=g_video.aShift;
+	rShift=RetroAgent::g_video.rShift;
+	gShift=RetroAgent::g_video.gShift;
+	bShift=RetroAgent::g_video.bShift;
+	aShift=RetroAgent::g_video.aShift;
 
 }
 

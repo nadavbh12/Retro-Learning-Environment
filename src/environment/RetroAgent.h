@@ -3,7 +3,12 @@
 
 #include <iostream>
 #include "../common/Constants.h"
+#include "libretro.h"
 #include <atomic>
+#ifdef __USE_SDL
+#include "SDL.h"
+#include "SDL/SDL_rotozoom.h"
+#endif
 
 typedef unsigned char byte_t;
 class Serializer;
@@ -74,6 +79,29 @@ public:
 		size_t serializeSize;
 	};
 	thread_local static struct g_retro_ g_retro;
+
+	// holds pixel/screen settings
+	struct g_video_{
+		struct retro_game_geometry rGeom;
+	    uint32_t rmask;
+	    uint32_t gmask;
+	    uint32_t bmask;
+	    uint32_t amask;
+	    uint32_t bpp;
+	    uint32_t pitch;
+	    void*    currentBuffer;
+	    unsigned format;
+	    uint32_t rShift;
+	    uint32_t gShift;
+	    uint32_t bShift;
+	    uint32_t aShift;
+	#ifdef __USE_SDL
+		SDL_Surface* screen;
+	#endif
+	};
+	thread_local static g_video_ g_video;
+
+	thread_local static unsigned g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1];
 
 
 private:
