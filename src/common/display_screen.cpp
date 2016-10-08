@@ -38,7 +38,7 @@ DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false),
     /* Clean up on exit */
     atexit(SDL_Quit);
 
-    screen = SDL_SetVideoMode(window_width, window_height, bpp, SDL_SWSURFACE);
+    screen = SDL_SetVideoMode(window_width, window_height, bpp, SDL_SWSURFACE | SDL_OPENGL);
     if ( screen == NULL ) {
         fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n", screen_width, screen_height, 8,  SDL_GetError());
         exit(1);

@@ -20,6 +20,12 @@
 
 using namespace ale;
 
+// N64 controller conversion consts
+const int cstick_right	= 0x7fff;
+const int cstick_left	= -0x7fff;
+const int cstick_up 	= 0x7fff;
+const int cstick_down	= -0x7fff;
+
 std::atomic_uint RetroAgent::numAgents{0};
 thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
 thread_local struct RetroAgent::g_video_ RetroAgent::g_video;
@@ -36,16 +42,17 @@ const struct keymap g_binds[] = {
 	{ JOYPAD_X 		, RETRO_DEVICE_ID_JOYPAD_X 		},
 	{ JOYPAD_R 		, RETRO_DEVICE_ID_JOYPAD_R 		},
 	{ JOYPAD_L 		, RETRO_DEVICE_ID_JOYPAD_L 		},
+	{ JOYPAD_L2		, RETRO_DEVICE_ID_JOYPAD_L2 	},
 	{ JOYPAD_UP 	, RETRO_DEVICE_ID_JOYPAD_UP 	},
 	{ JOYPAD_DOWN 	, RETRO_DEVICE_ID_JOYPAD_DOWN 	},
 	{ JOYPAD_LEFT 	, RETRO_DEVICE_ID_JOYPAD_LEFT 	},
 	{ JOYPAD_RIGHT 	, RETRO_DEVICE_ID_JOYPAD_RIGHT 	},
 	{ JOYPAD_START 	, RETRO_DEVICE_ID_JOYPAD_START 	},
 	{ JOYPAD_SELECT	, RETRO_DEVICE_ID_JOYPAD_SELECT },
-	{ 0, 0 }
+	{ 0	, 0 },
 };
 
-thread_local unsigned RetroAgent::g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1];
+thread_local unsigned RetroAgent::g_joy[numPlayers][numIndex][numActions];
 
 #define load_sym(V, S) do {\
 	if (!((*(void**)&V) = dlsym(RetroAgent::g_retro.handle, #S))) \
@@ -286,15 +293,80 @@ static void core_video_refresh(const void *data, unsigned width, unsigned height
 		video_refresh(data, width, height, pitch);
 }
 
+//
+void handleN64(Action& action) {
+	bool isUp	 = (action & JOYPAD_UP) > 0;
+	bool isDown	 = (action & JOYPAD_UP) > 0;
+	bool isRight = (action & JOYPAD_RIGHT) > 0;
+	bool isLeft	 = (action & JOYPAD_LEFT) > 0;
+
+	if (isUp) {
+		action &= (~JOYPAD_UP); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_LEFT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_up;
+	} else if (isDown) {
+		action &= (~JOYPAD_DOWN); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_LEFT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_down;
+	}
+
+	if (isRight) {
+		action &= (~JOYPAD_RIGHT); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_LEFT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_right;
+	} else if (isLeft) {
+		action &= (~JOYPAD_LEFT); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_LEFT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_left;
+	}
+
+	bool isCUp	  = (action & JOYPAD_CUP) > 0;
+	bool isCDown  = (action & JOYPAD_CUP) > 0;
+	bool isCRight = (action & JOYPAD_CRIGHT) > 0;
+	bool isCLeft  = (action & JOYPAD_CLEFT) > 0;
+
+	if (isCUp) {
+		action &= (~JOYPAD_CUP); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_RIGHT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_up;
+	} else if (isCDown) {
+		action &= (~JOYPAD_CDOWN); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_RIGHT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_down;
+	}
+
+	if (isCRight) {
+		action &= (~JOYPAD_CRIGHT); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_RIGHT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_right;
+	} else if (isCLeft) {
+		action &= (~JOYPAD_CLEFT); // turn off up
+		RetroAgent::g_joy[0][RETRO_DEVICE_INDEX_ANALOG_RIGHT][RETRO_DEVICE_ID_ANALOG_Y] = cstick_left;
+	}
+
+	bool isDUp	  = (action & JOYPAD_DUP) > 0;
+	bool isDDown  = (action & JOYPAD_DUP) > 0;
+	bool isDRight = (action & JOYPAD_DRIGHT) > 0;
+	bool isDLeft  = (action & JOYPAD_DLEFT) > 0;
+	if(isDUp){
+		action |= JOYPAD_DUP; // turn on up
+	}
+	else if(isDDown){
+		action |= JOYPAD_DDOWN;
+	}
+	if(isDRight){
+		action |= JOYPAD_DRIGHT;
+	}
+	else if(isDLeft){
+		action |= JOYPAD_DLEFT;
+	}
+
+}
 
 static void core_input_poll(void) {
-	int i;
-	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		RetroAgent::g_joy[0][g_binds[i].rk] = (RetroAgent::g_retro.action_a & g_binds[i].k) > 0;
+	if (RetroAgent::g_retro.isN64) {
+		handleN64(RetroAgent::g_retro.action_a);
+		handleN64(RetroAgent::g_retro.action_b);
+	}
+	for (int i = 0; g_binds[i].k || g_binds[i].rk; ++i){
+		RetroAgent::g_joy[0][0][g_binds[i].rk] = (RetroAgent::g_retro.action_a & g_binds[i].k) > 0;
 //		if(RetroAgent::g_joy[0][g_binds[i].rk]) DEBUG2("PLAYER A " << action_to_string(g_binds[i].k) << " = " << RetroAgent::g_joy[1][g_binds[i].rk])
 	}
-	for (i = 0; g_binds[i].k || g_binds[i].rk; ++i){
-		RetroAgent::g_joy[1][g_binds[i].rk] = (RetroAgent::g_retro.action_b & g_binds[i].k) > 0;
+	for (int i = 0; g_binds[i].k || g_binds[i].rk; ++i){
+		RetroAgent::g_joy[1][0][g_binds[i].rk] = (RetroAgent::g_retro.action_b & g_binds[i].k) > 0;
 //		if(RetroAgent::g_joy[1][g_binds[i].rk]) DEBUG2("PLAYER B " << action_to_string(g_binds[i].k) << " = " << RetroAgent::g_joy[1][g_binds[i].rk])
 
 	}
@@ -304,9 +376,9 @@ static void core_input_poll(void) {
 
 // port == player number
 static int16_t core_input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
-	if (index || device != RETRO_DEVICE_JOYPAD)
+	if (device != RETRO_DEVICE_JOYPAD)
 		return 0;
-	return RetroAgent::g_joy[port][id];
+	return RetroAgent::g_joy[port][index][id];
 }
 
 
@@ -372,6 +444,12 @@ static void core_load(const char *sofile) {
 
 
 static void core_load_game(const char *filename) {
+
+	string filename_s = filename;
+	if(filename_s.find("mupen64")){
+		RetroAgent::g_retro.isN64 = true;
+	}
+
 	struct retro_system_av_info av = {0};
 	struct retro_system_info system = {0};
 	struct retro_game_info info = { filename, 0 };
@@ -420,11 +498,13 @@ static void core_unload() {
 RetroAgent::RetroAgent(){
 	agentNum = numAgents++;
 	RetroAgent::g_retro.initialized = false;
+	RetroAgent::g_retro.isN64 = false;
 }
 
 RetroAgent::~RetroAgent(){
 	unloadRom();
 	core_unload();
+	RetroAgent::g_retro.isN64 = false;
 //	--numAgents;
 }
 

@@ -30,18 +30,18 @@
  *  reward information.
  * *****************************************************************************
  */
-#ifndef __SNES_SETTINGS_HPP__
-#define __SNES_SETTINGS_HPP__
+#ifndef __N64_SETTINGS_HPP__
+#define __N64_SETTINGS_HPP__
 
 #include "RomSettings.hpp"
 
 namespace ale {
 
-// rom support interface for snes
-struct SnesSettings : public RomSettings{
-    SnesSettings();
+// rom support interface for N64
+struct N64Settings : public RomSettings{
+    N64Settings();
 
-	virtual ~SnesSettings() {}
+	virtual ~N64Settings() {}
 
     // reset
     virtual void reset() = 0;
@@ -69,4 +69,4 @@ struct SnesSettings : public RomSettings{
 } // namespace ale
 
 
-#endif // __SNES_SETTINGS_HPP__
+#endif // __N64_SETTINGS_HPP__

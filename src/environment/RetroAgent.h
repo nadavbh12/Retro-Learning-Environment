@@ -72,11 +72,12 @@ public:
 		void* (*retro_get_memory_data)(unsigned id);
 		size_t (*retro_get_memory_size)(unsigned id);
 
-		int action_a;
-		int action_b;
+		Action action_a;
+		Action action_b;
 	//	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
 		string corePath;
 		size_t serializeSize;
+		bool isN64;
 	};
 	thread_local static struct g_retro_ g_retro;
 
@@ -101,7 +102,10 @@ public:
 	};
 	thread_local static g_video_ g_video;
 
-	thread_local static unsigned g_joy[2][RETRO_DEVICE_ID_JOYPAD_R3+1];
+	constexpr static int numPlayers = 2;
+	constexpr static int numActions = 20;
+	constexpr static int numIndex = 2;	// used as the index of the sticks of the controller
+	thread_local static unsigned g_joy[numPlayers][numIndex][numActions];
 
 
 private:

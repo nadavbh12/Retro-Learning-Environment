@@ -47,6 +47,7 @@ endif()
 
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(MUPEN64PLUS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/mupen64plus-libretro)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x2010)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
 set(MODULES common controllers environment games games/supported external external/TinyMT)
@@ -94,6 +95,9 @@ MESSAGE(STATUS "INCLUDE_DIR ${INCDIR}")
 MESSAGE(STATUS "LIBRARY_DIR ${LIBDIR}")
 
 IF(INSTALL_CORES)
+	set(MUPEN64PLUS_INSTALL_COMMAND 
+		cp mupen64plus_libretro.so 
+		${LIBDIR})
 	set(SNES9X_INSTALL_COMMAND 
 		cp snes9x2010_libretro.so 
 		${LIBDIR})
@@ -101,11 +105,22 @@ IF(INSTALL_CORES)
 		cp stella_libretro.so 
 		${LIBDIR})
 ELSE()
+	set(MUPEN64PLUS_INSTALL_COMMAND "")
 	set(SNES9X_INSTALL_COMMAND "")
 	set(STELLA_INSTALL_COMMAND "")
 ENDIF()
 
 include(ExternalProject)
+ExternalProject_add(mupen64plus_libretro
+			GIT_REPOSITORY https://github.com/nadavbh12/mupen64plus-libretro
+			UPDATE_COMMAND ""
+			SOURCE_DIR ${MUPEN64PLUS_DIR}
+			BINARY_DIR ${MUPEN64PLUS_DIR}
+			CONFIGURE_COMMAND ""
+			BUILD_COMMAND make
+			INSTALL_DIR ${LIBDIR}
+			INSTALL_COMMAND "${MUPEN64PLUS_INSTALL_COMMAND}"
+		   )
 ExternalProject_add(snes9x2010_libretro
 			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
 			UPDATE_COMMAND ""
@@ -130,6 +145,7 @@ ExternalProject_add(stella_libretro
 add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
 set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
 set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_dependencies(ale-lib mupen64plus_libretro)
 add_dependencies(ale-lib snes9x2010_libretro)
 add_dependencies(ale-lib stella_libretro)
 add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})

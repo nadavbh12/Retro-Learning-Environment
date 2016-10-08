@@ -75,14 +75,22 @@ typedef uint32_t Action;
 #define JOYPAD_R2                   (1 << RETRO_DEVICE_ID_JOYPAD_R2    )
 #define JOYPAD_L3                   (1 << RETRO_DEVICE_ID_JOYPAD_L3    )
 #define JOYPAD_R3                   (1 << RETRO_DEVICE_ID_JOYPAD_R3    )
-#define JOYPAD_NOOP 				(1 << 16)
-#define JOYPAD_RESET 				(1 << 17)
-#define JOYPAD_UNDEFINED 			(1 << 18)
-#define JOYPAD_RANDOM	 			(1 << 19)
-#define JOYPAD_SAVE_STATE 			(1 << 20)
-#define JOYPAD_LOAD_STATE 			(1 << 21)
-#define JOYPAD_SYSTEM_RESET 		(1 << 22)
-#define JOYPAD_LAST_ACTION_INDEX 	(1 << 23)
+#define JOYPAD_NOOP 				0
+#define JOYPAD_RESET 				(1 << 16)
+#define JOYPAD_UNDEFINED 			(1 << 17)
+#define JOYPAD_RANDOM	 			(1 << 18)
+#define JOYPAD_SAVE_STATE 			(1 << 19)
+#define JOYPAD_LOAD_STATE 			(1 << 20)
+#define JOYPAD_SYSTEM_RESET 		(1 << 21)
+#define JOYPAD_LAST_ACTION_INDEX 	(1 << 22)
+#define JOYPAD_DUP                  (1 << 23)
+#define JOYPAD_DDOWN                (1 << 24)
+#define JOYPAD_DLEFT                (1 << 25)
+#define JOYPAD_DRIGHT               (1 << 26)
+#define JOYPAD_CUP                  (1 << 27)
+#define JOYPAD_CDOWN                (1 << 28)
+#define JOYPAD_CLEFT                (1 << 29)
+#define JOYPAD_CRIGHT               (1 << 30)
 
 #define PLAYER_A					0
 #define PLAYER_B					(1 << 31)
@@ -92,6 +100,10 @@ typedef uint32_t Action;
 
 // Atari actions
 #define JOYPAD_FIRE					JOYPAD_B	// for atari
+
+// N64 actions
+#define JOYPAD_Z					JOYPAD_L2	// for atari
+
 
 // a list of ALE actions
 typedef std::vector<Action> ActionVect;

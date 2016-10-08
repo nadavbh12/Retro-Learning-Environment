@@ -27,6 +27,11 @@
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/SuperMarioAllStars.hpp"
 #include "supported/SuperMarioAllStarsNoRight.hpp"
+
+// N64 games
+#include "supported/MarioKart64.hpp"
+
+// Atari games
 #include "supported/Boxing.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"

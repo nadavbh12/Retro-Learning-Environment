@@ -48,12 +48,6 @@ SnesSettings::SnesSettings(){
 		}
 	}
 
-	// remove the first element which is 0
-	AllActionsVector.erase(AllActionsVector.begin());
-
-	AllActionsVector.push_back(JOYPAD_NOOP);
-
-
 //	for (ActionVect::iterator it = AllActionsVector.begin() ; it != AllActionsVector.end(); ++it){
 //		cout << action_to_string(*it) << endl;
 //	}
