@@ -413,10 +413,13 @@ libc_error:
 static void core_unload() {
 	if (RetroAgent::g_retro.initialized)
 		RetroAgent::g_retro.retro_deinit();
+	if (RetroAgent::g_retro.handle)
+		dlclose(RetroAgent::g_retro.handle);
 }
 
 RetroAgent::RetroAgent(){
 	agentNum = numAgents++;
+	RetroAgent::g_retro.initialized = false;
 }
 
 RetroAgent::~RetroAgent(){
@@ -470,8 +473,10 @@ void RetroAgent::loadRom(const string& romName){
 }
 
 void RetroAgent::unloadRom(){
-	if (RetroAgent::g_retro.initialized)
+	if (RetroAgent::g_retro.initialized){
 		RetroAgent::g_retro.retro_unload_game();
+		RetroAgent::g_retro.initialized = false;
+	}
 }
 
 void RetroAgent::run(){

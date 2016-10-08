@@ -18,29 +18,6 @@ using std::string;
 // The fixture for testing class Foo.
 class RleTest : public ::testing::Test {
  protected:
-  // You can remove any or all of the following functions if its body
-  // is empty.
-
-	RleTest() {
-    // You can do set-up work for each test here.
-  }
-
-  virtual ~RleTest() {
-    // You can do clean-up work that doesn't throw exceptions here.
-  }
-
-  // If the constructor and destructor are not enough for setting up
-  // and cleaning up each test, you can define the following methods:
-
-  virtual void SetUp() {
-    // Code here will be called immediately after the constructor (right
-    // before each test).
-  }
-
-  virtual void TearDown() {
-    // Code here will be called immediately after each test (right
-    // before the destructor).
-  }
 
   // Objects declared here can be used by all tests in the test case for Foo.
 	std::string corePath = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/snes9x2010/snes9x2010_libretro.so";
@@ -81,8 +58,16 @@ TEST_F(RleTest, multiThreading) {
 TEST_F(RleTest, runTwoAgentsNoDelete) {
 	ale::ALEInterface ale;
 	run_example(&ale, romPath, corePath);
+	ale::ALEInterface ale2;
+	ale.getEpisodeFrameNumber();
+}
 
-	EXPECT_THROW(ale::ALEInterface ale2, AleException);
+TEST_F(RleTest, runTwoAgentsNoDeleteWithDoubleInit) {
+	ale::ALEInterface ale;
+	run_example(&ale, romPath, corePath);
+	ale::ALEInterface ale2;
+	run_example(&ale2, romPath, corePath);
+	ale.getEpisodeFrameNumber();
 }
 
 TEST_F(RleTest, runTwoAgentsWithDelete) {
