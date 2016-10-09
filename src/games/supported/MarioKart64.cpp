@@ -30,12 +30,12 @@ MarioKart64Settings::MarioKart64Settings() {
 						JOYPAD_A | JOYPAD_RIGHT,
 						JOYPAD_B | JOYPAD_LEFT,	// b to break
 						JOYPAD_B | JOYPAD_RIGHT,
-						JOYPAD_R | JOYPAD_A
+						JOYPAD_R | JOYPAD_A,
 						JOYPAD_R | JOYPAD_A | JOYPAD_LEFT,	// a to accelerate
 						JOYPAD_R | JOYPAD_A | JOYPAD_RIGHT,
 						JOYPAD_R | JOYPAD_B | JOYPAD_LEFT,	// b to break
 						JOYPAD_R | JOYPAD_B | JOYPAD_RIGHT,
-						JOYPAD_Z | JOYPAD_A					// z to use powerup
+						JOYPAD_Z | JOYPAD_A,					// z to use powerup
 						JOYPAD_Z | JOYPAD_A | JOYPAD_LEFT,
 						JOYPAD_Z | JOYPAD_A | JOYPAD_RIGHT,
 						JOYPAD_Z | JOYPAD_B | JOYPAD_LEFT,
@@ -115,37 +115,8 @@ ActionVect MarioKart64Settings::getStartingActions(){
 //	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
-	INSERT_NOPS(16*num_of_nops)
-
-	// select tournament
-	INSERT_ACTION_SINGLE_A(JOYPAD_X)
-
-	// wait for character select screen
-	INSERT_NOPS(3.5*num_of_nops)
-
-	// choose Raiden
-	INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
 	INSERT_NOPS(num_of_nops)
 
-	// Select opponent: random seed for opponent is set by num of NOOPs
-//	INSERT_NOPS(0) // Johnny Cage
-//	INSERT_NOPS(5) // Sonya
-//	INSERT_NOPS(10) // sub_zero
-//	INSERT_NOPS(40) // scorpion
-
-
-	// select character
-	INSERT_ACTION_SINGLE(JOYPAD_X, A)
-	INSERT_NOPS(num_of_nops)
-
-	// wait for game to begin
-	INSERT_NOPS(4*num_of_nops)
-
-	// skip tournament overview
-	INSERT_ACTION_SINGLE_A(JOYPAD_X)
-
-	// wait for game to start
-	INSERT_NOPS(3.5*num_of_nops)
 
 	return startingActions;
 }

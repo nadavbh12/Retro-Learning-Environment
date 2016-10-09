@@ -53,8 +53,10 @@ protected:
 
 protected:
     // Dimensions of the SDL window (4:3 aspect ratio)
-    static const int window_height = 321;
-    static const int window_width = 428;
+    static const int window_height = 480;
+    static const int window_width = 640;
+//    static const int window_height = 321;
+//    static const int window_width = 428;
     // Maintains the paused/unpaused state of the game
     bool manual_control_active;
     int screen_height, screen_width;

@@ -49,6 +49,8 @@ DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false),
             "[Slowdown] 'a' [Speedup] 's' [VolumeDown] '[' [VolumeUp] ']'.\n");
 
     last_frame_time = SDL_GetTicks();
+
+    rAgent->g_video.hw_cb->context_reset();
 }
 
 DisplayScreen::~DisplayScreen() {

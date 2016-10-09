@@ -84,6 +84,11 @@ static void video_configure(const struct retro_game_geometry *geom) {
 	RetroAgent::g_video.rGeom.max_height   = geom->max_height;
 	RetroAgent::g_video.rGeom.max_width    = geom->max_width;
 	RetroAgent::g_video.rGeom.aspect_ratio = geom->aspect_ratio;
+	cout << "base_height=" << geom->base_height << endl;
+	cout << "base_width=" << geom->base_width << endl;
+	cout << "max_height=" << geom->max_height << endl;
+	cout << "max_width=" << geom->max_width << endl;
+	cout << "aspect_ratio=" << geom->aspect_ratio << endl;
 }
 
 
@@ -252,6 +257,12 @@ static void core_log(enum retro_log_level level, const char *fmt, ...) {
 		exit(EXIT_FAILURE);
 }
 
+#ifdef __USE_SDL
+static uintptr_t hw_get_current_framebuffer(void){
+//	SDL_LockSurface(RetroAgent::g_video.screen);
+	return (uintptr_t)(RetroAgent::g_video.screen->pixels);
+}
+#endif
 
 static bool core_environment(unsigned cmd, void *data) {
 	bool *bval;
@@ -274,6 +285,13 @@ static bool core_environment(unsigned cmd, void *data) {
 		}
 		return video_set_pixel_format(*fmt);
 	}
+#ifdef __USE_SDL
+	case RETRO_ENVIRONMENT_SET_HW_RENDER: {
+		RetroAgent::g_video.hw_cb = (struct retro_hw_render_callback*)data;
+		RetroAgent::g_video.hw_cb->get_current_framebuffer = hw_get_current_framebuffer;
+		return true;
+	}
+#endif
 //	case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY :{
 //		const char* cval = (char*)data;
 //		cval = RetroAgent::g_retro.saveFolder.c_str();
@@ -289,8 +307,9 @@ static bool core_environment(unsigned cmd, void *data) {
 
 
 static void core_video_refresh(const void *data, unsigned width, unsigned height, size_t pitch) {
-	if (data)
+	if (data){
 		video_refresh(data, width, height, pitch);
+	}
 }
 
 //
@@ -389,7 +408,6 @@ static void core_audio_sample(int16_t left, int16_t right) {
 static size_t core_audio_sample_batch(const int16_t *data, size_t frames) {
 }
 
-
 static void core_load(const char *sofile) {
 	void (*set_environment)(retro_environment_t) = NULL;
 	void (*set_video_refresh)(retro_video_refresh_t) = NULL;
@@ -397,6 +415,9 @@ static void core_load(const char *sofile) {
 	void (*set_input_state)(retro_input_state_t) = NULL;
 	void (*set_audio_sample)(retro_audio_sample_t) = NULL;
 	void (*set_audio_sample_batch)(retro_audio_sample_batch_t) = NULL;
+//#ifdef __USE_SDL
+//	void (*set_hw_get_current_framebuffer)(retro_hw_get_current_framebuffer_t) = NULL;
+//#endif
 
 	RetroAgent::g_retro.handle = dlopen(sofile, RTLD_LAZY);
 	RetroAgent::g_retro.corePath= sofile;
@@ -406,6 +427,7 @@ static void core_load(const char *sofile) {
 
 	dlerror();
 
+	// functions the core implements
 	load_retro_sym(retro_init);
 	load_retro_sym(retro_deinit);
 	load_retro_sym(retro_api_version);
@@ -422,12 +444,16 @@ static void core_load(const char *sofile) {
 	load_retro_sym(retro_get_memory_data);
 	load_retro_sym(retro_get_memory_size);
 
+	// functions we implement
 	load_sym(set_environment, retro_set_environment);
 	load_sym(set_video_refresh, retro_set_video_refresh);
 	load_sym(set_input_poll, retro_set_input_poll);
 	load_sym(set_input_state, retro_set_input_state);
 	load_sym(set_audio_sample, retro_set_audio_sample);
 	load_sym(set_audio_sample_batch, retro_set_audio_sample_batch);
+//#ifdef __USE_SDL
+//	load_sym(set_hw_get_current_framebuffer, hw_get_current_framebuffer);
+//#endif
 
 	set_environment(core_environment);
 	set_video_refresh(core_video_refresh);
@@ -435,6 +461,9 @@ static void core_load(const char *sofile) {
 	set_input_state(core_input_state);
 	set_audio_sample(core_audio_sample);
 	set_audio_sample_batch(core_audio_sample_batch);
+//#ifdef __USE_SDL
+//	set_hw_get_current_framebuffer(hw_get_current_framebuffer);
+//#endif
 
 	RetroAgent::g_retro.retro_init();
 	RetroAgent::g_retro.initialized = true;
@@ -561,6 +590,9 @@ void RetroAgent::unloadRom(){
 
 void RetroAgent::run(){
 	RetroAgent::g_retro.retro_run();
+//#ifdef __USE_SDL
+//	SDL_UnlockSurface(RetroAgent::g_video.screen);
+//#endif
 }
 
 int RetroAgent::getHeight(){

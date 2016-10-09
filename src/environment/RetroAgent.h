@@ -99,6 +99,7 @@ public:
 	#ifdef __USE_SDL
 		SDL_Surface* screen;
 	#endif
+		struct retro_hw_render_callback* hw_cb;
 	};
 	thread_local static g_video_ g_video;
 
