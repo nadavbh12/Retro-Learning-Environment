@@ -18,7 +18,6 @@
 #include <ale_interface.hpp>
 #include <DebugMacros.h>
 #include <algorithm>
-#include <thread>
 
 #ifdef __USE_SDL
  #include <SDL.h>
@@ -31,61 +30,6 @@
 using namespace std;
 using namespace ale;
 void dispalyExample (ALEInterface *ale);
-bool replace(std::string& str, const std::string& from, const std::string& to) {
-    size_t start_pos = str.find(from);
-    if(start_pos == std::string::npos)
-        return false;
-    str.replace(start_pos, from.length(), to);
-    return true;
-}
-
-void
-run_example(string romPath, string corePath){
-	   ALEInterface ale;
-	    float maxVal = 1;
-	    float minVal = -1;
-
-	    // Get & Set the desired settings
-	    ale.setInt("random_seed", 123);
-	    //The default is already 0.25, this is just an example
-	    ale.setFloat("repeat_action_probability", 0.25);
-
-	#ifdef __USE_SDL
-	    ale.setBool("display_screen", true);
-	    ale.setBool("sound", true);
-	#endif
-
-	    ale.setBool("display_screen", false);
-	    // Load the ROM file. (Also resets the system for new settings to
-	    // take effect.)
-	    ale.loadROM(romPath, corePath);
-
-	    // Get the vector of minimal actions
-	    ActionVect legal_actions = ale.getMinimalActionSet();
-
-
-	//    // Play 10 episodes
-	    for (int episode=0; episode<1; ++episode) {
-	//    	ale.saveState();
-	        float totalReward = 0;
-	        float totalCroppedReward = 0;
-	        int steps(0);
-	        while (!ale.game_over() && steps < 10) {
-	            Action a = legal_actions[rand() % legal_actions.size()];
-	//            dispalyExample(&ale);
-	        	// Apply the action and get the resulting reward
-	            float reward = ale.act(a);
-	            float croppedReward = reward > 0 ? std::min(reward, maxVal) : std::max(reward, minVal);
-	            totalCroppedReward += croppedReward;
-	            totalReward += reward;
-	            ++steps;
-	        }
-	        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
-	        cout << "Episode " << episode << " ended with cropped score: " << totalCroppedReward << endl;
-	        ale.reset_game();
-	//        ale.loadState();
-	    }
-}
 
 #include <unistd.h>
 int main(int argc, char** argv) {
@@ -93,17 +37,47 @@ int main(int argc, char** argv) {
         std::cerr << "Usage: " << argv[0] << " rom_file core_file" << std::endl;
         return 1;
     }
-	string romPath = argv[1];
-	string corePath = argv[2];
-	cout << corePath << endl;
-	thread t1(run_example, romPath, corePath);
-//    replace(corePath, ".so","2.so");
-//    cout << corePath << endl;
-	thread t2(run_example, romPath, corePath);
+    ALEInterface ale;
+    float maxVal = 1;
+    float minVal = -1;
 
-    t1.join();
-    t2.join();
+    // Get & Set the desired settings
+    ale.setInt("random_seed", 123);
+    //The default is already 0.25, this is just an example
+    ale.setFloat("repeat_action_probability", 0.25);
 
+#ifdef __USE_SDL
+    ale.setBool("display_screen", true);
+    ale.setBool("sound", true);
+#endif
+
+    // Load the ROM file. (Also resets the system for new settings to
+    // take effect.)
+    ale.loadROM(argv[1], argv[2]);
+
+    // Get the vector of minimal actions
+    ActionVect legal_actions = ale.getMinimalActionSet();
+
+
+//    // Play 10 episodes
+    for (int episode=0; episode<10; episode++) {
+//    	ale.saveState();
+        float totalReward = 0;
+        float totalCroppedReward = 0;
+        while (!ale.game_over()) {
+            Action a = legal_actions[rand() % legal_actions.size()];
+//            dispalyExample(&ale);
+        	// Apply the action and get the resulting reward
+            float reward = ale.act(a);
+            float croppedReward = reward > 0 ? std::min(reward, maxVal) : std::max(reward, minVal);
+            totalCroppedReward += croppedReward;
+            totalReward += reward;
+        }
+        cout << "Episode " << episode << " ended with score: " << totalReward << endl;
+        cout << "Episode " << episode << " ended with cropped score: " << totalCroppedReward << endl;
+        ale.reset_game();
+//        ale.loadState();
+    }
     return 0;
 }
 

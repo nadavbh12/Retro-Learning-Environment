@@ -28,6 +28,7 @@
 #include "supported/SuperMarioAllStars.hpp"
 #include "supported/SuperMarioAllStarsNoRight.hpp"
 #include "supported/Boxing.hpp"
+#include "supported/Wolfenstein.hpp"
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
 //#include "supported/Centipede.hpp"
@@ -163,6 +164,7 @@ static const RomSettings *roms[]  = {
 	new TetrisAndDrMarioSettings(),
     new TetrisAndDrMarioLinesSettings(),
     new TetrisAndDrMarioNumBlocksSettings(),
+	new WolfensteinSettings(),
 };
 
 
