@@ -169,17 +169,3 @@ bool AleSystem::loadRom(const string& rom){
 //  myTimingInfo.start = getTicks();
 //  myTimingInfo.virt = getTicks();
 //}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystem::AleSystem(const AleSystem& alesystem) {
-	myRetroAgent = alesystem.myRetroAgent;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystem& AleSystem::operator = (const AleSystem&)
-{
-  assert(false);
-
-  return *this;
-}

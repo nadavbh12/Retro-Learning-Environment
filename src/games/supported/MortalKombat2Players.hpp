@@ -63,7 +63,7 @@ struct MortalKombat2PlayersSettings : public MortalKombatSettings {
 
         virtual const int lives() { return 0; }
 
-        virtual ActionVect getStartingActions();
+        virtual ActionVect getStartingActions(const AleSystem& system);
 
     private:
         reward_t m_rewardB;

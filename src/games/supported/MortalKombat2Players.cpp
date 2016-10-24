@@ -13,6 +13,7 @@
 #include "../RomUtils.hpp"
 #include "MortalKombat2Players.hpp"
 #include "AleSystem.hxx"
+#include "AleException.h"
 
 using namespace ale;
 
@@ -64,7 +65,7 @@ void MortalKombat2PlayersSettings::loadState( Deserializer & des ) {
   m_rewardB = des.getInt();
 }
 
-ActionVect MortalKombat2PlayersSettings::getStartingActions(){
+ActionVect MortalKombat2PlayersSettings::getStartingActions(const AleSystem& system){
 	int num_of_nops(100);
 	ActionVect startingActions;
 
@@ -80,10 +81,56 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(){
 	// add second player
 	INSERT_ACTION_SINGLE(JOYPAD_START, B)
 
-	// choose for player a - Raiden
-	INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	// choose character from list
+	string player1_character = system.settings().getString("MK_player1_character");
+	if("rayden" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	}else if("sonya" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("sub-zero" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("liu-kang" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("cage" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, A)
+	}else if("kano" == player1_character){
+	}else if("scorpion" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	}else{
+		throw AleException("MK_player1_character illegal");
+	}
+	INSERT_NOPS(num_of_nops)
 	// choose for player b - Sonya
-	INSERT_ACTION_SINGLE(JOYPAD_RIGHT, B)
+	// choose character from list
+	string player2_character = system.settings().getString("MK_player2_character");
+	if("rayden" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, B)
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, B)
+	}else if("sonya" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, B)
+	}else if("sub-zero" == player2_character){
+	}else if("liu-kang" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, B)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, B)
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
+	}else if("cage" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, B)
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
+	}else if("kano" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
+	}else if("scorpion" == player2_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, B)
+	}else{
+		throw AleException("MK_player2_character illegal");
+	}
 	INSERT_NOPS(num_of_nops)
 
 	// select character

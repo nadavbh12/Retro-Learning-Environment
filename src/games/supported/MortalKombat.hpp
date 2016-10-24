@@ -69,7 +69,9 @@ struct MortalKombatSettings : public SnesSettings {
 
         virtual const int lives() { return 0; }
 
-        virtual ActionVect getStartingActions();
+        virtual ActionVect getStartingActions(const AleSystem& system);
+
+        void startingOperations(AleSystem& system);
 
     protected:
         std::unordered_set<Action> minimalActions;
@@ -78,6 +80,7 @@ struct MortalKombatSettings : public SnesSettings {
         reward_t m_score;
         int m_wins;
         int o_wins;
+        bool match_ended;
 };
 
 } // namespace ale

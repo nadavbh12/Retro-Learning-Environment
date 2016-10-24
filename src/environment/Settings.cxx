@@ -622,7 +622,12 @@ void Settings::setDefaultSettings() {
 	boolSettings.emplace(std::make_pair("display_screen", false));
 
 	// Game-Specific Settings
-	stringSettings.emplace(std::make_pair("MK_player1_character", "Raiden"));
+
+		// Mortal Kombat
+	boolSettings.emplace(std::make_pair("MK_random_position", true));
+	stringSettings.emplace(std::make_pair("MK_player1_character", "cage"));
+	stringSettings.emplace(std::make_pair("MK_player2_character", "scorpion"));
+	intSettings.emplace(std::make_pair("MK_opponent_character", 0));
 
 	for (map<string, string>::iterator it = stringSettings.begin();
 			it != stringSettings.end(); it++) {

@@ -366,9 +366,6 @@ void ALEInterface::loadSettings(const string& romfile, const std::string& corefi
 
 }
 
-
-
-
 void ALEInterface::loadROM(string rom_file, string core_file) {
 	m_pimpl->loadROM(rom_file, core_file);
 }

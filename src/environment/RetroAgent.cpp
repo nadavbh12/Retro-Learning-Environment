@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -499,6 +498,12 @@ int RetroAgent::readRam(const unsigned& id, const int& offset){
 	assert( (uint32_t)offset < getRamSize());
 	assert( offset > 0);
 	return *(getRamAddress(id) + offset);
+}
+
+void RetroAgent::writeRam(const unsigned& id, const int& offset, const uint8_t& data){
+	assert( (uint32_t)offset < getRamSize());
+	assert( offset > 0);
+	*(getRamAddress(id) + offset) = data;
 }
 
 uint8_t* RetroAgent::getRamAddress(unsigned id){

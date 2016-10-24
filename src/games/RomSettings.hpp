@@ -93,9 +93,19 @@ struct RomSettings {
     // By default this is an empty list.
     virtual ActionVect getStartingActions();
 
+    // Returns a list of actions that are required to start the game.
+    // Some games require the AleSystem for game-specific settings
+    virtual ActionVect getStartingActions(const AleSystem& system){ return getStartingActions();}
+
+    // Optionally perform starting operations such as modifying the game's RAM
+    virtual void startingOperations(AleSystem& system){};
+
     // below functions used to belong to RomUtils
-    // reads a byte at a memory location between 0 and 1023
+    // reads a byte at a memory location
     virtual int readRam(const AleSystem* system, int offset);
+
+    // write a byte at a memory location
+    virtual void writeRam(const AleSystem* system, int offset, uint8_t data);
 
     // extracts a decimal value from 1, 2, and 3 bytes respectively
     int getDecimalScore(int idx, const AleSystem* system);

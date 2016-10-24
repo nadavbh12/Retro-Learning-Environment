@@ -16,6 +16,7 @@
 #include "MortalKombat.hpp"
 
 #include "AleSystem.hxx"
+#include "AleException.h"
 
 using namespace ale;
 
@@ -62,28 +63,18 @@ RomSettings* MortalKombatSettings::clone() const {
 
 /* process the latest information from ALE */
 void MortalKombatSettings::step(const AleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScore(0x122, &system);
 
     int npcScore = getDecimalScore(0x2a, 0x2b, 0x2c, &system);
     npcScore *= 100;
-//    DEBUG2("NPC Score: " << std::dec << npcScore);
 
 	// update the reward
     reward_t playerScore = getDecimalScore(0x26, 0x27, 0x28, &system);
     playerScore *= 100;
-//    DEBUG2("Player Score: " << std::dec << playerScore);
 
     reward_t score = playerScore - npcScore;
-//    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
-//    // Deal with score wrapping. In truth this should be done for all games and in a more
-//    // uniform fashion.
-//    if (m_reward < 0) {
-//        const int WRAP_SCORE = 100000;
-//        m_reward += WRAP_SCORE;
-//    }
     m_score = score;
 
 //    update terminal status
@@ -95,10 +86,25 @@ void MortalKombatSettings::step(const AleSystem& system) {
     		m_terminal=true;
     	}
     }
+
+    int totalWins = m_wins + o_wins;
     m_wins = getDecimalScore(0x196e, &system);
     o_wins = getDecimalScore(0x1aca, &system);
+
+    if(system.settings().getBool("MK_random_position")){
+		if((m_wins + o_wins) != totalWins){
+			match_ended = true;
+		}
+
+		bool newMatchStarted = (time == 99) && (match_ended == true);
+		if(newMatchStarted){
+			match_ended = false;
+			// set random positions for players
+			startingOperations(const_cast<AleSystem&>(system));
+		}
+    }
+
     if (m_wins==2){
-//    	m_score = m_score + 1000*time; //shai: manually adding time bonus to win faster
     	m_terminal = true;
     }
     if(o_wins == 2){
@@ -108,21 +114,18 @@ void MortalKombatSettings::step(const AleSystem& system) {
 
 /* is end of game */
 bool MortalKombatSettings::isTerminal() const {
-
     return m_terminal;
 };
 
 
 /* get the most recently observed reward */
 reward_t MortalKombatSettings::getReward() const {
-
     return m_reward;
 }
 
 
 /* is an action part of the minimal set? */
 bool MortalKombatSettings::isMinimal(const Action &a) const {
-
 	if(minimalActions.find(a) ==  minimalActions.end())
 		return false;
 	else
@@ -132,13 +135,12 @@ bool MortalKombatSettings::isMinimal(const Action &a) const {
 
 /* reset the state of the game */
 void MortalKombatSettings::reset() {
-
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
     m_wins    = 0;
     o_wins    = 0;
-
+    match_ended = false;
 }
 
 
@@ -150,6 +152,7 @@ void MortalKombatSettings::saveState( Serializer & ser ) {
   ser.putInt(m_wins);
   ser.putInt(o_wins);
   ser.putBool(m_terminal);
+  ser.putBool(match_ended);
 }
 
 // loads the state of the rom settings
@@ -159,13 +162,13 @@ void MortalKombatSettings::loadState( Deserializer & des ) {
   m_wins = des.getInt();
   o_wins = des.getInt();
   m_terminal = des.getBool();
+  match_ended = des.getBool();
 }
 
 
-ActionVect MortalKombatSettings::getStartingActions(){
+ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
 	int num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	INSERT_NOPS(16*num_of_nops)
@@ -176,13 +179,46 @@ ActionVect MortalKombatSettings::getStartingActions(){
 	// wait for character select screen
 	INSERT_NOPS(3.5*num_of_nops)
 
-	// choose Raiden
-	INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	// choose character from list
+	string player1_character = system.settings().getString("MK_player1_character");
+	if("rayden" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	}else if("sonya" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("sub-zero" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("liu-kang" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+	}else if("cage" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_LEFT, A)
+	}else if("kano" == player1_character){
+	}else if("scorpion" == player1_character){
+		INSERT_ACTION_SINGLE(JOYPAD_RIGHT, A)
+		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
+		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
+	}else{
+		throw AleException("MK_player1_character illegal");
+	}
 	INSERT_NOPS(num_of_nops)
 
 	// Select opponent: random seed for opponent is set by num of NOOPs
-//	INSERT_NOPS(0) // Johnny Cage
-//	INSERT_NOPS(5) // Sonya
+	int opponent_character = system.settings().getInt("MK_opponent_character");
+	if(0 == opponent_character){
+		INSERT_NOPS(0)
+	}else if(1 == opponent_character){
+		INSERT_NOPS(5)
+	}else if(2 == opponent_character){
+		INSERT_NOPS(10)
+	}else if(3 == opponent_character){
+		INSERT_NOPS(40)
+	}else{
+		throw AleException("MK_opponent_character must be between 0 and 3");
+	}
+
 //	INSERT_NOPS(10) // sub_zero
 //	INSERT_NOPS(40) // scorpion
 
@@ -203,3 +239,10 @@ ActionVect MortalKombatSettings::getStartingActions(){
 	return startingActions;
 }
 
+void MortalKombatSettings::startingOperations(AleSystem& system){
+	if(system.settings().getBool("MK_random_position")){
+		Random& rng = system.rng();
+		writeRam(&system, 0x30d, (rng.next()%0x100));	// set player 1's random init position
+		writeRam(&system, 0x30f, (rng.next()%0x100));	// set player 2's random init position
+	}
+}

@@ -57,6 +57,11 @@ int RomSettings::readRam(const AleSystem* system, int offset) {
 	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
 }
 
+void RomSettings::writeRam(const AleSystem* system, int offset, uint8_t data) {
+
+	return system->getRetroAgent().writeRam(RETRO_MEMORY_SYSTEM_RAM, offset, data );
+}
+
 
 /* extracts a decimal value from a byte */
 int RomSettings::getDecimalScore(int index, const AleSystem* system) {

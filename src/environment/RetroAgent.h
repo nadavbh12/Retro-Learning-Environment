@@ -33,6 +33,7 @@ public:
 	int	 getWidth(); //in pixels
 	void reset();
 	int readRam(const unsigned& id, const int& offset);
+	void writeRam(const unsigned& id, const int& offset, const uint8_t& data);
 	uint8_t* getRamAddress(unsigned id);
 	uint32_t getRamSize();
 	void SetActions(const Action& player_a_action, const Action& player_b_action);

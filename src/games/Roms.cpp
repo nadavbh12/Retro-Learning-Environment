@@ -27,8 +27,13 @@
 #include "supported/SuperMarioWorld.hpp"
 #include "supported/SuperMarioAllStars.hpp"
 #include "supported/SuperMarioAllStarsNoRight.hpp"
+#include "supported/TetrisAndDrMario.hpp"
+#include "supported/TetrisAndDrMarioLines.hpp"
+#include "supported/TetrisAndDrMarioNumBlocks.hpp"
 #include "supported/Boxing.hpp"
 #include "supported/Wolfenstein.hpp"
+
+// Atari Games
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
 //#include "supported/Centipede.hpp"
@@ -64,9 +69,6 @@
 //#include "supported/RoadRunner.hpp"
 //#include "supported/RoboTank.hpp"
 #include "supported/Seaquest.hpp"
-#include "supported/TetrisAndDrMario.hpp"
-#include "supported/TetrisAndDrMarioLines.hpp"
-#include "supported/TetrisAndDrMarioNumBlocks.hpp"
 //#include "supported/Skiing.hpp"
 //#include "supported/Solaris.hpp"
 //#include "supported/SpaceInvaders.hpp"
@@ -86,6 +88,7 @@ using namespace ale;
 
 /* list of supported games */
 static const RomSettings *roms[]  = {
+	// Atari Games
 //    new AirRaidSettings(),
 //    new AlienSettings(),
 //    new AmidarSettings(),
@@ -149,6 +152,7 @@ static const RomSettings *roms[]  = {
 //    new YarsRevengeSettings(),
 //    new ZaxxonSettings(),
 
+	// SNES games
 	new AtariCollectionSettings(),
 	new FinalFightSettings(),
 	new FinalFightWithRightSettings(),

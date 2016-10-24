@@ -66,6 +66,10 @@ class AleSystem
     */
     virtual ~AleSystem();
 
+    AleSystem(const AleSystem&) = delete;
+
+    AleSystem& operator = (const AleSystem&) = delete;
+
     /**
       Create all child objects which belong to this AleSystem
     */
@@ -320,11 +324,6 @@ class AleSystem
     */
     void resetLoopTiming();
 
-    // Copy constructor isn't supported by this class so make it private
-    AleSystem(const AleSystem&);
-
-    // Assignment operator isn't supported by this class so make it private
-    AleSystem& operator = (const AleSystem&);
 };
 
 } // namespace ale
