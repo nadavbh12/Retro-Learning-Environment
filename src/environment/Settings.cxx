@@ -24,7 +24,6 @@
 using namespace std;
 
 //#include "OSystem.hxx"
-#include "Version.hxx"
 #include "bspf.hxx"
 #include "Settings.hxx"
 #include "AleSystem.hxx"

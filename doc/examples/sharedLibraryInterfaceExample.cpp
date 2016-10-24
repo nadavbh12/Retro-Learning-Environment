@@ -48,6 +48,9 @@ int main(int argc, char** argv) {
     ale.setBool("sound", true);
 #endif
 
+    ale.setString("MK_player1_character", "cage");
+//    ale.setString("MK_player2_character", "scorpion");
+    ale.setInt("MK_opponent_character", 4);
     // Load the ROM file. (Also resets the system for new settings to
     // take effect.)
     ale.loadROM(argv[1], argv[2]);

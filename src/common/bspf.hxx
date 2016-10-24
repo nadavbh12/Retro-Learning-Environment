@@ -1,6 +1,6 @@
 //============================================================================
 //
-//  BBBBB    SSSS   PPPPP   FFFFFF 
+//  BBBBB    SSSS   PPPPP   FFFFFF
 //  BB  BB  SS  SS  PP  PP  FF
 //  BB  BB  SS      PP  PP  FF
 //  BBBBB    SSSS   PPPPP   FFFF    --  "Brad's Simple Portability Framework"
@@ -50,7 +50,7 @@ typedef unsigned int uInt32;
   #include <iomanip>
   #include <string>
 #endif
-	
+
 #ifdef HAVE_INTTYPES
   #include <inttypes.h>
 #endif
