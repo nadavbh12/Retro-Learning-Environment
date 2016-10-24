@@ -215,6 +215,8 @@ ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
 		INSERT_NOPS(10)
 	}else if(3 == opponent_character){
 		INSERT_NOPS(40)
+	}else if(4 == opponent_character){
+		INSERT_NOPS(15)
 	}else{
 		throw AleException("MK_opponent_character must be between 0 and 3");
 	}
