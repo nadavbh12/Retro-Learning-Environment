@@ -26,7 +26,26 @@ FZeroNoSpeedSettings::FZeroNoSpeedSettings() {
 						JOYPAD_LEFT,
 						JOYPAD_RIGHT,
 						JOYPAD_B,	// speed
+						JOYPAD_B | JOYPAD_RIGHT,
+						JOYPAD_B | JOYPAD_LEFT,
+
 						JOYPAD_Y,	// break
+						JOYPAD_Y | JOYPAD_RIGHT,
+						JOYPAD_Y | JOYPAD_LEFT,
+						JOYPAD_Y | JOYPAD_R,
+						JOYPAD_Y | JOYPAD_L,
+
+						JOYPAD_A | JOYPAD_B, // Turbo
+						JOYPAD_A | JOYPAD_RIGHT | JOYPAD_B,
+						JOYPAD_A | JOYPAD_LEFT | JOYPAD_B,
+						JOYPAD_A | JOYPAD_R | JOYPAD_B,
+						JOYPAD_A | JOYPAD_L | JOYPAD_B,
+
+						JOYPAD_R, // lean right
+						JOYPAD_R | JOYPAD_B,
+
+						JOYPAD_L, // lean left
+						JOYPAD_L | JOYPAD_B,
     };
 }
 
