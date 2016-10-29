@@ -36,8 +36,6 @@
 #include <cassert>
 #include "libretro.h"
 #include <string>
-
-// SN
 #include <assert.h>
 
 namespace ale {
@@ -59,6 +57,7 @@ typedef uint32_t Action;
 // For example: action = 3, means = B + Y
 // The msb defines whether the action is player a or player b
 // special actions:
+#define JOYPAD_NOOP					(unsigned int)0
 #define JOYPAD_B                    (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_B     )
 #define JOYPAD_Y                    (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_Y     )
 #define JOYPAD_SELECT               (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_SELECT)
@@ -75,20 +74,16 @@ typedef uint32_t Action;
 #define JOYPAD_R2                   (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_R2    )
 #define JOYPAD_L3                   (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_L3    )
 #define JOYPAD_R3                   (unsigned int)(1 << RETRO_DEVICE_ID_JOYPAD_R3    )
-#define JOYPAD_NOOP 				(unsigned int)(1 << 16)
-#define JOYPAD_RESET 				(unsigned int)(1 << 17)
-#define JOYPAD_UNDEFINED 			(unsigned int)(1 << 18)
-#define JOYPAD_RANDOM	 			(unsigned int)(1 << 19)
-#define JOYPAD_SAVE_STATE 			(unsigned int)(1 << 20)
-#define JOYPAD_LOAD_STATE 			(unsigned int)(1 << 21)
-#define JOYPAD_SYSTEM_RESET 		(unsigned int)(1 << 22)
-#define JOYPAD_LAST_ACTION_INDEX 	(unsigned int)(1 << 23)
+#define JOYPAD_RESET 				(unsigned int)(1 << 16)
+#define JOYPAD_UNDEFINED 			(unsigned int)(1 << 17)
+#define JOYPAD_RANDOM	 			(unsigned int)(1 << 18)
+#define JOYPAD_SAVE_STATE 			(unsigned int)(1 << 19)
+#define JOYPAD_LOAD_STATE 			(unsigned int)(1 << 20)
+#define JOYPAD_SYSTEM_RESET 		(unsigned int)(1 << 21)
+#define JOYPAD_LAST_ACTION_INDEX 	(unsigned int)(1 << 22)
 
 #define PLAYER_A					0
-#define PLAYER_B					(1 << 31)
-
-// Other constant values
-#define RAM_LENGTH 128
+#define PLAYER_B					(unsigned int)(1 << 31)
 
 // Atari actions
 #define JOYPAD_FIRE					JOYPAD_B	// for atari
@@ -146,7 +141,6 @@ class ALEScreen {
 
 };
 
-//#define RAM_SIZE (128)
 
 /** A simple wrapper around the Atari RAM. */
 class ALERAM {
@@ -165,6 +159,7 @@ class ALERAM {
     byte_t* array() const { return m_ram;}
 
     size_t size() const { return sizeof(m_ram); }
+
     /** Returns whether two copies of the RAM are equal */
     bool equals(const ALERAM &rhs) const;
 
@@ -172,7 +167,6 @@ class ALERAM {
     byte_t* m_ram;
 //    std::vector<byte_t> m_ram;
 };
-
 
 /**
    This class interfaces ALE with external code for controlling agents.
@@ -191,6 +185,12 @@ public:
 
   /** Unload the emulator. */
   ~ALEInterface();
+
+  /** Copying is explicitly disallowed. */
+  ALEInterface(const ALEInterface &) = delete;
+
+  /** Assignment is explicitly disallowed. */
+  ALEInterface &operator=(const ALEInterface &) = delete;
 
   // Resets the game, but not the full system.
   void reset_game();
@@ -285,13 +285,6 @@ public:
   static void loadSettings(const std::string& romfile, const std::string& corefile,
                            std::unique_ptr<AleSystem> &theSLESystem);
  private:
-
-   /** Copying is explicitly disallowed. */
-   ALEInterface(const ALEInterface &);
-
-   /** Assignment is explicitly disallowed. */
-   ALEInterface &operator=(const ALEInterface &);
-
    class Impl;
    Impl* m_pimpl;
 };

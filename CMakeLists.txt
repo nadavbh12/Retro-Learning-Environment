@@ -220,6 +220,7 @@ if(UNIT_TESTING)
 #    )
 
 #  endif()
+  	add_definitions(-D__UNIT_TESTING)
     add_subdirectory(googletest)
     enable_testing()
     include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/ale_python_interface)

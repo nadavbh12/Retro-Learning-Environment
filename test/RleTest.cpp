@@ -79,5 +79,17 @@ TEST_F(RleTest, runTwoAgentsWithDelete) {
 	run_example(&ale2, romPath, corePath);
 }
 
+TEST_F(RleTest, serialization) {
+	ale::ALEInterface ale;
+	run_example(&ale, romPath, corePath);
+//	ALEState stateA = ale.cloneSystemState();
+//	ALEState stateB = ale.cloneSystemState();
+//	EXPECT_EQ(stateA, stateB);
+
+	ale.saveState();
+//	ale.loadState();
+
+}
+
 
 }  // namespace

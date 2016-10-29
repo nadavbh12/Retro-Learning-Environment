@@ -23,7 +23,6 @@ using namespace ale;
 std::string ale::action_to_string(ale::Action a) {
 	std::stringstream ss;
 	bool first = true;
-//	if ((a & JOYPAD_B) > 0){ if (first){first=true;ss << JOYPAD_B;} else {ss << " | " << JOYPAD_B;}}
 	CAT_STR(ss, a, JOYPAD_B                 );
 	CAT_STR(ss, a, JOYPAD_Y                 );
 	CAT_STR(ss, a, JOYPAD_SELECT            );
@@ -50,8 +49,5 @@ std::string ale::action_to_string(ale::Action a) {
 	CAT_STR(ss, a, JOYPAD_LAST_ACTION_INDEX	);
 	CAT_STR(ss, a, PLAYER_A					);
 	CAT_STR(ss, a, PLAYER_B					);
-//	ss << endl;
 	return ss.str();
-
-//	return "no matching string";
 }

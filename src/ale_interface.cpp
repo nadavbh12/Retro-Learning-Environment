@@ -160,16 +160,10 @@ private:
 //thread_local bool ALEInterface::Impl::initialized = false;
 
 ALEInterface::Impl::Impl() : max_num_frames(0){
-//  if(initialized){
-//	  throw AleException("An instance of ALEInterface already exists in this thread");
-//  } else{
-//	  initialized = true;
-//  }
   ALEInterface::createAleSystem(theAleSystem, theSettings, theRetroAgent);
 }
 
 ALEInterface::Impl::~Impl() {
-//	initialized = false;
 }
 
 
@@ -550,137 +544,5 @@ ScreenExporter *ALEInterface::createScreenExporter(const std::string &filename) 
 ScreenExporter *ALEInterface::Impl::createScreenExporter(const std::string &filename) const {
 //    return new ScreenExporter(theAleSystem->colourPalette(), filename);
 }
-
-
-/* --------------------------------------------------------------------------------------------------*/
-
-// RAM & Screen implementation
-ALEScreen::ALEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
-
-	m_pixelFormat = new  pixelFormat();
-}
-
-ALEScreen::~ALEScreen(){
-	delete m_pixelFormat;
-}
-
-ALEScreen::ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
-
-	m_pixelFormat = new  pixelFormat();
-	m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
-	m_pixelFormat->rmask  = rhs.m_pixelFormat->rmask ;
-	m_pixelFormat->gmask  = rhs.m_pixelFormat->gmask ;
-	m_pixelFormat->bmask  = rhs.m_pixelFormat->bmask ;
-	m_pixelFormat->amask  = rhs.m_pixelFormat->amask ;
-    m_pixelFormat->rShift = rhs.m_pixelFormat->rShift;
- 	m_pixelFormat->gShift = rhs.m_pixelFormat->gShift;
-	m_pixelFormat->bShift = rhs.m_pixelFormat->bShift;
-	m_pixelFormat->aShift = rhs.m_pixelFormat->aShift;
-
-}
-
-ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
-
-
-
-  m_rows = rhs.m_rows;
-  m_columns = rhs.m_columns;
-  m_pixels = rhs.m_pixels;
-  m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
-  m_pixelFormat->rmask  = rhs.m_pixelFormat->rmask ;
-  m_pixelFormat->gmask  = rhs.m_pixelFormat->gmask ;
-  m_pixelFormat->bmask  = rhs.m_pixelFormat->bmask ;
-  m_pixelFormat->amask  = rhs.m_pixelFormat->amask ;
-  m_pixelFormat->rShift = rhs.m_pixelFormat->rShift;
-  m_pixelFormat->gShift = rhs.m_pixelFormat->gShift;
-  m_pixelFormat->bShift = rhs.m_pixelFormat->bShift;
-  m_pixelFormat->aShift = rhs.m_pixelFormat->aShift;
-
-  return *this;
-}
-
-bool ALEScreen::equals(const ALEScreen &rhs) const {
-  return (m_rows == rhs.m_rows &&
-          m_columns == rhs.m_columns &&
-          (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
-}
-
-int ALEScreen::getBpp()const{
-	return m_pixelFormat->Bpp;
-}
-
-pixel_t ALEScreen::getRGBPixel(const uint32_t &pixel)const{
-
-	struct pixelFormat* m = m_pixelFormat;
-	uint32_t red   = (pixel & m->rmask) >> m->rShift;
-	uint32_t green = (pixel & m->gmask) >> m->gShift;
-	uint32_t blue  = (pixel & m->bmask) >> m->bShift;
-
-	red   = red   << (m->rFill + 16); 	//solution commented out since previous agents were not using it
-	green = green << (m->gFill+8);
-	blue  = blue  <<  m->bFill;
-
-	return red | green | blue;
-
-}
-
-void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
-
-	struct pixelFormat* m = m_pixelFormat;
-	red   = (pixel & m->rmask) >> m->rShift;
-	green = (pixel & m->gmask) >> m->gShift;
-	blue  = (pixel & m->bmask) >> m->bShift;
-
-	red   = red   << m->rFill; 	//solution commented out since previous agents were not using it
-	green = green << m->gFill;
-	blue  = blue  << m->bFill;
-}
-
-// pixel accessors, (row, column)-ordered
-inline pixel_t ALEScreen::get(int r, int c) const {
-  // Perform some bounds-checking
-  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
-  return m_pixels[r * m_columns + c];
-}
-
-inline pixel_t* ALEScreen::pixel(int r, int c) {
-  // Perform some bounds-checking
-  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
-  return &m_pixels[r * m_columns + c];
-}
-
-// Access a whole row
-inline pixel_t* ALEScreen::getRow(int r) const {
-  assert (r >= 0 && r < m_rows);
-  return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
-}
-
-
-inline ALERAM::ALERAM(const ALERAM &rhs) {
-  // Copy data over
-//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
-}
-
-inline ALERAM& ALERAM::operator=(const ALERAM &rhs) {
-  // Copy data over
-//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
-  m_ram = rhs.m_ram;
-  return *this;
-}
-
-inline bool ALERAM::equals(const ALERAM &rhs) const {
-  return (m_ram == rhs.m_ram);
-}
-
-// Byte accessors
-byte_t ALERAM::get(unsigned int x) const {
-  // Wrap RAM around the first 128 bytes
-  return m_ram[x & 0x7F];
-//  return m_ram.at(x);
-}
-
-//inline byte_t* ALERAM::byte(unsigned int x) {
-//  return &m_ram[x & 0x7F];
-//}
 
 } // namespace ale

@@ -16,10 +16,11 @@
  **************************************************************************** */
 
 #include "retro_environment.hpp"
-
 #include <sstream>
 
 using namespace ale;
+
+
 
 RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) :
   m_alesystem(alesystem),

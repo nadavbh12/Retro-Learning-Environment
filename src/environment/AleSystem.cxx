@@ -21,7 +21,7 @@ using namespace ale;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 AleSystem::AleSystem(RetroAgent* retroagent)
   : 
-	myRetroAgent(retroagent),	//SLE
+	myRetroAgent(retroagent),	//RLE
 //    mySound(NULL),
     mySettings(NULL),
     myQuitLoop(false),
