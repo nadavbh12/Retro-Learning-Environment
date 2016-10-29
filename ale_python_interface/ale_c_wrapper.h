@@ -59,7 +59,7 @@ extern "C" {
 //  ALEState* cloneSystemState(ALEInterface *ale){return new ALEState(ale->cloneSystemState());}
 //  void restoreSystemState(ALEInterface *ale, ALEState* state){ale->restoreSystemState(*state);}
 //  void deleteState(ALEState* state){delete state;}
-  void saveScreenPNG(ALEInterface *ale,const char *filename){ale->saveScreenPNG(filename);}
+//  void saveScreenPNG(ALEInterface *ale,const char *filename){ale->saveScreenPNG(filename);}
 }
 
 #endif

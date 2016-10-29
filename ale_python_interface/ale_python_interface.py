@@ -178,25 +178,25 @@ class ALEInterface(object):
         ale_lib.getScreenGrayscale(self.obj, as_ctypes(screen_data[:]))
         return screen_data
 
-    def getRAMSize(self):
-        return ale_lib.getRAMSize(self.obj)
-
-    def getRAM(self, ram=None):
-        """This function grabs the atari RAM.
-        ram MUST be a numpy array of uint8/int8. This can be initialized like so:
-        ram = np.array(ram_size, dtype=uint8)
-        Notice: It must be ram_size where ram_size can be retrieved via the getRAMSize function.
-        If it is None,  then this function will initialize it.
-        """
-        if(ram is None):
-            ram_size = ale_lib.getRAMSize(self.obj)
-            ram = np.zeros(ram_size, dtype=np.uint8)
-        ale_lib.getRAM(self.obj, as_ctypes(ram))
-        return ram
-
-    def saveScreenPNG(self, filename):
-        """Save the current screen as a png file"""
-        return ale_lib.saveScreenPNG(self.obj, filename)
+#    def getRAMSize(self):
+#        return ale_lib.getRAMSize(self.obj)
+#
+#    def getRAM(self, ram=None):
+#        """This function grabs the atari RAM.
+#        ram MUST be a numpy array of uint8/int8. This can be initialized like so:
+#        ram = np.array(ram_size, dtype=uint8)
+#        Notice: It must be ram_size where ram_size can be retrieved via the getRAMSize function.
+#        If it is None,  then this function will initialize it.
+#        """
+#        if(ram is None):
+#            ram_size = ale_lib.getRAMSize(self.obj)
+#            ram = np.zeros(ram_size, dtype=np.uint8)
+#        ale_lib.getRAM(self.obj, as_ctypes(ram))
+#        return ram
+#
+#    def saveScreenPNG(self, filename):
+#        """Save the current screen as a png file"""
+#        return ale_lib.saveScreenPNG(self.obj, filename)
 
     def saveState(self):
         """Saves the state of the system"""
@@ -206,48 +206,35 @@ class ALEInterface(object):
         """Loads the state of the system"""
         return ale_lib.loadState(self.obj)
 
-    def cloneState(self):
-        """This makes a copy of the environment state. This copy does *not*
-        include pseudorandomness, making it suitable for planning
-        purposes. By contrast, see cloneSystemState.
-        """
-        return ale_lib.cloneState(self.obj)
+#    def cloneState(self):
+#        """This makes a copy of the environment state. This copy does *not*
+#        include pseudorandomness, making it suitable for planning
+#        purposes. By contrast, see cloneSystemState.
+#        """
+#        return ale_lib.cloneState(self.obj)
 
-    def restoreState(self, state):
-        """Reverse operation of cloneState(). This does not restore
-        pseudorandomness, so that repeated calls to restoreState() in
-        the stochastic controls setting will not lead to the same
-        outcomes.  By contrast, see restoreSystemState.
-        """
-        ale_lib.restoreState(self.obj, state)
+#    def restoreState(self, state):
+#        """Reverse operation of cloneState(). This does not restore
+#        pseudorandomness, so that repeated calls to restoreState() in
+#        the stochastic controls setting will not lead to the same
+#        outcomes.  By contrast, see restoreSystemState.
+#        """
+#        ale_lib.restoreState(self.obj, state)
 
-    def cloneSystemState(self):
-        """This makes a copy of the system & environment state, suitable for
-        serialization. This includes pseudorandomness and so is *not*
-        suitable for planning purposes.
-        """
-        return ale_lib.cloneSystemState(self.obj)
+#    def cloneSystemState(self):
+#        """This makes a copy of the system & environment state, suitable for
+#        serialization. This includes pseudorandomness and so is *not*
+#        suitable for planning purposes.
+#        """
+#        return ale_lib.cloneSystemState(self.obj)
 
-    def restoreSystemState(self, state):
-        """Reverse operation of cloneSystemState."""
-        ale_lib.restoreSystemState(self.obj, state)
+#    def restoreSystemState(self, state):
+#        """Reverse operation of cloneSystemState."""
+#        ale_lib.restoreSystemState(self.obj, state)
 
-    def deleteState(self, state):
-        """ Deallocates the ALEState """
-        ale_lib.deleteState(state)
-
-    def encodeStateLen(self, state):
-        return ale_lib.encodeStateLen(state)
-
-    def encodeState(self, state, buf=None):
-        if buf == None:
-            length = ale_lib.encodeStateLen(state)
-            buf = np.zeros(length, dtype=np.uint8)
-        ale_lib.encodeState(state, as_ctypes(buf), c_int(len(buf)))
-        return buf
-
-    def decodeState(self, serialized):
-        return ale_lib.decodeState(as_ctypes(serialized), len(serialized))
+#    def deleteState(self, state):
+#        """ Deallocates the ALEState """
+#        ale_lib.deleteState(state)
 
     def __del__(self):
         ale_lib.ALE_del(self.obj)
