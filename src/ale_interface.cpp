@@ -147,7 +147,6 @@ public:
 	                     std::unique_ptr<AleSystem> &theSLESystem);
 
 private:
-//	  thread_local static bool initialized;
 	  std::unique_ptr<AleSystem> theAleSystem;
 	  std::unique_ptr<Settings> theSettings;
 	  std::unique_ptr<RetroAgent> theRetroAgent;
@@ -209,6 +208,9 @@ void ALEInterface::Impl::setFloat(const string& key, const float value) {
   assert(theAleSystem);
   theSettings->setFloat(key, value);
   theSettings->validate();
+  if(key == "random_seed"){
+	  theAleSystem->resetRNGSeed();
+  }
 }
 
 // Get the value of a setting.

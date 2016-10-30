@@ -31,16 +31,16 @@ if USE_SDL:
   ale.setBool('display_screen', True)
 
 # Load the ROM file
-ale.loadROM(sys.argv[1])
+ale.loadROM(sys.argv[1], sys.argv[2])
 
 # Get the list of legal actions
-legal_actions = ale.getLegalActionSet()
+minimal_actions = ale.getMinimalActionSet()
 
 # Play 10 episodes
 for episode in xrange(10):
   total_reward = 0
   while not ale.game_over():
-    a = legal_actions[randrange(len(legal_actions))]
+    a = minimal_actions[randrange(len(legal_actions))]
     # Apply an action and get the resulting reward
     reward = ale.act(a);
     total_reward += reward

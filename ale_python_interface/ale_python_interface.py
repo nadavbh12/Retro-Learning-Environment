@@ -71,24 +71,18 @@ ale_lib.saveState.argtypes = [c_void_p]
 ale_lib.saveState.restype = None
 ale_lib.loadState.argtypes = [c_void_p]
 ale_lib.loadState.restype = None
-ale_lib.cloneState.argtypes = [c_void_p]
-ale_lib.cloneState.restype = c_void_p
-ale_lib.restoreState.argtypes = [c_void_p, c_void_p]
-ale_lib.restoreState.restype = None
-ale_lib.cloneSystemState.argtypes = [c_void_p]
-ale_lib.cloneSystemState.restype = c_void_p
-ale_lib.restoreSystemState.argtypes = [c_void_p, c_void_p]
-ale_lib.restoreSystemState.restype = None
-ale_lib.deleteState.argtypes = [c_void_p]
-ale_lib.deleteState.restype = None
-ale_lib.saveScreenPNG.argtypes = [c_void_p, c_char_p]
-ale_lib.saveScreenPNG.restype = None
-ale_lib.encodeState.argtypes = [c_void_p, c_void_p, c_int]
-ale_lib.encodeState.restype = None
-ale_lib.encodeStateLen.argtypes = [c_void_p]
-ale_lib.encodeStateLen.restype = c_int
-ale_lib.decodeState.argtypes = [c_void_p, c_int]
-ale_lib.decodeState.restype = c_void_p
+#ale_lib.cloneState.argtypes = [c_void_p]
+#ale_lib.cloneState.restype = c_void_p
+#ale_lib.restoreState.argtypes = [c_void_p, c_void_p]
+#ale_lib.restoreState.restype = None
+#ale_lib.cloneSystemState.argtypes = [c_void_p]
+#ale_lib.cloneSystemState.restype = c_void_p
+#ale_lib.restoreSystemState.argtypes = [c_void_p, c_void_p]
+#ale_lib.restoreSystemState.restype = None
+#ale_lib.deleteState.argtypes = [c_void_p]
+#ale_lib.deleteState.restype = None
+#ale_lib.saveScreenPNG.argtypes = [c_void_p, c_char_p]
+#ale_lib.saveScreenPNG.restype = None
 
 class ALEInterface(object):
     def __init__(self):

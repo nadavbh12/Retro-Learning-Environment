@@ -52,7 +52,7 @@ void getScreenRGB(ALEInterface *ale, unsigned char *output_buffer){
   size_t w = screen.width();
   size_t h = screen.height();
   size_t screen_size = w*h;
-  size_t size_in_pixels = screen_size / screen.getBpp();
+  size_t size_in_pixels = screen_size;
   ale_rearrangeRgb(output_buffer, (uint32_t*)screen.getArray(), size_in_pixels, ale);
 }
 

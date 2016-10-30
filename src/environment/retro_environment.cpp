@@ -95,11 +95,8 @@ void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
 /** Resets the system to its start state. */
 void RetroEnvironment::reset() {
   m_state.resetEpisodeFrameNumber();
-  // Reset the paddles
-//  m_state.resetPaddles(m_alesystem->event());
 
   // Reset the emulator
-//  m_alesystem->console().system().reset();
   m_alesystem->getRetroAgent().reset();
 
   // NOOP for 60 steps in the deterministic environment setting, or some random amount otherwise
