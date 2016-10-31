@@ -65,9 +65,13 @@ void FZeroSettings::step(const AleSystem& system) {
 //	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);
 
 	// update the reward
-	uint32_t playerScore = 1000*readRam(&system, 0xA23) + 100*readRam(&system, 0xA24) +10*readRam(&system, 0xA25); //give extra points according sto speed to maintain highspeed
-	uint32_t speedScore = 100*readRam(&system, 0xA58) + 10*readRam(&system, 0xA59) +readRam(&system, 0xA5A); //give extra points according sto speed to maintain highspeed
-	uint32_t score = playerScore + speedScore;
+	int isForward = 1; // indicating not driving the opposite direction
+	if(5==readRam(&system, 0xB01)){ // the address hold 5 if driving the opposite direction and 4 if driving the correct direction
+		isForward=-1;
+	}
+	int32_t playerScore = 1000*readRam(&system, 0xA23) + 100*readRam(&system, 0xA24) +10*readRam(&system, 0xA25); //give extra points according sto speed to maintain highspeed
+	int32_t speedScore = 100*readRam(&system, 0xA58) + 10*readRam(&system, 0xA59) +readRam(&system, 0xA5A); //give extra points according sto speed to maintain highspeed
+	int32_t score = playerScore + isForward * speedScore; //adding negative factor if driving the wrong direction
 //	uint32_t lives = readRam(&system, 0x59);
 //	uint32_t loseInd1 = readRam(&system , 0x41F);
 	uint32_t loseInd1 = readRam(&system , 0xC1);
@@ -75,7 +79,6 @@ void FZeroSettings::step(const AleSystem& system) {
 
 	uint32_t loseInd = (loseInd2 ==0) && (loseInd1>0); //lose if time has start (larger than 0) and lose indicator is on
 //	DEBUG2("lose is : " << loseInd);
-
 //	DEBUG2("score is: " << score);
 //	uint32_t lifeBar = readRam(&system, 0xE23);
 	m_reward = score - m_score;
