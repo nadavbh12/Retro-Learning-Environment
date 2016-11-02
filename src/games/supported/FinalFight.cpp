@@ -63,7 +63,7 @@ void FinalFightSettings::step(const AleSystem& system) {
 
     reward_t score = playerScore;
     m_reward = score - m_score;
-
+    m_score = score;
 //    update terminal status
     int lives = readRam(&system, 0x2456);
     if ((lives == 0) && (m_prev_lives == 1)){
