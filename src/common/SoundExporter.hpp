@@ -24,7 +24,6 @@
 
 #include <fstream>
 #include <vector>
-//#include "../emucore/m6502/src/bspf/src/bspf.hxx"
 
 namespace ale {
 namespace sound {

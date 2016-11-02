@@ -78,7 +78,6 @@ endif()
 include_directories(
   ${SOURCE_DIR}
   ${SOURCE_DIR}/common
-  ${SOURCE_DIR}/controllers
   ${SOURCE_DIR}/environment
   ${SOURCE_DIR}/games
   ${SOURCE_DIR}/games/supported
@@ -170,26 +169,6 @@ if(BUILD_EXAMPLES)
   target_link_libraries(sharedLibraryInterfaceExample ${LINK_LIBS})
   add_dependencies(sharedLibraryInterfaceExample ale-lib)
   
-  if (USE_SDL)
-    add_executable(videoRecordingExample ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples/videoRecordingExample.cpp)
-    set_target_properties(videoRecordingExample PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples)
-    target_link_libraries(videoRecordingExample ale)
-    target_link_libraries(videoRecordingExample ${LINK_LIBS})
-    add_dependencies(videoRecordingExample ale-lib)
-  endif()
-endif()
-
-if(USE_RLGLUE)
-  add_executable(RLGlueAgent ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples/RLGlueAgent.c)
-  set_target_properties(RLGlueAgent PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples)
-  target_link_libraries(RLGlueAgent rlutils)
-  target_link_libraries(RLGlueAgent rlagent)
-  target_link_libraries(RLGlueAgent rlgluenetdev)
-  add_executable(RLGlueExperiment ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples/RLGlueExperiment.c)
-  set_target_properties(RLGlueExperiment PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples)
-  target_link_libraries(RLGlueExperiment rlutils)
-  target_link_libraries(RLGlueExperiment rlexperiment)
-  target_link_libraries(RLGlueExperiment rlgluenetdev)
 endif()
 
 if(UNIT_TESTING)
