@@ -26,9 +26,9 @@
 #include "../common/Log.hpp"
 #include "../common/bspf.hxx"
 
-namespace ale {
+namespace rle {
 
-class AleSystem;
+class RleSystem;
 
 /**
   This class provides an interface for accessing frontend specific settings.
@@ -42,7 +42,7 @@ class Settings
     /**
       Create a new settings abstract class
     */
-    Settings(AleSystem* alesystem);
+    Settings(RleSystem* rlesystem);
 
     /**
       Destructor
@@ -189,7 +189,7 @@ class Settings
 
   protected:
     // The parent OSystem object
-    AleSystem* myAleSystem;
+    RleSystem* myRleSystem;
 
     // Structure used for storing settings
     struct Setting
@@ -234,6 +234,6 @@ class Settings
     SettingsArray myExternalSettings;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif

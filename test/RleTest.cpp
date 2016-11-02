@@ -7,13 +7,13 @@
 
 #include <thread>
 #include <string>
-#include "ale_interface.hpp"
+#include "rle_interface.hpp"
 #include "gtest/gtest.h"
-#include "common/AleException.h"
+#include "common/RleException.h"
 
 namespace {
 
-using namespace ale;
+using namespace rle;
 using std::string;
 // The fixture for testing class Foo.
 class RleTest : public ::testing::Test {
@@ -25,30 +25,30 @@ class RleTest : public ::testing::Test {
 };
 
 TEST_F(RleTest, simpleCtor) {
-	ale::ALEInterface ale;
+	rle::RLEInterface rle;
 }
 
-static void run_example(ALEInterface* ale, string romPath, string corePath){
-	ale->loadROM(romPath, corePath);
-	ActionVect legal_actions = ale->getMinimalActionSet();
+static void run_example(RLEInterface* rle, string romPath, string corePath){
+	rle->loadROM(romPath, corePath);
+	ActionVect legal_actions = rle->getMinimalActionSet();
 
 	for (int episode=0; episode<1; ++episode) {
 		int steps(0);
-		while (!ale->game_over() && steps < 100) {
+		while (!rle->game_over() && steps < 100) {
 			Action a = legal_actions[rand() % legal_actions.size()];
-			ale->act(a);
+			rle->act(a);
 			++steps;
 		}
-		ale->reset_game();
+		rle->reset_game();
 	}
 }
 
 TEST_F(RleTest, multiThreading) {
 	int numThreads(8);
-	ale::ALEInterface ale[numThreads];
+	rle::RLEInterface rle[numThreads];
 	std::vector<std::thread> threads;
 	for(int i(0); i < numThreads; ++i){
-		threads.push_back(std::thread(run_example, &ale[i], romPath, corePath));
+		threads.push_back(std::thread(run_example, &rle[i], romPath, corePath));
 	}
 	for (auto& th : threads){
 	    th.join();
@@ -56,38 +56,38 @@ TEST_F(RleTest, multiThreading) {
 }
 
 TEST_F(RleTest, runTwoAgentsNoDelete) {
-	ale::ALEInterface ale;
-	run_example(&ale, romPath, corePath);
-	ale::ALEInterface ale2;
-	ale.getEpisodeFrameNumber();
+	rle::RLEInterface rle;
+	run_example(&rle, romPath, corePath);
+	rle::RLEInterface rle2;
+	rle.getEpisodeFrameNumber();
 }
 
 TEST_F(RleTest, runTwoAgentsNoDeleteWithDoubleInit) {
-	ale::ALEInterface ale;
-	run_example(&ale, romPath, corePath);
-	ale::ALEInterface ale2;
-	run_example(&ale2, romPath, corePath);
-	ale.getEpisodeFrameNumber();
+	rle::RLEInterface rle;
+	run_example(&rle, romPath, corePath);
+	rle::RLEInterface rle2;
+	run_example(&rle2, romPath, corePath);
+	rle.getEpisodeFrameNumber();
 }
 
 TEST_F(RleTest, runTwoAgentsWithDelete) {
-	auto ale = new ale::ALEInterface();
-	run_example(ale, romPath, corePath);
-	delete ale;
+	auto rle = new rle::RLEInterface();
+	run_example(rle, romPath, corePath);
+	delete rle;
 
-	ale::ALEInterface ale2;
-	run_example(&ale2, romPath, corePath);
+	rle::RLEInterface rle2;
+	run_example(&rle2, romPath, corePath);
 }
 
 TEST_F(RleTest, serialization) {
-	ale::ALEInterface ale;
-	run_example(&ale, romPath, corePath);
-//	ALEState stateA = ale.cloneSystemState();
-//	ALEState stateB = ale.cloneSystemState();
+	rle::RLEInterface rle;
+	run_example(&rle, romPath, corePath);
+//	RLEState stateA = rle.cloneSystemState();
+//	RLEState stateB = rle.cloneSystemState();
 //	EXPECT_EQ(stateA, stateB);
 
-	ale.saveState();
-//	ale.loadState();
+	rle.saveState();
+//	rle.loadState();
 
 }
 

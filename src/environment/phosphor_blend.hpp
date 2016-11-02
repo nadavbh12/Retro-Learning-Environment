@@ -18,10 +18,10 @@
 #define __PHOSPHOR_BLEND_HPP__
 
 //#include "../emucore/OSystem.hxx"
-#include "ale_screen.hpp"
-#include "AleSystem.hxx"
+#include "rle_screen.hpp"
+#include "RleSystem.hxx"
 
-namespace ale {
+namespace rle {
 
 class PhosphorBlend {
   public:
@@ -29,10 +29,10 @@ class PhosphorBlend {
 //    		OSystem *
     		);
 
-    void process(ALEScreen& screen);
+    void process(RLEScreen& screen);
 
   private:
-    void makeAveragePalette();
+    void makeAveragePrlette();
 //    uInt8 getPhosphor(uInt8 v1, uInt8 v2);
 //    uInt32 makeRGB(uInt8 r, uInt8 g, uInt8 b);
 //    /** Converts a RGB value to an 8-bit format */
@@ -43,11 +43,11 @@ class PhosphorBlend {
 
 //    uInt8 m_rgb_ntsc[64][64][64];
 //
-//    uInt32 m_avg_palette[256][256];
+//    uInt32 m_avg_prlette[256][256];
 //    uInt8 m_phosphor_blend_ratio;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __PHOSPHOR_BLEND_HPP__
 

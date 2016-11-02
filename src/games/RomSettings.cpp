@@ -16,10 +16,10 @@
  * *****************************************************************************
  */
 #include "RomSettings.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "../libretro.h"
 
-using namespace ale;
+using namespace rle;
 
 bool RomSettings::isLegal(const Action& a) const {
   return true;
@@ -51,20 +51,20 @@ ActionVect RomSettings::getAllActions() {
 }
 
 
-int RomSettings::readRam(const AleSystem* system, int offset) {
+int RomSettings::readRam(const RleSystem* system, int offset) {
 
 //	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
 	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
 }
 
-void RomSettings::writeRam(const AleSystem* system, int offset, uint8_t data) {
+void RomSettings::writeRam(const RleSystem* system, int offset, uint8_t data) {
 
 	return system->getRetroAgent().writeRam(RETRO_MEMORY_SYSTEM_RAM, offset, data );
 }
 
 
 /* extracts a decimal value from a byte */
-int RomSettings::getDecimalScore(int index, const AleSystem* system) {
+int RomSettings::getDecimalScore(int index, const RleSystem* system) {
 
     int score = 0;
     int digits_val = readRam(system, index);
@@ -77,7 +77,7 @@ int RomSettings::getDecimalScore(int index, const AleSystem* system) {
 }
 
 /* extracts a decimal value from 2 bytes */
-int RomSettings::getDecimalScore(int lower_index, int higher_index, const AleSystem* system) {
+int RomSettings::getDecimalScore(int lower_index, int higher_index, const RleSystem* system) {
 
     int score = 0;
     int lower_digits_val = readRam(system, lower_index);
@@ -98,7 +98,7 @@ int RomSettings::getDecimalScore(int lower_index, int higher_index, const AleSys
 
 
 /* extracts a decimal value from 3 bytes */
-int RomSettings::getDecimalScore(int lower_index, int middle_index, int higher_index, const AleSystem* system) {
+int RomSettings::getDecimalScore(int lower_index, int middle_index, int higher_index, const RleSystem* system) {
 
     int score = getDecimalScore(lower_index, middle_index, system);
     int higher_digits_val = readRam(system, higher_index);
@@ -110,7 +110,7 @@ int RomSettings::getDecimalScore(int lower_index, int middle_index, int higher_i
 }
 
 /* extracts a decimal value from a byte */
-int RomSettings::getDecimalScoreWord(int index, const AleSystem* system) {
+int RomSettings::getDecimalScoreWord(int index, const RleSystem* system) {
 
     int score = 0;
     int digits_val = readRam(system, index);
@@ -119,7 +119,7 @@ int RomSettings::getDecimalScoreWord(int index, const AleSystem* system) {
 }
 
 /* extracts a decimal value from 2 words */
-int RomSettings::getDecimalScoreWord(int lower_index, int higher_index, const AleSystem* system) {
+int RomSettings::getDecimalScoreWord(int lower_index, int higher_index, const RleSystem* system) {
     int score = 0;
     int lower_digits_val = readRam(system, lower_index);
     int higher_digits_val = readRam(system, higher_index);
@@ -129,7 +129,7 @@ int RomSettings::getDecimalScoreWord(int lower_index, int higher_index, const Al
 }
 
 /* extracts a decimal value from 3 words */
-int RomSettings::getDecimalScoreWord(int lower_index, int middle_index, int higher_index, const AleSystem* system) {
+int RomSettings::getDecimalScoreWord(int lower_index, int middle_index, int higher_index, const RleSystem* system) {
     int score = 0;
     int lower_digits_val = readRam(system, lower_index);
     int middle_digits_val = readRam(system, middle_index);
@@ -141,7 +141,7 @@ int RomSettings::getDecimalScoreWord(int lower_index, int middle_index, int high
 }
 
 /* extracts a decimal value from words specified in vector */
-int RomSettings::getDecimalScoreWords(std::vector<int> indexes, const AleSystem* system) {
+int RomSettings::getDecimalScoreWords(std::vector<int> indexes, const RleSystem* system) {
     int score = 0;
     int multiplier = 1;
     for(auto ind : indexes){

@@ -27,17 +27,17 @@
 #include "DebugMacros.h"
 #include <stdint.h>
 #include "../libretro.h"
-#include "ale_interface.hpp"
+#include "rle_interface.hpp"
 
 
-namespace ale{
+namespace rle{
 
 std::string action_to_string(Action a);
 
 const string ATARI_PATH = "./stella-libretro/stella_libretro.so";
 const string SNES_PATH = "./snes9x2010/snes9x2010_libretro.so";
 
-} // namespace ale
+} // namespace rle
 
 #endif // __CONSTANTS_H__
 

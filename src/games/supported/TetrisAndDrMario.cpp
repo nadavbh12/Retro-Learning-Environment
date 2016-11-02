@@ -13,10 +13,10 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "TetrisAndDrMario.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 TetrisAndDrMarioSettings::TetrisAndDrMarioSettings() {
@@ -41,7 +41,7 @@ RomSettings* TetrisAndDrMarioSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void TetrisAndDrMarioSettings::step(const AleSystem& system) {
+void TetrisAndDrMarioSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	// update the reward

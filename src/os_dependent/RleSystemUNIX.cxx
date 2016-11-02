@@ -13,7 +13,7 @@
 // See the file "license" for information on usage and redistribution of
 // this file, and for a DISCLAIMER OF ALL WARRANTIES.
 //
-// $Id: AleSystemUNIX.cxx,v 1.27 2007/07/19 16:21:39 stephena Exp $
+// $Id: RleSystemUNIX.cxx,v 1.27 2007/07/19 16:21:39 stephena Exp $
 //============================================================================
 
 #include <cstdlib>
@@ -25,10 +25,10 @@
 #include <sys/types.h>
 
 //#include "bspf.hxx"
-#include "AleSystem.hxx"
-#include "AleSystemUNIX.hxx"
+#include "RleSystem.hxx"
+#include "RleSystemUNIX.hxx"
 using namespace std;
-using namespace ale;
+using namespace rle;
 
 //ALE  #ifdef HAVE_GETTIMEOFDAY
 #include <time.h>
@@ -46,8 +46,8 @@ using namespace ale;
 */
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystemUNIX::AleSystemUNIX(RetroAgent* retroagent)
-  : AleSystem(retroagent)
+RleSystemUNIX::RleSystemUNIX(RetroAgent* retroagent)
+  : RleSystem(retroagent)
 {
   //ALE  const string& basedir = string(getenv("HOME")) + "/.stella";
   string basedir = string(".");  //ALE
@@ -55,12 +55,12 @@ AleSystemUNIX::AleSystemUNIX(RetroAgent* retroagent)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystemUNIX::~AleSystemUNIX()
+RleSystemUNIX::~RleSystemUNIX()
 {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-uInt32 AleSystemUNIX::getTicks() {
+uInt32 RleSystemUNIX::getTicks() {
 //ALE  #ifdef HAVE_GETTIMEOFDAY
     timeval now;
     gettimeofday(&now, 0);

@@ -13,16 +13,16 @@
 // See the file "license" for information on usage and redistribution of
 // this file, and for a DISCLAIMER OF ALL WARRANTIES.
 //
-// $Id: AleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
+// $Id: RleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
 //============================================================================
 
 #ifndef OSYSTEM_UNIX_HXX
 #define OSYSTEM_UNIX_HXX
 
 #include "../common/bspf.hxx"
-#include "../environment/AleSystem.hxx"
+#include "../environment/RleSystem.hxx"
 
-namespace ale {
+namespace rle {
 
 class RetroAgent;
 
@@ -30,20 +30,20 @@ class RetroAgent;
   This class defines UNIX-like OS's (Linux) system specific settings.
 
   @author  Stephen Anthony
-  @version $Id: AleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
+  @version $Id: RleSystemUNIX.hxx,v 1.16 2007/07/19 16:21:39 stephena Exp $
 */
-class AleSystemUNIX : public AleSystem
+class RleSystemUNIX : public RleSystem
 {
   public:
     /**
       Create a new UNIX-specific operating system object
     */
-    AleSystemUNIX(RetroAgent* retroagent);
+    RleSystemUNIX(RetroAgent* retroagent);
 
     /**
       Destructor
     */
-    virtual ~AleSystemUNIX();
+    virtual ~RleSystemUNIX();
 
     /**
       This method returns number of ticks in microseconds.
@@ -53,6 +53,6 @@ class AleSystemUNIX : public AleSystem
     uInt32 getTicks();
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif

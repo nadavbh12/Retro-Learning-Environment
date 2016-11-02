@@ -16,15 +16,15 @@
 // */
 //#include "RomUtils.hpp"
 //
-//#include "AleSystem.hxx"
+//#include "RleSystem.hxx"
 //
-//namespace ale {
+//namespace rle {
 //
 ///* reads a byte at a memory location between 0 and 128 */
 //
 //#include "../libretro.h"
 //
-//int readRam(const AleSystem* system, int offset) {
+//int readRam(const RleSystem* system, int offset) {
 //
 ////	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) + 0x80);
 //	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
@@ -33,7 +33,7 @@
 //
 //
 ///* extracts a decimal value from a byte */
-//int getDecimalScore(int index, const AleSystem* system) {
+//int getDecimalScore(int index, const RleSystem* system) {
 //
 //    int score = 0;
 //    int digits_val = readRam(system, index);
@@ -46,7 +46,7 @@
 //}
 //
 ///* extracts a decimal value from 2 bytes */
-//int getDecimalScore(int lower_index, int higher_index, const AleSystem* system) {
+//int getDecimalScore(int lower_index, int higher_index, const RleSystem* system) {
 //
 //    int score = 0;
 //    int lower_digits_val = readRam(system, lower_index);
@@ -67,7 +67,7 @@
 //
 //
 ///* extracts a decimal value from 3 bytes */
-//int getDecimalScore(int lower_index, int middle_index, int higher_index, const AleSystem* system) {
+//int getDecimalScore(int lower_index, int middle_index, int higher_index, const RleSystem* system) {
 //
 //    int score = getDecimalScore(lower_index, middle_index, system);
 //    int higher_digits_val = readRam(system, higher_index);
@@ -78,4 +78,4 @@
 //    return score;
 //}
 //
-//} // namespace ale
+//} // namespace rle

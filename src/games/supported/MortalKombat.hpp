@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 struct MortalKombatSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ struct MortalKombatSettings : public SnesSettings {
         virtual bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        virtual void step(const AleSystem& system);
+        virtual void step(const RleSystem& system);
 
         // saves the state of the rom settings
         virtual void saveState( Serializer & ser );
@@ -69,9 +69,9 @@ struct MortalKombatSettings : public SnesSettings {
 
         virtual const int lives() { return 0; }
 
-        virtual ActionVect getStartingActions(const AleSystem& system);
+        virtual ActionVect getStartingActions(const RleSystem& system);
 
-        void startingOperations(AleSystem& system);
+        void startingOperations(RleSystem& system);
 
     protected:
         std::unordered_set<Action> minimalActions;
@@ -83,6 +83,6 @@ struct MortalKombatSettings : public SnesSettings {
         bool match_ended;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __MORTAL_KOMBAT_SETTINGS_HPP__

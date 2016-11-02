@@ -23,7 +23,7 @@
 // SN:
 #include <iomanip>
 
-using namespace ale;
+using namespace rle;
 
 //// MGB: These methods originally belonged to ExportScreen. Possibly these should be returned to
 //// their own class, rather than be static methods. They are here to avoid exposing the gritty
@@ -61,7 +61,7 @@ using namespace ale;
 //}
 //
 //
-//static void writePNGHeader(std::ofstream& out, const ALEScreen &screen, bool doubleWidth = true) {
+//static void writePNGHeader(std::ofstream& out, const RLEScreen &screen, bool doubleWidth = true) {
 //
 //        int width = doubleWidth ? screen.width() * 2: screen.width();
 //        int height = screen.height();
@@ -88,7 +88,7 @@ using namespace ale;
 //}
 //
 //
-//static void writePNGData(std::ofstream &out, const ALEScreen &screen, const ColourPalette &palette, bool doubleWidth = true) {
+//static void writePNGData(std::ofstream &out, const RLEScreen &screen, const ColourPrlette &prlette, bool doubleWidth = true) {
 //
 //    int dataWidth = screen.width();
 //    int width = doubleWidth ? dataWidth * 2 : dataWidth;
@@ -107,7 +107,7 @@ using namespace ale;
 //        for(int j = 0; j < dataWidth; j++) {
 //            int r, g, b;
 //
-//            palette.getRGB(screen.getArray()[i * dataWidth + j], r, g, b);
+//            prlette.getRGB(screen.getArray()[i * dataWidth + j], r, g, b);
 //            // Double the pixel width, if so desired
 //            int jj = doubleWidth ? 2 * j : j;
 //
@@ -134,7 +134,7 @@ using namespace ale;
 //    if((compress(&compmem[0], &compmemsize, &buffer[0], height * (width * 3 + 1)) != Z_OK)) {
 //
 //        // @todo -- throw a proper exception
-//        ale::Logger::Error << "Error: Couldn't compress PNG" << std::endl;
+//        rle::Logger::Error << "Error: Couldn't compress PNG" << std::endl;
 //        return;
 //    }
 //
@@ -149,41 +149,41 @@ using namespace ale;
 //    writePNGChunk(out, "IEND", 0, 0);
 //}
 
-//ScreenExporter::ScreenExporter(ColourPalette &palette):
-//    m_palette(palette),
+//ScreenExporter::ScreenExporter(ColourPrlette &prlette):
+//    m_prlette(prlette),
 //    m_frame_number(0),
 //    m_frame_field_width(6) {
 //}
 //
 //
-//ScreenExporter::ScreenExporter(ColourPalette &palette, const std::string &path):
-//    m_palette(palette),
+//ScreenExporter::ScreenExporter(ColourPrlette &prlette, const std::string &path):
+//    m_prlette(prlette),
 //    m_frame_number(0),
 //    m_frame_field_width(6),
 //    m_path(path) {
 //}
 
 
-void ScreenExporter::save(const ALEScreen &screen, const std::string &filename) const {
+void ScreenExporter::save(const RLEScreen &screen, const std::string &filename) const {
 
     // Open file for writing
     std::ofstream out(filename.c_str(), std::ios_base::binary);
     if (!out.good()) {
 
         // @todo exception
-        ale::Logger::Error << "Could not open " << filename << " for writing" << std::endl;
+        rle::Logger::Error << "Could not open " << filename << " for writing" << std::endl;
         return;
     }
 
     // Now write the PNG proper
 //    writePNGHeader(out, screen, true);
-//    writePNGData(out, screen, m_palette, true);
+//    writePNGData(out, screen, m_prlette, true);
 //    writePNGEnd(out);
 
     out.close();
 }
 
-void ScreenExporter::saveNext(const ALEScreen &screen) {
+void ScreenExporter::saveNext(const RLEScreen &screen) {
 
     // Must have specified a directory.
     assert(m_path.size() > 0);

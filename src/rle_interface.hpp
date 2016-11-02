@@ -23,12 +23,12 @@
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
  *
  * *****************************************************************************
- *  ale_interface.hpp
+ *  rle_interface.hpp
  *
  *  The shared library interface.
  **************************************************************************** */
-#ifndef __ALE_INTERFACE_HPP__
-#define __ALE_INTERFACE_HPP__
+#ifndef __RLE_INTERFACE_HPP__
+#define __RLE_INTERFACE_HPP__
 
 #include <iostream>
 #include <vector>
@@ -38,16 +38,16 @@
 #include <string>
 #include <assert.h>
 
-namespace ale {
+namespace rle {
 
 static const std::string Version = "0.5.0";
 
-class AleSystem;
+class RleSystem;
 class Settings;
 struct pixelFormat;
 struct RomSettings;
 class RetroEnvironment;
-class ALEState;
+class RLEState;
 class ScreenExporter;
 class RetroAgent;
 
@@ -88,7 +88,7 @@ typedef uint32_t Action;
 // Atari actions
 #define JOYPAD_FIRE					JOYPAD_B	// for atari
 
-// a list of ALE actions
+// a list of RLE actions
 typedef std::vector<Action> ActionVect;
 
 // type used to represent insantanteous reward
@@ -99,12 +99,12 @@ typedef uint32_t pixel_t;
 typedef unsigned char byte_t;
 
 /** A simple wrapper around an Atari screen. */
-class ALEScreen {
+class RLEScreen {
   public:
-    ALEScreen(int h, int w);
-    ALEScreen(const ALEScreen &rhs);
-    ~ALEScreen();
-    ALEScreen& operator=(const ALEScreen &rhs);
+    RLEScreen(int h, int w);
+    RLEScreen(const RLEScreen &rhs);
+    ~RLEScreen();
+    RLEScreen& operator=(const RLEScreen &rhs);
 
     /** pixel accessors, (row, column)-ordered */
     pixel_t get(int r, int c) const;
@@ -126,7 +126,7 @@ class ALEScreen {
     size_t arraySize() const { return m_pixels.size(); }
 
     /** Returns whether two screens are equal */
-    bool equals(const ALEScreen &rhs) const;
+    bool equals(const RLEScreen &rhs) const;
 
     /** Returns a 32bit pixel in an R|G|B Format, 8 bits each */
     pixel_t getRGBPixel(const uint32_t &pixel)const;
@@ -143,12 +143,12 @@ class ALEScreen {
 
 
 /** A simple wrapper around the Atari RAM. */
-class ALERAM {
+class RLERAM {
   public:
-    ALERAM() : m_ram(NULL){}
-    ALERAM(const ALERAM &rhs);
+    RLERAM() : m_ram(NULL){}
+    RLERAM(const RLERAM &rhs);
 
-    ALERAM& operator=(const ALERAM &rhs);
+    RLERAM& operator=(const RLERAM &rhs);
 
     /** Byte accessors */
     byte_t get(unsigned int x) const;
@@ -161,7 +161,7 @@ class ALERAM {
     size_t size() const { return sizeof(m_ram); }
 
     /** Returns whether two copies of the RAM are equal */
-    bool equals(const ALERAM &rhs) const;
+    bool equals(const RLERAM &rhs) const;
 
   protected:
     byte_t* m_ram;
@@ -169,28 +169,28 @@ class ALERAM {
 };
 
 /**
-   This class interfaces ALE with external code for controlling agents.
+   This class interfaces RLE with external code for controlling agents.
  */
-class ALEInterface {
+class RLEInterface {
 public:
 
-    /** create an ALEInterface. Cannot create two instances within one thread */
-  ALEInterface();
+    /** create an RLEInterface. Cannot create two instances within one thread */
+  RLEInterface();
 
-  /** create an ALEInterface. Cannot create two instances within one thread */
-  ALEInterface(const std::string &rom_file, const std::string &core_file);
+  /** create an RLEInterface. Cannot create two instances within one thread */
+  RLEInterface(const std::string &rom_file, const std::string &core_file);
 
   // Legacy constructor
-  ALEInterface(bool display_screen);
+  RLEInterface(bool display_screen);
 
   /** Unload the emulator. */
-  ~ALEInterface();
+  ~RLEInterface();
 
   /** Copying is explicitly disallowed. */
-  ALEInterface(const ALEInterface &) = delete;
+  RLEInterface(const RLEInterface &) = delete;
 
   /** Assignment is explicitly disallowed. */
-  ALEInterface &operator=(const ALEInterface &) = delete;
+  RLEInterface &operator=(const RLEInterface &) = delete;
 
   // Resets the game, but not the full system.
   void reset_game();
@@ -228,10 +228,10 @@ public:
   int getEpisodeFrameNumber() const;
 
   // Returns the current game screen
-  const ALEScreen &getScreen() const;
+  const RLEScreen &getScreen() const;
 
   // Returns the current RAM content
-  const ALERAM &getRAM() const;
+  const RLERAM &getRAM() const;
 
   // Saves the state of the system
   void saveState();
@@ -241,19 +241,19 @@ public:
 
   // This makes a copy of the environment state. This copy does *not* include pseudorandomness,
   // making it suitable for planning purposes. By contrast, see cloneSystemState.
-  ALEState cloneState();
+  RLEState cloneState();
 
   // Reverse operation of cloneState(). This does not restore pseudorandomness, so that repeated
   // calls to restoreState() in the stochastic controls setting will not lead to the same outcomes.
   // By contrast, see restoreSystemState.
-  void restoreState(const ALEState& state);
+  void restoreState(const RLEState& state);
 
   // This makes a copy of the system & environment state, suitable for serialization. This includes
   // pseudorandomness and so is *not* suitable for planning purposes.
-  ALEState cloneSystemState();
+  RLEState cloneSystemState();
 
   // Reverse operation of cloneSystemState.
-  void restoreSystemState(const ALEState& state);
+  void restoreSystemState(const RLEState& state);
 
   // Save the current screen as a png file
   void saveScreenPNG(const std::string& filename);
@@ -261,33 +261,33 @@ public:
   // Creates a ScreenExporter object which can be used to save a sequence of frames. Ownership 
   // said object is passed to the caller. Frames are saved in the directory 'path', which needs
   // to exists. 
-  ScreenExporter *createScreenExporter(const std::string &path) const;
+//  ScreenExporter *createScreenExporter(const std::string &path) const;
 
-	// Get the value of a setting.
-	std::string getString(const std::string& key);
-	int getInt(const std::string& key);
-	bool getBool(const std::string& key);
-	float getFloat(const std::string& key);
+  // Get the value of a setting.
+  std::string getString(const std::string& key);
+  int getInt(const std::string& key);
+  bool getBool(const std::string& key);
+  float getFloat(const std::string& key);
 
-	// Set the value of a setting. loadRom() must be called before the
-	// setting will take effect.
-	void setString(const std::string& key, const std::string& value);
-	void setInt(const std::string& key, const int value);
-	void setBool(const std::string& key, const bool value);
-	void setFloat(const std::string& key, const float value);
+  // Set the value of a setting. loadRom() must be called before the
+  // setting will take effect.
+  void setString(const std::string& key, const std::string& value);
+  void setInt(const std::string& key, const int value);
+  void setBool(const std::string& key, const bool value);
+  void setFloat(const std::string& key, const float value);
 
-  // Display ALE welcome message
+  // Display RLE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-  static void createAleSystem(std::unique_ptr<AleSystem> &theAleSystem,
+  static void createRleSystem(std::unique_ptr<RleSystem> &theRleSystem,
                             std::unique_ptr<Settings> &theSettings,
                             std::unique_ptr<RetroAgent> &theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
-                           std::unique_ptr<AleSystem> &theSLESystem);
+                           std::unique_ptr<RleSystem> &theSLESystem);
  private:
    class Impl;
    Impl* m_pimpl;
 };
 
-} // namespace ale
-#endif // __ALE_INTERFACE_HPP__
+} // namespace rle
+#endif // __RLE_INTERFACE_HPP__

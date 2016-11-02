@@ -20,9 +20,9 @@
 #define SETTINGS_UNIX_HXX
 
 #include "../environment/Settings.hxx"
-#include "../environment/AleSystem.hxx"
+#include "../environment/RleSystem.hxx"
 
-namespace ale {
+namespace rle {
 /**
   This class defines UNIX-like OS's (Linux) system specific settings.
 
@@ -35,7 +35,7 @@ class SettingsUNIX : public Settings
     /**
       Create a new UNIX settings object
     */
-    SettingsUNIX(AleSystem* aleSystem);
+    SettingsUNIX(RleSystem* rleSystem);
 
     /**
       Destructor
@@ -43,6 +43,6 @@ class SettingsUNIX : public Settings
     virtual ~SettingsUNIX();
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif

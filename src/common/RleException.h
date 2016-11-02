@@ -1,5 +1,5 @@
 /*
- * AleException.h
+ * RleException.h
  *
  *  Created on: Jan 5, 2016
  *      Author: administrator
@@ -12,12 +12,12 @@
 #include <exception>
 using namespace std;
 
-class AleException : public exception
+class RleException : public exception
 {
 public:
-	AleException();
-	AleException(string str) : description(str){};
-	AleException(const char* str) : description(str){};
+	RleException();
+	RleException(string str) : description(str){};
+	RleException(const char* str) : description(str){};
 	virtual const char* what() const throw()
 	{
 		return description.c_str();

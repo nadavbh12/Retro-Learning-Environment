@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 class FZeroNoSpeedSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ class FZeroNoSpeedSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -78,6 +78,6 @@ class FZeroNoSpeedSettings : public SnesSettings {
         reward_t m_score;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __F_ZERO_NO_SPEED_SETTINGS_HPP__

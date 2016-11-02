@@ -15,12 +15,12 @@
  *  
  **************************************************************************** */
 
-#ifndef __ALE_ENVIRONMENT_HPP__
-#define __ALE_ENVIRONMENT_HPP__
+#ifndef __RLE_ENVIRONMENT_HPP__
+#define __RLE_ENVIRONMENT_HPP__
 
-#include "ale_state.hpp"
-#include "ale_screen.hpp"
-#include "ale_ram.hpp"
+#include "rle_state.hpp"
+#include "rle_screen.hpp"
+#include "rle_ram.hpp"
 #include "phosphor_blend.hpp"
 #include "../games/RomSettings.hpp"
 #include "../common/ScreenExporter.hpp"
@@ -28,10 +28,10 @@
 #include "../common/DebugMacros.h"
 
 #include "RetroAgent.h"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include <stack>
 
-namespace ale {
+namespace rle {
 
 struct pixelFormat {
    uint32_t rmask;
@@ -55,7 +55,7 @@ class RetroEnvironment {
 
 	public:
     RetroEnvironment(
-    		AleSystem * system,
+    		RleSystem * system,
     		RomSettings * settings);
 
     /** Resets the system to its start state. */
@@ -67,15 +67,15 @@ class RetroEnvironment {
 
     /** Returns a copy of the current emulator state. Note that this doesn't include
         pseudorandomness, so that clone/restoreState are suitable for planning. */
-    ALEState cloneState();
+    RLEState cloneState();
     /** Restores a previously saved copy of the state. */
-    void restoreState(const ALEState&);
+    void restoreState(const RLEState&);
 
     /** Returns a copy of the current emulator state. This includes RNG state information, and
         more generally should lead to exactly reproducibility. */
-    ALEState cloneSystemState();
+    RLEState cloneSystemState();
     /** Restores a previously saved copy of the state, including RNG state information. */
-    void restoreSystemState(const ALEState&);
+    void restoreSystemState(const RLEState&);
 
     /** Applies the given actions (e.g. updating paddle positions when the paddle is used)
       *  and performs one simulation step in Stella. Returns the resultant reward. When 
@@ -89,13 +89,13 @@ class RetroEnvironment {
     bool isTerminal();
 
     /** Accessor methods for the environment state. */
-    void setState(const ALEState & state);
-    const ALEState &getState() const;
+    void setState(const RLEState & state);
+    const RLEState &getState() const;
 
     /** Returns the current screen after processing (e.g. color averaging) */
 
-    const ALEScreen &getScreen() const { return m_screen; }
-    const ALERAM &getRAM() const { return m_ram; }
+    const RLEScreen &getScreen() const { return m_screen; }
+    const RLERAM &getRAM() const { return m_ram; }
 
     int getFrameNumber() const{ return m_state.getFrameNumber(); }
     int getEpisodeFrameNumber() const {return m_state.getEpisodeFrameNumber(); }
@@ -123,16 +123,16 @@ class RetroEnvironment {
     void getPixelFormat(struct pixelFormat &m_pixelFormat);
 
   private:
-    AleSystem *m_alesystem;
+    RleSystem *m_rlesystem;
     RomSettings *m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
 //    std::string m_cartridge_md5; // Necessary for saving and loading emulator state
 
-    std::stack<ALEState> m_saved_states; // States are saved on a stack
+    std::stack<RLEState> m_saved_states; // States are saved on a stack
     
-    ALEState m_state; // Current environment state    
-    ALEScreen m_screen; // The current ALE screen (possibly colour-averaged)
-    ALERAM m_ram; // The current ALE RAM
+    RLEState m_state; // Current environment state    
+    RLEScreen m_screen; // The current ALE screen (possibly colour-averaged)
+    RLERAM m_ram; // The current ALE RAM
 
 //    bool m_use_paddles;  // Whether this game uses paddles
     
@@ -149,6 +149,6 @@ class RetroEnvironment {
 
 };
 
-} // namespace ale
+} // namespace rle
 
-#endif // __ALE_ENVIRONMENT_HPP__
+#endif // __RLE_ENVIRONMENT_HPP__

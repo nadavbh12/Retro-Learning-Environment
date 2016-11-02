@@ -15,9 +15,9 @@
 #include "../RomUtils.hpp"
 #include "Wolfenstein.hpp"
 
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 
-using namespace ale;
+using namespace rle;
 
 
 WolfensteinSettings::WolfensteinSettings() {
@@ -67,7 +67,7 @@ RomSettings* WolfensteinSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void WolfensteinSettings::step(const AleSystem& system) {
+void WolfensteinSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
     //	// update the reward

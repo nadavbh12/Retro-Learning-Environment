@@ -42,7 +42,7 @@
 #define INSERT_ACTION_SINGLE_A(action) INSERT_ACTION_SINGLE(action, A)
 #define INSERT_NOPS(repeat) INSERT_ACTIONS(JOYPAD_NOOP, A, repeat)
 
-namespace ale {
+namespace rle {
 
 // rom support interface for snes
 struct SnesSettings : public RomSettings{
@@ -69,11 +69,11 @@ struct SnesSettings : public RomSettings{
     virtual bool isMinimal(const Action &a) const = 0;
 
     // process the latest information from ALE
-    virtual void step(const AleSystem &system) = 0;
+    virtual void step(const RleSystem &system) = 0;
 };
 
 
-} // namespace ale
+} // namespace rle
 
 
 #endif // __SNES_SETTINGS_HPP__

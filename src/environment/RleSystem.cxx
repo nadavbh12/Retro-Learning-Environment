@@ -9,34 +9,27 @@ using namespace std;
 
 #include "FSNode.hxx"
 #include "Settings.hxx"
-#include "AleSystem.hxx"
-#include "SoundSDL.hxx"
-//#define MAX_ROM_SIZE  512 * 1024
-
+#include "RleSystem.hxx"
 #include <time.h>
 
 #include "bspf.hxx"
 
-using namespace ale;
+using namespace rle;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystem::AleSystem(RetroAgent* retroagent)
+RleSystem::RleSystem(RetroAgent* retroagent)
   : 
-	myRetroAgent(retroagent),	//RLE
-//    mySound(NULL),
     mySettings(NULL),
-    myQuitLoop(false),
-    mySkipEmulation(false),
+	myRetroAgent(retroagent),	//RLE
     myRomFile(""),
 	myCoreFile(""),
-    myFeatures(""),
     p_display_screen(NULL)
 {}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-AleSystem::~AleSystem()
+RleSystem::~RleSystem()
 {
 
-  // AleSystem takes responsibility for framebuffer and sound,
+  // RleSystem takes responsibility for framebuffer and sound,
   // since it created them
 //  if (mySound != NULL)
 //    delete mySound;
@@ -48,14 +41,14 @@ AleSystem::~AleSystem()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool AleSystem::create()
+bool RleSystem::create()
 {
   // Create the sound object; the sound subsystem isn't actually
   // opened until needed, so this is non-blocking (on those systems
   // that only have a single sound device (no hardware mixing)
   //  createSound();
   
-  // Seed RNG. This will likely get re-called, e.g. by the ALEInterface, but is needed
+  // Seed RNG. This will likely get re-called, e.g. by the RLEInterface, but is needed
   // by other interfaces.
   resetRNGSeed();
 
@@ -63,7 +56,7 @@ bool AleSystem::create()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-void AleSystem::resetRNGSeed() {
+void RleSystem::resetRNGSeed() {
 
   // We seed the random number generator. The 'time' seed is somewhat redundant, since the
   // rng defaults to time. But we'll do it anyway.
@@ -76,18 +69,18 @@ void AleSystem::resetRNGSeed() {
   }
 }
 
-bool AleSystem::saveState(Serializer& out) {
+bool RleSystem::saveState(Serializer& out) {
 
 //     Here we serialize the RNG state.
 	    return myRandGen.saveState(out);
 }
 
-bool AleSystem::loadState(Deserializer& in) {
+bool RleSystem::loadState(Deserializer& in) {
     return myRandGen.loadState(in);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void AleSystem::setConfigPaths()
+//void RleSystem::setConfigPaths()
 //{
 //  myGameListCacheFile = myBaseDir + BSPF_PATH_SEPARATOR + "stella.cache";
 //
@@ -96,10 +89,10 @@ bool AleSystem::loadState(Deserializer& in) {
 //    myCheatFile = myBaseDir + BSPF_PATH_SEPARATOR + "stella.cht";
 //  mySettings->setString("cheatfile", myCheatFile);
 //
-//  myPaletteFile = mySettings->getString("palettefile");
-//  if(myPaletteFile == "")
-//    myPaletteFile = myBaseDir + BSPF_PATH_SEPARATOR + "stella.pal";
-//  mySettings->setString("palettefile", myPaletteFile);
+//  myPrletteFile = mySettings->getString("prlettefile");
+//  if(myPrletteFile == "")
+//    myPrletteFile = myBaseDir + BSPF_PATH_SEPARATOR + "stella.pal";
+//  mySettings->setString("prlettefile", myPrletteFile);
 //
 //  myPropertiesFile = mySettings->getString("propsfile");
 //  if(myPropertiesFile == "")
@@ -107,7 +100,7 @@ bool AleSystem::loadState(Deserializer& in) {
 //  mySettings->setString("propsfile", myPropertiesFile);
 //}
 
-void AleSystem::setBaseDir(const string& basedir)
+void RleSystem::setBaseDir(const string& basedir)
 {
   myBaseDir = basedir;
   if(!FilesystemNode::dirExists(myBaseDir))
@@ -115,19 +108,19 @@ void AleSystem::setBaseDir(const string& basedir)
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void AleSystem::step() {
+void RleSystem::step() {
 	myRetroAgent->run();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-void AleSystem::setFramerate(uInt32 framerate)
+void RleSystem::setFramerate(uInt32 framerate)
 {
   myDisplayFrameRate = framerate;
   myTimePerFrame = (uInt32)(1000000.0 / (double)myDisplayFrameRate);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void AleSystem::createSound()
+//void RleSystem::createSound()
 //{
 //  if (mySound != NULL) {
 //    delete mySound;
@@ -150,20 +143,20 @@ void AleSystem::setFramerate(uInt32 framerate)
 //}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool AleSystem::loadCore(const string& corePath){
+bool RleSystem::loadCore(const string& corePath){
 	myCoreFile = corePath;
 	myRetroAgent->loadCore(corePath);
 	return true;
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool AleSystem::loadRom(const string& rom){
+bool RleSystem::loadRom(const string& rom){
 	myRomFile = rom;
 	myRetroAgent->loadRom(rom);
 	return true;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void AleSystem::resetLoopTiming()
+//void RleSystem::resetLoopTiming()
 //{
 //  memset(&myTimingInfo, 0, sizeof(TimingInfo));
 //  myTimingInfo.start = getTicks();

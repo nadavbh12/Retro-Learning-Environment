@@ -8,15 +8,15 @@
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
  *
  * *****************************************************************************
- *  ale_screen.hpp
+ *  rle_screen.hpp
  *
  *  A class that encapsulates an Atari 2600 screen. Code is provided inline for
  *   efficiency reasonss.
  *  
  **************************************************************************** */
 
-#ifndef __ALE_SCREEN_HPP__
-#define __ALE_SCREEN_HPP__
+#ifndef __RLE_SCREEN_HPP__
+#define __RLE_SCREEN_HPP__
 
 #include <string.h>
 #include <memory>
@@ -28,12 +28,12 @@
 //typedef unsigned char pixel_t;
 //
 ///** A simple wrapper around an Atari screen. */
-//class ALEScreen {
+//class RLEScreen {
 //  public:
-//    ALEScreen(int h, int w);
-//    ALEScreen(const ALEScreen &rhs);
+//    RLEScreen(int h, int w);
+//    RLEScreen(const RLEScreen &rhs);
 //
-//    ALEScreen& operator=(const ALEScreen &rhs);
+//    RLEScreen& operator=(const RLEScreen &rhs);
 //
 //    /** pixel accessors, (row, column)-ordered */
 //    pixel_t get(int r, int c) const;
@@ -53,7 +53,7 @@
 //    size_t arraySize() const { return m_rows * m_columns * sizeof(pixel_t); }
 //
 //    /** Returns whether two screens are equal */
-//    bool equals(const ALEScreen &rhs) const;
+//    bool equals(const RLEScreen &rhs) const;
 //
 //  protected:
 //    int m_rows;
@@ -62,21 +62,21 @@
 //    std::vector<pixel_t> m_pixels;
 //};
 
-//inline ALEScreen::ALEScreen(int h, int w):
+//inline RLEScreen::RLEScreen(int h, int w):
 //  m_rows(h),
 //  m_columns(w),
 //  // Create a pixel array of the requisite size
 //  m_pixels(m_rows * m_columns) {
 //}
 //
-//inline ALEScreen::ALEScreen(const ALEScreen &rhs):
+//inline RLEScreen::RLEScreen(const RLEScreen &rhs):
 //  m_rows(rhs.m_rows),
 //  m_columns(rhs.m_columns),
 //  m_pixels(rhs.m_pixels) {
 //
 //}
 //
-//inline ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
+//inline RLEScreen& RLEScreen::operator=(const RLEScreen &rhs) {
 //
 //  m_rows = rhs.m_rows;
 //  m_columns = rhs.m_columns;
@@ -88,31 +88,31 @@
 //  return *this;
 //}
 //
-//inline bool ALEScreen::equals(const ALEScreen &rhs) const {
+//inline bool RLEScreen::equals(const RLEScreen &rhs) const {
 //  return (m_rows == rhs.m_rows &&
 //          m_columns == rhs.m_columns &&
 //          (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
 //}
 //
 //// pixel accessors, (row, column)-ordered
-//inline pixel_t ALEScreen::get(int r, int c) const {
+//inline pixel_t RLEScreen::get(int r, int c) const {
 //  // Perform some bounds-checking
 //  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
 //  return m_pixels[r * m_columns + c];
 //}
 //
-//inline pixel_t* ALEScreen::pixel(int r, int c) {
+//inline pixel_t* RLEScreen::pixel(int r, int c) {
 //  // Perform some bounds-checking
 //  assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
 //  return &m_pixels[r * m_columns + c];
 //}
 //
 //// Access a whole row
-//inline pixel_t* ALEScreen::getRow(int r) const {
+//inline pixel_t* RLEScreen::getRow(int r) const {
 //  assert (r >= 0 && r < m_rows);
 //  return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
 //}
 
 
-#endif // __ALE_SCREEN_HPP__
+#endif // __RLE_SCREEN_HPP__
 

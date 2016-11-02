@@ -15,9 +15,9 @@
 #include "../RomUtils.hpp"
 #include "GradiusIII.hpp"
 
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 
-using namespace ale;
+using namespace rle;
 
 
 GradiusIIISettings::GradiusIIISettings() {
@@ -67,7 +67,7 @@ RomSettings* GradiusIIISettings::clone() const {
 
 
 /* process the latest information from ALE */
-void GradiusIIISettings::step(const AleSystem& system) {
+void GradiusIIISettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
     //	// update the reward

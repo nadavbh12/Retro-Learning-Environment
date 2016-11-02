@@ -35,7 +35,7 @@
 
 #include "RomSettings.hpp"
 
-namespace ale {
+namespace rle {
 
 // rom support interface for Atari
 struct AtariSettings : public RomSettings{
@@ -63,12 +63,12 @@ struct AtariSettings : public RomSettings{
     virtual bool isMinimal(const Action &a) const = 0;
 
     // process the latest information from ALE
-    virtual void step(const AleSystem &system) = 0;
+    virtual void step(const RleSystem &system) = 0;
 
-	int readRam(const AleSystem* system, int offset);
+	int readRam(const RleSystem* system, int offset);
 };
 
-} // namespace ale
+} // namespace rle
 
 
 #endif // __ATARI_SETTINGS_HPP__

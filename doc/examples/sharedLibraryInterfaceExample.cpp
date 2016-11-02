@@ -15,7 +15,7 @@
  **************************************************************************** */
 
 #include <iostream>
-#include <ale_interface.hpp>
+#include <rle_interface.hpp>
 #include <DebugMacros.h>
 #include <algorithm>
 
@@ -26,7 +26,7 @@
 #endif
 
 using namespace std;
-using namespace ale;
+using namespace rle;
 
 #include <unistd.h>
 int main(int argc, char** argv) {
@@ -34,46 +34,46 @@ int main(int argc, char** argv) {
         std::cerr << "Usage: " << argv[0] << " rom_file core_file" << std::endl;
         return 1;
     }
-    ALEInterface ale;
+    RLEInterface rle;
     float maxVal = 1;
     float minVal = -1;
 
     // Get & Set the desired settings
-    ale.setInt("random_seed", 123);
+    rle.setInt("random_seed", 123);
     //The default is already 0.25, this is just an example
-    ale.setFloat("repeat_action_probability", 0.25);
+    rle.setFloat("repeat_action_probability", 0.25);
 
 #ifdef __USE_SDL
-    ale.setBool("display_screen", true);
-    ale.setBool("sound", true);
+    rle.setBool("display_screen", true);
+    rle.setBool("sound", true);
 #endif
 
-    ale.setString("MK_player1_character", "cage");
-//    ale.setString("MK_player2_character", "scorpion");
-    ale.setInt("MK_opponent_character", 4);
+    rle.setString("MK_player1_character", "cage");
+//    rle.setString("MK_player2_character", "scorpion");
+    rle.setInt("MK_opponent_character", 4);
     // Load the ROM file. (Also resets the system for new settings to
     // take effect.)
-    ale.loadROM(argv[1], argv[2]);
+    rle.loadROM(argv[1], argv[2]);
 
     // Get the vector of minimal actions
-    ActionVect legal_actions = ale.getMinimalActionSet();
+    ActionVect legal_actions = rle.getMinimalActionSet();
 
 
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
         float totalCroppedReward = 0;
-        while (!ale.game_over()) {
+        while (!rle.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
         	// Apply the action and get the resulting reward
-            float reward = ale.act(a);
+            float reward = rle.act(a);
             float croppedReward = reward > 0 ? std::min(reward, maxVal) : std::max(reward, minVal);
             totalCroppedReward += croppedReward;
             totalReward += reward;
         }
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
         cout << "Episode " << episode << " ended with cropped score: " << totalCroppedReward << endl;
-        ale.reset_game();
+        rle.reset_game();
     }
     return 0;
 }

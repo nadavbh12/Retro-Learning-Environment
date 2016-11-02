@@ -12,13 +12,13 @@
 #include <iomanip>
 #include "../RomUtils.hpp"
 #include "MortalKombat2Players.hpp"
-#include "AleSystem.hxx"
-#include "AleException.h"
+#include "RleSystem.hxx"
+#include "RleException.h"
 
-using namespace ale;
+using namespace rle;
 
 
-MortalKombat2PlayersSettings::MortalKombat2PlayersSettings() : m_rewardB(0), MortalKombatSettings() {}
+MortalKombat2PlayersSettings::MortalKombat2PlayersSettings() : MortalKombatSettings(), m_rewardB(0) {}
 
 
 /* create a new instance of the rom */
@@ -31,7 +31,7 @@ RomSettings* MortalKombat2PlayersSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void MortalKombat2PlayersSettings::step(const AleSystem& system) {
+void MortalKombat2PlayersSettings::step(const RleSystem& system) {
 	MortalKombatSettings::step(system);
 	m_rewardB = - m_reward;
 }
@@ -65,7 +65,7 @@ void MortalKombat2PlayersSettings::loadState( Deserializer & des ) {
   m_rewardB = des.getInt();
 }
 
-ActionVect MortalKombat2PlayersSettings::getStartingActions(const AleSystem& system){
+ActionVect MortalKombat2PlayersSettings::getStartingActions(const RleSystem& system){
 	int num_of_nops(100);
 	ActionVect startingActions;
 
@@ -103,7 +103,7 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const AleSystem& sys
 		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
 		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
 	}else{
-		throw AleException("MK_player1_character illegal");
+		throw RleException("MK_player1_character illegal");
 	}
 	INSERT_NOPS(num_of_nops)
 	// choose for player b - Sonya
@@ -129,7 +129,7 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const AleSystem& sys
 	}else if("scorpion" == player2_character){
 		INSERT_ACTION_SINGLE(JOYPAD_DOWN, B)
 	}else{
-		throw AleException("MK_player2_character illegal");
+		throw RleException("MK_player2_character illegal");
 	}
 	INSERT_NOPS(num_of_nops)
 

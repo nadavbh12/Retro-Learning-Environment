@@ -13,10 +13,10 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "SuperMarioAllStars.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 SuperMarioAllStarsSettings::SuperMarioAllStarsSettings() {
@@ -46,7 +46,7 @@ RomSettings* SuperMarioAllStarsSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void SuperMarioAllStarsSettings::step(const AleSystem& system) {
+void SuperMarioAllStarsSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	// update the reward

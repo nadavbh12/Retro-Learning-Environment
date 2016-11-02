@@ -17,19 +17,19 @@
 //#ifndef __ROMUTILS_HPP__
 //#define __ROMUTILS_HPP__
 //
-//namespace ale {
+//namespace rle {
 //
-//class AleSystem;
+//class RleSystem;
 //
 //// reads a byte at a memory location between 0 and 1023
-//extern int readRam(const AleSystem* system, int offset);
+//extern int readRam(const RleSystem* system, int offset);
 //
 //// extracts a decimal value from 1, 2, and 3 bytes respectively
-//extern int getDecimalScore(int idx, const AleSystem* system);
-//extern int getDecimalScore(int lo, int hi, const AleSystem* system);
-//extern int getDecimalScore(int lo, int mid, int hi, const AleSystem* system);
+//extern int getDecimalScore(int idx, const RleSystem* system);
+//extern int getDecimalScore(int lo, int hi, const RleSystem* system);
+//extern int getDecimalScore(int lo, int mid, int hi, const RleSystem* system);
 //
-//} // namespace ale
+//} // namespace rle
 //
 //#endif // __ROMUTILS_HPP__
 //

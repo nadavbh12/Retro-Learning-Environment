@@ -9,34 +9,34 @@
  *
  * ******************************************************************************/
 
-#include "../ale_interface.hpp"
+#include "../rle_interface.hpp"
 
-namespace ale {
-inline ALERAM::ALERAM(const ALERAM &rhs) {
+namespace rle {
+inline RLERAM::RLERAM(const RLERAM &rhs) {
   // Copy data over
 //  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
 }
 
-inline ALERAM& ALERAM::operator=(const ALERAM &rhs) {
+inline RLERAM& RLERAM::operator=(const RLERAM &rhs) {
   // Copy data over
 //  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
   m_ram = rhs.m_ram;
   return *this;
 }
 
-inline bool ALERAM::equals(const ALERAM &rhs) const {
+inline bool RLERAM::equals(const RLERAM &rhs) const {
   return (m_ram == rhs.m_ram);
 }
 
 // Byte accessors
-byte_t ALERAM::get(unsigned int x) const {
+byte_t RLERAM::get(unsigned int x) const {
   // Wrap RAM around the first 128 bytes
   return m_ram[x & 0x7F];
 //  return m_ram.at(x);
 }
 
-//inline byte_t* ALERAM::byte(unsigned int x) {
+//inline byte_t* RLERAM::byte(unsigned int x) {
 //  return &m_ram[x & 0x7F];
 //}
 
-} // ale namespace
+} // rle namespace

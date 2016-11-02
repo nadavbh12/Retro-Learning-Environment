@@ -18,7 +18,6 @@
 /// snes games
 #include "supported/AtariCollection.hpp"
 #include "supported/FinalFight.hpp"
-#include "supported/FinalFight_WithRight.hpp"
 #include "supported/FZero.hpp"
 #include "supported/FZeroNoSpeed.hpp"
 #include "supported/GradiusIII.hpp"
@@ -28,8 +27,6 @@
 #include "supported/SuperMarioAllStars.hpp"
 #include "supported/SuperMarioAllStarsNoRight.hpp"
 #include "supported/TetrisAndDrMario.hpp"
-#include "supported/TetrisAndDrMarioLines.hpp"
-#include "supported/TetrisAndDrMarioNumBlocks.hpp"
 #include "supported/Boxing.hpp"
 #include "supported/Wolfenstein.hpp"
 
@@ -84,7 +81,7 @@
 //#include "supported/YarsRevenge.hpp"
 //#include "supported/Zaxxon.hpp"
 
-using namespace ale;
+using namespace rle;
 
 /* list of supported games */
 static const RomSettings *roms[]  = {
@@ -155,7 +152,6 @@ static const RomSettings *roms[]  = {
 	// SNES games
 	new AtariCollectionSettings(),
 	new FinalFightSettings(),
-	new FinalFightWithRightSettings(),
 	new FZeroSettings(),
 	new FZeroNoSpeedSettings(),
 	new GradiusIIISettings(),
@@ -166,14 +162,12 @@ static const RomSettings *roms[]  = {
     new SuperMarioAllStarsNoRightSettings(),
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings(),
-    new TetrisAndDrMarioLinesSettings(),
-    new TetrisAndDrMarioNumBlocksSettings(),
 	new WolfensteinSettings(),
 };
 
 
 /* looks for the RL wrapper corresponding to a particular rom title */
-RomSettings *ale::buildRomRLWrapper(const std::string &rom, bool twoPlayers) {
+RomSettings *rle::buildRomRLWrapper(const std::string &rom, bool twoPlayers) {
 
     size_t slash_ind = rom.find_last_of("/\\");
     std::string rom_str = rom.substr(slash_ind + 1);

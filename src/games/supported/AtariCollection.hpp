@@ -31,7 +31,7 @@
 
 #include "../SnesSettings.hpp"
 
-namespace ale {
+namespace rle {
 
 struct AtariCollectionSettings : public SnesSettings {
 
@@ -58,7 +58,7 @@ struct AtariCollectionSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -78,6 +78,6 @@ struct AtariCollectionSettings : public SnesSettings {
         int m_lives;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __ATARI_COLLECTION_SETTINGS_HPP__

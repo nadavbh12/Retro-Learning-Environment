@@ -1,7 +1,7 @@
 #ifndef __LOG_HPP__
 #define __LOG_HPP__
 #include <iostream>
-namespace ale
+namespace rle
 {
     class Logger
     {

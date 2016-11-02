@@ -19,33 +19,33 @@
 
 #include <string>
 #include "display_screen.h"
-#include "../environment/ale_screen.hpp"
+#include "../environment/rle_screen.hpp"
 
 //SN:
 #include <iostream>
 
-namespace ale {
+namespace rle {
 
 class ScreenExporter {
 
     public:
 
         /** Creates a new ScreenExporter which can be used to save screens using save(filename). */ 
-//        ScreenExporter(ColourPalette &palette);
+//        ScreenExporter(ColourPrlette &prlette);
 
         /** Creates a new ScreenExporter which will save frames successively in the directory provided.
             Frames are sequentially named with 6 digits, starting at 000000. */
-//        ScreenExporter(ColourPalette &palette, const std::string &path);
+//        ScreenExporter(ColourPrlette &prlette, const std::string &path);
 
         /** Save the given screen to the given filename. No paths are created. */
-        void save(const ALEScreen &screen, const std::string &filename) const;
+        void save(const RLEScreen &screen, const std::string &filename) const;
 
         /** Save the given screen according to our own internal numbering. */
-        void saveNext(const ALEScreen &screen);
+        void saveNext(const RLEScreen &screen);
 
     private:
 
-//        ColourPalette &m_palette;
+//        ColourPrlette &m_prlette;
 
         /** The next frame number. */
         int m_frame_number;
@@ -57,7 +57,7 @@ class ScreenExporter {
         std::string m_path;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __SCREEN_EXPORTER_HPP__ 
 

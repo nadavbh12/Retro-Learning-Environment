@@ -26,14 +26,14 @@ using namespace std;
 //#include "OSystem.hxx"
 #include "bspf.hxx"
 #include "Settings.hxx"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 
-using namespace ale;
+using namespace rle;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Settings::Settings(AleSystem* alesystem) : myAleSystem(alesystem) {
+Settings::Settings(RleSystem* rlesystem) : myRleSystem(rlesystem) {
     // Add this settings object to the OSystem
-    myAleSystem->attach(this);
+    myRleSystem->attach(this);
     setInternal("sound", "false");
     setDefaultSettings();
 
@@ -51,7 +51,7 @@ void Settings::loadConfig(const char* config_file) {
 
 	ifstream in(config_file);
 	if (!in || !in.is_open()) {
-		ale::Logger::Warning << "Warning: couldn't load settings file: "
+		rle::Logger::Warning << "Warning: couldn't load settings file: "
 				<< config_file << std::endl;
 		return;
 	}
@@ -89,7 +89,7 @@ void Settings::loadConfig(const char* config_file) {
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Settings::loadConfig() {
-	loadConfig(myAleSystem->configFile().c_str());
+	loadConfig(myRleSystem->configFile().c_str());
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,7 +116,7 @@ string Settings::loadCommandLine(int argc, char** argv) {
 			}
 
 			if (++i >= argc) {
-				ale::Logger::Error << "Missing argument for '" << key << "'"
+				rle::Logger::Error << "Missing argument for '" << key << "'"
 						<< endl;
 				return "";
 			}
@@ -188,9 +188,9 @@ void Settings::validate() {
 	else if (i > 800)
 		setInternal("pthresh", "800");
 
-	s = getString("palette");
+	s = getString("prlette");
 	if (s != "standard" && s != "z26" && s != "user")
-		setInternal("palette", "standard");
+		setInternal("prlette", "standard");
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -203,7 +203,7 @@ void Settings::usage() {
 			" * (Powered by LibRetro)\n"
 			" ***************************************************************************\n"
 			"\n"
-			" Usage: ale [options ...] -core_file corefile romfile\n"
+			" Usage: rle [options ...] -core_file corefile romfile\n"
 			"\n"
 			" Main arguments:\n"
 			"   -help -- prints out help information\n"
@@ -277,9 +277,9 @@ void Settings::saveConfig() {
 	if (!settingsChanged)
 		return;
 
-	ofstream out(myAleSystem->configFile().c_str());
+	ofstream out(myRleSystem->configFile().c_str());
 	if (!out || !out.is_open()) {
-		ale::Logger::Error << "Error: Couldn't save settings file\n";
+		rle::Logger::Error << "Error: Couldn't save settings file\n";
 		return;
 	}
 
@@ -373,8 +373,8 @@ int Settings::getInt(const string& key, bool strict) const {
 			return (int) atoi(myExternalSettings[idx].value.c_str());
 		} else {
 			if (strict) {
-				ale::Logger::Error << "No value found for key: " << key << ". ";
-				ale::Logger::Error
+				rle::Logger::Error << "No value found for key: " << key << ". ";
+				rle::Logger::Error
 						<< "Make sure all the settings files are loaded."
 						<< endl;
 				exit(-1);
@@ -396,8 +396,8 @@ float Settings::getFloat(const string& key, bool strict) const {
 			return (float) atof(myExternalSettings[idx].value.c_str());
 		} else {
 			if (strict) {
-				ale::Logger::Error << "No value found for key: " << key << ". ";
-				ale::Logger::Error
+				rle::Logger::Error << "No value found for key: " << key << ". ";
+				rle::Logger::Error
 						<< "Make sure all the settings files are loaded."
 						<< endl;
 				exit(-1);
@@ -430,8 +430,8 @@ bool Settings::getBool(const string& key, bool strict) const {
 			return false;
 	} else {
 		if (strict) {
-			ale::Logger::Error << "No value found for key: " << key << ". ";
-			ale::Logger::Error << "Make sure all the settings files are loaded."
+			rle::Logger::Error << "No value found for key: " << key << ". ";
+			rle::Logger::Error << "Make sure all the settings files are loaded."
 					<< endl;
 			exit(-1);
 		} else {
@@ -450,8 +450,8 @@ const string& Settings::getString(const string& key, bool strict) const {
 		return myExternalSettings[idx].value;
 	} else {
 		if (strict) {
-			ale::Logger::Error << "No value found for key: " << key << ". ";
-			ale::Logger::Error << "Make sure all the settings files are loaded."
+			rle::Logger::Error << "No value found for key: " << key << ". ";
+			rle::Logger::Error << "Make sure all the settings files are loaded."
 					<< endl;
 			exit(-1);
 		} else {

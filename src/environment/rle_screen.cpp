@@ -9,21 +9,21 @@
  *
  * ******************************************************************************/
 
-#include "../ale_interface.hpp"
+#include "../rle_interface.hpp"
 #include "retro_environment.hpp"
 
-namespace ale {
+namespace rle {
 
-ALEScreen::ALEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
+RLEScreen::RLEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
 
 	m_pixelFormat = new  pixelFormat();
 }
 
-ALEScreen::~ALEScreen(){
+RLEScreen::~RLEScreen(){
 	delete m_pixelFormat;
 }
 
-ALEScreen::ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
+RLEScreen::RLEScreen(const RLEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
 
 	m_pixelFormat = new  pixelFormat();
 	m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
@@ -38,7 +38,7 @@ ALEScreen::ALEScreen(const ALEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_
 
 }
 
-ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
+RLEScreen& RLEScreen::operator=(const RLEScreen &rhs) {
 
 
 
@@ -58,17 +58,17 @@ ALEScreen& ALEScreen::operator=(const ALEScreen &rhs) {
   return *this;
 }
 
-bool ALEScreen::equals(const ALEScreen &rhs) const {
+bool RLEScreen::equals(const RLEScreen &rhs) const {
   return (m_rows == rhs.m_rows &&
           m_columns == rhs.m_columns &&
           (memcmp(&m_pixels[0], &rhs.m_pixels[0], arraySize()) == 0) );
 }
 
-int ALEScreen::getBpp()const{
+int RLEScreen::getBpp()const{
 	return m_pixelFormat->Bpp;
 }
 
-pixel_t ALEScreen::getRGBPixel(const uint32_t &pixel)const{
+pixel_t RLEScreen::getRGBPixel(const uint32_t &pixel)const{
 
 	struct pixelFormat* m = m_pixelFormat;
 	uint32_t red   = (pixel & m->rmask) >> m->rShift;
@@ -83,7 +83,7 @@ pixel_t ALEScreen::getRGBPixel(const uint32_t &pixel)const{
 
 }
 
-void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
+void RLEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint8_t &blue)const{
 
 	struct pixelFormat* m = m_pixelFormat;
 	red   = (pixel & m->rmask) >> m->rShift;
@@ -96,22 +96,22 @@ void ALEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint
 }
 
 // pixel accessors, (row, column)-ordered
-inline pixel_t ALEScreen::get(int r, int c) const {
+inline pixel_t RLEScreen::get(int r, int c) const {
   // Perform some bounds-checking
   assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
   return m_pixels[r * m_columns + c];
 }
 
-inline pixel_t* ALEScreen::pixel(int r, int c) {
+inline pixel_t* RLEScreen::pixel(int r, int c) {
   // Perform some bounds-checking
   assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
   return &m_pixels[r * m_columns + c];
 }
 
 // Access a whole row
-inline pixel_t* ALEScreen::getRow(int r) const {
+inline pixel_t* RLEScreen::getRow(int r) const {
   assert (r >= 0 && r < m_rows);
   return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
 }
 
-} // namespace ale
+} // namespace rle

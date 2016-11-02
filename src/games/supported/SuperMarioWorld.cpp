@@ -15,9 +15,9 @@
 #include "../RomUtils.hpp"
 #include "SuperMarioWorld.hpp"
 
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 
-using namespace ale;
+using namespace rle;
 
 
 SuperMarioWorldSettings::SuperMarioWorldSettings() {
@@ -64,7 +64,7 @@ RomSettings* SuperMarioWorldSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void SuperMarioWorldSettings::step(const AleSystem& system) {
+void SuperMarioWorldSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScoreWords({0xf33, 0xf32, 0xf31}, &system);
 //	DEBUG2("time: " << std::dec << time);

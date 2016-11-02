@@ -17,7 +17,7 @@
 #include "phosphor_blend.hpp"
 //#include "../emucore/Console.hxx"
 
-using namespace ale;
+using namespace rle;
 
 PhosphorBlend::PhosphorBlend(
 //		OSystem * osystem):
@@ -28,10 +28,10 @@ PhosphorBlend::PhosphorBlend(
   // Taken from default Stella settings
 //  m_phosphor_blend_ratio = 77;
 
-  makeAveragePalette();
+  makeAveragePrlette();
 }
 
-void PhosphorBlend::process(ALEScreen& screen) {
+void PhosphorBlend::process(RLEScreen& screen) {
 //  Console& console = m_osystem->console();
 
   //	TODO SN: replace medisSource
@@ -45,28 +45,28 @@ void PhosphorBlend::process(ALEScreen& screen) {
 //    int pv = previous_buffer[i];
 //
 //    // Find out the corresponding rgb color
-//    uInt32 rgb = m_avg_palette[cv][pv];
+//    uInt32 rgb = m_avg_prlette[cv][pv];
 //
 //    // Set the corresponding pixel in the array
 //    screen.getArray()[i] = rgbToNTSC(rgb);
 //  }
 }
-void PhosphorBlend::makeAveragePalette() {
+void PhosphorBlend::makeAveragePrlette() {
   
-//  ColourPalette &palette = m_osystem->colourPalette();
+//  ColourPrlette &prlette = m_osystem->colourPrlette();
 //
 //  // Precompute the average RGB values for phosphor-averaged colors c1 and c2
 //  for (int c1 = 0; c1 < 256; c1++) {
 //    for (int c2 = 0; c2 < 256; c2++) {
 //      int r1, g1, b1;
 //      int r2, g2, b2;
-//      palette.getRGB(c1, r1, g1, b1);
-//      palette.getRGB(c2, r2, g2, b2);
+//      prlette.getRGB(c1, r1, g1, b1);
+//      prlette.getRGB(c2, r2, g2, b2);
 //
 //      uInt8 r = getPhosphor(r1, r2);
 //      uInt8 g = getPhosphor(g1, g2);
 //      uInt8 b = getPhosphor(b1, b2);
-//      m_avg_palette[c1][c2] = makeRGB(r, g, b);
+//      m_avg_prlette[c1][c2] = makeRGB(r, g, b);
 //    }
 //  }
 //
@@ -81,7 +81,7 @@ void PhosphorBlend::makeAveragePalette() {
 //        for (int c1 = 0; c1 < 256; c1++) {
 //          // Get the RGB corresponding to c1
 //          int r1, g1, b1;
-//          palette.getRGB(c1, r1, g1, b1);
+//          prlette.getRGB(c1, r1, g1, b1);
 //
 //          int dist = abs(r1 - r) + abs(g1 - g) + abs(b1 - b);
 //          if (dist < minDist) {

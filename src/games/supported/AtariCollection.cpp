@@ -15,7 +15,7 @@
 #include "../RomUtils.hpp"
 #include "AtariCollection.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 AtariCollectionSettings::AtariCollectionSettings() {
@@ -32,9 +32,7 @@ RomSettings* AtariCollectionSettings::clone() const {
     return rval;
 }
 
-
-/* process the latest information from ALE */
-void AtariCollectionSettings::step(const AleSystem& system) {
+void AtariCollectionSettings::step(const RleSystem& system) {
     // update the reward
     reward_t score = getDecimalScore(0x52, 0x53, &system);
     score *= 10;

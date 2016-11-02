@@ -27,7 +27,7 @@
 #include "SDL.h"
 #include "SDL/SDL_rotozoom.h"
 
-namespace ale {
+namespace rle {
 
 class DisplayScreen {
 public:
@@ -42,7 +42,7 @@ public:
     bool manual_control_engaged() { return manual_control_active; }
 
     // Captures the keypress of a user in manual control mode.
-    ale::Action getUserAction();
+    rle::Action getUserAction();
 
 protected:
     // Checks for SDL events.
@@ -67,10 +67,10 @@ protected:
     RetroAgent* ragent;
 };
 
-} // namespace ale
+} // namespace rle
 #else
 
-namespace ale {
+namespace rle {
 /** A dummy class that simply ignores display events. */
 class DisplayScreen {
   public:
@@ -80,7 +80,7 @@ class DisplayScreen {
     Action getUserAction() { return JOYPAD_UNDEFINED; }
 };
 
-} // namespace ale
+} // namespace rle
 #endif // __USE_SDL
 
 #endif // DISPLAY_SCREEN

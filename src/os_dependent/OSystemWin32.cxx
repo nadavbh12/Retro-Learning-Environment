@@ -47,7 +47,7 @@
 //  // For now, we just put it in the same directory as the executable.
 //  const string& basedir = ".";
 //  setBaseDir(basedir);
-//  setConfigFile(basedir + "\\ale.cfg");
+//  setConfigFile(basedir + "\\rle.cfg");
 //}
 //
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

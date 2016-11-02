@@ -29,7 +29,7 @@
 #include "../RomUtils.hpp"
 #include <iomanip>
 
-using namespace ale;
+using namespace rle;
 
 SeaquestSettings::SeaquestSettings() {
 
@@ -47,7 +47,7 @@ RomSettings* SeaquestSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void SeaquestSettings::step(const AleSystem& system) {
+void SeaquestSettings::step(const RleSystem& system) {
 
     // update the reward
     reward_t score = getDecimalScore(0xBA, 0xB9, 0xB8, &system);

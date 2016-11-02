@@ -1,25 +1,25 @@
 from distutils.core import setup, Extension
 import os.path, sys
 
-ale_c_lib = 'ale_python_interface/libale_c.so'
-if not os.path.isfile(ale_c_lib):
+rle_c_lib = 'rle_python_interface/librle_c.so'
+if not os.path.isfile(rle_c_lib):
   print 'ERROR: Unable to find required library: %s. Please ensure you\'ve '\
-    'built ALE using CMake.'%(ale_c_lib)
+    'built RLE using CMake.'%(rle_c_lib)
   sys.exit()
 
-module1 = Extension('ale_python_interface.ale_c_wrapper',
-                    libraries = ['ale_c'],
+module1 = Extension('rle_python_interface.rle_c_wrapper',
+                    libraries = ['rle_c'],
                     include_dirs = ['src'],
-                    library_dirs = ['ale_python_interface'],
+                    library_dirs = ['rle_python_interface'],
                     extra_compile_args=['-D__STDC_CONSTANT_MACROS -std=c++11'],
-                    sources=['ale_python_interface/ale_c_wrapper.cpp'])
-setup(name = 'ale_python_interface',
-      version='0.0.1',
+                    sources=['rle_python_interface/rle_c_wrapper.cpp'])
+setup(name = 'rle_python_interface',
+      version='0.1.0',
       description = 'Arcade Learning Environment Python Interface',
-      url='https://github.com/bbitmaster/ale_python_interface',
-      author='Ben Goodrich',
+      url='github.com/nadavbh12/Retro-Learning-Environment',
+      author='Ben Goodrich', # Modified by Nadav Bhonker
       license='GPL',
       ext_modules = [module1],
-      packages=['ale_python_interface'],
-      package_dir={'ale_python_interface': 'ale_python_interface'},
-      package_data={'ale_python_interface': ['libale_c.so']})
+      packages=['rle_python_interface'],
+      package_dir={'rle_python_interface': 'rle_python_interface'},
+      package_data={'rle_python_interface': ['librle_c.so']})

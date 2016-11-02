@@ -15,7 +15,7 @@
 #include "gtest/gtest.h"
 
 namespace {
-using namespace ale;
+using namespace rle;
 // The fixture for testing class Foo.
 class RetroAgentTest : public ::testing::Test {
  protected:

@@ -15,10 +15,10 @@
 #include "../RomUtils.hpp"
 #include "MortalKombat.hpp"
 
-#include "AleSystem.hxx"
-#include "AleException.h"
+#include "RleSystem.hxx"
+#include "RleException.h"
 
-using namespace ale;
+using namespace rle;
 
 
 MortalKombatSettings::MortalKombatSettings() {
@@ -62,7 +62,7 @@ RomSettings* MortalKombatSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void MortalKombatSettings::step(const AleSystem& system) {
+void MortalKombatSettings::step(const RleSystem& system) {
     int time = getDecimalScore(0x122, &system);
 
     int npcScore = getDecimalScore(0x2a, 0x2b, 0x2c, &system);
@@ -100,7 +100,7 @@ void MortalKombatSettings::step(const AleSystem& system) {
 		if(newMatchStarted){
 			match_ended = false;
 			// set random positions for players
-			startingOperations(const_cast<AleSystem&>(system));
+			startingOperations(const_cast<RleSystem&>(system));
 		}
     }
 
@@ -166,7 +166,7 @@ void MortalKombatSettings::loadState( Deserializer & des ) {
 }
 
 
-ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
+ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	int num_of_nops(100);
 	ActionVect startingActions;
 
@@ -201,7 +201,7 @@ ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
 		INSERT_ACTION_SINGLE(JOYPAD_NOOP, A)
 		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
 	}else{
-		throw AleException("MK_player1_character illegal");
+		throw RleException("MK_player1_character illegal");
 	}
 	INSERT_NOPS(num_of_nops)
 
@@ -218,7 +218,7 @@ ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
 	}else if(4 == opponent_character){
 		INSERT_NOPS(15)
 	}else{
-		throw AleException("MK_opponent_character must be between 0 and 3");
+		throw RleException("MK_opponent_character must be between 0 and 3");
 	}
 
 //	INSERT_NOPS(10) // sub_zero
@@ -241,7 +241,7 @@ ActionVect MortalKombatSettings::getStartingActions(const AleSystem& system){
 	return startingActions;
 }
 
-void MortalKombatSettings::startingOperations(AleSystem& system){
+void MortalKombatSettings::startingOperations(RleSystem& system){
 	if(system.settings().getBool("MK_random_position")){
 		Random& rng = system.rng();
 		writeRam(&system, 0x30d, (rng.next()%0x100));	// set player 1's random init position

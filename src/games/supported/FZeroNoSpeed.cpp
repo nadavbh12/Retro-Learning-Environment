@@ -13,10 +13,10 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "FZeroNoSpeed.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 FZeroNoSpeedSettings::FZeroNoSpeedSettings() {
@@ -59,7 +59,7 @@ RomSettings* FZeroNoSpeedSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void FZeroNoSpeedSettings::step(const AleSystem& system) {
+void FZeroNoSpeedSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 //	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);

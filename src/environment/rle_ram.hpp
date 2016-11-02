@@ -8,15 +8,15 @@
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
  *
  * *****************************************************************************
- *  ale_ram.hpp
+ *  rle_ram.hpp
  *
  *  A class that encapsulates the Atari 2600 RAM. Code is provided inline for
  *   efficiency reasonss.
  *  
  **************************************************************************** */
 
-#ifndef __ALE_RAM_HPP__
-#define __ALE_RAM_HPP__
+#ifndef __RLE_RAM_HPP__
+#define __RLE_RAM_HPP__
 
 #include <string.h>
 
@@ -25,56 +25,56 @@
 //#define RAM_SIZE (128)
 //
 ///** A simple wrapper around the Atari RAM. */
-//class ALERAM {
+//class RLERAM {
 //  public:
-//    ALERAM();
-//    ALERAM(const ALERAM &rhs);
+//    RLERAM();
+//    RLERAM(const RLERAM &rhs);
 //
-//    ALERAM& operator=(const ALERAM &rhs);
+//    RLERAM& operator=(const RLERAM &rhs);
 //
 //    /** Byte accessors */
 //    byte_t get(unsigned int x) const;
 //    byte_t *byte(unsigned int x);
 //
-//    /** Returns the whole array (equivalent to byte(0)). */
+//    /** Returns the whole array (equivrlent to byte(0)). */
 //    byte_t *array() const { return (byte_t*)(m_ram); }
 //
 //    size_t size() const { return sizeof(m_ram); }
 //    /** Returns whether two copies of the RAM are equal */
-//    bool equals(const ALERAM &rhs) const;
+//    bool equals(const RLERAM &rhs) const;
 //
 //  protected:
 //    byte_t m_ram[RAM_SIZE];
 //};
 //
-//inline ALERAM::ALERAM() {
+//inline RLERAM::RLERAM() {
 //}
 //
-//inline ALERAM::ALERAM(const ALERAM &rhs) {
+//inline RLERAM::RLERAM(const RLERAM &rhs) {
 //  // Copy data over
 //  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
 //}
 //
-//inline ALERAM& ALERAM::operator=(const ALERAM &rhs) {
+//inline RLERAM& RLERAM::operator=(const RLERAM &rhs) {
 //  // Copy data over
 //  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
 //
 //  return *this;
 //}
 //
-//inline bool ALERAM::equals(const ALERAM &rhs) const {
+//inline bool RLERAM::equals(const RLERAM &rhs) const {
 //  return (memcmp(m_ram, rhs.m_ram, size()) == 0);
 //}
 //
 //// Byte accessors
-//inline byte_t ALERAM::get(unsigned int x) const {
+//inline byte_t RLERAM::get(unsigned int x) const {
 //  // Wrap RAM around the first 128 bytes
 //  return m_ram[x & 0x7F];
 //}
 //
-//inline byte_t* ALERAM::byte(unsigned int x) {
+//inline byte_t* RLERAM::byte(unsigned int x) {
 //  return &m_ram[x & 0x7F];
 //}
 
-#endif // __ALE_RAM_HPP__
+#endif // __RLE_RAM_HPP__
 

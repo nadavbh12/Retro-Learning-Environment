@@ -19,7 +19,7 @@
 #include <iomanip>
 
 using namespace std;
-using namespace ale;
+using namespace rle;
 
 #ifdef __USE_SDL
 DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false), delay_msec(5), ragent(rAgent) {

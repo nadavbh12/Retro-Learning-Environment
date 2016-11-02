@@ -23,10 +23,10 @@
 
 #include "SettingsUNIX.hxx"
 
-namespace ale {
+namespace rle {
 
-SettingsUNIX::SettingsUNIX(AleSystem* alesystem)
-  : Settings(alesystem)
+SettingsUNIX::SettingsUNIX(RleSystem* rlesystem)
+  : Settings(rlesystem)
 {
   setInternal("gl_lib", "libGL.so");
   // Most Linux GL implementations don't support this yet
@@ -38,4 +38,4 @@ SettingsUNIX::~SettingsUNIX()
 {
 }
 
-} // namespace ale
+} // namespace rle

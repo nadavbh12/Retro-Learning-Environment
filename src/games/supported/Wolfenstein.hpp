@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 struct WolfensteinSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ struct WolfensteinSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -82,6 +82,6 @@ struct WolfensteinSettings : public SnesSettings {
 //        int m_ammo;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __WOLFENSTEIN_SETTINGS_HPP__

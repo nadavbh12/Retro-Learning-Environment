@@ -9,7 +9,7 @@
 
 #include <alsa/asoundlib.h>
 
-#include "AleException.h"
+#include "RleException.h"
 #include "RetroAgent.h"
 #include "DebugMacros.h"
 #include <iomanip>
@@ -17,7 +17,7 @@
 #include "Serializer.hxx"
 #include "Deserializer.hxx"
 
-using namespace ale;
+using namespace rle;
 
 std::atomic_uint RetroAgent::numAgents{0};
 thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
@@ -510,7 +510,7 @@ uint8_t* RetroAgent::getRamAddress(unsigned id){
 	   size_t size = g_retro.retro_get_memory_size(id);
 	   void*  data = g_retro.retro_get_memory_data(id);
 	   if (!size){
-		   throw AleException("Ram size is 0");
+		   throw RleException("Ram size is 0");
 	   }else{
 		   return (uint8_t*)data;
 	   }

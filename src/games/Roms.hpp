@@ -14,7 +14,7 @@
 
 #include <string>
 
-namespace ale {
+namespace rle {
 
 struct RomSettings;
 
@@ -22,7 +22,7 @@ struct RomSettings;
 // looks for the RL wrapper corresponding to a particular rom title 
 extern RomSettings *buildRomRLWrapper(const std::string &rom, bool twoPlayers = false);
 
-} // namespace ale
+} // namespace rle
 
 #endif // __ROMS_HPP__
 

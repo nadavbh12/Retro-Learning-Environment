@@ -13,13 +13,13 @@
 // See the file "license" for information on usage and redistribution of
 // this file, and for a DISCLAIMER OF ALL WARRANTIES.
 //
-// $Id: AleSystem.hxx,v 1.55 2007/08/12 23:05:12 stephena Exp $
+// $Id: RleSystem.hxx,v 1.55 2007/08/12 23:05:12 stephena Exp $
 //============================================================================
 
-#ifndef AleSystem_HXX
-#define AleSystem_HXX
+#ifndef RleSystem_HXX
+#define RleSystem_HXX
 
-namespace ale {
+namespace rle {
 
 //class PropertiesSet;
 class GameController;
@@ -33,7 +33,6 @@ class VideoDialog;
 }
 
 #include "../common/Array.hxx"
-#include "../common/SoundNull.hxx"
 #include "Settings.hxx"
 #include "../common/display_screen.h" 
 #include "../common/ScreenExporter.hpp"
@@ -44,7 +43,7 @@ class VideoDialog;
 #include "RetroAgent.h"
 
 
-namespace ale {
+namespace rle {
 
 struct Resolution {
   uInt32 width;
@@ -53,25 +52,25 @@ struct Resolution {
 };
 typedef Common::Array<Resolution> ResolutionList;
 
-class AleSystem
+class RleSystem
 {
   public:
     /**
-      Create a new AleSystem abstract class
+      Create a new RleSystem abstract class
     */
-    AleSystem(RetroAgent* retroagent);
+    RleSystem(RetroAgent* retroagent);
 
     /**
       Destructor
     */
-    virtual ~AleSystem();
+    virtual ~RleSystem();
 
-    AleSystem(const AleSystem&) = delete;
+    RleSystem(const RleSystem&) = delete;
 
-    AleSystem& operator = (const AleSystem&) = delete;
+    RleSystem& operator = (const RleSystem&) = delete;
 
     /**
-      Create all child objects which belong to this AleSystem
+      Create all child objects which belong to this RleSystem
     */
     virtual bool create();
 
@@ -128,7 +127,7 @@ class AleSystem
     virtual void setFramerate(uInt32 framerate);
 
     /**
-      Set all config file paths for the AleSystem.
+      Set all config file paths for the RleSystem.
     */
     void setConfigPaths();
 
@@ -197,13 +196,6 @@ class AleSystem
     bool loadRom(const string& rom);
 
     /**
-      Issue a quit event to the AleSystem.
-    */
-    void quit() { myQuitLoop = true; }
-
-    void skipEmulation() { mySkipEmulation = true; }
-
-    /**
       Returns the random number generator for this emulator.
     */
     Random& rng() { return myRandGen; }
@@ -214,12 +206,12 @@ class AleSystem
     void resetRNGSeed();
 
     /** 
-      Serializes the AleSystem state.
+      Serializes the RleSystem state.
     */
     bool saveState(Serializer& out);
 
     /** 
-      Deserializes the AleSystem state.
+      Deserializes the RleSystem state.
     */
     bool loadState(Deserializer& in);
 
@@ -254,7 +246,7 @@ class AleSystem
     Settings* mySettings;
 
     // Pointer to RetroAgent
-    RetroAgent* myRetroAgent;	// SLE
+    RetroAgent* myRetroAgent;	// RLE
 
     // Random number generator shared across the emulator's components
     Random myRandGen; 
@@ -268,9 +260,6 @@ class AleSystem
     // Number of times per second to iterate through the main loop
     uInt32 myDisplayFrameRate;
 
-    // Indicates whether to stop the main loop
-    bool myQuitLoop;
-
     // Indicates that the emulation should not occur on the next time step
     // This is reset to false after one step
     bool mySkipEmulation;
@@ -280,7 +269,6 @@ class AleSystem
     std::string myRomFile;
     std::string myCoreFile;
     std::string myConfigFile;
-    std::string myFeatures;
     
     public: //ALE 
     // Time per frame for a video update, based on the current framerate
@@ -298,7 +286,7 @@ class AleSystem
 
 
     // Table of RGB values for GUI elements
-    //ALE  static uInt32 ourGUIColors[kNumUIPalettes][kNumColors-256];
+    //ALE  static uInt32 ourGUIColors[kNumUIPrlettes][kNumColors-256];
   public:
     DisplayScreen* p_display_screen; //MHAUSKN
   
@@ -326,6 +314,6 @@ class AleSystem
 
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif

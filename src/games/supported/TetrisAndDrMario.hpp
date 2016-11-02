@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 class TetrisAndDrMarioSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ class TetrisAndDrMarioSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -78,6 +78,6 @@ class TetrisAndDrMarioSettings : public SnesSettings {
         reward_t m_score;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __TETRIS_AND_DR_MARIO_SETTINGS_HPP__

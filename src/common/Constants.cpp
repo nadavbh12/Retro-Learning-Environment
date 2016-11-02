@@ -16,11 +16,11 @@
 #include "Constants.h"
 #include <sstream>
 
-using namespace ale;
+using namespace rle;
 
 #define CAT_STR(s, x, y) if ((x & y) > 0){ if (first){first=false;s << #y ;} else {s << " | " << #y ;}}
 
-std::string ale::action_to_string(ale::Action a) {
+std::string rle::action_to_string(rle::Action a) {
 	std::stringstream ss;
 	bool first = true;
 	CAT_STR(ss, a, JOYPAD_B                 );

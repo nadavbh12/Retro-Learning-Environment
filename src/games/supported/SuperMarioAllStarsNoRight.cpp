@@ -13,10 +13,10 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "SuperMarioAllStarsNoRight.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 SuperMarioAllStarsNoRightSettings::SuperMarioAllStarsNoRightSettings() {
@@ -46,7 +46,7 @@ RomSettings* SuperMarioAllStarsNoRightSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void SuperMarioAllStarsNoRightSettings::step(const AleSystem& system) {
+void SuperMarioAllStarsNoRightSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	// update the reward

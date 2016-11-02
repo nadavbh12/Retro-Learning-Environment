@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 struct SuperMarioWorldSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ struct SuperMarioWorldSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -79,6 +79,6 @@ struct SuperMarioWorldSettings : public SnesSettings {
         vector<int> m_lastTime;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __SUPER_MARIO_WORLD_SETTINGS_HPP__

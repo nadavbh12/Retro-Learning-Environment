@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 class SuperMarioAllStarsNoRightSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ class SuperMarioAllStarsNoRightSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -80,6 +80,6 @@ class SuperMarioAllStarsNoRightSettings : public SnesSettings {
         int m_time;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __SUPER_MARIO_ALL_STARS_NO_RIGHT_SETTINGS_HPP__

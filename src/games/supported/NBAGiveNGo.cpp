@@ -13,10 +13,10 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include "NBAGiveNGo.hpp"
 
-using namespace ale;
+using namespace rle;
 
 
 NBAGiveNGoSettings::NBAGiveNGoSettings() {
@@ -44,7 +44,7 @@ RomSettings* NBAGiveNGoSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void NBAGiveNGoSettings::step(const AleSystem& system) {
+void NBAGiveNGoSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);

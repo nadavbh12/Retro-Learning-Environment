@@ -18,63 +18,63 @@
 #include "retro_environment.hpp"
 #include <sstream>
 
-using namespace ale;
+using namespace rle;
 
 
 
-RetroEnvironment::RetroEnvironment(AleSystem* alesystem, RomSettings* settings) :
-  m_alesystem(alesystem),
+RetroEnvironment::RetroEnvironment(RleSystem* rlesystem, RomSettings* settings) :
+  m_rlesystem(rlesystem),
   m_settings(settings),
-  m_phosphor_blend( ),	// TODO pass AleSystem
-  m_screen(m_alesystem->getRetroAgent().getHeight(),
-		  m_alesystem->getRetroAgent().getWidth()),
+  m_phosphor_blend( ),	// TODO pass RleSystem
+  m_screen(m_rlesystem->getRetroAgent().getHeight(),
+		  m_rlesystem->getRetroAgent().getWidth()),
   m_player_a_action(PLAYER_A | JOYPAD_NOOP),
   m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
 	// TODO SN : Add support for paddle-based games
   // Determine whether this is a paddle-based game
-//  if (m_alesystem->console().properties().get(Controller_Left) == "PADDLES" ||
-//      m_alesystem->console().properties().get(Controller_Right) == "PADDLES") {
+//  if (m_rlesystem->console().properties().get(Controller_Left) == "PADDLES" ||
+//      m_rlesystem->console().properties().get(Controller_Right) == "PADDLES") {
 //	  m_use_paddles = true;
-//	  m_state.resetPaddles(m_alesystem->event());
+//	  m_state.resetPaddles(m_rlesystem->event());
 //  } else {
 //	  m_use_paddles = false;
 //  }
 
   m_num_reset_steps = 4;
 
-  m_max_num_frames_per_episode = m_alesystem->settings().getInt("max_num_frames_per_episode");
-  m_colour_averaging = m_alesystem->settings().getBool("color_averaging");
+  m_max_num_frames_per_episode = m_rlesystem->settings().getInt("max_num_frames_per_episode");
+  m_colour_averaging = m_rlesystem->settings().getBool("color_averaging");
 
-  m_repeat_action_probability = m_alesystem->settings().getFloat("repeat_action_probability");
+  m_repeat_action_probability = m_rlesystem->settings().getFloat("repeat_action_probability");
 
-  m_frame_skip = m_alesystem->settings().getInt("frame_skip");
+  m_frame_skip = m_rlesystem->settings().getInt("frame_skip");
   if (m_frame_skip < 1) {
-    ale::Logger::Warning << "Warning: frame skip set to < 1. Setting to 1." << std::endl;
+    rle::Logger::Warning << "Warning: frame skip set to < 1. Setting to 1." << std::endl;
     m_frame_skip = 1;
   }
 
   // If so desired, we record all emulated frames to a given directory
-  std::string recordDir = m_alesystem->settings().getString("record_screen_dir");
+  std::string recordDir = m_rlesystem->settings().getString("record_screen_dir");
 
   getPixelFormat(*m_screen.m_pixelFormat);
 
   if (!recordDir.empty()) {
-    ale::Logger::Info << "Recording screens to directory: " << recordDir << std::endl;
+    rle::Logger::Info << "Recording screens to directory: " << recordDir << std::endl;
 
 
 //    TODO SN : implement screen_exporter
     // Create the screen exporter
-//    m_screen_exporter.reset(new ScreenExporter(m_alesystem->colourPalette(), recordDir));
+//    m_screen_exporter.reset(new ScreenExporter(m_rlesystem->colourPrlette(), recordDir));
   }
 }
 void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
 	uint32_t rmask, gmask, bmask, amask;
 	uint32_t rShift, gShift, bShift, aShift;
 
-	pixel_format.Bpp=m_alesystem->getRetroAgent().getBpp()/8; //in bytes
-	m_alesystem->getRetroAgent().getRgbMask(rmask,  gmask,  bmask,  amask);
-	m_alesystem->getRetroAgent().getRgbShift(rShift,  gShift,  bShift,  aShift);
+	pixel_format.Bpp=m_rlesystem->getRetroAgent().getBpp()/8; //in bytes
+	m_rlesystem->getRetroAgent().getRgbMask(rmask,  gmask,  bmask,  amask);
+	m_rlesystem->getRetroAgent().getRgbShift(rShift,  gShift,  bShift,  aShift);
 	//mask
 	pixel_format.rmask=rmask;
 	pixel_format.gmask=gmask;
@@ -97,7 +97,7 @@ void RetroEnvironment::reset() {
   m_state.resetEpisodeFrameNumber();
 
   // Reset the emulator
-  m_alesystem->getRetroAgent().reset();
+  m_rlesystem->getRetroAgent().reset();
 
   // NOOP for 60 steps in the deterministic environment setting, or some random amount otherwise
   int noopSteps;
@@ -111,7 +111,7 @@ void RetroEnvironment::reset() {
   m_settings->reset();
 
   // Apply necessary actions specified by the rom itself
-  ActionVect startingActions = m_settings->getStartingActions(*m_alesystem);
+  ActionVect startingActions = m_settings->getStartingActions(*m_rlesystem);
   for (size_t i = 0; i < startingActions.size(); i++){
 	  if((startingActions[i] & PLAYER_B) > 0){
 		  emulateStart(JOYPAD_NOOP, startingActions[i]);
@@ -119,41 +119,41 @@ void RetroEnvironment::reset() {
 		  emulateStart(startingActions[i], PLAYER_B | JOYPAD_NOOP);
 	  }
     // uncomment to view screen of starting actions
-//  m_alesystem->p_display_screen->display_screen();
+//  m_rlesystem->p_display_screen->display_screen();
   }
-  m_settings->startingOperations(*m_alesystem);
+  m_settings->startingOperations(*m_rlesystem);
 }
 
 /** Save/restore the environment state. */
 void RetroEnvironment::save() {
   // Store the current state into a new object
-  ALEState new_state = cloneState();
+  RLEState new_state = cloneState();
   m_saved_states.push(new_state);
 }
 
 void RetroEnvironment::load() {
   // Get the state on top of the stack
-  ALEState& target_state = m_saved_states.top();
+  RLEState& target_state = m_saved_states.top();
 
   // Deserialize it into 'm_state'
   restoreState(target_state);
   m_saved_states.pop();
 }
 
-ALEState RetroEnvironment::cloneState() {
-  return m_state.save(m_alesystem, m_settings, false);
+RLEState RetroEnvironment::cloneState() {
+  return m_state.save(m_rlesystem, m_settings, false);
 }
 
-void RetroEnvironment::restoreState(const ALEState& target_state) {
-  m_state.load(m_alesystem, m_settings, target_state, false);
+void RetroEnvironment::restoreState(const RLEState& target_state) {
+  m_state.load(m_rlesystem, m_settings, target_state, false);
 }
 
-ALEState RetroEnvironment::cloneSystemState() {
-  return m_state.save(m_alesystem, m_settings, true);
+RLEState RetroEnvironment::cloneSystemState() {
+  return m_state.save(m_rlesystem, m_settings, true);
 }
 
-void RetroEnvironment::restoreSystemState(const ALEState& target_state) {
-  m_state.load(m_alesystem, m_settings, target_state, true);
+void RetroEnvironment::restoreSystemState(const RLEState& target_state) {
+  m_state.load(m_rlesystem, m_settings, target_state, true);
 }
 
 void RetroEnvironment::noopIllegalActions(Action & player_a_action, Action & player_b_action) {
@@ -178,7 +178,7 @@ reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {
   // Total reward received as we repeat the action
   reward_t sum_rewards = 0;
 
-  Random& rng = m_alesystem->rng();
+  Random& rng = m_rlesystem->rng();
 
   // Apply the same action for a given number of times... note that act() will refuse to emulate
   //  past the terminal state
@@ -194,7 +194,7 @@ reward_t RetroEnvironment::act(Action player_a_action, Action player_b_action) {
 //    TODO SN : fix record of sound
     // If so desired, request one frame's worth of sound (this does nothing if recording
     // is not enabled)
-//    m_alesystem->sound().recordNextFrame();
+//    m_rlesystem->sound().recordNextFrame();
 
     // Similarly record screen as needed
 //    if (m_screen_exporter.get() != NULL)
@@ -244,18 +244,18 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
 //      // Update paddle position at every step
 //      m_state.applyActionPaddles(event, player_a_action, player_b_action);
 //
-//      m_alesystem->console().mediaSource().update();
-//      m_settings->step(m_alesystem->console().system());
+//      m_rlesystem->console().mediaSource().update();
+//      m_settings->step(m_rlesystem->console().system());
 //    }
 //  }
 //  else {
     // In joystick mode we only need to set the action events once
 //    m_state.setActionJoysticks(player_a_action, player_b_action);
-	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+	m_rlesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
 
     for (size_t t = 0; t < num_steps; ++t) {
-    	m_alesystem->step();
-    	m_settings->step(*m_alesystem);
+    	m_rlesystem->step();
+    	m_settings->step(*m_rlesystem);
     }
 //  }
 
@@ -267,18 +267,18 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
 
 void RetroEnvironment::emulateStart(Action player_a_action, Action player_b_action, size_t num_steps) {
 
-	m_alesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+	m_rlesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
 	for (size_t t = 0; t < num_steps; ++t) {
-    	m_alesystem->step();
+    	m_rlesystem->step();
     }
 }
 
 /** Accessor methods for the environment state. */
-void RetroEnvironment::setState(const ALEState& state) {
+void RetroEnvironment::setState(const RLEState& state) {
   m_state = state;
 }
 
-const ALEState& RetroEnvironment::getState() const {
+const RLEState& RetroEnvironment::getState() const {
   return m_state;
 }
 
@@ -289,12 +289,12 @@ void RetroEnvironment::processScreen() {
 //  }
 //  else {
     // Copy screen over and we're done!
-//    memcpy(m_screen.getArray(),(uint32_t*) m_alesystem->getCurrentFrameBuffer(), 4*m_alesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
-	int height = m_alesystem->getRetroAgent().getHeight();
-	int width = m_alesystem->getRetroAgent().getWidth();
-	int Bpp = m_alesystem->getRetroAgent().getBpp() / 8;
-	int pitch = m_alesystem->getRetroAgent().getPitch();
-	uint8_t* buffer = m_alesystem->getCurrentFrameBuffer();
+//    memcpy(m_screen.getArray(),(uint32_t*) m_rlesystem->getCurrentFrameBuffer(), 4*m_rlesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
+	int height = m_rlesystem->getRetroAgent().getHeight();
+	int width = m_rlesystem->getRetroAgent().getWidth();
+	int Bpp = m_rlesystem->getRetroAgent().getBpp() / 8;
+	int pitch = m_rlesystem->getRetroAgent().getPitch();
+	uint8_t* buffer = m_rlesystem->getCurrentFrameBuffer();
 	for(int i = 0 ; i < height; ++i){
 		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
 	}
@@ -302,11 +302,11 @@ void RetroEnvironment::processScreen() {
 
 ////	FILE *a = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite1.txt", "w");
 //	FILE *b = fopen("/home/administrator/DQN/DeepMind-Atari-Deep-Q-Learner/cWrite2.txt", "w");
-//    uint8_t* originBuffer = m_alesystem->getCurrentFrameBuffer();
+//    uint8_t* originBuffer = m_rlesystem->getCurrentFrameBuffer();
 //    uint8_t* destBuffer = (uint8_t*)m_screen.getArray();
-//    size_t size = m_alesystem->getRetroAgent().getHeight() * m_alesystem->getRetroAgent().getPitch();
+//    size_t size = m_rlesystem->getRetroAgent().getHeight() * m_rlesystem->getRetroAgent().getPitch();
 //    for( int i = 0; i < height * width * Bpp ; i++){
-////    	if(i % m_alesystem->getRetroAgent().getPitch() == 0){
+////    	if(i % m_rlesystem->getRetroAgent().getPitch() == 0){
 ////    		fprintf(a,"\n");
 ////    	}
 //    	if(i % (width * Bpp) == 0){
@@ -324,9 +324,9 @@ void RetroEnvironment::processScreen() {
 void RetroEnvironment::processRAM() {
   // Copy RAM over
 ////  for (size_t i = 0; i < m_ram.size(); i++)
-////    *m_ram.byte(i) = m_alesystem->console().system().peek(i + 0x80);
-//	uint32_t* memPtr = m_alesystem->getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-//	uint32_t memSize = m_alesystem->getRetroAgent().getRamSize();
+////    *m_ram.byte(i) = m_rlesystem->console().system().peek(i + 0x80);
+//	uint32_t* memPtr = m_rlesystem->getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
+//	uint32_t memSize = m_rlesystem->getRetroAgent().getRamSize();
 //	DEBUG2("mem address " << memPtr);
 //	DEBUG2("mem size " << memSize );
 //	DEBUG2("value at end " << *(memPtr + memSize/8) );

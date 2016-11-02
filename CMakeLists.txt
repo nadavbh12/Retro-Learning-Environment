@@ -1,8 +1,7 @@
 cmake_minimum_required (VERSION 3.02)
-project(ale)
+project(rle)
 
 option(USE_SDL "Use SDL" OFF)
-option(USE_RLGLUE "Use RL-Glue" OFF)
 option(BUILD_EXAMPLES "Build Example Agents" ON)
 option(DEBUG "Suspend optimization & enable debugging" OFF)
 option(UNIT_TESTING "Build unit tests using Google Test" OFF)
@@ -67,7 +66,7 @@ endif()
 if(WINDOWS OR MINGW)
   list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsWin32.cxx ${SOURCE_DIR}/os_dependent/OSystemWin32.cxx ${SOURCE_DIR}/os_dependent/FSNodeWin32.cxx)
 else()
-  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsUNIX.cxx ${SOURCE_DIR}/os_dependent/AleSystemUNIX.cxx ${SOURCE_DIR}/os_dependent/FSNodePOSIX.cxx)
+  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsUNIX.cxx ${SOURCE_DIR}/os_dependent/RleSystemUNIX.cxx ${SOURCE_DIR}/os_dependent/FSNodePOSIX.cxx)
 endif()
 
 if(UNIX)
@@ -86,7 +85,7 @@ include_directories(
   ${SOURCE_DIR}/external/TinyMT
 )
 
-set(INCDIR "${CMAKE_INSTALL_PREFIX}/include/ale")
+set(INCDIR "${CMAKE_INSTALL_PREFIX}/include/rle")
 set(LIBDIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 MESSAGE(STATUS "INCLUDE_DIR ${INCDIR}")
@@ -126,37 +125,33 @@ ExternalProject_add(stella_libretro
 			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
 
-add_library(ale-lib SHARED ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
-set_target_properties(ale-lib PROPERTIES OUTPUT_NAME ale)
-set_target_properties(ale-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_dependencies(ale-lib snes9x2010_libretro)
-add_dependencies(ale-lib stella_libretro)
-add_executable(ale-bin ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
-set_target_properties(ale-bin PROPERTIES OUTPUT_NAME ale)
-set_target_properties(ale-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_library(ale-c-lib SHARED ${CMAKE_CURRENT_SOURCE_DIR}/ale_python_interface/ale_c_wrapper.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
-set_target_properties(ale-c-lib PROPERTIES OUTPUT_NAME ale_c)
-set_target_properties(ale-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ale_python_interface)
+add_library(rle-lib SHARED ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
+set_target_properties(rle-lib PROPERTIES OUTPUT_NAME rle)
+set_target_properties(rle-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_dependencies(rle-lib snes9x2010_libretro)
+add_dependencies(rle-lib stella_libretro)
+add_library(rle-c-lib SHARED ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface/rle_c_wrapper.cpp ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
+set_target_properties(rle-c-lib PROPERTIES OUTPUT_NAME rle_c)
+set_target_properties(rle-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)
 
-target_link_libraries(ale-lib ${LINK_LIBS})
-target_link_libraries(ale-bin ${LINK_LIBS})
-target_link_libraries(ale-c-lib ${LINK_LIBS})
+target_link_libraries(rle-lib ${LINK_LIBS})
+target_link_libraries(rle-c-lib ${LINK_LIBS})
 
 IF(INSTALL_CORES)
 	INSTALL(
 		FILES
-		src/ale_interface.hpp
+		src/rle_interface.hpp
 		src/libretro.h
 		DESTINATION "${INCDIR}"
 	       )
 	
 	IF(APPLE)
 	  INSTALL(FILES
-	          libale.a
+	          librle.a
 	          DESTINATION "${LIBDIR}")
 	ELSE()
 	    INSTALL(FILES
-	            libale.so
+	            librle.so
 	            DESTINATION "${LIBDIR}")
 	ENDIF()
 ENDIF()
@@ -165,9 +160,9 @@ if(BUILD_EXAMPLES)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR})
   add_executable(sharedLibraryInterfaceExample ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples/sharedLibraryInterfaceExample.cpp)
   set_target_properties(sharedLibraryInterfaceExample PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/examples)
-  target_link_libraries(sharedLibraryInterfaceExample ale)
+  target_link_libraries(sharedLibraryInterfaceExample rle)
   target_link_libraries(sharedLibraryInterfaceExample ${LINK_LIBS})
-  add_dependencies(sharedLibraryInterfaceExample ale-lib)
+  add_dependencies(sharedLibraryInterfaceExample rle-lib)
   
 endif()
 
@@ -202,7 +197,7 @@ if(UNIT_TESTING)
   	add_definitions(-D__UNIT_TESTING)
     add_subdirectory(googletest)
     enable_testing()
-    include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/ale_python_interface)
+    include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)
 
     file(GLOB test_sources test/*.cpp)
     list(APPEND TEST_SOURCES ${test_sources})
@@ -211,6 +206,6 @@ if(UNIT_TESTING)
     add_executable( mainTest ${TEST_SOURCES})
 
     # Link test executable against gtest & gtest_main
-    target_link_libraries(mainTest gtest gtest_main ale ale-c-lib)
+    target_link_libraries(mainTest gtest gtest_main rle rle-c-lib)
     add_test( mainTest mainTest )
 endif()

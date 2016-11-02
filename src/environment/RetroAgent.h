@@ -14,7 +14,7 @@ typedef unsigned char byte_t;
 class Serializer;
 class Deserializer;
 
-namespace ale {
+namespace rle {
 
 class RetroAgent{
 public:
@@ -75,7 +75,7 @@ public:
 
 		int action_a;
 		int action_b;
-	//	string saveFolder = "/home/administrator/DQN/ale-nano/SNES-Learning-Environment/saves/";
+	//	string saveFolder = "/home/administrator/DQN/rle-nano/SNES-Learning-Environment/saves/";
 		string corePath;
 		size_t serializeSize;
 	};
@@ -112,6 +112,6 @@ private:
 	void unloadRom();
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __RETRO_AGENT_HPP__

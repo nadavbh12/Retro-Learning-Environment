@@ -29,7 +29,7 @@
 
 #include "../AtariSettings.hpp"
 
-namespace ale {
+namespace rle {
 
 
 /* RL wrapper for Seaquest */
@@ -58,7 +58,7 @@ class SeaquestSettings : public AtariSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState(Serializer & ser);
@@ -76,7 +76,7 @@ class SeaquestSettings : public AtariSettings {
         int m_lives;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __SEAQUEST_HPP__
 

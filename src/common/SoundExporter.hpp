@@ -25,7 +25,7 @@
 #include <fstream>
 #include <vector>
 
-namespace ale {
+namespace rle {
 namespace sound {
 
 template <typename T>
@@ -66,7 +66,7 @@ class SoundExporter {
         size_t m_samples_since_write;
 };
 
-} // namespace ale::sound 
-} // namespace ale
+} // namespace rle::sound 
+} // namespace rle
 
 #endif // __SOUND_EXPORTER_HPP__ 

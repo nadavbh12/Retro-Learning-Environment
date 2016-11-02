@@ -1,3 +1,7 @@
+This is version 0.1 of the Retro Learning Environment (RLE), based upon ALE,
+see below for more details.
+
+==============================
 This is the 0.5 release of the Arcade Learning Environment (ALE), a platform 
 designed for AI research. ALE is based on Stella, an Atari 2600 VCS emulator. 
 More information and ALE-related publications can be found at
@@ -13,33 +17,6 @@ of the ALE team.
 
 Enjoy,
 The ALE team
-
-===============================
-List of command-line parameters
-===============================
-
-Execute ./ale -help for more details; alternatively, see documentation 
-available at http://www.arcadelearningenvironment.org.
-
--random_seed [n] -- sets the random seed; defaults to the current time
-
--game_controller [fifo|fifo_named] -- specifies how agents interact
-  with ALE; see Java agent documentation for details
-
--config [file] -- specifies a configuration file, from which additional 
-  parameters are read
-
--run_length_encoding [false|true] -- determine whether run-length encoding is
-  used to send data over pipes; irrelevant when an internal agent is 
-  being used
-
--max_num_frames_per_episode [n] -- sets the maximum number of frames per
-  episode. Once this number is reached, a new episode will start. Currently
-  implemented for all agents when using pipes (fifo/fifo_named) 
-
--max_num_frames [n] -- sets the maximum number of frames (independent of how 
-  many episodes are played)
-
 
 =====================================
 Citing The Arcade Learning Environment: An Evaluation Platform for 

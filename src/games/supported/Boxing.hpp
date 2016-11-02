@@ -29,7 +29,7 @@
 
 #include "../AtariSettings.hpp"
 
-namespace ale {
+namespace rle {
 
 /* RL wrapper for Boxing settings */
 struct BoxingSettings : public AtariSettings {
@@ -57,7 +57,7 @@ struct BoxingSettings : public AtariSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -76,7 +76,7 @@ struct BoxingSettings : public AtariSettings {
         reward_t m_score;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __BOXING_HPP__
 

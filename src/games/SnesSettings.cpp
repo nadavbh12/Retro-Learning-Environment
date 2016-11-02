@@ -18,7 +18,7 @@
 #include "SnesSettings.hpp"
 #include "Constants.h"
 
-using namespace ale;
+using namespace rle;
 
 SnesSettings::SnesSettings(){
 

@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 struct FinalFightSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ struct FinalFightSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -79,6 +79,6 @@ struct FinalFightSettings : public SnesSettings {
         reward_t m_prev_lives;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __FINAL_FIGHT_SETTINGS_HPP__

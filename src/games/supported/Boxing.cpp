@@ -14,7 +14,7 @@
 #include "../RomUtils.hpp"
 #include <iomanip>
 
-using namespace ale;
+using namespace rle;
 
 BoxingSettings::BoxingSettings() {
 
@@ -32,7 +32,7 @@ RomSettings* BoxingSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void BoxingSettings::step(const AleSystem& system) {
+void BoxingSettings::step(const RleSystem& system) {
 
     // update the reward
     int my_score   = getDecimalScore(0x92, &system);

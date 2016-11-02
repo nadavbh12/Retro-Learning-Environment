@@ -15,9 +15,9 @@
 #include "../RomUtils.hpp"
 #include "FinalFight.hpp"
 
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 
-using namespace ale;
+using namespace rle;
 
 
 FinalFightSettings::FinalFightSettings() {
@@ -54,7 +54,7 @@ RomSettings* FinalFightSettings::clone() const {
 
 
 /* process the latest information from ALE */
-void FinalFightSettings::step(const AleSystem& system) {
+void FinalFightSettings::step(const RleSystem& system) {
 
 	// int time = getDecimalScoreWords({0xcbc, 0xcbd}, &system);
 

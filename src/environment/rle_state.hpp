@@ -8,38 +8,38 @@
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
  *
  * *****************************************************************************
- *  ale_state.hpp
+ *  rle_state.hpp
  *
  *  A class that stores a copy of the current ALE state. We use one to keep track
  *   of paddle resistance and in search trees.
  *
  **************************************************************************** */
 
-#ifndef __ALE_STATE_HPP__
-#define __ALE_STATE_HPP__
+#ifndef __RLE_STATE_HPP__
+#define __RLE_STATE_HPP__
 
-#include "AleSystem.hxx"
+#include "RleSystem.hxx"
 #include <string>
 #include "../games/RomSettings.hpp"
 #include "../common/Log.hpp"
 
-namespace ale {
+namespace rle {
 
-class ALEState {
+class RLEState {
   public:
-    ALEState();
+    RLEState();
     // Makes a copy of this state, also storing emulator information provided as a string
-    ALEState(const ALEState &rhs, std::string serialized);
+    RLEState(const RLEState &rhs, std::string serialized);
 
-    // Restores a serialized ALEState
-    ALEState(const std::string &serialized);
+    // Restores a serialized RLEState
+    RLEState(const std::string &serialized);
 
     /** Resets the system to its start state. numResetSteps 'RESET' actions are taken after the
       *  start. */
     void reset(int numResetSteps = 1);
 
     /** Returns true if the two states contain the same saved information */
-    bool equals(ALEState &state);
+    bool equals(RLEState &state);
 
     void incrementFrame(int steps = 1);
 
@@ -62,14 +62,14 @@ class ALEState {
     /** Restores the environment to a previously saved state. If load_system == true, we also
         restore system-specific information (such as the RNG state). */
     void load(
-    		AleSystem* alesystem,
-    		RomSettings* settings, const ALEState &rhs,
+    		RleSystem* rlesystem,
+    		RomSettings* settings, const RLEState &rhs,
             bool load_system);
 
     /** Returns a "copy" of the current state, including the information necessary to restore
       *  the emulator. If save_system == true, this includes the RNG state. */
-    ALEState save(
-    		AleSystem* alesystem,
+    RLEState save(
+    		RleSystem* rlesystem,
     		RomSettings* settings, bool save_system);
 
   private:
@@ -81,8 +81,8 @@ class ALEState {
 
 };
 
-} // namespace ale
+} // namespace rle
 
-#endif // __ALE_STATE_HPP__
+#endif // __RLE_STATE_HPP__
 
 

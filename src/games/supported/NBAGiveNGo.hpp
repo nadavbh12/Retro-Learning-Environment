@@ -32,7 +32,7 @@
 #include "../SnesSettings.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 class NBAGiveNGoSettings : public SnesSettings {
 
@@ -59,7 +59,7 @@ class NBAGiveNGoSettings : public SnesSettings {
         bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -79,6 +79,6 @@ class NBAGiveNGoSettings : public SnesSettings {
         int m_time;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __NBA_GIVE_N_GO_SETTINGS_HPP__

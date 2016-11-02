@@ -1,7 +1,7 @@
 #include "SoundExporter.hpp"
 #include <cassert>
 
-namespace ale {
+namespace rle {
 namespace sound {
 
 // Sample rate is 60Hz x SamplesPerFrame bytes
@@ -72,6 +72,6 @@ void SoundExporter::writeWAVData() {
 //    stream.write((const char*)&m_data[0], bufSize);                 // The samples DATA!!!
 }
 
-} // namespace ale::sound 
-} // namespace ale
+} // namespace rle::sound 
+} // namespace rle
 

@@ -18,7 +18,7 @@
 #include "AtariSettings.hpp"
 #include "Constants.h"
 
-using namespace ale;
+using namespace rle;
 AtariSettings::AtariSettings(){
 	AllActionsVector = {
 				JOYPAD_NOOP,
@@ -42,6 +42,6 @@ AtariSettings::AtariSettings(){
 			};
 }
 
-int AtariSettings::readRam(const AleSystem* system, int offset){
+int AtariSettings::readRam(const RleSystem* system, int offset){
 	RomSettings::readRam(system, offset & 0x7F );
 }

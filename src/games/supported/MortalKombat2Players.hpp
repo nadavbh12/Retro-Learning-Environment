@@ -32,7 +32,7 @@
 #include "MortalKombat.hpp"
 #include <unordered_set>
 
-namespace ale {
+namespace rle {
 
 struct MortalKombat2PlayersSettings : public MortalKombatSettings {
 
@@ -53,7 +53,7 @@ struct MortalKombat2PlayersSettings : public MortalKombatSettings {
         RomSettings* clone() const;
 
         // process the latest information from ALE
-        void step(const AleSystem& system);
+        void step(const RleSystem& system);
 
         // saves the state of the rom settings
         void saveState( Serializer & ser );
@@ -63,12 +63,12 @@ struct MortalKombat2PlayersSettings : public MortalKombatSettings {
 
         virtual const int lives() { return 0; }
 
-        virtual ActionVect getStartingActions(const AleSystem& system);
+        virtual ActionVect getStartingActions(const RleSystem& system);
 
     private:
         reward_t m_rewardB;
 };
 
-} // namespace ale
+} // namespace rle
 
 #endif // __MORTAL_KOMBAT_TWO_PLAYERS_SETTINGS_HPP__
