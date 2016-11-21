@@ -11,7 +11,7 @@ module1 = Extension('rle_python_interface.rle_c_wrapper',
                     libraries = ['rle_c'],
                     include_dirs = ['src'],
                     library_dirs = ['rle_python_interface'],
-                    extra_compile_args=['-D__STDC_CONSTANT_MACROS -std=c++11'],
+                    extra_compile_args=['-D__STDC_CONSTANT_MACROS', '-std=c++11'],
                     sources=['rle_python_interface/rle_c_wrapper.cpp'])
 setup(name = 'rle_python_interface',
       version='0.1.0',
