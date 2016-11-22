@@ -72,6 +72,44 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const RleSystem& sys
 	// wait for intro to end
 	INSERT_NOPS(16*num_of_nops)
 
+	// select options
+	INSERT_ACTION_SINGLE_A(JOYPAD_RIGHT)
+	INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	INSERT_NOPS(3*num_of_nops)
+
+	// select difficulty
+	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
+	INSERT_NOPS(num_of_nops)
+	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
+	INSERT_NOPS(num_of_nops)
+	string difficulty = system.settings().getString("MK_difficulty");
+	if("medium" == difficulty){
+	}else if("hard" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("very_hard" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("very_easy" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("easy" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}
+
+	// exit options screen
+	INSERT_ACTION_SINGLE_A(JOYPAD_START)
+	INSERT_NOPS(3*num_of_nops)
+
 	// select tournament
 	INSERT_ACTION_SINGLE_A(JOYPAD_X)
 

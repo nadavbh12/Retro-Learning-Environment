@@ -173,6 +173,44 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	// wait for intro to end
 	INSERT_NOPS(16*num_of_nops)
 
+	// select options
+	INSERT_ACTION_SINGLE_A(JOYPAD_RIGHT)
+	INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	INSERT_NOPS(3*num_of_nops)
+
+	// select difficulty
+	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
+	INSERT_NOPS(num_of_nops)
+	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
+	INSERT_NOPS(num_of_nops)
+	string difficulty = system.settings().getString("MK_difficulty");
+	if("medium" == difficulty){
+	}else if("hard" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("very_hard" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("very_easy" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}else if("easy" == difficulty){
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+		INSERT_NOPS(0.5*num_of_nops)
+		INSERT_ACTION_SINGLE_A(JOYPAD_X)
+	}
+
+	// exit options screen
+	INSERT_ACTION_SINGLE_A(JOYPAD_START)
+	INSERT_NOPS(3*num_of_nops)
+
 	// select tournament
 	INSERT_ACTION_SINGLE_A(JOYPAD_X)
 
@@ -206,24 +244,8 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	INSERT_NOPS(num_of_nops)
 
 	// Select opponent: random seed for opponent is set by num of NOOPs
-	int opponent_character = system.settings().getInt("MK_opponent_character");
-	if(0 == opponent_character){
-		INSERT_NOPS(0)
-	}else if(1 == opponent_character){
-		INSERT_NOPS(5)
-	}else if(2 == opponent_character){
-		INSERT_NOPS(10)
-	}else if(3 == opponent_character){
-		INSERT_NOPS(40)
-	}else if(4 == opponent_character){
-		INSERT_NOPS(15)
-	}else{
-		throw RleException("MK_opponent_character must be between 0 and 3");
-	}
-
-//	INSERT_NOPS(10) // sub_zero
-//	INSERT_NOPS(40) // scorpion
-
+	int opponent_character_nops = system.settings().getInt("MK_opponent_character");
+	INSERT_NOPS(opponent_character_nops);
 
 	// select character
 	INSERT_ACTION_SINGLE(JOYPAD_X, A)

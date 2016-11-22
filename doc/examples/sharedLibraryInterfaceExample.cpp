@@ -35,8 +35,6 @@ int main(int argc, char** argv) {
         return 1;
     }
     RLEInterface rle;
-    float maxVal = 1;
-    float minVal = -1;
 
     // Get & Set the desired settings
     rle.setInt("random_seed", 123);
@@ -62,17 +60,13 @@ int main(int argc, char** argv) {
 //    // Play 10 episodes
     for (int episode=0; episode<10; episode++) {
         float totalReward = 0;
-        float totalCroppedReward = 0;
         while (!rle.game_over()) {
             Action a = legal_actions[rand() % legal_actions.size()];
         	// Apply the action and get the resulting reward
             float reward = rle.act(a);
-            float croppedReward = reward > 0 ? std::min(reward, maxVal) : std::max(reward, minVal);
-            totalCroppedReward += croppedReward;
             totalReward += reward;
         }
         cout << "Episode " << episode << " ended with score: " << totalReward << endl;
-        cout << "Episode " << episode << " ended with cropped score: " << totalCroppedReward << endl;
         rle.reset_game();
     }
     return 0;
