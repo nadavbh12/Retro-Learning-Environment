@@ -7,7 +7,7 @@ The currently supported games can be found in the src/games/supported directory 
 Some popular games include: _Mortal Kombat, Super Mario All Stars, F-Zero, Castle Wolfenstein_ and _Gradius III_.
 
 ===============================
-Quick start
+Quick Start
 ===============================
 
 Install main dependences:
@@ -36,7 +36,10 @@ To install the lua (Torch) interface, the additional alewrap module is required:
 luarocks install https://raw.githubusercontent.com/nadavbh12/Retro-Learning-Environment/master/ale-2-0.rockspec
 luarocks install https://raw.githubusercontent.com/nadavbh12/alewrap/master/alewrap-0-0.rockspec
 ```
-
+===============================
+DQN Implementations Using RLE
+===============================
+- A [fork](https://github.com/nadavbh12/deep_q_rl) of [@spragunr](https://github.com/spragunr)'s DQN implementation in Python.
 
 ## Acknowledgements
 - [@mgbellemare](https://github.com/mgbellemare) for his work on ALE and his useful advice.
