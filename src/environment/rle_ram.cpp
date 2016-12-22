@@ -10,19 +10,9 @@
  * ******************************************************************************/
 
 #include "../rle_interface.hpp"
+#include "../common/RleException.h"
 
 namespace rle {
-inline RLERAM::RLERAM(const RLERAM &rhs) {
-  // Copy data over
-//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
-}
-
-inline RLERAM& RLERAM::operator=(const RLERAM &rhs) {
-  // Copy data over
-//  memcpy(m_ram, rhs.m_ram, sizeof(m_ram));
-  m_ram = rhs.m_ram;
-  return *this;
-}
 
 inline bool RLERAM::equals(const RLERAM &rhs) const {
   return (m_ram == rhs.m_ram);
@@ -30,13 +20,21 @@ inline bool RLERAM::equals(const RLERAM &rhs) const {
 
 // Byte accessors
 byte_t RLERAM::get(unsigned int x) const {
-  // Wrap RAM around the first 128 bytes
-  return m_ram[x & 0x7F];
-//  return m_ram.at(x);
+  if(x < m_ram_size){
+	return m_ram[x];
+  }
+  else{
+	throw RleException("Invalid Ram Address");
+  }
 }
 
-//inline byte_t* RLERAM::byte(unsigned int x) {
-//  return &m_ram[x & 0x7F];
-//}
+inline byte_t* RLERAM::byte(unsigned int x) {
+  if(x < m_ram_size){
+	return m_ram + x;
+  }
+  else{
+	throw RleException("Invalid Ram Address");
+  }
+}
 
 } // rle namespace

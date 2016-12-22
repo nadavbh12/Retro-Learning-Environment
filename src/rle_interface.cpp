@@ -153,12 +153,12 @@ private:
 	  std::unique_ptr<RomSettings> romSettings;
 	  std::unique_ptr<RetroEnvironment> environment;
 	  int max_num_frames; // Maximum number of frames for each episode
-
+	  bool gameLoaded;
 };
 
 //thread_local bool RLEInterface::Impl::initialized = false;
 
-RLEInterface::Impl::Impl() : max_num_frames(0){
+RLEInterface::Impl::Impl() : max_num_frames(0), gameLoaded(false){
   RLEInterface::createRleSystem(theRleSystem, theSettings, theRetroAgent);
 }
 
@@ -393,6 +393,7 @@ void RLEInterface::Impl::loadROM(string rom_file, string core_file) {
     exit(1);
   }
 #endif
+  gameLoaded = true;
 }
 
 bool RLEInterface::game_over() const{
@@ -477,6 +478,9 @@ const RLERAM& RLEInterface::getRAM() const{
 
 // Returns the current RAM content
 const RLERAM& RLEInterface::Impl::getRAM() const{
+  if(!gameLoaded){
+	  throw RleException("Need to load a game before you can read the RAM");
+  }
   return environment->getRAM();
 }
 

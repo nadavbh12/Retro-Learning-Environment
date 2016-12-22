@@ -19,7 +19,7 @@
 
 #include <string>
 #include "display_screen.h"
-#include "../environment/rle_screen.hpp"
+#include "../rle_interface.hpp"
 
 //SN:
 #include <iostream>

@@ -19,8 +19,7 @@
 #define __RLE_ENVIRONMENT_HPP__
 
 #include "rle_state.hpp"
-#include "rle_screen.hpp"
-#include "rle_ram.hpp"
+#include "../rle_interface.hpp"
 #include "phosphor_blend.hpp"
 #include "../games/RomSettings.hpp"
 #include "../common/ScreenExporter.hpp"
@@ -116,9 +115,6 @@ class RetroEnvironment {
 
     /** Processes the current emulator screen and saves it in m_screen */
     void processScreen();
-
-    /** Processes the emulator RAM and saves it in m_ram */
-    void processRAM();
 
     void getPixelFormat(struct pixelFormat &m_pixelFormat);
 

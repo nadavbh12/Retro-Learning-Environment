@@ -40,7 +40,7 @@
 
 namespace rle {
 
-static const std::string Version = "0.5.0";
+static const std::string Version = "1.0.0";
 
 class RleSystem;
 class Settings;
@@ -142,30 +142,26 @@ class RLEScreen {
 };
 
 
-/** A simple wrapper around the Atari RAM. */
+/** A simple wrapper around the Core's RAM. Values are Read/Write!*/
 class RLERAM {
   public:
-    RLERAM() : m_ram(NULL){}
-    RLERAM(const RLERAM &rhs);
-
-    RLERAM& operator=(const RLERAM &rhs);
+    RLERAM(size_t size, byte_t* bytes) : m_ram(bytes), m_ram_size(size){}
 
     /** Byte accessors */
     byte_t get(unsigned int x) const;
     byte_t *byte(unsigned int x);
 
     /** Returns the whole array. */
-//    std::vector<byte_t> array() const { return m_ram;}
     byte_t* array() const { return m_ram;}
 
-    size_t size() const { return sizeof(m_ram); }
+    size_t size() const { return m_ram_size; }
 
     /** Returns whether two copies of the RAM are equal */
     bool equals(const RLERAM &rhs) const;
 
   protected:
     byte_t* m_ram;
-//    std::vector<byte_t> m_ram;
+    size_t 	m_ram_size;
 };
 
 /**

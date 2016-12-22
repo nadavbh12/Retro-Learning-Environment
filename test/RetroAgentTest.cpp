@@ -13,6 +13,7 @@
 #include <string>
 #include <thread>
 #include "gtest/gtest.h"
+#include "gtest_arguments.h"
 
 namespace {
 using namespace rle;
@@ -20,11 +21,10 @@ using namespace rle;
 class RetroAgentTest : public ::testing::Test {
  protected:
 
-	RetroAgentTest() {
-  }
+	RetroAgentTest() {}
 
-	string corePath = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/snes9x2010/snes9x2010_libretro.so";
-	string romPath = "/home/nadav/DQN/roms/mortal_kombat.sfc";
+	string corePath = gtest_arguments::coreName;
+	string romPath = gtest_arguments::romName;
 };
 
 static void initRetroAgent(RetroAgent* adapter, string corePath, string romPath){
@@ -44,7 +44,7 @@ TEST_F(RetroAgentTest, serialization) {
 
 	std::vector<uint8_t> dataOld;
 	std::vector<uint8_t> dataNew;
-	dataOld.assign(adapter.getRamAddress(2), adapter.getRamAddress(2) + adapter.getRamSize());
+	dataOld.assign(adapter.getRamAddress(), adapter.getRamAddress() + adapter.getRamSize());
 	Serializer ser;
 	adapter.serialize(ser);
 
@@ -56,7 +56,7 @@ TEST_F(RetroAgentTest, serialization) {
 	std::string serString = ser.get_str();
 	Deserializer des(ser.get_str());
 	adapter.deserialize(des);
-	dataNew.assign(adapter.getRamAddress(2), adapter.getRamAddress(2) + adapter.getRamSize());
+	dataNew.assign(adapter.getRamAddress(), adapter.getRamAddress() + adapter.getRamSize());
 
 	EXPECT_EQ(dataOld, dataNew);
 }

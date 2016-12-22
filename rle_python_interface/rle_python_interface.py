@@ -159,7 +159,7 @@ class RLEInterface(object):
         rle_lib.getScreenRGB(self.obj, as_ctypes(screen_data[:]))
         return screen_data
 
-    def getScreenGrayscrle(self, screen_data=None):
+    def getScreenGrayscale(self, screen_data=None):
         """This function fills screen_data with the data in grayscrle
         screen_data MUST be a numpy array of uint8. This can be initialized like so:
         screen_data = np.empty((height,width,1), dtype=np.uint8)
@@ -169,25 +169,25 @@ class RLEInterface(object):
             width = rle_lib.getScreenWidth(self.obj)
             height = rle_lib.getScreenHeight(self.obj)
             screen_data = np.empty((height, width,1), dtype=np.uint8)
-        rle_lib.getScreenGrayscrle(self.obj, as_ctypes(screen_data[:]))
+        rle_lib.getScreenGrayscale(self.obj, as_ctypes(screen_data[:]))
         return screen_data
 
-#    def getRAMSize(self):
-#        return rle_lib.getRAMSize(self.obj)
-#
-#    def getRAM(self, ram=None):
-#        """This function grabs the atari RAM.
-#        ram MUST be a numpy array of uint8/int8. This can be initialized like so:
-#        ram = np.array(ram_size, dtype=uint8)
-#        Notice: It must be ram_size where ram_size can be retrieved via the getRAMSize function.
-#        If it is None,  then this function will initialize it.
-#        """
-#        if(ram is None):
-#            ram_size = rle_lib.getRAMSize(self.obj)
-#            ram = np.zeros(ram_size, dtype=np.uint8)
-#        rle_lib.getRAM(self.obj, as_ctypes(ram))
-#        return ram
-#
+    def getRAMSize(self):
+        return rle_lib.getRAMSize(self.obj)
+
+    def getRAM(self, ram=None):
+        """This function grabs the game's RAM.
+        ram MUST be a numpy array of uint8/int8. This can be initialized like so:
+        ram = np.array(ram_size, dtype=uint8)
+        Notice: It must be ram_size where ram_size can be retrieved via the getRAMSize function.
+        If it is None,  then this function will initialize it.
+        """
+        if(ram is None):
+            ram_size = rle_lib.getRAMSize(self.obj)
+            ram = np.zeros(ram_size, dtype=np.uint8)
+        rle_lib.getRAM(self.obj, as_ctypes(ram))
+        return ram
+
 #    def saveScreenPNG(self, filename):
 #        """Save the current screen as a png file"""
 #        return rle_lib.saveScreenPNG(self.obj, filename)

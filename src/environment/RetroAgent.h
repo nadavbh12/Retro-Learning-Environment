@@ -28,13 +28,12 @@ public:
 	void swapBuffers();
 	void videoDeinit();
 
-//	Below function were added by demand
 	int	 getHeight(); //in pixels
 	int	 getWidth(); //in pixels
 	void reset();
-	int readRam(const unsigned& id, const int& offset);
-	void writeRam(const unsigned& id, const int& offset, const uint8_t& data);
-	uint8_t* getRamAddress(unsigned id);
+	int readRam(const int& offset);
+	void writeRam(const int& offset, const uint8_t& data);
+	uint8_t* getRamAddress();
 	uint32_t getRamSize();
 	void SetActions(const Action& player_a_action, const Action& player_b_action);
 	void updateScreen();
@@ -106,6 +105,7 @@ public:
 
 
 private:
+	bool coreLoaded;
 	static std::atomic_uint numAgents;
 	unsigned agentNum;
 	void unloadCore();

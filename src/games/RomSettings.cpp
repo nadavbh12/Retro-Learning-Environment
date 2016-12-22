@@ -53,13 +53,12 @@ ActionVect RomSettings::getAllActions() {
 
 int RomSettings::readRam(const RleSystem* system, int offset) {
 
-//	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset & 0x7F) );
-	return system->getRetroAgent().readRam(RETRO_MEMORY_SYSTEM_RAM, (offset) );
+	return system->getRetroAgent().readRam((offset));
 }
 
 void RomSettings::writeRam(const RleSystem* system, int offset, uint8_t data) {
 
-	return system->getRetroAgent().writeRam(RETRO_MEMORY_SYSTEM_RAM, offset, data );
+	return system->getRetroAgent().writeRam(offset, data );
 }
 
 

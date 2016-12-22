@@ -10,6 +10,7 @@
 #include "rle_interface.hpp"
 #include "gtest/gtest.h"
 #include "common/RleException.h"
+#include "gtest_arguments.h"
 
 namespace {
 
@@ -20,8 +21,8 @@ class RleTest : public ::testing::Test {
  protected:
 
   // Objects declared here can be used by all tests in the test case for Foo.
-	std::string corePath = "/home/nadav/DQN/Arcade-Learning-Environment-2.0/snes9x2010/snes9x2010_libretro.so";
-	std::string romPath = "/home/nadav/DQN/roms/mortal_kombat.sfc";
+	std::string corePath = gtest_arguments::coreName;
+	std::string romPath = gtest_arguments::romName;
 };
 
 TEST_F(RleTest, simpleCtor) {
@@ -89,6 +90,17 @@ TEST_F(RleTest, serialization) {
 	rle.saveState();
 //	rle.loadState();
 
+}
+
+TEST_F(RleTest, testRam) {
+	rle::RLEInterface rle;
+	run_example(&rle, romPath, corePath);
+	RLERAM ram = rle.getRAM();
+	size_t size = ram.size();
+	EXPECT_EQ(128 * 1024, size);
+	EXPECT_NO_THROW(ram.get(0));
+	EXPECT_NO_THROW(ram.get(size-1));
+	EXPECT_ANY_THROW(ram.get(size));
 }
 
 

@@ -18,7 +18,7 @@
 #define __PHOSPHOR_BLEND_HPP__
 
 //#include "../emucore/OSystem.hxx"
-#include "rle_screen.hpp"
+#include "../rle_interface.hpp"
 #include "RleSystem.hxx"
 
 namespace rle {

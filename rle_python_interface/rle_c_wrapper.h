@@ -2,6 +2,7 @@
 #define __RLE_C_WRAPPER_H__
 
 #include <rle_interface.hpp>
+#include <cstring>
 
 using namespace rle;
 
@@ -38,11 +39,7 @@ extern "C" {
   int getFrameNumber(RLEInterface *rle){return rle->getFrameNumber();}
   int lives(RLEInterface *rle){return rle->lives();}
   int getEpisodeFrameNumber(RLEInterface *rle){return rle->getEpisodeFrameNumber();}
-  void getRAM(RLEInterface *rle,unsigned char *ram){
-//    unsigned char *rle_ram = rle->getRAM().array();
-//    int size = rle->getRAM().size();
-//    memcpy(ram,rle_ram,size*sizeof(unsigned char));
-  }
+  void getRAM(RLEInterface *rle, unsigned char *ram);
   int getRAMSize(RLEInterface *rle){return rle->getRAM().size();}
   int getScreenWidth(RLEInterface *rle){return rle->getScreen().width();}
   int getScreenHeight(RLEInterface *rle){return rle->getScreen().height();}
@@ -50,7 +47,7 @@ extern "C" {
 
   void getScreenRGB(RLEInterface *rle, unsigned char *output_buffer);
 
-  void getScreenGrayscrle(RLEInterface *rle, unsigned char *output_buffer);
+  void getScreenGrayscale(RLEInterface *rle, unsigned char *output_buffer);
 
   void saveState(RLEInterface *rle){rle->saveState();}
   void loadState(RLEInterface *rle){rle->loadState();}

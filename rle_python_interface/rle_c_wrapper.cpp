@@ -58,11 +58,17 @@ void getScreenRGB(RLEInterface *rle, unsigned char *output_buffer){
 
 //This method should receive an empty vector to fill it with
 //the grayscrle colours
-void getScreenGrayscrle(RLEInterface *rle, unsigned char *output_buffer){
+void getScreenGrayscale(RLEInterface *rle, unsigned char *output_buffer){
   const rle::RLEScreen& screen = rle->getScreen();
   size_t w = rle->getScreen().width();
   size_t h = rle->getScreen().height();
   size_t screen_size = w*h;
   size_t size_in_pixels = screen_size ;
   rle_rearrangeGrayscrle(output_buffer, (uint32_t*)screen.getArray(), size_in_pixels, rle);
+}
+
+void getRAM(RLEInterface *rle,unsigned char *ram){
+  unsigned char* rle_ram = rle->getRAM().array();
+  int size = rle->getRAM().size();
+  memcpy(ram, rle_ram, size*sizeof(unsigned char));
 }

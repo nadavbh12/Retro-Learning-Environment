@@ -416,7 +416,7 @@ static void core_unload() {
 //		dlclose(RetroAgent::g_retro.handle);
 }
 
-RetroAgent::RetroAgent(){
+RetroAgent::RetroAgent() : coreLoaded(false){
 	agentNum = numAgents++;
 	RetroAgent::g_retro.initialized = false;
 }
@@ -460,10 +460,12 @@ void RetroAgent::loadCore(const string& coreName){
 	else{
 		core_load(coreName.c_str());
 	}
+	coreLoaded = true;
 }
 
 void RetroAgent::unloadCore(){
 	core_unload();
+	coreLoaded = false;
 }
 
 void RetroAgent::loadRom(const string& romName){
@@ -494,21 +496,24 @@ void RetroAgent::reset(){
 	g_retro.retro_reset();
 }
 
-int RetroAgent::readRam(const unsigned& id, const int& offset){
+int RetroAgent::readRam(const int& offset){
 	assert( (uint32_t)offset < getRamSize());
 	assert( offset > 0);
-	return *(getRamAddress(id) + offset);
+	assert( coreLoaded );
+	return *(getRamAddress() + offset);
 }
 
-void RetroAgent::writeRam(const unsigned& id, const int& offset, const uint8_t& data){
+void RetroAgent::writeRam(const int& offset, const uint8_t& data){
 	assert( (uint32_t)offset < getRamSize());
 	assert( offset > 0);
-	*(getRamAddress(id) + offset) = data;
+	assert( coreLoaded );
+	*(getRamAddress() + offset) = data;
 }
 
-uint8_t* RetroAgent::getRamAddress(unsigned id){
-	   size_t size = g_retro.retro_get_memory_size(id);
-	   void*  data = g_retro.retro_get_memory_data(id);
+uint8_t* RetroAgent::getRamAddress(){
+	assert( coreLoaded );
+	   size_t size = g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
+	   void*  data = g_retro.retro_get_memory_data(RETRO_MEMORY_SYSTEM_RAM);
 	   if (!size){
 		   throw RleException("Ram size is 0");
 	   }else{
@@ -517,6 +522,7 @@ uint8_t* RetroAgent::getRamAddress(unsigned id){
 }
 
 uint32_t RetroAgent::getRamSize(){
+	assert( coreLoaded );
 	return (uint32_t)g_retro.retro_get_memory_size(RETRO_MEMORY_SYSTEM_RAM);
 }
 

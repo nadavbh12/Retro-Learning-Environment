@@ -16,6 +16,7 @@
  **************************************************************************** */
 
 #include "retro_environment.hpp"
+#include "libretro.h"
 #include <sstream>
 
 using namespace rle;
@@ -28,6 +29,8 @@ RetroEnvironment::RetroEnvironment(RleSystem* rlesystem, RomSettings* settings) 
   m_phosphor_blend( ),	// TODO pass RleSystem
   m_screen(m_rlesystem->getRetroAgent().getHeight(),
 		  m_rlesystem->getRetroAgent().getWidth()),
+  m_ram(m_rlesystem->getRetroAgent().getRamSize(),
+		m_rlesystem->getRetroAgent().getRamAddress()),
   m_player_a_action(PLAYER_A | JOYPAD_NOOP),
   m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
@@ -67,6 +70,7 @@ RetroEnvironment::RetroEnvironment(RleSystem* rlesystem, RomSettings* settings) 
     // Create the screen exporter
 //    m_screen_exporter.reset(new ScreenExporter(m_rlesystem->colourPrlette(), recordDir));
   }
+
 }
 void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
 	uint32_t rmask, gmask, bmask, amask;
@@ -262,7 +266,6 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
     // TODO SN : implement functions below
   // Parse screen and RAM into their respective data structures
   processScreen();
-//  processRAM();
 }
 
 void RetroEnvironment::emulateStart(Action player_a_action, Action player_b_action, size_t num_steps) {
@@ -300,17 +303,3 @@ void RetroEnvironment::processScreen() {
 	}
 }
 
-void RetroEnvironment::processRAM() {
-  // Copy RAM over
-////  for (size_t i = 0; i < m_ram.size(); i++)
-////    *m_ram.byte(i) = m_rlesystem->console().system().peek(i + 0x80);
-//	uint32_t* memPtr = m_rlesystem->getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-//	uint32_t memSize = m_rlesystem->getRetroAgent().getRamSize();
-//	DEBUG2("mem address " << memPtr);
-//	DEBUG2("mem size " << memSize );
-//	DEBUG2("value at end " << *(memPtr + memSize/8) );
-////	std::copy(memPtr, memPtr + memSize/8, m_ram.array().begin());
-//	m_ram.array().clear();
-//	m_ram.array().reserve(memSize);
-//	std::copy(memPtr, memPtr + memSize/8, m_ram.array().begin());
-}
