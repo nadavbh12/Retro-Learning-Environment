@@ -37,7 +37,7 @@ static void rle_rearrangeRgb(uint8_t *dst_buffer, const uint32_t *src_buffer, si
     }
 }
 
-static void rle_rearrangeGrayscrle(uint8_t *dst_buffer, const uint32_t *src_buffer, size_t src_size , const RLEInterface *rle) {
+static void rle_rearrangeGrayscale(uint8_t *dst_buffer, const uint32_t *src_buffer, size_t src_size , const RLEInterface *rle) {
 
   uint8_t *q = dst_buffer;
   uint8_t r, g, b;
@@ -64,7 +64,7 @@ void getScreenGrayscale(RLEInterface *rle, unsigned char *output_buffer){
   size_t h = rle->getScreen().height();
   size_t screen_size = w*h;
   size_t size_in_pixels = screen_size ;
-  rle_rearrangeGrayscrle(output_buffer, (uint32_t*)screen.getArray(), size_in_pixels, rle);
+  rle_rearrangeGrayscale(output_buffer, (uint32_t*)screen.getArray(), size_in_pixels, rle);
 }
 
 void getRAM(RLEInterface *rle,unsigned char *ram){
