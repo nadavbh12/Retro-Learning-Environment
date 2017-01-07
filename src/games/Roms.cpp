@@ -30,6 +30,9 @@
 #include "supported/Boxing.hpp"
 #include "supported/Wolfenstein.hpp"
 
+// genesis games
+#include "supported/SonicTheHedgehog.hpp"
+
 // Atari Games
 //#include "supported/Breakout.hpp"
 //#include "supported/Carnival.hpp"
@@ -163,6 +166,9 @@ static const RomSettings *roms[]  = {
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings(),
 	new WolfensteinSettings(),
+
+//	Genesis games
+	new SonicTheHedgehogSettings()
 };
 
 

@@ -88,6 +88,14 @@ typedef uint32_t Action;
 // Atari actions
 #define JOYPAD_FIRE					JOYPAD_B	// for atari
 
+// Genesis actions
+#define JOYPAD_GENESIS_A			JOYPAD_Y
+#define JOYPAD_GENESIS_B			JOYPAD_B
+#define JOYPAD_GENESIS_C			JOYPAD_A
+#define JOYPAD_GENESIS_X			JOYPAD_L
+#define JOYPAD_GENESIS_Y			JOYPAD_X
+#define JOYPAD_GENESIS_Z			JOYPAD_R
+
 // a list of RLE actions
 typedef std::vector<Action> ActionVect;
 

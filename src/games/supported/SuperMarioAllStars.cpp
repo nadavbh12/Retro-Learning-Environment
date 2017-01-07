@@ -50,7 +50,6 @@ void SuperMarioAllStarsSettings::step(const RleSystem& system) {
 //    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	// update the reward
-//    reward_t playerScore = getDecimalScore(0x270, 0x271, 0x272, &system);
 	reward_t playerScore = 10*readRam(&system, 0x7D3) + 100*readRam(&system, 0x7D2) + 1000 * readRam(&system, 0x7D1) + 10000*readRam(&system, 0x7D0);
 	reward_t playerLocationBounus = 256*readRam(&system, 0x43)+readRam(&system, 0x42) ; //shai: adding bounus for location to make mario go right, adjust in order to prefer winning over score
 

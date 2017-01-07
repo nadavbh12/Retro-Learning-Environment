@@ -48,6 +48,7 @@ endif()
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x2010)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
+set(GENESIS_PLUS_GX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Genesis-Plus-GX)
 set(MODULES common controllers environment games games/supported external external/TinyMT)
 
 foreach(module ${MODULES})
@@ -98,9 +99,13 @@ IF(INSTALL_CORES)
 	set(STELLA_INSTALL_COMMAND 
 		cp stella_libretro.so 
 		${LIBDIR})
+	set(GENESIS_INSTALL_COMMAND 
+		cp genesis_plus_gx_libretro.so 
+		${LIBDIR})
 ELSE()
 	set(SNES9X_INSTALL_COMMAND "")
 	set(STELLA_INSTALL_COMMAND "")
+	set(GENESIS_INSTALL_COMMAND "")
 ENDIF()
 
 include(ExternalProject)
@@ -124,12 +129,23 @@ ExternalProject_add(stella_libretro
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
+ExternalProject_add(genesis_plus_gx_libretro
+			GIT_REPOSITORY https://github.com/nadavbh12/Genesis-Plus-GX
+			UPDATE_COMMAND ""
+			SOURCE_DIR ${GENESIS_PLUS_GX_DIR}
+			BINARY_DIR ${GENESIS_PLUS_GX_DIR}
+			CONFIGURE_COMMAND ""
+			BUILD_COMMAND "make"
+			INSTALL_DIR ${LIBDIR}
+			INSTALL_COMMAND "${GENESIS_INSTALL_COMMAND}"
+		   )
 
 add_library(rle-lib SHARED ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
 set_target_properties(rle-lib PROPERTIES OUTPUT_NAME rle)
 set_target_properties(rle-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_dependencies(rle-lib snes9x2010_libretro)
 add_dependencies(rle-lib stella_libretro)
+add_dependencies(rle-lib genesis_plus_gx_libretro)
 add_library(rle-c-lib SHARED ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface/rle_c_wrapper.cpp ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
 set_target_properties(rle-c-lib PROPERTIES OUTPUT_NAME rle_c)
 set_target_properties(rle-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)

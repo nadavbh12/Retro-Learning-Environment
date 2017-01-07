@@ -271,6 +271,17 @@ static bool core_environment(unsigned cmd, void *data) {
 //		cval = RetroAgent::g_retro.saveFolder.c_str();
 //		return true;
 //	}
+	case RETRO_ENVIRONMENT_GET_VARIABLE:{
+		struct retro_variable* r_var = (struct retro_variable*)data;
+		if(!strcmp(r_var->key, "genesis_plus_gx_bram")){
+			r_var->value = "";
+		}else if(!strcmp(r_var->key, "genesis_plus_gx_bram")){
+			r_var->value = "auto";
+		}else if(!strcmp(r_var->key, "genesis_plus_gx_blargg_ntsc_filter")){
+			r_var->value = "rgb";
+		}
+
+	}
 	default:
 		core_log(RETRO_LOG_DEBUG, "Unhandled env #%u", cmd);
 		return false;
