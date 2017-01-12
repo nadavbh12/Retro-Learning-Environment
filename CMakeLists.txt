@@ -130,7 +130,7 @@ ExternalProject_add(stella_libretro
 			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
 ExternalProject_add(genesis_plus_gx_libretro
-			GIT_REPOSITORY https://github.com/nadavbh12/Genesis-Plus-GX
+			GIT_REPOSITORY https://github.com/libretro/Genesis-Plus-GX
 			UPDATE_COMMAND ""
 			SOURCE_DIR ${GENESIS_PLUS_GX_DIR}
 			BINARY_DIR ${GENESIS_PLUS_GX_DIR}
