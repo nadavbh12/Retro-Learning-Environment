@@ -47,47 +47,19 @@ RomSettings* SuperMarioAllStarsSettings::clone() const {
 
 /* process the latest information from ALE */
 void SuperMarioAllStarsSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-
 	// update the reward
 	reward_t playerScore = 10*readRam(&system, 0x7D3) + 100*readRam(&system, 0x7D2) + 1000 * readRam(&system, 0x7D1) + 10000*readRam(&system, 0x7D0);
 	reward_t playerLocationBounus = 256*readRam(&system, 0x43)+readRam(&system, 0x42) ; //shai: adding bounus for location to make mario go right, adjust in order to prefer winning over score
 
 	m_reward = playerScore + playerLocationBounus - m_score;
     m_score = playerScore + playerLocationBounus;
-//	DEBUG2("Score: " << std::dec << playerScore << "Location Bonus : " << playerLocationBounus);
     m_time=100*readRam(&system, 0x7E9) + 10 * readRam(&system, 0x7EA) + readRam(&system, 0x7EB);
-//    DEBUG2("time is: " << std::dec << m_time);
 	m_lives = readRam(&system, 0x172A);
-//    update terminal status
 //    int isAlive = readRam(&system, 0x125);
     if ((m_lives == 1) || (m_time == 1)){ // shai : set to 1, doesn't get to 0
     	m_terminal = true;
     }
 
-//    DEBUG2("Is terminal: " << std::dec << m_terminal);
-}
-
-/* is end of game */
-bool SuperMarioAllStarsSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t SuperMarioAllStarsSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool SuperMarioAllStarsSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
 }
 
 
@@ -123,7 +95,6 @@ void SuperMarioAllStarsSettings::loadState( Deserializer & des ) {
 ActionVect SuperMarioAllStarsSettings::getStartingActions(){
 	int i, num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	for(i = 0; i<2*num_of_nops; i++){

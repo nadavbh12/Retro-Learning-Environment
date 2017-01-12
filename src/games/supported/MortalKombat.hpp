@@ -30,7 +30,6 @@
 /* RL wrapper for AtariCollection settings */
 
 #include "../SnesSettings.hpp"
-#include <unordered_set>
 
 namespace rle {
 
@@ -43,20 +42,11 @@ struct MortalKombatSettings : public SnesSettings {
         // reset
         virtual void reset();
 
-        // is end of game
-        virtual bool isTerminal() const;
-
-        // get the most recently observed reward
-        virtual reward_t getReward() const;
-
         // the rom-name
         virtual const char* rom() const { return "mortal_kombat"; }
 
         // create a new instance of the rom
         virtual RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        virtual bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
         virtual void step(const RleSystem& system);
@@ -74,10 +64,6 @@ struct MortalKombatSettings : public SnesSettings {
         void startingOperations(RleSystem& system);
 
     protected:
-        std::unordered_set<Action> minimalActions;
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
         int m_wins;
         int o_wins;
         bool match_ended;

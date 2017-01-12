@@ -60,50 +60,22 @@ RomSettings* FZeroNoSpeedSettings::clone() const {
 
 /* process the latest information from ALE */
 void FZeroNoSpeedSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-
-//	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);
 
 	// update the reward
 	uint32_t playerScore = 1000*readRam(&system, 0xA23) + 100*readRam(&system, 0xA24) +10*readRam(&system, 0xA25); //give extra points according sto speed to maintain highspeed
-//	uint32_t speedScore = 100*readRam(&system, 0xA58) + 10*readRam(&system, 0xA59) +readRam(&system, 0xA5A); //give extra points according sto speed to maintain highspeed
 	uint32_t score = playerScore;
 //	uint32_t lifeBar = readRam(&system, 0xE23);
-//	DEBUG2("score is: " << score);
 	uint32_t loseInd1 = readRam(&system , 0xC1);
 	uint32_t loseInd2 = readRam(&system , 0x50); //lose indication
 
 	uint32_t loseInd = (loseInd2 ==0) && (loseInd1>0); //lose if time has start (larger than 0) and lose indicator is on
 	m_reward = score - m_score;
-//	DEBUG2("lose is : " << loseInd);
     m_score = score;
 
     if (loseInd == 1){
     	m_terminal = true;
     }
 
-}
-
-/* is end of game */
-bool FZeroNoSpeedSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t FZeroNoSpeedSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool FZeroNoSpeedSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
 }
 
 
@@ -135,7 +107,6 @@ void FZeroNoSpeedSettings::loadState( Deserializer & des ) {
 ActionVect FZeroNoSpeedSettings::getStartingActions(){
 	int num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);

@@ -52,10 +52,13 @@ GenesisSettings::GenesisSettings(){
 	AllActionsVector.erase(AllActionsVector.begin());
 
 	AllActionsVector.push_back(JOYPAD_NOOP);
+}
 
+/* is an action part of the minimal set? */
+bool GenesisSettings::isMinimal(const Action &a) const {
 
-//	for (ActionVect::iterator it = AllActionsVector.begin() ; it != AllActionsVector.end(); ++it){
-//		cout << action_to_string(*it) << endl;
-//	}
-
+	if(minimalActions.find(a) ==  minimalActions.end())
+		return false;
+	else
+		return true;
 }

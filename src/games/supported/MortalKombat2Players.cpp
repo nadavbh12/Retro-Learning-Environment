@@ -36,14 +36,6 @@ void MortalKombat2PlayersSettings::step(const RleSystem& system) {
 	m_rewardB = - m_reward;
 }
 
-
-/* get the most recently observed reward */
-reward_t MortalKombat2PlayersSettings::getReward() const {
-
-    return m_reward;
-}
-
-
 /* reset the state of the game */
 void MortalKombat2PlayersSettings::reset() {
 	MortalKombatSettings::reset();

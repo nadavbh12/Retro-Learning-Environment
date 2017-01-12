@@ -43,20 +43,11 @@ struct WolfensteinSettings : public SnesSettings {
         // reset
         void reset();
 
-        // is end of game
-        bool isTerminal() const;
-
-        // get the most recently observed reward
-        reward_t getReward() const;
-
         // the rom-name
         const char* rom() const { return "wolfenstein"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
         void step(const RleSystem& system);
@@ -72,14 +63,8 @@ struct WolfensteinSettings : public SnesSettings {
         virtual ActionVect getStartingActions();
 
     private:
-        std::unordered_set<Action> minimalActions;
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
         int m_lives;
         int m_prev_lives;
-//        int m_hp;
-//        int m_ammo;
 };
 
 } // namespace rle

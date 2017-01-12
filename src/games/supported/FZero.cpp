@@ -60,8 +60,6 @@ RomSettings* FZeroSettings::clone() const {
 
 /* process the latest information from ALE */
 void FZeroSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-
 //	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);
 
 	// update the reward
@@ -78,9 +76,6 @@ void FZeroSettings::step(const RleSystem& system) {
 	uint32_t loseInd2 = readRam(&system , 0x50); //lose indication
 
 	uint32_t loseInd = (loseInd2 ==0) && (loseInd1>0); //lose if time has start (larger than 0) and lose indicator is on
-//	DEBUG2("lose is : " << loseInd);
-//	DEBUG2("score is: " << score);
-//	uint32_t lifeBar = readRam(&system, 0xE23);
 	m_reward = score - m_score;
     m_score = score;
 
@@ -89,29 +84,6 @@ void FZeroSettings::step(const RleSystem& system) {
     }
 
 }
-
-/* is end of game */
-bool FZeroSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t FZeroSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool FZeroSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
 
 /* reset the state of the game */
 void FZeroSettings::reset() {
@@ -141,7 +113,6 @@ void FZeroSettings::loadState( Deserializer & des ) {
 ActionVect FZeroSettings::getStartingActions(){
 	int num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), num_of_nops, JOYPAD_NOOP);

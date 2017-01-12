@@ -42,12 +42,8 @@ RomSettings* TetrisAndDrMarioSettings::clone() const {
 
 /* process the latest information from ALE */
 void TetrisAndDrMarioSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
-
 	// update the reward
-//    reward_t playerScore = getDecimalScore(0x270, 0x271, 0x272, &system);
 	reward_t playerScore = (256 * 256) * readRam(&system, 0x272) + 256 * readRam(&system, 0x271) + readRam(&system, 0x270);
-//    DEBUG2("Score: " << std::dec << playerScore);
 
     m_reward = playerScore - m_score;
     m_score = playerScore;
@@ -57,29 +53,6 @@ void TetrisAndDrMarioSettings::step(const RleSystem& system) {
     if (isAlive > 0){
     	m_terminal = true;
     }
-//    DEBUG2("Is terminal: " << std::dec << m_terminal);
-}
-
-/* is end of game */
-bool TetrisAndDrMarioSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t TetrisAndDrMarioSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool TetrisAndDrMarioSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
 }
 
 
@@ -111,7 +84,6 @@ void TetrisAndDrMarioSettings::loadState( Deserializer & des ) {
 ActionVect TetrisAndDrMarioSettings::getStartingActions(){
 	int num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), 3.5*num_of_nops, JOYPAD_NOOP);

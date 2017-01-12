@@ -43,20 +43,11 @@ class FZeroNoSpeedSettings : public SnesSettings {
         // reset
         void reset();
 
-        // is end of game
-        bool isTerminal() const;
-
-        // get the most recently observed reward
-        reward_t getReward() const;
-
         // the rom-name
         const char* rom() const { return "f_zero_no_speed"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
         void step(const RleSystem& system);
@@ -70,12 +61,6 @@ class FZeroNoSpeedSettings : public SnesSettings {
         virtual const int lives() { return 0; }
 
         virtual ActionVect getStartingActions();
-
-    private:
-        std::unordered_set<Action> minimalActions;
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
 };
 
 } // namespace rle

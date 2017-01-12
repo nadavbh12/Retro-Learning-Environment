@@ -68,7 +68,6 @@ RomSettings* WolfensteinSettings::clone() const {
 
 /* process the latest information from ALE */
 void WolfensteinSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
     //	// update the reward
     reward_t score = readRam(&system, 0x8949) + 256*readRam(&system, 0x894a) +256*256*readRam(&system, 0x894b);
@@ -86,31 +85,7 @@ void WolfensteinSettings::step(const RleSystem& system) {
     if((m_lives == 0) && (m_prev_lives == 1)){
     	m_terminal = true;
     }
-//    DEBUG2("m_lives: " << std::dec << m_lives);
 
-}
-
-/* is end of game */
-bool WolfensteinSettings::isTerminal() const {
-
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t WolfensteinSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool WolfensteinSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
 }
 
 

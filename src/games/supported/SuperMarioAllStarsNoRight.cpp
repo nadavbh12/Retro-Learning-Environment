@@ -66,29 +66,6 @@ void SuperMarioAllStarsNoRightSettings::step(const RleSystem& system) {
     	m_terminal = true;
     }
 
-//    DEBUG2("Is terminal: " << std::dec << m_terminal);
-}
-
-/* is end of game */
-bool SuperMarioAllStarsNoRightSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t SuperMarioAllStarsNoRightSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool SuperMarioAllStarsNoRightSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
 }
 
 
@@ -124,7 +101,6 @@ void SuperMarioAllStarsNoRightSettings::loadState( Deserializer & des ) {
 ActionVect SuperMarioAllStarsNoRightSettings::getStartingActions(){
 	int i, num_of_nops(100);
 	ActionVect startingActions;
-//	startingActions.reserve(num_of_xs*num_of_nops);
 
 	// wait for intro to end
 	for(i = 0; i<2*num_of_nops; i++){

@@ -48,9 +48,6 @@ SuperMarioWorldSettings::SuperMarioWorldSettings() {
 						JOYPAD_Y | JOYPAD_A | JOYPAD_LEFT,
     };
     m_lastTime = {-1, -1, -1};
-//    m_lastTime.push_back(-1);
-//    m_lastTime.push_back(-1);
-//    m_lastTime.push_back(-1);
 }
 
 
@@ -65,7 +62,6 @@ RomSettings* SuperMarioWorldSettings::clone() const {
 
 /* process the latest information from ALE */
 void SuperMarioWorldSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
     int time = getDecimalScoreWords({0xf33, 0xf32, 0xf31}, &system);
 //	DEBUG2("time: " << std::dec << time);
 
@@ -74,7 +70,6 @@ void SuperMarioWorldSettings::step(const RleSystem& system) {
 
 	// update the reward
     reward_t score = 10 * getDecimalScoreWords({0xf34, 0xf35, 0xf36}, &system);
-//    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
     m_score = score;
@@ -89,30 +84,6 @@ void SuperMarioWorldSettings::step(const RleSystem& system) {
     }
 }
 
-/* is end of game */
-bool SuperMarioWorldSettings::isTerminal() const {
-
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t SuperMarioWorldSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool SuperMarioWorldSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
-
 /* reset the state of the game */
 void SuperMarioWorldSettings::reset() {
 
@@ -121,7 +92,6 @@ void SuperMarioWorldSettings::reset() {
     m_terminal = false;
 
 }
-
 
 
 /* saves the state of the rom settings */

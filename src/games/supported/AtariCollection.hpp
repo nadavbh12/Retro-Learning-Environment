@@ -42,20 +42,11 @@ struct AtariCollectionSettings : public SnesSettings {
         // reset
         void reset();
 
-        // is end of game
-        bool isTerminal() const;
-
-        // get the most recently observed reward
-        reward_t getReward() const;
-
         // the rom-name
         const char* rom() const { return "atari_collection"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
         void step(const RleSystem& system);
@@ -71,10 +62,6 @@ struct AtariCollectionSettings : public SnesSettings {
         virtual ActionVect getStartingActions();
 
     private:
-
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
         int m_lives;
 };
 

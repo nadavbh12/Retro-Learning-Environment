@@ -34,13 +34,7 @@
 #define __SNES_SETTINGS_HPP__
 
 #include "RomSettings.hpp"
-
-// below macros are useful for inserting starting actions
-#define ACTION_REPEAT_STARTING_ACIONS 6
-#define INSERT_ACTIONS(action, player, repeat) startingActions.insert(startingActions.end(), (repeat), PLAYER_##player | (action));
-#define INSERT_ACTION_SINGLE(action, player) INSERT_ACTIONS(action, player, ACTION_REPEAT_STARTING_ACIONS)
-#define INSERT_ACTION_SINGLE_A(action) INSERT_ACTION_SINGLE(action, A)
-#define INSERT_NOPS(repeat) INSERT_ACTIONS(JOYPAD_NOOP, A, repeat)
+#include <unordered_set>
 
 namespace rle {
 
@@ -54,10 +48,10 @@ struct SnesSettings : public RomSettings{
     virtual void reset() = 0;
 
     // is end of game
-    virtual bool isTerminal() const = 0;
+    bool isTerminal() const{ return m_terminal;}
 
     // get the most recently observed reward
-    virtual reward_t getReward() const = 0;
+    reward_t getReward() const{ return m_reward;}
 
     // the rom-name
     virtual const char *rom() const = 0;
@@ -66,10 +60,15 @@ struct SnesSettings : public RomSettings{
     virtual RomSettings *clone() const = 0;
 
     // is an action part of the minimal set?
-    virtual bool isMinimal(const Action &a) const = 0;
+    bool isMinimal(const Action &a) const;
 
     // process the latest information from ALE
     virtual void step(const RleSystem &system) = 0;
+protected:
+    std::unordered_set<Action> minimalActions;
+    bool m_terminal;
+    reward_t m_reward;
+    reward_t m_score;
 };
 
 

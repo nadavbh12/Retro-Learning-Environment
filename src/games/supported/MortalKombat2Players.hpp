@@ -43,9 +43,6 @@ struct MortalKombat2PlayersSettings : public MortalKombatSettings {
         // reset
         void reset();
 
-        // get the most recently observed reward
-        reward_t getReward() const;
-
         // the rom-name
         const char* rom() const { return "mortal_kombat_2_players"; }
 

@@ -43,20 +43,11 @@ class SuperMarioAllStarsNoRightSettings : public SnesSettings {
         // reset
         void reset();
 
-        // is end of game
-        bool isTerminal() const;
-
-        // get the most recently observed reward
-        reward_t getReward() const;
-
         // the rom-name
         const char* rom() const { return "super_mario_all_stars_no_right"; }
 
         // create a new instance of the rom
         RomSettings* clone() const;
-
-        // is an action part of the minimal set?
-        bool isMinimal(const Action& a) const;
 
         // process the latest information from ALE
         void step(const RleSystem& system);
@@ -72,11 +63,11 @@ class SuperMarioAllStarsNoRightSettings : public SnesSettings {
         virtual ActionVect getStartingActions();
 
     private:
-        std::unordered_set<Action> minimalActions;
+//        std::unordered_set<Action> minimalActions;
         int m_lives;
-        bool m_terminal;
-        reward_t m_reward;
-        reward_t m_score;
+//        bool m_terminal;
+//        reward_t m_reward;
+//        reward_t m_score;
         int m_time;
 };
 

@@ -59,3 +59,12 @@ SnesSettings::SnesSettings(){
 //	}
 
 }
+
+/* is an action part of the minimal set? */
+bool SnesSettings::isMinimal(const Action &a) const {
+
+	if(minimalActions.find(a) ==  minimalActions.end())
+		return false;
+	else
+		return true;
+}

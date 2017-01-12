@@ -112,27 +112,6 @@ void MortalKombatSettings::step(const RleSystem& system) {
     }
 }
 
-/* is end of game */
-bool MortalKombatSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t MortalKombatSettings::getReward() const {
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool MortalKombatSettings::isMinimal(const Action &a) const {
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
-
 /* reset the state of the game */
 void MortalKombatSettings::reset() {
     m_reward   = 0;

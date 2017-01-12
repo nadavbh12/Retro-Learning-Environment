@@ -74,30 +74,6 @@ void FinalFightSettings::step(const RleSystem& system) {
     m_prev_lives = lives;
 }
 
-/* is end of game */
-bool FinalFightSettings::isTerminal() const {
-
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t FinalFightSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool FinalFightSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
-
 /* reset the state of the game */
 void FinalFightSettings::reset() {
 

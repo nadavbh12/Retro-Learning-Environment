@@ -19,8 +19,27 @@ using namespace rle;
 
 
 AtariCollectionSettings::AtariCollectionSettings() {
-
     reset();
+    minimalActions = {
+    	PLAYER_A | JOYPAD_NOOP,
+    	PLAYER_A | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_UP,
+    	PLAYER_A | JOYPAD_RIGHT,
+    	PLAYER_A | JOYPAD_LEFT,
+    	PLAYER_A | JOYPAD_DOWN,
+    	PLAYER_A | JOYPAD_UP | JOYPAD_RIGHT,
+    	PLAYER_A | JOYPAD_UP | JOYPAD_LEFT,
+    	PLAYER_A | JOYPAD_DOWN | JOYPAD_RIGHT,
+    	PLAYER_A | JOYPAD_DOWN | JOYPAD_LEFT,
+    	PLAYER_A | JOYPAD_UP | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_RIGHT | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_LEFT | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_DOWN | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_UP | JOYPAD_RIGHT | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_UP | JOYPAD_LEFT | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE,
+    	PLAYER_A | JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE,
+    };
 }
 
 
@@ -50,49 +69,6 @@ void AtariCollectionSettings::step(const RleSystem& system) {
     if((readRam(&system, 0x33)  & 0xff) == 0xff){
 		m_lives = readRam(&system, 0x57);
 		m_terminal = (m_lives == 0);
-    }
-}
-
-
-/* is end of game */
-bool AtariCollectionSettings::isTerminal() const {
-
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t AtariCollectionSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool AtariCollectionSettings::isMinimal(const Action &a) const {
-
-    switch (a) {
-        case PLAYER_A | JOYPAD_NOOP:
-        case PLAYER_A | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_UP:
-        case PLAYER_A | JOYPAD_RIGHT:
-        case PLAYER_A | JOYPAD_LEFT:
-        case PLAYER_A | JOYPAD_DOWN:
-        case PLAYER_A | JOYPAD_UP | JOYPAD_RIGHT:
-        case PLAYER_A | JOYPAD_UP | JOYPAD_LEFT:
-        case PLAYER_A | JOYPAD_DOWN | JOYPAD_RIGHT:
-        case PLAYER_A | JOYPAD_DOWN | JOYPAD_LEFT:
-        case PLAYER_A | JOYPAD_UP | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_RIGHT | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_LEFT | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_DOWN | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_UP | JOYPAD_RIGHT | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_UP | JOYPAD_LEFT | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_DOWN | JOYPAD_RIGHT | JOYPAD_FIRE:
-        case PLAYER_A | JOYPAD_DOWN | JOYPAD_LEFT | JOYPAD_FIRE:
-            return true;
-        default:
-            return false;
     }
 }
 

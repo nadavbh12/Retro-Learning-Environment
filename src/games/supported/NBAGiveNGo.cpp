@@ -45,7 +45,6 @@ RomSettings* NBAGiveNGoSettings::clone() const {
 
 /* process the latest information from ALE */
 void NBAGiveNGoSettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
 	uint32_t time = 60 * readRam(&system, 0xAC) + readRam(&system, 0xAE);
 
@@ -62,29 +61,6 @@ void NBAGiveNGoSettings::step(const RleSystem& system) {
     }
 
 }
-
-/* is end of game */
-bool NBAGiveNGoSettings::isTerminal() const {
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t NBAGiveNGoSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool NBAGiveNGoSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
 
 /* reset the state of the game */
 void NBAGiveNGoSettings::reset() {

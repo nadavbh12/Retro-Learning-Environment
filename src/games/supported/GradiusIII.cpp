@@ -68,11 +68,9 @@ RomSettings* GradiusIIISettings::clone() const {
 
 /* process the latest information from ALE */
 void GradiusIIISettings::step(const RleSystem& system) {
-//    uint8_t* address = system.getRetroAgent().getRamAddress(RETRO_MEMORY_SYSTEM_RAM);
 
     //	// update the reward
     reward_t score = getDecimalScore(0x1f44, 0x1f45,0x1f46, &system);
-//    DEBUG2("Score: " << std::dec << score);
 
     m_reward = score - m_score;
     m_score = score;
@@ -83,33 +81,7 @@ void GradiusIIISettings::step(const RleSystem& system) {
     if((m_lives == 255) && (m_prev_lives == 0)){
     	m_terminal = true;
     }
-//    DEBUG2("m_lives: " << std::dec << m_lives);
-
 }
-
-/* is end of game */
-bool GradiusIIISettings::isTerminal() const {
-
-    return m_terminal;
-};
-
-
-/* get the most recently observed reward */
-reward_t GradiusIIISettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool GradiusIIISettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
 
 /* reset the state of the game */
 void GradiusIIISettings::reset() {
@@ -119,8 +91,6 @@ void GradiusIIISettings::reset() {
     m_terminal = false;
 
 }
-
-
 
 /* saves the state of the rom settings */
 void GradiusIIISettings::saveState( Serializer & ser ) {
@@ -138,9 +108,9 @@ void GradiusIIISettings::loadState( Deserializer & des ) {
 
 
 ActionVect GradiusIIISettings::getStartingActions(){
-	int num_of_xs(4),num_of_nops(100);
+	int num_of_nops(100);
 	ActionVect startingActions;
-	startingActions.reserve(num_of_xs*num_of_nops);
+
 	// wait for intro to end
 	startingActions.insert(startingActions.end(), 2.4*num_of_nops, JOYPAD_NOOP);
 	startingActions.push_back(JOYPAD_START);

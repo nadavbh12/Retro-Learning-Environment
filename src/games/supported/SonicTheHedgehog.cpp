@@ -68,28 +68,6 @@ void SonicTheHedgehogSettings::step(const RleSystem& system) {
     }
 }
 
-/* is end of game */
-bool SonicTheHedgehogSettings::isTerminal() const {
-    return m_terminal;
-};
-
-/* get the most recently observed reward */
-reward_t SonicTheHedgehogSettings::getReward() const {
-
-    return m_reward;
-}
-
-
-/* is an action part of the minimal set? */
-bool SonicTheHedgehogSettings::isMinimal(const Action &a) const {
-
-	if(minimalActions.find(a) ==  minimalActions.end())
-		return false;
-	else
-		return true;
-}
-
-
 /* reset the state of the game */
 void SonicTheHedgehogSettings::reset() {
 
