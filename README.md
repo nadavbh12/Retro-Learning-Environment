@@ -6,7 +6,7 @@ The environment provides an inreface to training and evaluating AI algorithms ag
 The currently supported games can be found in the src/games/supported directory .
 Some popular games include: _Mortal Kombat, Super Mario All Stars, F-Zero, Castle Wolfenstein_ and _Gradius III_.
 
-A paper is available for RLE at http://arxiv.org/abs/1606.01540.
+A paper is available for RLE at http://arxiv.org/abs/1611.02205.
 If you use RLE in your publication, please use the following BibTex entry:
   
     @article{bhonker2016playing,
