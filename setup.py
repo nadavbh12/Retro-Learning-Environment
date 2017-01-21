@@ -43,10 +43,10 @@ class Build(_build.build):
         os.chdir(cwd)
 
 setup(name = 'rle_python_interface',
-      version='0.1.0',
+      version='1.0.3',
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',
       url='https://github.com/nadavbh12/Retro-Learning-Environment',
-      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.1',
+      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.3',
       author='Nadav Bhonker, Shai Rozenberg',
       author_email='nadavbh@gmail.com;shai.roz1989@gmail.com',
       license = 'GPL',
