@@ -29,8 +29,6 @@ def run_cmake():
         ds.spawn(['make', '-j', str(cores_to_use)])
     except ds.DistutilsExecError:
         print "Error while running cmake"
-        print "run 'setup.py build --help' for build options"
-        print "You may also try editing the settings in CMakeLists.txt file and re-running setup"
         sys.exit(-1)
 
 ###########################
@@ -43,10 +41,10 @@ class Build(_build.build):
         os.chdir(cwd)
 
 setup(name = 'rle_python_interface',
-      version='1.0.3',
+      version='1.0.4',
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',
       url='https://github.com/nadavbh12/Retro-Learning-Environment',
-      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.3',
+      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.4',
       author='Nadav Bhonker, Shai Rozenberg',
       author_email='nadavbh@gmail.com;shai.roz1989@gmail.com',
       license = 'GPL',
@@ -54,7 +52,7 @@ setup(name = 'rle_python_interface',
       package_dir={'rle_python_interface': 'rle_python_interface'},
       package_data={'rle_python_interface': ['librle_c.so',
                                              'stella_libretro.so',
-                                             'snes9x2010_libretrolinux-x86_64.so',
+                                             'snes9x2010_libretro.so',
                                              'genesis_plus_gx_libretro.so']},
       cmdclass={'build': Build }
       )

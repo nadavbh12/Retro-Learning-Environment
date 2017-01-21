@@ -105,16 +105,6 @@ IF(INSTALL_CORES)
 	set(GENESIS_INSTALL_COMMAND 
 		mv genesis_plus_gx_libretro.so
 		${LIBDIR}/genesis_plus_gx_libretro.so)
-ELSEIF(BUILD_PYTHON)
-	set(SNES9X_INSTALL_COMMAND 
-		mv `${FIND_SNES9X}`
-		${PYTHON_RLE_DIR}/snes9x2010_libretro.so)
-	set(STELLA_INSTALL_COMMAND 
-		mv stella_libretro.so
-		${PYTHON_RLE_DIR}/stella_libretro.so)
-	set(GENESIS_INSTALL_COMMAND 
-		mv genesis_plus_gx_libretro.so
-		${PYTHON_RLE_DIR}/genesis_plus_gx_libretro.so)
 ELSE()
 	set(SNES9X_INSTALL_COMMAND "")
 	set(STELLA_INSTALL_COMMAND "")
@@ -152,6 +142,15 @@ ExternalProject_add(genesis_plus_gx_libretro
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${GENESIS_INSTALL_COMMAND}"
 		   )
+
+IF(BUILD_PYTHON)
+	INSTALL(DIRECTORY ${SNES9X_DIR} DESTINATION ${PYTHON_RLE_DIR}/snes9x2010_libretro.so
+		FILES_MATCHING PATTERN "*.so")
+	INSTALL(DIRECTORY ${GENESIS_PLUS_GX_DIR} DESTINATION ${PYTHON_RLE_DIR}/stella_libretro.so
+		FILES_MATCHING PATTERN "*.so")
+	INSTALL(DIRECTORY ${STELLA_DIR} DESTINATION ${PYTHON_RLE_DIR}/genesis_plus_gx_libretro.so
+		FILES_MATCHING PATTERN "*.so")	
+ENDIF()
 
 add_library(rle-lib SHARED ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
 set_target_properties(rle-lib PROPERTIES OUTPUT_NAME rle)
