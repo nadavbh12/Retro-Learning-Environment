@@ -106,8 +106,18 @@ class RLEInterface(object):
     def setFloat(self, key, value):
       rle_lib.setFloat(self.obj, key, value)
 
-    def loadROM(self, rom_file, core_file):
-        rle_lib.loadROM(self.obj, rom_file, core_file)
+    def loadROM(self, rom_file, core):
+        _ROOT = os.path.abspath(os.path.dirname(__file__))
+        if 'snes' == core:
+            core_path = _ROOT + '/snes9x2010_libretro.so'
+        elif 'atari' == core:
+            core_path = _ROOT + '/stella_libretro.so'
+        elif 'genesis' == core or 'game_gear' == core or 'sg1000' == core:
+            core_path = _ROOT + '/genesis_plus_gx_libretro.so'
+        else:
+            raise ValueError('core must be atari|snes|genesis|game_gear|sg1000')
+
+        rle_lib.loadROM(self.obj, rom_file, core_path)
 
     def act(self, actionA, actionB = 0):
         return rle_lib.act(self.obj, int(actionA), int(actionB))

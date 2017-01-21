@@ -457,7 +457,8 @@ void RetroAgent::loadCore(const string& coreName){
 	string suffix = ".so";
 	size_t start_pos = coreName.find(suffix);
 	if(start_pos == std::string::npos){
-		throw invalid_argument("Invalid core file path. File name must end with .so");
+		throw invalid_argument("Invalid core file path: " + coreName +
+				+"\n File name must end with .so");
 	}
 	if(agentNum > 0){
 		string newCoreName = coreName;

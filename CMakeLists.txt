@@ -3,6 +3,7 @@ project(rle)
 
 option(USE_SDL "Use SDL" OFF)
 option(BUILD_EXAMPLES "Build Example Agents" ON)
+option(BUILD_PYTHON "Usef when building Python with distutils" OFF)
 option(DEBUG "Suspend optimization & enable debugging" OFF)
 option(UNIT_TESTING "Build unit tests using Google Test" OFF)
 option(INSTALL_CORES "Install the core libs. Install may require sudo" OFF)
@@ -49,6 +50,7 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x2010)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
 set(GENESIS_PLUS_GX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Genesis-Plus-GX)
+set(PYTHON_RLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)
 set(MODULES common controllers environment games games/supported external external/TinyMT)
 
 foreach(module ${MODULES})
@@ -92,16 +94,27 @@ set(LIBDIR "${CMAKE_INSTALL_PREFIX}/lib")
 MESSAGE(STATUS "INCLUDE_DIR ${INCDIR}")
 MESSAGE(STATUS "LIBRARY_DIR ${LIBDIR}")
 
+
 IF(INSTALL_CORES)
 	set(SNES9X_INSTALL_COMMAND 
-		cp snes9x2010_libretro.so 
-		${LIBDIR})
+		mv snes9x2010_libretro.so
+		${LIBDIR}/snes9x2010_libretro.so)
 	set(STELLA_INSTALL_COMMAND 
-		cp stella_libretro.so 
-		${LIBDIR})
+		mv stella_libretro.so
+		${LIBDIR}/stella_libretro.so)
 	set(GENESIS_INSTALL_COMMAND 
-		cp genesis_plus_gx_libretro.so 
-		${LIBDIR})
+		mv genesis_plus_gx_libretro.so
+		${LIBDIR}/genesis_plus_gx_libretro.so)
+ELSEIF(BUILD_PYTHON)
+	set(SNES9X_INSTALL_COMMAND 
+		mv `${FIND_SNES9X}`
+		${PYTHON_RLE_DIR}/snes9x2010_libretro.so)
+	set(STELLA_INSTALL_COMMAND 
+		mv stella_libretro.so
+		${PYTHON_RLE_DIR}/stella_libretro.so)
+	set(GENESIS_INSTALL_COMMAND 
+		mv genesis_plus_gx_libretro.so
+		${PYTHON_RLE_DIR}/genesis_plus_gx_libretro.so)
 ELSE()
 	set(SNES9X_INSTALL_COMMAND "")
 	set(STELLA_INSTALL_COMMAND "")
@@ -115,7 +128,7 @@ ExternalProject_add(snes9x2010_libretro
 			SOURCE_DIR ${SNES9X_DIR}
 			BINARY_DIR ${SNES9X_DIR}
 			CONFIGURE_COMMAND ""
-			BUILD_COMMAND make
+			BUILD_COMMAND ${MAKE}
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${SNES9X_INSTALL_COMMAND}"
 		   )
@@ -125,7 +138,7 @@ ExternalProject_add(stella_libretro
 			SOURCE_DIR ${STELLA_DIR}
 			BINARY_DIR ${STELLA_DIR}
 			CONFIGURE_COMMAND ""
-			BUILD_COMMAND "make"
+			BUILD_COMMAND ${MAKE}
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
@@ -135,7 +148,7 @@ ExternalProject_add(genesis_plus_gx_libretro
 			SOURCE_DIR ${GENESIS_PLUS_GX_DIR}
 			BINARY_DIR ${GENESIS_PLUS_GX_DIR}
 			CONFIGURE_COMMAND ""
-			BUILD_COMMAND "make"
+			BUILD_COMMAND ${MAKE}
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${GENESIS_INSTALL_COMMAND}"
 		   )
@@ -143,10 +156,7 @@ ExternalProject_add(genesis_plus_gx_libretro
 add_library(rle-lib SHARED ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
 set_target_properties(rle-lib PROPERTIES OUTPUT_NAME rle)
 set_target_properties(rle-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_dependencies(rle-lib snes9x2010_libretro)
-add_dependencies(rle-lib stella_libretro)
-add_dependencies(rle-lib genesis_plus_gx_libretro)
-add_library(rle-c-lib SHARED ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface/rle_c_wrapper.cpp ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
+add_library(rle-c-lib SHARED ${PYTHON_RLE_DIR}/rle_c_wrapper.cpp ${SOURCE_DIR}/rle_interface.cpp ${SOURCES})
 set_target_properties(rle-c-lib PROPERTIES OUTPUT_NAME rle_c)
 set_target_properties(rle-c-lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)
 
@@ -213,7 +223,7 @@ if(UNIT_TESTING)
   	add_definitions(-D__UNIT_TESTING)
     add_subdirectory(googletest)
     enable_testing()
-    include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/rle_python_interface)
+    include_directories(${GTEST_INCLUDE_DIRS} ${PYTHON_RLE_DIR})
 
     file(GLOB test_sources test/*.cpp)
     list(APPEND TEST_SOURCES ${test_sources})
