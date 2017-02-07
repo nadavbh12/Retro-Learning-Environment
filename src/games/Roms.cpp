@@ -187,7 +187,8 @@ RomSettings *rle::buildRomRLWrapper(const std::string &rom, bool twoPlayers) {
     for (size_t i=0; i < sizeof(roms)/sizeof(roms[0]); i++) {
         if (rom_str == roms[i]->rom()) return roms[i]->clone();
     }
-
-    return NULL;
+    std::cerr << COLOR_RED << "ERROR: " << rom << " ROM file name is invalid." << endl;
+    std:: cerr << "Rename the ROM so it is underscore separated. For example: super_mario_world.sfc" << COLOR_RESET << endl;
+    exit(1);
 }
 
