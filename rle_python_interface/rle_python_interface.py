@@ -90,19 +90,25 @@ class RLEInterface(object):
 
     def getString(self, key):
         return rle_lib.getString(self.obj, key)
+
     def getInt(self, key):
         return rle_lib.getInt(self.obj, key)
+
     def getBool(self, key):
         return rle_lib.getBool(self.obj, key)
+
     def getFloat(self, key):
         return rle_lib.getFloat(self.obj, key)
 
     def setString(self, key, value):
       rle_lib.setString(self.obj, key, value)
+
     def setInt(self, key, value):
       rle_lib.setInt(self.obj, key, value)
+
     def setBool(self, key, value):
       rle_lib.setBool(self.obj, key, value)
+
     def setFloat(self, key, value):
       rle_lib.setFloat(self.obj, key, value)
 
@@ -159,13 +165,14 @@ class RLEInterface(object):
     def getScreenRGB(self, screen_data=None):
         """This function fills screen_data with the data in RGB format
         screen_data MUST be a numpy array of uint8. This can be initialized like so:
-        screen_data = np.empty((height,width,3), dtype=np.uint8)
+        screen_data = np.empty((height,width,4), dtype=np.uint8)
+        The channels of the image are RGBA, A being Alpha. Currently unused.
         If it is None,  then this function will initialize it.
         """
-        if(screen_data is None):
+        if screen_data is None:
             width = rle_lib.getScreenWidth(self.obj)
             height = rle_lib.getScreenHeight(self.obj)
-            screen_data = np.empty((height, width,3), dtype=np.uint8)
+            screen_data = np.empty((height, width, 4), dtype=np.uint8)
         rle_lib.getScreenRGB(self.obj, as_ctypes(screen_data[:]))
         return screen_data
 

@@ -122,7 +122,7 @@ class RLEScreen {
     pixel_t *getRow(int r) const;
 
     /** Access the whole array */
-    pixel_t *getArray() const { return const_cast<pixel_t *>(&m_pixels[0]); }
+    const pixel_t *getArray() const { return &m_pixels[0]; }
 //    std::vector<pixel_t>& getArray() { return m_pixels; }
 
     /** Dimensionality information - values are in pixels */

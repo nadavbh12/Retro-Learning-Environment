@@ -19,18 +19,21 @@ TEST_F(RleCInterfaceTest, simpleCtorDtor) {
 	RLE_del(rle);
 }
 
-//TEST_F(RleCInterfaceTest, getScreenRGB) {
-//	RLEInterface *rle = RLE_new();
-//	loadROM(rle,"/home/administrator/DQN/roms/mortal_kombat.sfc", "/home/administrator/DQN/tempDQN/Arcade-Learning-Environment-2.0/snes9x-next/snes9x_next_libretro.so");
-//	reset_game(rle);
-//	for(int i = 0; i < 50; ++i){
-//		act(rle, (Action)JOYPAD_NOOP,(Action)JOYPAD_NOOP);
-//	}
-//	int height = getScreenHeight(rle);
-//	int width = getScreenWidth(rle);
-//	uint8_t* output_buffer = new uint8_t[height * width];
-//	getScreenRGB(rle,output_buffer);
-//}
+TEST_F(RleCInterfaceTest, getScreenRGB) {
+	RLEInterface *rle = RLE_new();
+	loadROM(rle,gtest_arguments::romName.c_str(), gtest_arguments::coreName.c_str());
+	reset_game(rle);
+	for(int i = 0; i < 50; ++i){
+		act(rle, (Action)JOYPAD_NOOP,(Action)JOYPAD_NOOP);
+	}
+	int height = getScreenHeight(rle);
+	int width = getScreenWidth(rle);
+	std::cout << "height = " << height << ", width = " << width << std::endl;
+	uint8_t* output_buffer = new uint8_t[height * width * 4];
+	std::cout << "size = " << height * width *3 << std::endl;
+	getScreenRGB(rle, output_buffer);
+	delete output_buffer;
+}
 
 void loadAndPlay(RLEInterface* rle){
 	loadROM(rle, gtest_arguments::romName.c_str(), gtest_arguments::coreName.c_str());
