@@ -25,7 +25,7 @@ Install main dependences:
 sudo apt-get install libsdl1.2-dev libsdl-gfx1.2-dev libsdl-image1.2-dev cmake
 ```
 
-Compilation:
+To use the shared_library interface:
 
 ```
 $ mkdir build && cd build
@@ -33,7 +33,7 @@ $ cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=ON ..
 $ make -j 4
 ```
 
-To install the python module:
+To install the python interface:
 
 ```
 $ pip install .
