@@ -43,7 +43,7 @@ class Build(_build.build):
         _build.build.run(self)
 
 setup(name = 'rle_python_interface',
-      version='1.0.8',
+      version='1.0.9',
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',
       url='https://github.com/nadavbh12/Retro-Learning-Environment',
       download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.5',
