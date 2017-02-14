@@ -45,7 +45,6 @@ if(USE_SDL)
   endif()
 endif()
 
-
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(SNES9X_DIR ${CMAKE_CURRENT_SOURCE_DIR}/snes9x2010)
 set(STELLA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stella-libretro)
@@ -219,7 +218,7 @@ if(UNIT_TESTING)
 #    )
 
 #  endif()
-  	add_definitions(-D__UNIT_TESTING)
+    add_definitions(-D__UNIT_TESTING)
     add_subdirectory(googletest)
     enable_testing()
     include_directories(${GTEST_INCLUDE_DIRS} ${PYTHON_RLE_DIR})

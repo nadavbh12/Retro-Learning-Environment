@@ -25,7 +25,7 @@ def run_cmake():
     cores_to_use = max(1, multiprocessing.cpu_count() - 1)
 
     try:
-        ds.spawn(['cmake', '../'] + cmake_args.split())
+        ds.spawn(['cmake', '..'] + cmake_args.split())
         ds.spawn(['make', '-j', str(cores_to_use)])
     except ds.DistutilsExecError:
         print "Error while running cmake"
@@ -39,6 +39,8 @@ class Build(_build.build):
         cwd = os.getcwd()
         run_cmake()
         os.chdir(cwd)
+        ds.spawn(['./copy_cores.sh'])
+        _build.build.run(self)
 
 setup(name = 'rle_python_interface',
       version='1.0.5',
