@@ -14,8 +14,8 @@ import distutils.spawn as ds
 
 def run_cmake():
     if ds.find_executable('cmake') is None:
-        print "CMake is required to build RLE"
-        print "Please install cmake version >= 3.02 and re-run setup"
+        print("CMake is required to build RLE")
+        print("Please install cmake version >= 3.02 and re-run setup")
         sys.exit(-1)
 
     new_dir = op.join(op.split(__file__)[0], 'build')
@@ -28,7 +28,7 @@ def run_cmake():
         ds.spawn(['cmake', '..'] + cmake_args.split())
         ds.spawn(['make', '-j', str(cores_to_use)])
     except ds.DistutilsExecError:
-        print "Error while running cmake"
+        print("Error while running cmake")
         sys.exit(-1)
 
 ###########################
