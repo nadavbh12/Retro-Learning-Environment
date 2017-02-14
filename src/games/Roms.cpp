@@ -17,6 +17,7 @@
 
 /// snes games
 #include "supported/AtariCollection.hpp"
+#include "supported/ClassicKong.hpp"
 #include "supported/FinalFight.hpp"
 #include "supported/FZero.hpp"
 #include "supported/FZeroNoSpeed.hpp"
@@ -154,6 +155,7 @@ static const RomSettings *roms[]  = {
 
 	// SNES games
 	new AtariCollectionSettings(),
+	new ClassicKongSettings(),
 	new FinalFightSettings(),
 	new FZeroSettings(),
 	new FZeroNoSpeedSettings(),
