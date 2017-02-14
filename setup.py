@@ -42,11 +42,12 @@ class Build(_build.build):
         ds.spawn(['./copy_cores.sh'])
         _build.build.run(self)
 
+version = '1.0.10'
 setup(name = 'rle_python_interface',
-      version='1.0.9',
+      version=version,
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',
       url='https://github.com/nadavbh12/Retro-Learning-Environment',
-      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/1.0.5',
+      download_url='https://github.com/nadavbh12/Retro-Learning-Environment/tarball/'+version,
       author='Nadav Bhonker, Shai Rozenberg',
       author_email='nadavbh@gmail.com;shai.roz1989@gmail.com',
       license = 'GPL',
