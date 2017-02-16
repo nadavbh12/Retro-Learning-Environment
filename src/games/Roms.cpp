@@ -30,6 +30,9 @@
 #include "supported/TetrisAndDrMario.hpp"
 #include "supported/Boxing.hpp"
 #include "supported/Wolfenstein.hpp"
+#include "supported/Aladdin.hpp"
+#include "supported/StreetFighterII.hpp"
+#include "supported/BustAMove.hpp"
 
 // genesis games
 #include "supported/SonicTheHedgehog.hpp"
@@ -168,10 +171,13 @@ static const RomSettings *roms[]  = {
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings(),
 	new WolfensteinSettings(),
-
+	new AladdinSettings(),
+	new StreetFighterIISettings(),
+	new BustAMoveSettings(),
 //	Genesis games
 	new SonicTheHedgehogSettings()
 };
+
 
 
 /* looks for the RL wrapper corresponding to a particular rom title */
