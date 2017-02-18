@@ -53,8 +53,8 @@ void AladdinSettings::step(const RleSystem& system) {
 	// update the reward
 	reward_t playerScore = 256*readRam(&system, 0xF411) + readRam(&system, 0xF410); //based solely on moving right
 	reward_t healthBonus = m_health - readRam(&system, 0x366); // adding health bonus to discourage getting hit
-	int apples = readRam(&system, 0x368);
-	int dimonds = readRam(&system, 0x36a);
+//	int apples = readRam(&system, 0x368);
+//	int diamonds = readRam(&system, 0x36a);
 	playerScore += healthBonus;
  	int current_lives = readRam(&system, 0x363)-1;
 	m_reward = playerScore - m_score;

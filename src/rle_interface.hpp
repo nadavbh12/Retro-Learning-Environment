@@ -21,7 +21,12 @@
  *
  * Based on: Stella  --  "An Atari 2600 VCS Emulator"
  * Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
+ * *****************************************************************************
+ * R.L.E (Retro Learning Environment)
+ * Copyright (c) 2016-2017 by Shai Rozenberg, Nadav Bhonker and Itay Hubara.
  *
+ * Based on: A.L.E (see above)
+ * Released under the GNU General Public License; see License.txt for details.
  * *****************************************************************************
  *  rle_interface.hpp
  *
@@ -40,7 +45,7 @@
 
 namespace rle {
 
-static const std::string Version = "1.0.0";
+static const std::string Version = "1.1.1";
 
 class RleSystem;
 class Settings;
@@ -283,11 +288,12 @@ public:
   // Display RLE welcome message
   static std::string welcomeMessage();
   static void disableBufferedIO();
-  static void createRleSystem(std::unique_ptr<RleSystem> &theRleSystem,
-                            std::unique_ptr<Settings> &theSettings,
-                            std::unique_ptr<RetroAgent> &theRetroAgent);
+  static void createRleSystem(std::shared_ptr<RleSystem>& theRleSystem,
+                            std::shared_ptr<Settings>& theSettings,
+                            std::shared_ptr<RetroAgent>& theRetroAgent);
   static void loadSettings(const std::string& romfile, const std::string& corefile,
-                           std::unique_ptr<RleSystem> &theSLESystem);
+                           std::shared_ptr<RleSystem> &theRleSystem);
+//  TODO: add loadConfigFile function
  private:
    class Impl;
    Impl* m_pimpl;

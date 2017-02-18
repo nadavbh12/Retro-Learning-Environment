@@ -1,19 +1,14 @@
 import unittest
 import os
-
-from pexpect.screen import screen
-
 from rle_python_interface import RLEInterface
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 class RleTest(unittest.TestCase):
     def setUp(self):
         cwd = os.getcwd()
-        # coreName = os.path.join(cwd, '..', 'snes9x2010', 'snes9x2010_libretro.so')
         core = 'snes'
-        romName = os.path.join(cwd, '..','..','Atari', 'roms', 'mortal_kombat.sfc')
+        romName = os.path.join(cwd, 'roms', 'classic_kong.smc')
         self.rle = RLEInterface()
         self.rle.loadROM(romName, core)
 

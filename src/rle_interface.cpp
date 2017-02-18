@@ -29,14 +29,10 @@
  **************************************************************************** */
 
 #include "rle_interface.hpp"
-#include "os_dependent/SettingsWin32.hxx"
-#include "os_dependent/SettingsUNIX.hxx"
-#include "os_dependent/RleSystemUNIX.hxx"
+#include "RleSystem.hxx"
 #include "games/Roms.hpp"
 #include "common/display_screen.h"
 #include "environment/retro_environment.hpp"
-#include "os_dependent/SettingsUNIX.hxx"
-#include "os_dependent/SettingsWin32.hxx"
 #include "environment/FSNode.hxx"
 //#include "common/ScreenExporter.hpp"
 #include "common/Log.hpp"
@@ -140,18 +136,18 @@ public:
 	  ScreenExporter *createScreenExporter(const std::string &path) const;
 
 	  // static functions
-	  void createRleSystem(std::unique_ptr<RleSystem> &theRleSystem,
-	                      std::unique_ptr<Settings> &theSettings,
-	                      std::unique_ptr<RetroAgent> &theRetroAgent);
+	  void createRleSystem(pRleSystem &theRleSystem,
+	                      pSettings &theSettings,
+	                      pRetroAgent &theRetroAgent);
 	  void loadSettings(const std::string& romfile, const std::string& corefile,
-	                     std::unique_ptr<RleSystem> &theSLESystem);
+	                     pRleSystem &theSLESystem);
 
 private:
-	  std::unique_ptr<RleSystem> theRleSystem;
-	  std::unique_ptr<Settings> theSettings;
-	  std::unique_ptr<RetroAgent> theRetroAgent;
-	  std::unique_ptr<RomSettings> romSettings;
-	  std::unique_ptr<RetroEnvironment> environment;
+	  pRleSystem theRleSystem;
+	  pSettings theSettings;
+	  pRetroAgent theRetroAgent;
+	  pRomSettings romSettings;
+	  pRetroEnvironment environment;
 	  int max_num_frames; // Maximum number of frames for each episode
 	  bool gameLoaded;
 };
@@ -189,25 +185,21 @@ void RLEInterface::Impl::setString(const string& key, const string& value) {
   assert(theSettings);
   assert(theRleSystem);
   theSettings->setString(key, value);
-  theSettings->validate();
 }
 void RLEInterface::Impl::setInt(const string& key, const int value) {
   assert(theSettings);
   assert(theRleSystem);
   theSettings->setInt(key, value);
-  theSettings->validate();
 }
 void RLEInterface::Impl::setBool(const string& key, const bool value) {
   assert(theSettings);
   assert(theRleSystem);
   theSettings->setBool(key, value);
-  theSettings->validate();
 }
 void RLEInterface::Impl::setFloat(const string& key, const float value) {
   assert(theSettings);
   assert(theRleSystem);
   theSettings->setFloat(key, value);
-  theSettings->validate();
   if(key == "random_seed"){
 	  theRleSystem->resetRNGSeed();
   }
@@ -312,55 +304,39 @@ void RLEInterface::disableBufferedIO() {
   cout.sync_with_stdio();
 }
 
-void RLEInterface::createRleSystem(std::unique_ptr<RleSystem> &theRleSystem,
-                          std::unique_ptr<Settings> &theSettings,
-                          std::unique_ptr<RetroAgent> &theRetroAgent) {
-#if (defined(WIN32) || defined(__MINGW32__))
+void RLEInterface::createRleSystem(pRleSystem& theRleSystem,
+                          pSettings& theSettings,
+                          pRetroAgent& theRetroAgent) {
 	theRetroAgent.reset(new RetroAgent());
-	theRleSystem.reset(new OSystemWin32());
-	theSettings.reset(new SettingsWin32(theRleSystem.get()));
-#else
-	theRetroAgent.reset(new RetroAgent());
-	theRleSystem.reset(new RleSystemUNIX(theRetroAgent.get()));
-	theSettings.reset(new SettingsUNIX(theRleSystem.get()));
-#endif
-
-  theRleSystem->settings().loadConfig();
+	theSettings.reset(new Settings());
+	theRleSystem.reset(new RleSystem(theRetroAgent, theSettings));
 }
 
 void RLEInterface::loadSettings(const string& romfile, const std::string& corefile,
-                                std::unique_ptr<RleSystem> &theRleSystem) {
-  // Load the configuration from a config file (passed on the command
-  //  line), if provided
-  string configFile = theRleSystem->settings().getString("config", false);
+                                pRleSystem &theRleSystem) {
+//  // Load the configuration from a config file (passed on the command
+//  //  line), if provided
+//  string configFile = theRleSystem->settings().getString("config", false);
+//
+//  if (!configFile.empty())
+//    theRleSystem->settings().loadConfig(configFile.c_str());
 
-  if (!configFile.empty())
-    theRleSystem->settings().loadConfig(configFile.c_str());
-
-  theRleSystem->settings().validate();
-  theRleSystem->create();
-
-  if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
-	Logger::Error << "No ROM File specified or the ROM file was not found."
+	if (romfile == "" || !FilesystemNode::fileExists(romfile)) {
+		Logger::Error << "No ROM File specified or the ROM file was not found."
 			<< std::endl;
-	exit(1);
-  }
+		exit(1);
+	}
 	theRleSystem->loadCore(corefile);
 	theRleSystem->loadRom(romfile);
 	Logger::Info << "Running ROM file..." << std::endl;
-	theRleSystem->settings().setString("rom_file", romfile);
+	theRleSystem->settings()->setString("rom_file", romfile);
 #ifdef __USE_SDL
-	if(theRleSystem->settings().getBool("display_screen")){
-		theRleSystem->p_display_screen = new DisplayScreen(&theRleSystem->getRetroAgent());
+	if(theRleSystem->settings()->getBool("display_screen")){
+		theRleSystem->p_display_screen = make_shared<DisplayScreen>(&theRleSystem->getRetroAgent());
 	}
 #endif
-	//Shai : added format handling for RGB
-
-  // Must force the resetting of the OSystem's random seed, which is set before we change
-  // choose our random seed.
-  Logger::Info << "Random seed is " << theRleSystem->settings().getInt("random_seed") << std::endl;
-  theRleSystem->resetRNGSeed();
-
+	Logger::Info << "Random seed is " << theRleSystem->settings()->getInt("random_seed") << std::endl;
+	theRleSystem->resetRNGSeed();
 }
 
 void RLEInterface::loadROM(string rom_file, string core_file) {
@@ -372,7 +348,7 @@ void RLEInterface::loadROM(string rom_file, string core_file) {
 // necessary after changing a setting. Optionally specify a new rom to
 // load.
 void RLEInterface::Impl::loadROM(string rom_file, string core_file) {
-  assert(theRleSystem.get());
+  assert(theRleSystem);
   if (rom_file.empty()) {
     rom_file = theRleSystem->romFile();
   }
@@ -380,16 +356,18 @@ void RLEInterface::Impl::loadROM(string rom_file, string core_file) {
 	core_file = theRleSystem->coreFile();
   }
   RLEInterface::loadSettings(rom_file, core_file, theRleSystem);
+
   bool twoPlayers = getBool("two_players");
   romSettings.reset(buildRomRLWrapper(rom_file, twoPlayers));
-  environment.reset(new RetroEnvironment(theRleSystem.get(), romSettings.get()));
-  max_num_frames = theRleSystem->settings().getInt("max_num_frames_per_episode");
+  environment = make_shared<RetroEnvironment>(theRleSystem, romSettings);
+  max_num_frames = theRleSystem->settings()->getInt("max_num_frames_per_episode");
   environment->reset();
+
 #ifndef __USE_SDL
-  if (theRleSystem->p_display_screen != NULL) {
+  if (theRleSystem->p_display_screen) {
     Logger::Error << "Screen display requires directive __USE_SDL to be defined." << endl;
     Logger::Error << "Please recompile this code with flag '-D__USE_SDL'." << endl;
-    Logger::Error << "Also ensure ALE has been compiled with USE_SDL active (see ALE makefile)." << endl;
+    Logger::Error << "Also ensure RLE has been compiled with USE_SDL active (see RLE makefile)." << endl;
     exit(1);
   }
 #endif

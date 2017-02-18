@@ -54,8 +54,8 @@ class RetroEnvironment {
 
 	public:
     RetroEnvironment(
-    		RleSystem * system,
-    		RomSettings * settings);
+    		pRleSystem system,
+    		pRomSettings settings);
 
     /** Resets the system to its start state. */
     void reset();
@@ -119,8 +119,8 @@ class RetroEnvironment {
     void getPixelFormat(struct pixelFormat &m_pixelFormat);
 
   private:
-    RleSystem *m_rlesystem;
-    RomSettings *m_settings;
+    pRleSystem m_rlesystem;
+    pRomSettings m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
 //    std::string m_cartridge_md5; // Necessary for saving and loading emulator state
 
@@ -144,6 +144,7 @@ class RetroEnvironment {
     Action m_player_a_action, m_player_b_action;
 
 };
+typedef shared_ptr<RetroEnvironment> pRetroEnvironment;
 
 } // namespace rle
 

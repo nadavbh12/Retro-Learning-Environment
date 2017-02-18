@@ -73,5 +73,16 @@ TEST_F(RetroAgentTest, multiThreading) {
 	}
 }
 
+TEST_F(RetroAgentTest, multiLoadRom) {
+	RetroAgent agent;
+	initRetroAgent(&agent, corePath, romPath);
+	for(int i(0); i< 2; i++){
+		agent.loadRom(romPath);
+		for(int j(0); j< 100; j++){
+			agent.run();
+		}
+//		agent.reset();
+	}
+}
 
 }

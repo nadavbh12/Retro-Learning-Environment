@@ -40,8 +40,8 @@ RLEState::RLEState(const std::string &serialized) {
 
 /** Restores ALE to the given previously saved state. */ 
 void RLEState::load(
-		RleSystem* rlesystem,
-		RomSettings* settings, const RLEState &rhs,
+		pRleSystem rlesystem,
+		pRomSettings settings, const RLEState &rhs,
 		bool load_system) {
   assert(rhs.m_serialized_state.length() > 0);
 
@@ -53,7 +53,7 @@ void RLEState::load(
     throw new std::runtime_error("Attempting to load an RLEState which does not contain "
         "system information.");
 
-  rlesystem->getRetroAgent().deserialize(deser);
+  rlesystem->getRetroAgent()->deserialize(deser);
   // If we have osystem data, load it as well
   if (load_system)
     rlesystem->loadState(deser);
@@ -64,8 +64,8 @@ void RLEState::load(
 }
 
 RLEState RLEState::save(
-		RleSystem* rlesystem,
-		RomSettings* settings,
+		pRleSystem rlesystem,
+		pRomSettings settings,
 		bool save_system) {
   // Use the emulator's built-in serialization to save the state
   Serializer ser;
@@ -73,7 +73,7 @@ RLEState RLEState::save(
   // We use 'save_system' as a check at load time.
   ser.putBool(save_system);
 
-  rlesystem->getRetroAgent().serialize(ser);
+  rlesystem->getRetroAgent()->serialize(ser);
   if (save_system)
 	  rlesystem->saveState(ser);
   settings->saveState(ser);

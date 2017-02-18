@@ -20,6 +20,8 @@
 #define SETTINGS_HXX
 
 #include <map>
+#include <vector>
+#include <memory>
 #include <stdexcept>
 
 #include "../common/Array.hxx"
@@ -42,41 +44,41 @@ class Settings
     /**
       Create a new settings abstract class
     */
-    Settings(RleSystem* rlesystem);
+    Settings();
 
     /**
       Destructor
     */
     virtual ~Settings();
 
+    // Copy constructor isn't supported by this class so make it private
+    Settings(const Settings&) = delete;
+
+    // Assignment operator isn't supported by this class so make it private
+    Settings& operator = (const Settings&) = delete;
+
   public:
     /**
       This method should be called to load the current settings from an rc file.
     */
-    virtual void loadConfig();
+//    virtual void loadConfig();
     
     /**
       This method loads the given 
     */
-    void loadConfig(const char* config_file);
+//    void loadConfig(const char* config_file);
 
     /**
       This method should be called to save the current settings to an rc file.
     */
-    virtual void saveConfig();
+//    virtual void saveConfig(const char* outFile);
 
     /**
       This method should be called to load the arguments from the commandline.
 
       @return Name of the ROM to load, otherwise empty string
     */
-    std::string loadCommandLine(int argc, char** argv);
-
-    /**
-      This method should be called *after* settings have been read,
-      to validate (and change, if necessary) any improper settings.
-    */
-    void validate();
+//    std::string loadCommandLine(int argc, char** argv);
 
     /**
       This method should be called to display usage information.
@@ -120,15 +122,6 @@ class Settings
     const std::string& getString(const std::string& key, bool strict = false) const;
 
     /**
-      Get the x*y size assigned to the specified key.  If the key does
-      not exist (or is invalid) then results are -1 for each item.
-
-      @param key The key of the setting to lookup
-      @return The x and y values encoded in the key
-    */
-    void getSize(const std::string& key, int& x, int& y) const;
-
-    /**
       Set the value associated with key to the given value.
 
       @param key   The key of the setting
@@ -160,21 +153,8 @@ class Settings
     */
     void setString(const std::string& key, const std::string& value);
 
-    /**
-      Set the value associated with key to the given value.
-
-      @param key   The key of the setting
-      @param value The value to assign to the setting
-    */
-    void setSize(const std::string& key, const int value1, const int value2);
-
 
   private:
-    // Copy constructor isn't supported by this class so make it private
-    Settings(const Settings&);
-
-    // Assignment operator isn't supported by this class so make it private
-    Settings& operator = (const Settings&);
 
     // Trim leading and following whitespace from a string
     static std::string trim(std::string& str)
@@ -188,9 +168,6 @@ class Settings
     void setDefaultSettings();
 
   protected:
-    // The parent OSystem object
-    RleSystem* myRleSystem;
-
     // Structure used for storing settings
     struct Setting
     {
@@ -198,22 +175,7 @@ class Settings
       std::string value;
       std::string initialValue;
     };
-    typedef Common::Array<Setting> SettingsArray;
-
-    const SettingsArray& getInternalSettings() const
-      { return myInternalSettings; }
-    const SettingsArray& getExternalSettings() const
-      { return myExternalSettings; }
-
-    /** Get position in specified array of 'key' */
-    int getInternalPos(const std::string& key) const;
-    int getExternalPos(const std::string& key) const;
-
-    /** Add key,value pair to specified array at specified position */
-    int setInternal(const std::string& key, const std::string& value,
-                    int pos = -1, bool useAsInitial = false);
-    int setExternal(const std::string& key, const std::string& value,
-                    int pos = -1, bool useAsInitial = false);
+    typedef std::vector<Setting> SettingsArray;
 
   private:
     //Maps containing all external settings an user can
@@ -224,15 +186,9 @@ class Settings
     std::map<std::string,std::string> stringSettings;
     template<typename ValueType>
     void verifyVariableExistence(std::map<std::string, ValueType> dict, std::string key);
-
-    // Holds key,value pairs that are necessary for Stella to
-    // function and must be saved on each program exit.
-    SettingsArray myInternalSettings;
-
-    // Holds auxiliary key,value pairs that shouldn't be saved on
-    // program exit.
-    SettingsArray myExternalSettings;
 };
+
+typedef std::shared_ptr<Settings> pSettings;
 
 } // namespace rle
 

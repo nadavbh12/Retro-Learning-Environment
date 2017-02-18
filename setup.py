@@ -42,7 +42,7 @@ class Build(_build.build):
         ds.spawn(['./copy_cores.sh'])
         _build.build.run(self)
 
-version = '1.1.0'
+version = '1.1.1'
 setup(name = 'rle_python_interface',
       version=version,
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',

@@ -36,7 +36,6 @@ public:
 	uint8_t* getRamAddress();
 	uint32_t getRamSize();
 	void SetActions(const Action& player_a_action, const Action& player_b_action);
-	void updateScreen();
 	void* getCurrentBuffer() const;
 	uint32_t getBufferSize() const;	// in pixels
 	uint8_t getBpp() const; //in bits
@@ -106,11 +105,13 @@ public:
 
 private:
 	bool coreLoaded;
+	bool romLoaded;
 	static std::atomic_uint numAgents;
 	unsigned agentNum;
 	void unloadCore();
 	void unloadRom();
 };
+typedef shared_ptr<RetroAgent> pRetroAgent;
 
 } // namespace rle
 

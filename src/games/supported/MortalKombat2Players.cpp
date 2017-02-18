@@ -74,7 +74,7 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const RleSystem& sys
 	INSERT_NOPS(num_of_nops)
 	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
 	INSERT_NOPS(num_of_nops)
-	string difficulty = system.settings().getString("MK_difficulty");
+	string difficulty = system.settings()->getString("MK_difficulty");
 	if("medium" == difficulty){
 	}else if("hard" == difficulty){
 		INSERT_ACTION_SINGLE_A(JOYPAD_X)
@@ -112,7 +112,7 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const RleSystem& sys
 	INSERT_ACTION_SINGLE(JOYPAD_START, B)
 
 	// choose character from list
-	string player1_character = system.settings().getString("MK_player1_character");
+	string player1_character = system.settings()->getString("MK_player1_character");
 	if("rayden" == player1_character){
 		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
 	}else if("sonya" == player1_character){
@@ -138,7 +138,7 @@ ActionVect MortalKombat2PlayersSettings::getStartingActions(const RleSystem& sys
 	INSERT_NOPS(num_of_nops)
 	// choose for player b - Sonya
 	// choose character from list
-	string player2_character = system.settings().getString("MK_player2_character");
+	string player2_character = system.settings()->getString("MK_player2_character");
 	if("rayden" == player2_character){
 		INSERT_ACTION_SINGLE(JOYPAD_LEFT, B)
 		INSERT_ACTION_SINGLE(JOYPAD_NOOP, B)

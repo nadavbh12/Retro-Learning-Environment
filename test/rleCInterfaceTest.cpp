@@ -66,12 +66,19 @@ TEST_F(RleCInterfaceTest, testRam) {
 	EXPECT_ANY_THROW(getRAMSize(rle));
 	loadAndPlay(rle);
 	size_t ramSize = getRAMSize(rle);
-	EXPECT_EQ(128 * 1024, ramSize);
+	EXPECT_EQ(size_t(128 * 1024), ramSize);
 	unsigned char * ram = (unsigned char *)malloc(sizeof(unsigned char *)*ramSize);
 	getRAM(rle, ram);
 	EXPECT_NO_THROW(ram[0]);
 	EXPECT_NO_THROW(ram[ramSize-1]);
 }
 
+TEST_F(RleCInterfaceTest, testMultipleLoadRom) {
+	RLEInterface *rle = RLE_new();
+	for(int i=0; i<2; i++){
+		loadROM(rle, gtest_arguments::romName.c_str(), gtest_arguments::coreName.c_str());
+	}
+	RLE_del(rle);
+}
 
 }  // namespace

@@ -91,7 +91,7 @@ void StreetFighterIISettings::step(const RleSystem& system) {
 
     }
 
-    int totalWins = m_wins + o_wins;
+//    int totalWins = m_wins + o_wins;
     m_wins = getDecimalScore(0xcd0, &system);
     o_wins = getDecimalScore(0xed0, &system);
 //    cout << "player score: " << playerScore  << " Time: "

@@ -52,13 +52,12 @@ struct Resolution {
 };
 typedef Common::Array<Resolution> ResolutionList;
 
-class RleSystem
-{
-  public:
+class RleSystem{
+public:
     /**
       Create a new RleSystem abstract class
     */
-    RleSystem(RetroAgent* retroagent);
+    RleSystem(pRetroAgent retroagent, pSettings settings);
 
     /**
       Destructor
@@ -68,18 +67,6 @@ class RleSystem
     RleSystem(const RleSystem&) = delete;
 
     RleSystem& operator = (const RleSystem&) = delete;
-
-    /**
-      Create all child objects which belong to this RleSystem
-    */
-    virtual bool create();
-
-    /**
-      Adds the specified settings object to the system.
-
-      @param settings The settings object to add 
-    */
-    void attach(Settings* settings) { mySettings = settings; }
 
     /**
       Get the frame buffer of the system
@@ -92,26 +79,20 @@ class RleSystem
       Returns the size of the buffer in bytes;
     */
     int getBufferSize() const { return myRetroAgent->getBufferSize();}
-    /**
-      Get the sound object of the system
-
-      @return The sound object
-    */
-//    inline Sound& sound() const { return *mySound; }
 
     /**
       Get the settings object of the system
 
       @return The settings object
     */
-    inline Settings& settings() const { return *mySettings; }
+    pSettings settings() const { return mySettings; }
 
     /**
       Get the RetroAgent object of the system
 
       @return The RetorAgent object
     */
-    inline RetroAgent& getRetroAgent() const { return *myRetroAgent; }
+    pRetroAgent getRetroAgent() const { return myRetroAgent; }
 
     /**
       Perform one step in the emulator
@@ -119,24 +100,9 @@ class RleSystem
     void step();
 
     /**
-      Set the framerate for the video system.  It's placed in this class since
-      the mainLoop() method is defined here.
-
-      @param framerate  The video framerate to use
-    */
-    virtual void setFramerate(uInt32 framerate);
-
-    /**
       Set all config file paths for the RleSystem.
     */
     void setConfigPaths();
-
-    /**
-      Get the current framerate for the video system.
-
-      @return  The video framerate currently in use
-    */
-    inline uInt32 frameRate() const { return myDisplayFrameRate; }
 
     /**
       Get the maximum dimensions of a window for the video hardware.
@@ -150,11 +116,6 @@ class RleSystem
       @return  An array of supported resolutions
     */
     const ResolutionList& supportedResolutions() const { return myResolutions; }
-
-    /**
-      Return the default directory for storing data.
-    */
-    const std::string& baseDir() const { return myBaseDir; }
 
     /**
       This method should be called to get the full path of the config file.
@@ -214,25 +175,8 @@ class RleSystem
       Deserializes the RleSystem state.
     */
     bool loadState(Deserializer& in);
-
-  public:
-    //////////////////////////////////////////////////////////////////////
-    // The following methods are system-specific and must be implemented
-    // in derived classes.
-    //////////////////////////////////////////////////////////////////////
-    /**
-      This method returns number of ticks in microseconds.
-
-      @return Current time in microseconds.
-    */
-    virtual uInt32 getTicks() = 0;
     
-  protected:
-    /**
-      Set the base directory for all Stella files (these files may be
-      located in other places through settings).
-    */
-    void setBaseDir(const std::string& basedir);
+protected:
 
     /**
       Set the locations of config file
@@ -243,10 +187,10 @@ class RleSystem
 //    Sound* mySound;
 
     // Pointer to the Settings object
-    Settings* mySettings;
+    pSettings mySettings;
 
     // Pointer to RetroAgent
-    RetroAgent* myRetroAgent;	// RLE
+    pRetroAgent myRetroAgent;	// RLE
 
     // Random number generator shared across the emulator's components
     Random myRandGen; 
@@ -264,55 +208,17 @@ class RleSystem
     // This is reset to false after one step
     bool mySkipEmulation;
 
-  private:
-    std::string myBaseDir;
+private:
     std::string myRomFile;
     std::string myCoreFile;
     std::string myConfigFile;
     
-    public: //ALE 
-    // Time per frame for a video update, based on the current framerate
-    uInt32 myTimePerFrame;
-
-    // Indicates whether the main processing loop should proceed
-    struct TimingInfo {
-      uInt32 start;
-      uInt32 current;
-      uInt32 virt;
-      uInt32 totalTime;
-      uInt32 totalFrames;
-    };
-    TimingInfo myTimingInfo;
-
-
-    // Table of RGB values for GUI elements
-    //ALE  static uInt32 ourGUIColors[kNumUIPrlettes][kNumColors-256];
-  public:
-    DisplayScreen* p_display_screen; //MHAUSKN
-  
-  private:
-
-    /**
-      Creates the various sound devices available in this system
-      (for now, that means either 'SDL' or 'Null').
-    */
-//    void createSound();
-
-    /**
-      Query valid info for creating a valid console.
-
-      @return Success or failure for a valid console
-    */
-//    bool queryConsoleInfo(const uInt8* image, uInt32 size, const std::string& md5,
-//                          Cartridge** cart, Properties& props);
-
-    /**
-      Initializes the timing so that the mainloop is reset to its
-      initial values.
-    */
-    void resetLoopTiming();
+public: //ALE 
+    shared_ptr<DisplayScreen> p_display_screen; //MHAUSKN
 
 };
+
+typedef shared_ptr<RleSystem> pRleSystem;
 
 } // namespace rle
 

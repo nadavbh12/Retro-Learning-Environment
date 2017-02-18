@@ -62,15 +62,15 @@ class RLEState {
     /** Restores the environment to a previously saved state. If load_system == true, we also
         restore system-specific information (such as the RNG state). */
     void load(
-    		RleSystem* rlesystem,
-    		RomSettings* settings, const RLEState &rhs,
+    		pRleSystem rlesystem,
+    		pRomSettings settings, const RLEState &rhs,
             bool load_system);
 
     /** Returns a "copy" of the current state, including the information necessary to restore
       *  the emulator. If save_system == true, this includes the RNG state. */
     RLEState save(
-    		RleSystem* rlesystem,
-    		RomSettings* settings, bool save_system);
+    		pRleSystem rlesystem,
+    		pRomSettings settings, bool save_system);
 
   private:
 

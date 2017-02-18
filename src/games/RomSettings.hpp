@@ -127,6 +127,7 @@ struct RomSettings {
 protected:
     ActionVect AllActionsVector;
 };
+typedef shared_ptr<RomSettings> pRomSettings;
 
 } // namespace rle
 

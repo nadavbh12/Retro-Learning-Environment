@@ -53,7 +53,7 @@ void SonicTheHedgehogSettings::step(const RleSystem& system) {
 
     // update the reward
 	m_reward = score - m_score;
-    if(system.settings().getBool("sonic1_ring_reward")){
+    if(system.settings()->getBool("sonic1_ring_reward")){
     	m_reward += rings - m_rings;
     }
 

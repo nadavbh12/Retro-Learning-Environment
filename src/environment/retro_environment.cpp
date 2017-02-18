@@ -23,14 +23,14 @@ using namespace rle;
 
 
 
-RetroEnvironment::RetroEnvironment(RleSystem* rlesystem, RomSettings* settings) :
+RetroEnvironment::RetroEnvironment(pRleSystem rlesystem, pRomSettings settings) :
   m_rlesystem(rlesystem),
   m_settings(settings),
   m_phosphor_blend( ),	// TODO pass RleSystem
-  m_screen(m_rlesystem->getRetroAgent().getHeight(),
-		  m_rlesystem->getRetroAgent().getWidth()),
-  m_ram(m_rlesystem->getRetroAgent().getRamSize(),
-		m_rlesystem->getRetroAgent().getRamAddress()),
+  m_screen(m_rlesystem->getRetroAgent()->getHeight(),
+		  m_rlesystem->getRetroAgent()->getWidth()),
+  m_ram(m_rlesystem->getRetroAgent()->getRamSize(),
+		m_rlesystem->getRetroAgent()->getRamAddress()),
   m_player_a_action(PLAYER_A | JOYPAD_NOOP),
   m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
@@ -46,19 +46,19 @@ RetroEnvironment::RetroEnvironment(RleSystem* rlesystem, RomSettings* settings) 
 
   m_num_reset_steps = 4;
 
-  m_max_num_frames_per_episode = m_rlesystem->settings().getInt("max_num_frames_per_episode");
-  m_colour_averaging = m_rlesystem->settings().getBool("color_averaging");
+  m_max_num_frames_per_episode = m_rlesystem->settings()->getInt("max_num_frames_per_episode");
+  m_colour_averaging = m_rlesystem->settings()->getBool("color_averaging");
 
-  m_repeat_action_probability = m_rlesystem->settings().getFloat("repeat_action_probability");
+  m_repeat_action_probability = m_rlesystem->settings()->getFloat("repeat_action_probability");
 
-  m_frame_skip = m_rlesystem->settings().getInt("frame_skip");
+  m_frame_skip = m_rlesystem->settings()->getInt("frame_skip");
   if (m_frame_skip < 1) {
     rle::Logger::Warning << "Warning: frame skip set to < 1. Setting to 1." << std::endl;
     m_frame_skip = 1;
   }
 
   // If so desired, we record all emulated frames to a given directory
-  std::string recordDir = m_rlesystem->settings().getString("record_screen_dir");
+  std::string recordDir = m_rlesystem->settings()->getString("record_screen_dir");
 
   getPixelFormat(*m_screen.m_pixelFormat);
 
@@ -76,9 +76,9 @@ void RetroEnvironment::getPixelFormat(struct pixelFormat &pixel_format){
 	uint32_t rmask, gmask, bmask, amask;
 	uint32_t rShift, gShift, bShift, aShift;
 
-	pixel_format.Bpp=m_rlesystem->getRetroAgent().getBpp()/8; //in bytes
-	m_rlesystem->getRetroAgent().getRgbMask(rmask,  gmask,  bmask,  amask);
-	m_rlesystem->getRetroAgent().getRgbShift(rShift,  gShift,  bShift,  aShift);
+	pixel_format.Bpp=m_rlesystem->getRetroAgent()->getBpp()/8; //in bytes
+	m_rlesystem->getRetroAgent()->getRgbMask(rmask,  gmask,  bmask,  amask);
+	m_rlesystem->getRetroAgent()->getRgbShift(rShift,  gShift,  bShift,  aShift);
 	//mask
 	pixel_format.rmask=rmask;
 	pixel_format.gmask=gmask;
@@ -101,12 +101,11 @@ void RetroEnvironment::reset() {
   m_state.resetEpisodeFrameNumber();
 
   // Reset the emulator
-  m_rlesystem->getRetroAgent().reset();
+  m_rlesystem->getRetroAgent()->reset();
 
   // NOOP for 60 steps in the deterministic environment setting, or some random amount otherwise
   int noopSteps;
   noopSteps = 60;
-
   emulateStart(PLAYER_A | JOYPAD_NOOP, PLAYER_B | JOYPAD_NOOP, noopSteps);
   // reset for n steps
   emulateStart(JOYPAD_RESET, PLAYER_B | JOYPAD_NOOP, m_num_reset_steps);
@@ -255,7 +254,7 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
 //  else {
     // In joystick mode we only need to set the action events once
 //    m_state.setActionJoysticks(player_a_action, player_b_action);
-	m_rlesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+	m_rlesystem->getRetroAgent()->SetActions(player_a_action,player_b_action);
 
     for (size_t t = 0; t < num_steps; ++t) {
     	m_rlesystem->step();
@@ -269,8 +268,7 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
 }
 
 void RetroEnvironment::emulateStart(Action player_a_action, Action player_b_action, size_t num_steps) {
-
-	m_rlesystem->getRetroAgent().SetActions(player_a_action,player_b_action);
+	m_rlesystem->getRetroAgent()->SetActions(player_a_action,player_b_action);
 	for (size_t t = 0; t < num_steps; ++t) {
     	m_rlesystem->step();
     }
@@ -293,10 +291,10 @@ void RetroEnvironment::processScreen() {
 //  else {
     // Copy screen over and we're done!
 //    memcpy(m_screen.getArray(),(uint32_t*) m_rlesystem->getCurrentFrameBuffer(), 4*m_rlesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
-	int height = m_rlesystem->getRetroAgent().getHeight();
-	int width = m_rlesystem->getRetroAgent().getWidth();
-	int Bpp = m_rlesystem->getRetroAgent().getBpp() / 8;
-	int pitch = m_rlesystem->getRetroAgent().getPitch();
+	int height = m_rlesystem->getRetroAgent()->getHeight();
+	int width = m_rlesystem->getRetroAgent()->getWidth();
+	int Bpp = m_rlesystem->getRetroAgent()->getBpp() / 8;
+	int pitch = m_rlesystem->getRetroAgent()->getPitch();
 	uint8_t* buffer = m_rlesystem->getCurrentFrameBuffer();
 	for(int i = 0 ; i < height; ++i){
 		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);

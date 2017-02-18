@@ -91,7 +91,7 @@ void MortalKombatSettings::step(const RleSystem& system) {
     m_wins = getDecimalScore(0x196e, &system);
     o_wins = getDecimalScore(0x1aca, &system);
 
-    if(system.settings().getBool("MK_random_position")){
+    if(system.settings()->getBool("MK_random_position")){
 		if((m_wins + o_wins) != totalWins){
 			match_ended = true;
 		}
@@ -162,7 +162,7 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	INSERT_NOPS(num_of_nops)
 	INSERT_ACTION_SINGLE_A(JOYPAD_DOWN)
 	INSERT_NOPS(num_of_nops)
-	string difficulty = system.settings().getString("MK_difficulty");
+	string difficulty = system.settings()->getString("MK_difficulty");
 	if("medium" == difficulty){
 	}else if("hard" == difficulty){
 		INSERT_ACTION_SINGLE_A(JOYPAD_X)
@@ -197,7 +197,7 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	INSERT_NOPS(3.5*num_of_nops)
 
 	// choose character from list
-	string player1_character = system.settings().getString("MK_player1_character");
+	string player1_character = system.settings()->getString("MK_player1_character");
 	if("rayden" == player1_character){
 		INSERT_ACTION_SINGLE(JOYPAD_DOWN, A)
 	}else if("sonya" == player1_character){
@@ -223,7 +223,7 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 	INSERT_NOPS(num_of_nops)
 
 	// Select opponent: random seed for opponent is set by num of NOOPs
-	int opponent_character_nops = system.settings().getInt("MK_opponent_character");
+	int opponent_character_nops = system.settings()->getInt("MK_opponent_character");
 	INSERT_NOPS(opponent_character_nops);
 
 	// select character
@@ -243,7 +243,7 @@ ActionVect MortalKombatSettings::getStartingActions(const RleSystem& system){
 }
 
 void MortalKombatSettings::startingOperations(RleSystem& system){
-	if(system.settings().getBool("MK_random_position")){
+	if(system.settings()->getBool("MK_random_position")){
 		Random& rng = system.rng();
 		writeRam(&system, 0x30d, (rng.next()%0x100));	// set player 1's random init position
 		writeRam(&system, 0x30f, (rng.next()%0x100));	// set player 2's random init position

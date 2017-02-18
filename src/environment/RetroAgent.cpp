@@ -427,7 +427,7 @@ static void core_unload() {
 //		dlclose(RetroAgent::g_retro.handle);
 }
 
-RetroAgent::RetroAgent() : coreLoaded(false){
+RetroAgent::RetroAgent() : coreLoaded(false), romLoaded(false){
 	agentNum = numAgents++;
 	RetroAgent::g_retro.initialized = false;
 }
@@ -454,6 +454,9 @@ static void copyFile(string srcName, string dstName){
 }
 
 void RetroAgent::loadCore(const string& coreName){
+	if(coreLoaded){
+		unloadCore();
+	}
 	string suffix = ".so";
 	size_t start_pos = coreName.find(suffix);
 	if(start_pos == std::string::npos){
@@ -481,8 +484,12 @@ void RetroAgent::unloadCore(){
 }
 
 void RetroAgent::loadRom(const string& romName){
+	if(romLoaded){
+		unloadRom();
+	}
 	core_load_game(romName.c_str());
 	RetroAgent::g_retro.serializeSize = RetroAgent::g_retro.retro_serialize_size();
+	romLoaded = true;
 }
 
 void RetroAgent::unloadRom(){
@@ -490,6 +497,7 @@ void RetroAgent::unloadRom(){
 		RetroAgent::g_retro.retro_unload_game();
 		RetroAgent::g_retro.initialized = false;
 	}
+	romLoaded = false;
 }
 
 void RetroAgent::run(){
@@ -543,9 +551,6 @@ void RetroAgent::SetActions(const Action& player_a_action, const Action& player_
 	g_retro.action_b = player_b_action;
 }
 
-void RetroAgent::updateScreen(){
-
-}
 void* RetroAgent::getCurrentBuffer() const{
 	return RetroAgent::g_video.currentBuffer;
 }

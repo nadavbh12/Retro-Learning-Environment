@@ -22,7 +22,7 @@ using namespace std;
 using namespace rle;
 
 #ifdef __USE_SDL
-DisplayScreen::DisplayScreen(RetroAgent* rAgent ): manual_control_active(false), delay_msec(5), ragent(rAgent) {
+DisplayScreen::DisplayScreen(pRetroAgent rAgent ): manual_control_active(false), delay_msec(5), ragent(rAgent) {
 
 	bpp = ragent->getBpp();
 	screen_height = ragent->getHeight();

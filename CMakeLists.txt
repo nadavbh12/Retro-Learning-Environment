@@ -66,9 +66,9 @@ if(APPLE)
 endif()
 
 if(WINDOWS OR MINGW)
-  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsWin32.cxx ${SOURCE_DIR}/os_dependent/OSystemWin32.cxx ${SOURCE_DIR}/os_dependent/FSNodeWin32.cxx)
+  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/FSNodeWin32.cxx)
 else()
-  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/SettingsUNIX.cxx ${SOURCE_DIR}/os_dependent/RleSystemUNIX.cxx ${SOURCE_DIR}/os_dependent/FSNodePOSIX.cxx)
+  list(APPEND SOURCES ${SOURCE_DIR}/os_dependent/FSNodePOSIX.cxx)
 endif()
 
 if(UNIX)

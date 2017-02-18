@@ -31,8 +31,8 @@ namespace rle {
 
 class DisplayScreen {
 public:
-	// todo save RetroAgent as shared_ptr
-    DisplayScreen(RetroAgent* ragent );
+	// todo save RetroAgent as unique_ptr
+    DisplayScreen(pRetroAgent ragent );
     virtual ~DisplayScreen();
 
     // Displays the current frame buffer from the mediasource.
@@ -64,7 +64,7 @@ protected:
     Uint32 last_frame_time;
 
     Uint8 bpp;
-    RetroAgent* ragent;
+    pRetroAgent ragent;
 };
 
 } // namespace rle
@@ -74,7 +74,7 @@ namespace rle {
 /** A dummy class that simply ignores display events. */
 class DisplayScreen {
   public:
-    DisplayScreen(RetroAgent* ragent) {}
+    DisplayScreen(pRetroAgent ragent) {}
     void display_screen() {}
     bool manual_control_engaged() { return false; }
     Action getUserAction() { return JOYPAD_UNDEFINED; }
