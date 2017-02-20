@@ -332,7 +332,7 @@ void RLEInterface::loadSettings(const string& romfile, const std::string& corefi
 	theRleSystem->settings()->setString("rom_file", romfile);
 #ifdef __USE_SDL
 	if(theRleSystem->settings()->getBool("display_screen")){
-		theRleSystem->p_display_screen = make_shared<DisplayScreen>(&theRleSystem->getRetroAgent());
+		theRleSystem->p_display_screen = make_shared<DisplayScreen>(theRleSystem->getRetroAgent());
 	}
 #endif
 	Logger::Info << "Random seed is " << theRleSystem->settings()->getInt("random_seed") << std::endl;

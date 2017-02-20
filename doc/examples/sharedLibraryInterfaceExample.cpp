@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
 #ifdef __USE_SDL
     rle.setBool("display_screen", true);
-    rle.setBool("sound", true);
+//    rle.setBool("sound", true);
 #endif
 
     rle.setString("MK_player1_character", "cage");
