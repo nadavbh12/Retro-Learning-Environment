@@ -26,9 +26,9 @@ if USE_SDL:
   if sys.platform == 'darwin':
     import pygame
     pygame.init()
-    rle.setBool('sound', False) # Sound doesn't work on OSX
-  elif sys.platform.startswith('linux'):
-    rle.setBool('sound', True)
+#    rle.setBool('sound', False) # Sound doesn't work on OSX
+#  elif sys.platform.startswith('linux'):
+#    rle.setBool('sound', True)
   rle.setBool('display_screen', True)
 
 # Load the ROM file
