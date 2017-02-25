@@ -24,6 +24,7 @@ public:
 	void loadCore(const string& corePath);
 	void loadRom(const string& romPath);
 	void run();
+	void audioEnable(bool audioState);
 	void videoRender();
 	void swapBuffers();
 	void videoDeinit();
@@ -76,6 +77,7 @@ public:
 	//	string saveFolder = "/home/administrator/DQN/rle-nano/SNES-Learning-Environment/saves/";
 		string corePath;
 		size_t serializeSize;
+		bool audioEnabled;
 	};
 	thread_local static struct g_retro_ g_retro;
 

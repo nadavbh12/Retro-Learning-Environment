@@ -17,11 +17,15 @@
 #include "Serializer.hxx"
 #include "Deserializer.hxx"
 
+#include <alsa/asoundlib.h>
+#include <alsa/control.h>
+
 using namespace rle;
 
 std::atomic_uint RetroAgent::numAgents{0};
 thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
 thread_local struct RetroAgent::g_video_ RetroAgent::g_video;
+thread_local static snd_pcm_t *g_pcm = NULL;
 
 struct keymap {
 	unsigned k;
@@ -219,10 +223,32 @@ static void video_refresh(const void *data, unsigned width, unsigned height, uns
 }
 
 static void audio_init(int frequency) {
+	int err;
+
+	if ((err = snd_pcm_open(&g_pcm, "default", SND_PCM_STREAM_PLAYBACK, 0)) < 0)
+		die("Failed to open playback device: %s", snd_strerror(err));
+
+	err = snd_pcm_set_params(g_pcm, SND_PCM_FORMAT_S16, SND_PCM_ACCESS_RW_INTERLEAVED, 2, frequency, 1, 64 * 1000);
+
+	if (err < 0)
+		die("Failed to configure playback device: %s", snd_strerror(err));
 }
 
-
 static void audio_deinit() {
+	snd_pcm_close(g_pcm);
+}
+
+static size_t audio_write(const void *buf, unsigned frames) {
+	int written = snd_pcm_writei(g_pcm, buf, frames);
+
+	if (written < 0) {
+		printf("Alsa warning/error #%i: ", -written);
+		snd_pcm_recover(g_pcm, written, 0);
+
+		return 0;
+	}
+
+	return written;
 }
 
 static void core_log(enum retro_log_level level, const char *fmt, ...) {
@@ -290,12 +316,10 @@ static bool core_environment(unsigned cmd, void *data) {
 	return true;
 }
 
-
 static void core_video_refresh(const void *data, unsigned width, unsigned height, size_t pitch) {
 	if (data)
 		video_refresh(data, width, height, pitch);
 }
-
 
 static void core_input_poll(void) {
 	int i;
@@ -311,7 +335,6 @@ static void core_input_poll(void) {
 
 }
 
-
 // port == player number
 static int16_t core_input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
 	if (index || device != RETRO_DEVICE_JOYPAD)
@@ -319,14 +342,21 @@ static int16_t core_input_state(unsigned port, unsigned device, unsigned index, 
 	return RetroAgent::g_joy[port][id];
 }
 
-
 static void core_audio_sample(int16_t left, int16_t right) {
+	int16_t buf[2] = {left, right};
+	if(RetroAgent::g_retro.audioEnabled){
+		audio_write(buf, 1);
+	}
 }
 
 
 static size_t core_audio_sample_batch(const int16_t *data, size_t frames) {
+	if(RetroAgent::g_retro.audioEnabled){
+		return audio_write(data, frames);
+	}else{
+		return 0;
+	}
 }
-
 
 static void core_load(const char *sofile) {
 	void (*set_environment)(retro_environment_t) = NULL;
@@ -380,7 +410,6 @@ static void core_load(const char *sofile) {
 	puts("Core loaded");
 }
 
-
 static void core_load_game(const char *filename) {
 	struct retro_system_av_info av = {0};
 	struct retro_system_info system = {0};
@@ -419,7 +448,6 @@ libc_error:
 	die("Failed to load content '%s': %s", filename, strerror(errno));
 }
 
-
 static void core_unload() {
 	if (RetroAgent::g_retro.initialized)
 		RetroAgent::g_retro.retro_deinit();
@@ -435,7 +463,6 @@ RetroAgent::RetroAgent() : coreLoaded(false), romLoaded(false){
 RetroAgent::~RetroAgent(){
 	unloadRom();
 	core_unload();
-//	--numAgents;
 }
 
 static bool replace(std::string& str, const std::string& from, const std::string& to) {
@@ -480,6 +507,7 @@ void RetroAgent::loadCore(const string& coreName){
 
 void RetroAgent::unloadCore(){
 	core_unload();
+	audio_deinit();
 	coreLoaded = false;
 }
 
@@ -502,6 +530,10 @@ void RetroAgent::unloadRom(){
 
 void RetroAgent::run(){
 	RetroAgent::g_retro.retro_run();
+}
+
+void RetroAgent::audioEnable(bool audioState){
+	RetroAgent::g_retro.audioEnabled = audioState;
 }
 
 int RetroAgent::getHeight(){
@@ -573,7 +605,6 @@ void RetroAgent::getRgbMask(uint32_t& rmask, uint32_t& gmask, uint32_t& bmask, u
 	bmask = RetroAgent::g_video.bmask;
 	amask = RetroAgent::g_video.amask;
 }
-
 
 uint32_t RetroAgent::getBufferSize() const{
 	return RetroAgent::g_video.rGeom.base_width * RetroAgent::g_video.rGeom.base_height;

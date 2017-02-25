@@ -122,7 +122,6 @@ class RetroEnvironment {
     pRleSystem m_rlesystem;
     pRomSettings m_settings;
     PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
-//    std::string m_cartridge_md5; // Necessary for saving and loading emulator state
 
     std::stack<RLEState> m_saved_states; // States are saved on a stack
     

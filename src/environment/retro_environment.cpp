@@ -102,6 +102,8 @@ void RetroEnvironment::reset() {
 
   // Reset the emulator
   m_rlesystem->getRetroAgent()->reset();
+  bool audio = m_rlesystem->settings()->getBool("sound", true);
+  m_rlesystem->getRetroAgent()->audioEnable(false);
 
   // NOOP for 60 steps in the deterministic environment setting, or some random amount otherwise
   int noopSteps;
@@ -125,6 +127,7 @@ void RetroEnvironment::reset() {
 //  m_rlesystem->p_display_screen->display_screen();
   }
   m_settings->startingOperations(*m_rlesystem);
+  m_rlesystem->getRetroAgent()->audioEnable(audio);
 }
 
 /** Save/restore the environment state. */

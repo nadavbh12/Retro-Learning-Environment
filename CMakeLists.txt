@@ -31,7 +31,7 @@ if(USE_SDL)
   find_package(SDL)
   if(SDL_FOUND AND ${SDL_VERSION_STRING} VERSION_LESS 2)
     include_directories(${SDL_INCLUDE_DIR})
-    list(APPEND LINK_LIBS ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY} SDL_gfx)
+    list(APPEND LINK_LIBS ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY} SDL_gfx asound)
     message("sdl_library:" ${SDL_LIBRARY} ${SDL_MAIN_LIBRARY})
   else()
     # Uncomment below to specify the path to your SDL library. Run "locate libSDL" if unsure.

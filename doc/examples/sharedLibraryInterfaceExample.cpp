@@ -43,12 +43,8 @@ int main(int argc, char** argv) {
 
 #ifdef __USE_SDL
     rle.setBool("display_screen", true);
-//    rle.setBool("sound", true);
+    rle.setBool("sound", true);
 #endif
-
-    rle.setString("MK_player1_character", "cage");
-//    rle.setString("MK_player2_character", "scorpion");
-    rle.setInt("MK_opponent_character", 4);
     // Load the ROM file. (Also resets the system for new settings to
     // take effect.)
     rle.loadROM(argv[1], argv[2]);

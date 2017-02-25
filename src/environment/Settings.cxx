@@ -325,6 +325,7 @@ void Settings::setDefaultSettings() {
 
 	// Display Settings
 	boolSettings.emplace(std::make_pair("display_screen", false));
+	boolSettings.emplace(std::make_pair("sound", false));
 
 	// Game-Specific Settings
 
