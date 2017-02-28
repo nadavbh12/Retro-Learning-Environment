@@ -15,7 +15,7 @@ import distutils.spawn as ds
 def run_cmake():
     if ds.find_executable('cmake') is None:
         print("CMake is required to build RLE")
-        print("Please install cmake version >= 3.02 and re-run setup")
+        print("Please install cmake version >= 2.8 and re-run setup")
         sys.exit(-1)
 
     new_dir = op.join(op.split(__file__)[0], 'build')
@@ -42,7 +42,7 @@ class Build(_build.build):
         ds.spawn(['./copy_cores.sh'])
         _build.build.run(self)
 
-version = '1.1.2'
+version = '1.1.3'
 setup(name = 'rle_python_interface',
       version=version,
       description = 'Retro Learning Environment Python Interface based on Ben Goodrich\'s work',

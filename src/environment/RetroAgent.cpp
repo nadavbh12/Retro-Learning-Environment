@@ -25,7 +25,9 @@ using namespace rle;
 std::atomic_uint RetroAgent::numAgents{0};
 thread_local struct RetroAgent::g_retro_ RetroAgent::g_retro;
 thread_local struct RetroAgent::g_video_ RetroAgent::g_video;
+#ifdef __USE_SDL
 thread_local static snd_pcm_t *g_pcm = NULL;
+#endif
 
 struct keymap {
 	unsigned k;
@@ -223,6 +225,7 @@ static void video_refresh(const void *data, unsigned width, unsigned height, uns
 }
 
 static void audio_init(int frequency) {
+#ifdef __USE_SDL
 	int err;
 
 	if ((err = snd_pcm_open(&g_pcm, "default", SND_PCM_STREAM_PLAYBACK, 0)) < 0)
@@ -232,13 +235,17 @@ static void audio_init(int frequency) {
 
 	if (err < 0)
 		die("Failed to configure playback device: %s", snd_strerror(err));
+#endif
 }
 
 static void audio_deinit() {
+#ifdef __USE_SDL
 	snd_pcm_close(g_pcm);
+#endif
 }
 
 static size_t audio_write(const void *buf, unsigned frames) {
+#ifdef __USE_SDL
 	int written = snd_pcm_writei(g_pcm, buf, frames);
 
 	if (written < 0) {
@@ -249,6 +256,8 @@ static size_t audio_write(const void *buf, unsigned frames) {
 	}
 
 	return written;
+#endif
+	return 0;
 }
 
 static void core_log(enum retro_log_level level, const char *fmt, ...) {
