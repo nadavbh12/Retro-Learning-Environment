@@ -7,6 +7,7 @@ from ctypes import *
 import numpy as np
 from numpy.ctypeslib import as_ctypes
 import os
+import sys
 
 rle_lib = cdll.LoadLibrary(os.path.join(os.path.dirname(__file__),
                                         'librle_c.so'))
@@ -123,7 +124,10 @@ class RLEInterface(object):
         else:
             raise ValueError('core must be atari|snes|genesis|game_gear|sg1000')
 
-        rle_lib.loadROM(self.obj, rom_file, core_path)
+        if (sys.version_info > (3, 0)):
+            rle_lib.loadROM(self.obj, str.encode(rom_file), str.encode(core_path))
+        else:
+            rle_lib.loadROM(self.obj, rom_file, core_path)
 
     def act(self, actionA, actionB = 0):
         return rle_lib.act(self.obj, int(actionA), int(actionB))

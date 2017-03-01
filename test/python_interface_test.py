@@ -1,6 +1,6 @@
 import unittest
 import os
-from rle_python_interface import RLEInterface
+from rle_python_interface.rle_python_interface import RLEInterface
 import numpy as np
 
 
