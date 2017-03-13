@@ -89,6 +89,51 @@ void SuperMarioKartSettings::loadState( Deserializer & des ) {
     m_lives = des.getInt();
 }
 
+ActionVect SuperMarioKartSettings::selectChar(int character_index){
+    ActionVect selectCharActions;
+
+    if (character_index >= 4) {
+        // The character is in the bottom row
+        selectCharActions.push_back(JOYPAD_DOWN);
+        selectCharActions.push_back(JOYPAD_NOOP);
+        character_index = character_index - 4;
+    }
+    for(int i = 0; i < character_index; i++) {
+        selectCharActions.push_back(JOYPAD_RIGHT);
+        selectCharActions.push_back(JOYPAD_NOOP);
+    }
+
+    selectCharActions.push_back(JOYPAD_B);
+
+    return selectCharActions;
+}
+
+int SuperMarioKartSettings::getCharacterIndex(const RleSystem& system){
+    int character_index = 0; // Ryu by default
+    string player1_character = system.settings()->getString("SUPER_MARIO_KART_player1_character");
+    if("mario" == player1_character){
+        character_index = 0;
+    }else if("peach" == player1_character){
+        character_index = 1;
+    }else if("bowser" == player1_character){
+        character_index = 2;
+    }else if("koopa" == player1_character){
+        character_index = 3;
+    }else if("luigi" == player1_character){
+        character_index = 4;
+    }else if("yoshi" == player1_character){
+        character_index = 5;
+    }else if("donkeykongjr" == player1_character){
+        character_index = 6;
+    }else if("toad" == player1_character){
+        character_index = 7;
+    }else{
+        throw RleException("SUPER_MARIO_KART_player1_character illegal");
+    }
+    return character_index;
+}
+
+
 ActionVect SuperMarioKartSettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
@@ -133,7 +178,11 @@ ActionVect SuperMarioKartSettings::getStartingActions(const RleSystem& system){
     }
 
     //Selecting driver
-    startingActions.push_back(JOYPAD_B);
+    // Select character by index
+    ActionVect selectCharActions = selectChar(getCharacterIndex(system));
+    startingActions.insert(startingActions.end(), selectCharActions.begin(), selectCharActions.end());
+
+    // startingActions.push_back(JOYPAD_B);
 
     for(i = 0; i<5 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);

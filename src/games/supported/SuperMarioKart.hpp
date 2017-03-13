@@ -30,6 +30,10 @@ struct SuperMarioKartSettings : public SnesSettings {
         // loads the state of the rom settings
         virtual void loadState( Deserializer & des );
 
+        virtual ActionVect selectChar(int character_index);
+
+        virtual int getCharacterIndex(const RleSystem& system);
+  
         virtual const int lives() { return 0; }
 
         virtual ActionVect getStartingActions(const RleSystem& system);
