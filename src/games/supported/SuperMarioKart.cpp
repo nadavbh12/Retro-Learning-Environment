@@ -96,10 +96,12 @@ ActionVect SuperMarioKartSettings::selectChar(int character_index){
         // The character is in the bottom row
         selectCharActions.push_back(JOYPAD_DOWN);
         selectCharActions.push_back(JOYPAD_NOOP);
+        selectCharActions.push_back(JOYPAD_NOOP);
         character_index = character_index - 4;
     }
     for(int i = 0; i < character_index; i++) {
         selectCharActions.push_back(JOYPAD_RIGHT);
+        selectCharActions.push_back(JOYPAD_NOOP);
         selectCharActions.push_back(JOYPAD_NOOP);
     }
 
@@ -138,7 +140,7 @@ ActionVect SuperMarioKartSettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
-    for(i = 0; i<20 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
@@ -152,28 +154,28 @@ ActionVect SuperMarioKartSettings::getStartingActions(const RleSystem& system){
     // Selecting 1 player mode
     startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
     
     // Selecting race mode
     startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
     
     // Selecting velocity class FIXME: add selection capability here
     startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
     
     // Validating options
     startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
       startingActions.push_back(JOYPAD_NOOP);
     }
 
@@ -184,18 +186,25 @@ ActionVect SuperMarioKartSettings::getStartingActions(const RleSystem& system){
 
     // startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<7 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
     //Validate
     startingActions.push_back(JOYPAD_B);
 
-    for(i = 0; i<5*num_of_nops; i++){
+    for(i = 0; i<7*num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
     // Selecting circuit
+    startingActions.push_back(JOYPAD_B);
+
+    for(i = 0; i<5*num_of_nops; i++){
+        startingActions.push_back(JOYPAD_NOOP);
+    }
+
+    
     startingActions.push_back(JOYPAD_B);
     
     return startingActions;
