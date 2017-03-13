@@ -33,6 +33,7 @@
 #include "supported/Aladdin.hpp"
 #include "supported/StreetFighterII.hpp"
 #include "supported/BustAMove.hpp"
+#include "supported/SuperMarioKart.hpp"
 
 // genesis games
 #include "supported/SonicTheHedgehog.hpp"
@@ -168,6 +169,7 @@ static const RomSettings *roms[]  = {
 	new NBAGiveNGoSettings(),
     new SuperMarioAllStarsSettings(),
     new SuperMarioAllStarsNoRightSettings(),
+    new SuperMarioKartSettings(),
     new SuperMarioWorldSettings(),
 	new TetrisAndDrMarioSettings(),
 	new WolfensteinSettings(),

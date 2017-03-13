@@ -16,7 +16,7 @@ struct SuperMarioKartSettings : public SnesSettings {
         virtual void reset();
 
         // the rom-name
-        virtual const char* rom() const { return "street_fighter_ii_turbo_hyper_fighting"; }
+        virtual const char* rom() const { return "super_mario_kart"; }
 
         // create a new instance of the rom
         virtual RomSettings* clone() const;
@@ -32,14 +32,10 @@ struct SuperMarioKartSettings : public SnesSettings {
 
         virtual const int lives() { return 0; }
 
-        virtual ActionVect selectChar(int character_index);
-
-        virtual int getCharacterIndex(const RleSystem& system);
-
         virtual ActionVect getStartingActions(const RleSystem& system);
 
 protected:
-  int m_lives = 4
+  int m_lives = 4;
 };
 
 } // namespace rle
