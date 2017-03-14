@@ -48,7 +48,7 @@ RomSettings* SuperMarioKartSettings::clone() const {
 void SuperMarioKartSettings::step(const RleSystem& system) {
 
   // update the player posiiton
-  reward_t playerPosition = getDecimalScore(0x1ef8, &system);
+  reward_t playerPosition = getDecimalScore(0x1040, &system);
 
   //Selecting reward score strategy as the diff with the previous position
   reward_t playerScore = playerPosition;
@@ -91,17 +91,11 @@ void SuperMarioKartSettings::loadState( Deserializer & des ) {
 
 ActionVect SuperMarioKartSettings::selectChar(int character_index){
     ActionVect selectCharActions;
-
-    if (character_index >= 4) {
-        // The character is in the bottom row
-        selectCharActions.push_back(JOYPAD_DOWN);
-        selectCharActions.push_back(JOYPAD_NOOP);
-        selectCharActions.push_back(JOYPAD_NOOP);
-        character_index = character_index - 4;
-    }
+    
+    selectCharActions.push_back(JOYPAD_NOOP);
+    
     for(int i = 0; i < character_index; i++) {
         selectCharActions.push_back(JOYPAD_RIGHT);
-        selectCharActions.push_back(JOYPAD_NOOP);
         selectCharActions.push_back(JOYPAD_NOOP);
     }
 
