@@ -40,6 +40,7 @@ struct SuperMarioKartSettings : public SnesSettings {
 
 protected:
   int m_lives = 4;
+  int m_prevPosition = 0;  //previous position
 };
 
 } // namespace rle

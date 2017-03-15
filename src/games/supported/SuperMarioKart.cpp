@@ -32,6 +32,8 @@ SuperMarioKartSettings::SuperMarioKartSettings() {
                         JOYPAD_LEFT | JOYPAD_R,
                         JOYPAD_RIGHT | JOYPAD_B,
                         JOYPAD_LEFT | JOYPAD_B,
+                        JOYPAD_LEFT | JOYPAD_B | JOYPAD_A,
+                        JOYPAD_RIGHT | JOYPAD_B | JOYPAD_A,
                         JOYPAD_LEFT | JOYPAD_B | JOYPAD_L,
                         JOYPAD_RIGHT | JOYPAD_B | JOYPAD_L
     };
@@ -53,8 +55,9 @@ void SuperMarioKartSettings::step(const RleSystem& system) {
   //Selecting reward score strategy as the diff with the previous position
   reward_t playerScore = playerPosition;
 
-  //Reward is positive if the player wins one position 
-  m_reward = m_reward - playerPosition;
+  //Reward is positive if the player wins one position
+  m_reward = m_prevPosition - playerPosition;
+  m_prevPosition = playerPosition;
   
   m_score = playerScore;
 
