@@ -36,7 +36,7 @@ struct ContraIIISettings : public SnesSettings {
 
 protected:
   int m_lives = 3;
-  int m_prevPosition = 0;
+  int m_prevScore = 0;
 };
 
 } // namespace rle

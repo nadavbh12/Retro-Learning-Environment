@@ -49,14 +49,11 @@ RomSettings* ContraIIISettings::clone() const {
 void ContraIIISettings::step(const RleSystem& system) {
 
   // update the player posiiton FIXME: this is wrong!
-  reward_t playerPosition = getDecimalScore(0x1F8A, &system);
-
-  //Selecting reward score strategy as the diff with the previous position
-  reward_t playerScore = playerPosition;
+  reward_t playerScore = getDecimalScore(0x29ed, 0x29ee, &system);
 
   //Reward is positive if the player wins one position
-  m_reward = m_prevPosition - playerPosition;
-  m_prevPosition = playerPosition;
+  m_reward = playerScore - m_prevScore;
+  m_prevScore = playerScore;
   
   m_score = playerScore;
 
