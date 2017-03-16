@@ -2,7 +2,7 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "SuperMarioKart.hpp"
+#include "ContraIII.hpp"
 
 #include "RleSystem.hxx"
 #include "RleException.h"
@@ -40,7 +40,7 @@ ContraIIISettings::ContraIIISettings() {
 
 /* create a new instance of the rom */
 RomSettings* ContraIIISettings::clone() const {
-    RomSettings* rval = new SuperMarioKartSettings();
+    RomSettings* rval = new ContraIIISettings();
     *rval = *this;
     return rval;
 }
@@ -49,7 +49,7 @@ RomSettings* ContraIIISettings::clone() const {
 void ContraIIISettings::step(const RleSystem& system) {
 
   // update the player posiiton FIXME: this is wrong!
-  reward_t playerPosition = getDecimalScore(0x1040, &system);
+  reward_t playerPosition = getDecimalScore(0x1F8A, &system);
 
   //Selecting reward score strategy as the diff with the previous position
   reward_t playerScore = playerPosition;
@@ -60,9 +60,9 @@ void ContraIIISettings::step(const RleSystem& system) {
   
   m_score = playerScore;
 
-  int current_lives = getDecimalScore(0x1746, &system);
+  int current_lives = getDecimalScore(0x1F8A, &system);
 
-  if (current_lives < m_lives)
+  if (current_lives == 0)
     {
       //Reached a terminal state
       m_terminal = true;
@@ -95,7 +95,7 @@ ActionVect ContraIIISettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
-    for(i = 0; i<7 * num_of_nops; i++){
+    for(i = 0; i<10 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
@@ -108,6 +108,10 @@ ActionVect ContraIIISettings::getStartingActions(const RleSystem& system){
     
     // Selecting 1 player mode
     startingActions.push_back(JOYPAD_START);
+
+    for(i = 0; i<5 * num_of_nops; i++){
+      startingActions.push_back(JOYPAD_NOOP);
+    }
     
     return startingActions;
 }
