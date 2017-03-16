@@ -75,7 +75,7 @@ void SuperMarioKartSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
-
+    // Avoid resetting the current character as it is persisted across resets
 }
 
 /* saves the state of the rom settings */
@@ -83,6 +83,7 @@ void SuperMarioKartSettings::saveState( Serializer & ser ) {
     ser.putInt(m_reward);
     ser.putBool(m_terminal);
     ser.putInt(m_lives);
+    ser.putInt(m_current_character);
 }
 
 // loads the state of the rom settings
@@ -90,25 +91,35 @@ void SuperMarioKartSettings::loadState( Deserializer & des ) {
     m_reward = des.getInt();
     m_terminal = des.getBool();
     m_lives = des.getInt();
+    m_current_character = des.getInt();
 }
 
 ActionVect SuperMarioKartSettings::selectChar(int character_index){
     ActionVect selectCharActions;
     
     selectCharActions.push_back(JOYPAD_NOOP);
-    
-    for(int i = 0; i < character_index; i++) {
-        selectCharActions.push_back(JOYPAD_RIGHT);
+
+    int action = JOYPAD_NOOP;
+    if (character_index > m_current_character) {
+        action = JOYPAD_RIGHT;
+    } else {
+        action = JOYPAD_LEFT;
+    }
+    for(int i = 0; i < abs(character_index-m_current_character); i++) {
+        selectCharActions.push_back(action);
         selectCharActions.push_back(JOYPAD_NOOP);
     }
 
+    m_current_character = character_index;
+
     selectCharActions.push_back(JOYPAD_B);
+    selectCharActions.push_back(JOYPAD_NOOP);
 
     return selectCharActions;
 }
 
 int SuperMarioKartSettings::getCharacterIndex(const RleSystem& system){
-    int character_index = 0; // Ryu by default
+    int character_index = 0;
     string player1_character = system.settings()->getString("SUPER_MARIO_KART_player1_character");
     if("mario" == player1_character){
         character_index = 0;
