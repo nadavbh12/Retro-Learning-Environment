@@ -34,6 +34,23 @@ ContraIIISettings::ContraIIISettings() {
                         JOYPAD_LEFT | JOYPAD_UP | JOYPAD_B,
                         JOYPAD_RIGHT | JOYPAD_DOWN | JOYPAD_B,
                         JOYPAD_RIGHT | JOYPAD_UP | JOYPAD_B,
+                        JOYPAD_LEFT | JOYPAD_Y,
+                        JOYPAD_RIGHT | JOYPAD_Y,
+                        JOYPAD_UP |JOYPAD_Y,
+                        JOYPAD_DOWN | JOYPAD_Y,
+                        JOYPAD_LEFT | JOYPAD_DOWN | JOYPAD_Y,
+                        JOYPAD_LEFT | JOYPAD_UP | JOYPAD_Y,
+                        JOYPAD_RIGHT | JOYPAD_DOWN | JOYPAD_Y,
+                        JOYPAD_RIGHT | JOYPAD_UP | JOYPAD_Y,
+                        JOYPAD_LEFT | JOYPAD_A,
+                        JOYPAD_RIGHT | JOYPAD_A,
+                        JOYPAD_UP |JOYPAD_A,
+                        JOYPAD_DOWN | JOYPAD_A,
+                        JOYPAD_LEFT | JOYPAD_X,
+                        JOYPAD_RIGHT | JOYPAD_X,
+                        JOYPAD_UP |JOYPAD_X,
+                        JOYPAD_DOWN | JOYPAD_X,
+
 
     };
 }
