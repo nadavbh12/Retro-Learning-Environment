@@ -87,28 +87,28 @@ ActionVect ArkanoidIIISettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
-    for(i = 0; i<7 * num_of_nops; i++){
+    for(i = 0; i<15 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
     // second animation
     startingActions.push_back(JOYPAD_START);
 
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i< 1 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
     // second animation
     startingActions.push_back(JOYPAD_START);
     
-    for(i = 0; i<5 * num_of_nops; i++){
+    for(i = 0; i<1 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
     
     // Selecting 1 player mode
     startingActions.push_back(JOYPAD_START);
 
-    for(i = 0; i<7 * num_of_nops; i++){
+    for(i = 0; i<5 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
