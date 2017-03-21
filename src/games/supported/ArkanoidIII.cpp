@@ -48,7 +48,7 @@ void ArkanoidIIISettings::step(const RleSystem& system) {
   reward_t playerScore = playerPosition;
 
   //Reward is positive if the player wins one position
-  m_reward = playerPosition; - m_prevPosition
+  m_reward = playerPosition - m_prevPosition;
   m_prevPosition = playerPosition;
   
   m_score = playerScore;
