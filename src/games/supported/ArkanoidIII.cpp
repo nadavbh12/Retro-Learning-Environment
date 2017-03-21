@@ -114,6 +114,10 @@ ActionVect ArkanoidIIISettings::getStartingActions(const RleSystem& system){
 
     // Jump Intro
     startingActions.push_back(JOYPAD_START);
+
+    for(i = 0; i<1 * num_of_nops; i++){
+        startingActions.push_back(JOYPAD_NOOP);
+    }
     
     return startingActions;
 }
