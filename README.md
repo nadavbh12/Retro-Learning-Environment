@@ -16,7 +16,6 @@ If you use RLE in your publication, please use the following BibTex entry:
       year = {2016}
     }
    
-===============================
 Quick Start
 ===============================
 
@@ -46,7 +45,7 @@ To install the lua (Torch) interface, the additional alewrap module is required:
 luarocks install https://raw.githubusercontent.com/nadavbh12/Retro-Learning-Environment/master/ale-2-0.rockspec
 luarocks install https://raw.githubusercontent.com/nadavbh12/alewrap/master/alewrap-0-0.rockspec
 ```
-===============================
+
 DQN Implementations Using RLE
 ===============================
 - A [fork](https://github.com/nadavbh12/deep_q_rl) of [@spragunr](https://github.com/spragunr)'s DQN implementation in Python.
