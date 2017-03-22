@@ -115,7 +115,7 @@ ExternalProject_add(snes9x2010_libretro
 			GIT_REPOSITORY https://github.com/libretro/snes9x2010.git
 			UPDATE_COMMAND ""
 			SOURCE_DIR ${SNES9X_DIR}
-			BINARY_DIR ${SNES9X_DIR}
+			BUILD_IN_SOURCE 1
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND ${MAKE}
 			INSTALL_DIR ${LIBDIR}
@@ -125,9 +125,9 @@ ExternalProject_add(stella_libretro
 			GIT_REPOSITORY https://github.com/libretro/stella-libretro.git
 			UPDATE_COMMAND ""
 			SOURCE_DIR ${STELLA_DIR}
-			BINARY_DIR ${STELLA_DIR}
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND ${MAKE}
+			BUILD_IN_SOURCE 1
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${STELLA_INSTALL_COMMAND}"
 		   )
@@ -135,9 +135,9 @@ ExternalProject_add(genesis_plus_gx_libretro
 			GIT_REPOSITORY https://github.com/libretro/Genesis-Plus-GX
 			UPDATE_COMMAND ""
 			SOURCE_DIR ${GENESIS_PLUS_GX_DIR}
-			BINARY_DIR ${GENESIS_PLUS_GX_DIR}
+			BUILD_IN_SOURCE 1
 			CONFIGURE_COMMAND ""
-			BUILD_COMMAND ${MAKE}
+			BUILD_COMMAND make -f Makefile.libretro
 			INSTALL_DIR ${LIBDIR}
 			INSTALL_COMMAND "${GENESIS_INSTALL_COMMAND}"
 		   )
