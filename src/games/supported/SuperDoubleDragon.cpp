@@ -75,27 +75,27 @@ void SuperDoubleDragonSettings::step(const RleSystem& system) {
 }
 
 /* reset the state of the game */
-void ArkanoidIIISettings::reset() {
+void SuperDoubleDragonSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
 }
 
 /* saves the state of the rom settings */
-void ArkanoidIIISettings::saveState( Serializer & ser ) {
+void SuperDoubleDragonSettings::saveState( Serializer & ser ) {
     ser.putInt(m_reward);
     ser.putBool(m_terminal);
     ser.putInt(m_lives);
 }
 
 // loads the state of the rom settings
-void ArkanoidIIISettings::loadState( Deserializer & des ) {
+void SuperDoubleDragonSettings::loadState( Deserializer & des ) {
     m_reward = des.getInt();
     m_terminal = des.getBool();
     m_lives = des.getInt();
 }
 
-ActionVect ArkanoidIIISettings::getStartingActions(const RleSystem& system){
+ActionVect SuperDoubleDragonSettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
