@@ -2,7 +2,7 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "ArkanoidIII.hpp"
+#include "SuperDoubleDragon.hpp"
 
 #include "RleSystem.hxx"
 #include "RleException.h"
@@ -38,11 +38,21 @@ SuperDoubleDragonSettings::SuperDoubleDragonSettings() {
                         JOYPAD_LEFT | JOYPAD_B,
                         JOYPAD_UP | JOYPAD_B,
                         JOYPAD_DOWN | JOYPAD_B,
+                        JOYPAD_LEFT | JOYPAD_X | JOYPAD_B,
+                        JOYPAD_RIGHT | JOYPAD_X | JOYPAD_B,
+                        JOYPAD_UP | JOYPAD_X | JOYPAD_B,
+                        JOYPAD_DOWN | JOYPAD_X | JOYPAD_B,
+                        JOYPAD_LEFT | JOYPAD_X | JOYPAD_A,
+                        JOYPAD_RIGHT | JOYPAD_X | JOYPAD_A,
+                        JOYPAD_UP | JOYPAD_X | JOYPAD_A,
+                        JOYPAD_DOWN | JOYPAD_X | JOYPAD_A,
+
+
     };
 }
 
 /* create a new instance of the rom */
-RomSettings* SuperDobuleDragonSettings::clone() const {
+RomSettings* SuperDoubleDragonSettings::clone() const {
     RomSettings* rval = new SuperDoubleDragonSettings();
     *rval = *this;
     return rval;
@@ -60,11 +70,16 @@ void SuperDoubleDragonSettings::step(const RleSystem& system) {
   //Reward is positive if the player wins one position
   string rewardStrategy = system.settings()->getString("DDRAGON_reward_strategy");
 
-  if (rewardStrategy == "score"):
+  if (rewardStrategy == "score") {
     m_reward = playerDeads - m_prevDeads;
-  else:
+  }
+  else {
     m_reward = playerLife - m_prevLife;
-                                         
+  }
+
+  m_prevLife = playerLife;
+  m_prevDeads = playerDeads;
+  
   int current_lives = getDecimalScore(0x00dc, &system);
 
   if (current_lives == 0)
@@ -99,14 +114,14 @@ ActionVect SuperDoubleDragonSettings::getStartingActions(const RleSystem& system
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
-    for(i = 0; i<15 * num_of_nops; i++){
+    for(i = 0; i<20 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 
     // second animation
     startingActions.push_back(JOYPAD_START);
 
-    for(i = 0; i< 1 * num_of_nops; i++){
+    for(i = 0; i< 5 * num_of_nops; i++){
         startingActions.push_back(JOYPAD_NOOP);
     }
 

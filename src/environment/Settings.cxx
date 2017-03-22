@@ -340,7 +340,7 @@ void Settings::setDefaultSettings() {
         stringSettings.emplace(std::make_pair("SUPER_MARIO_KART_player1_character", "bowser"));
 
         //Super Double Dragon
-        stringSettings.emplace(std::make_pair("DDRAGON_reward_strategy", "score"))
+        stringSettings.emplace(std::make_pair("DDRAGON_reward_strategy", "score"));
         
 	for (map<string, string>::iterator it = stringSettings.begin();
 			it != stringSettings.end(); it++) {
