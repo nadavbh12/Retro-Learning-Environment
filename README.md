@@ -32,8 +32,12 @@ $ cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=ON ..
 $ make -j 4
 ```
 
-To install the python interface:
-
+To install the python interface:  
+Either install via PyPi:
+```
+$ pip install rle-python-interface
+```
+or by cloneing the repository and running the following (without the installation steps of the shared_library):
 ```
 $ pip install .
 or
