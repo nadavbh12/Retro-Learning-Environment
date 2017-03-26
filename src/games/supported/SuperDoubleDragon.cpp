@@ -94,6 +94,8 @@ void SuperDoubleDragonSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
+    m_prevLife = 0;
+    m_prevDeads = 0;
 }
 
 /* saves the state of the rom settings */
