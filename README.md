@@ -23,6 +23,20 @@ Install main dependences:
 ```
 sudo apt-get install libsdl1.2-dev libsdl-gfx1.2-dev libsdl-image1.2-dev cmake
 ```
+To install as a Gym environment:  
+Go to the [gym-rle](https://github.com/nadavbh12/gym-rle) repository and follow the instructions there.
+
+To install the python interface:  
+Either install via PyPi:
+```
+$ pip install rle-python-interface
+```
+or by cloneing the repository and running the following:
+```
+$ pip install .
+or
+$ pip install --user .
+```
 
 To use the shared_library interface:
 
@@ -30,18 +44,6 @@ To use the shared_library interface:
 $ mkdir build && cd build
 $ cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=ON ..
 $ make -j 4
-```
-
-To install the python interface:  
-Either install via PyPi:
-```
-$ pip install rle-python-interface
-```
-or by cloneing the repository and running the following (without the installation steps of the shared_library):
-```
-$ pip install .
-or
-$ pip install --user .
 ```
 
 To install the lua (Torch) interface, the additional alewrap module is required:
