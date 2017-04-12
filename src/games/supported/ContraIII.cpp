@@ -66,8 +66,7 @@ RomSettings* ContraIIISettings::clone() const {
 void ContraIIISettings::step(const RleSystem& system) {
 
   // update the player posiiton FIXME: this is wrong!
-  reward_t playerScore = getDecimalScore(0x29ed, 0x29ee, &system);
-
+  reward_t playerScore = getDecimalScore(0x1fa1, 0x1fa2, &system);
   //Reward is positive if the player wins one position
   m_reward = playerScore - m_prevScore;
   m_prevScore = playerScore;
@@ -88,7 +87,7 @@ void ContraIIISettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
-    // Avoid resetting the current character as it is persisted across resets
+    m_prevScore = 0;
 }
 
 /* saves the state of the rom settings */
