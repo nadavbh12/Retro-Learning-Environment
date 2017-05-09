@@ -37,7 +37,7 @@ struct SuperDoubleDragonSettings : public SnesSettings {
 protected:
   int m_lives = 3;
   int m_prevLife = 0;  //previous position
-  int m_prevDeads = 0;
+  int m_prevEnemyKills = 0;
 };
 
 } // namespace rle

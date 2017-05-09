@@ -64,21 +64,21 @@ void SuperDoubleDragonSettings::step(const RleSystem& system) {
   // update the player life
   reward_t playerLife = getDecimalScore(0x0FD6, &system);
 
-  // update the player deads
-  reward_t playerDeads = getDecimalScore(0x00DF, 0x00E0, &system);
+  // update the player enemy kills
+  reward_t enemyKills = getDecimalScore(0x00DF, 0x00E0, &system);
 
   //Reward is positive if the player wins one position
   string rewardStrategy = system.settings()->getString("DDRAGON_reward_strategy");
 
   if (rewardStrategy == "score") {
-    m_reward = playerDeads - m_prevDeads;
+    m_reward = enemyKills - m_prevEnemyKills;
   }
   else {
     m_reward = playerLife - m_prevLife;
   }
 
   m_prevLife = playerLife;
-  m_prevDeads = playerDeads;
+  m_prevEnemyKills = enemyKills;
   
   int current_lives = getDecimalScore(0x00dc, &system);
 
@@ -95,7 +95,7 @@ void SuperDoubleDragonSettings::reset() {
     m_score    = 0;
     m_terminal = false;
     m_prevLife = 0;
-    m_prevDeads = 0;
+    m_prevEnemyKills = 0;
 }
 
 /* saves the state of the rom settings */
