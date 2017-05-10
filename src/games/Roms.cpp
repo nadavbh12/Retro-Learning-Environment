@@ -36,7 +36,7 @@
 #include "supported/SuperMarioKart.hpp"
 #include "supported/SuperDoubleDragon.hpp"
 #include "supported/ContraIII.hpp"
-#include "supported/ArkanoidIII.hpp"
+#include "supported/ArkanoidDohItAgain.hpp"
 
 // genesis games
 #include "supported/SonicTheHedgehog.hpp"
@@ -162,7 +162,7 @@ static const RomSettings *roms[]  = {
 
 	// SNES games
 	new AtariCollectionSettings(),
-	new ArkanoidIIISettings(),
+	new ArkanoidDohItAgainSettings(),
 	new ClassicKongSettings(),
 	new ContraIIISettings(),
 	new FinalFightSettings(),

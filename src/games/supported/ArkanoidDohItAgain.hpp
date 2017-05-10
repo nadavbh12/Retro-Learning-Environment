@@ -1,22 +1,22 @@
-#ifndef __ARKANOID_III_SETTINGS_HPP__
-#define __ARKANOID_III_SETTINGS_HPP__
+#ifndef __ARKANOID_DOH_IT_AGAIN_SETTINGS_HPP__
+#define __ARKANOID_DOH_IT_AGAIN_SETTINGS_HPP__
 /* RL wrapper for AtariCollection settings */
 
 #include "../SnesSettings.hpp"
 
 namespace rle {
 
-struct ArkanoidIIISettings : public SnesSettings {
+struct ArkanoidDohItAgainSettings : public SnesSettings {
 
     public:
 
-        ArkanoidIIISettings();
+        ArkanoidDohItAgainSettings();
 
         // reset
         virtual void reset();
 
         // the rom-name
-        virtual const char* rom() const { return "arkanoid_iii"; }
+        virtual const char* rom() const { return "arkanoid_doh_it_again"; }
 
         // create a new instance of the rom
         virtual RomSettings* clone() const;
@@ -41,4 +41,4 @@ protected:
 
 } // namespace rle
 
-#endif // __ARKANOID_III_SETTINGS_HPP__
+#endif // __ARKANOID_DOH_IT_AGAIN_SETTINGS_HPP__

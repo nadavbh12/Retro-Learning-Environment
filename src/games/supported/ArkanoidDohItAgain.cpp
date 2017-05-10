@@ -2,14 +2,14 @@
 #include <iomanip>
 
 #include "../RomUtils.hpp"
-#include "ArkanoidIII.hpp"
+#include "ArkanoidDohItAgain.hpp"
 
 #include "RleSystem.hxx"
 #include "RleException.h"
 
 using namespace rle;
 
-ArkanoidIIISettings::ArkanoidIIISettings() {
+ArkanoidDohItAgainSettings::ArkanoidDohItAgainSettings() {
     reset();
 
     // TODO
@@ -32,14 +32,14 @@ ArkanoidIIISettings::ArkanoidIIISettings() {
 }
 
 /* create a new instance of the rom */
-RomSettings* ArkanoidIIISettings::clone() const {
-    RomSettings* rval = new ArkanoidIIISettings();
+RomSettings* ArkanoidDohItAgainSettings::clone() const {
+    RomSettings* rval = new ArkanoidDohItAgainSettings();
     *rval = *this;
     return rval;
 }
 
 /* process the latest information from RLE */
-void ArkanoidIIISettings::step(const RleSystem& system) {
+void ArkanoidDohItAgainSettings::step(const RleSystem& system) {
 
   // update the player posiiton
   reward_t playerPosition = getDecimalScore(0x1a32, 0x1a33, &system);
@@ -63,27 +63,27 @@ void ArkanoidIIISettings::step(const RleSystem& system) {
 }
 
 /* reset the state of the game */
-void ArkanoidIIISettings::reset() {
+void ArkanoidDohItAgainSettings::reset() {
     m_reward   = 0;
     m_score    = 0;
     m_terminal = false;
 }
 
 /* saves the state of the rom settings */
-void ArkanoidIIISettings::saveState( Serializer & ser ) {
+void ArkanoidDohItAgainSettings::saveState( Serializer & ser ) {
     ser.putInt(m_reward);
     ser.putBool(m_terminal);
     ser.putInt(m_lives);
 }
 
 // loads the state of the rom settings
-void ArkanoidIIISettings::loadState( Deserializer & des ) {
+void ArkanoidDohItAgainSettings::loadState( Deserializer & des ) {
     m_reward = des.getInt();
     m_terminal = des.getBool();
     m_lives = des.getInt();
 }
 
-ActionVect ArkanoidIIISettings::getStartingActions(const RleSystem& system){
+ActionVect ArkanoidDohItAgainSettings::getStartingActions(const RleSystem& system){
     int i, num_of_nops(100);
     ActionVect startingActions;
     // wait for intro to end
