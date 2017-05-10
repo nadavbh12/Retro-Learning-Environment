@@ -34,6 +34,7 @@
 #include "supported/StreetFighterII.hpp"
 #include "supported/BustAMove.hpp"
 #include "supported/SuperMarioKart.hpp"
+#include "supported/SuperDoubleDragon.hpp"
 
 // genesis games
 #include "supported/SonicTheHedgehog.hpp"
@@ -167,6 +168,7 @@ static const RomSettings *roms[]  = {
     new MortalKombatSettings(),
     new MortalKombat2PlayersSettings(),
 	new NBAGiveNGoSettings(),
+    new SuperDoubleDragonSettings(),
     new SuperMarioAllStarsSettings(),
     new SuperMarioAllStarsNoRightSettings(),
     new SuperMarioKartSettings(),
@@ -177,7 +179,7 @@ static const RomSettings *roms[]  = {
 	new StreetFighterIISettings(),
 	new BustAMoveSettings(),
 //	Genesis games
-	new SonicTheHedgehogSettings()
+    new SonicTheHedgehogSettings()
 };
 
 
