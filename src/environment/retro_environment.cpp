@@ -34,16 +34,6 @@ RetroEnvironment::RetroEnvironment(pRleSystem rlesystem, pRomSettings settings) 
   m_player_a_action(PLAYER_A | JOYPAD_NOOP),
   m_player_b_action(PLAYER_B | JOYPAD_NOOP) {
 
-	// TODO SN : Add support for paddle-based games
-  // Determine whether this is a paddle-based game
-//  if (m_rlesystem->console().properties().get(Controller_Left) == "PADDLES" ||
-//      m_rlesystem->console().properties().get(Controller_Right) == "PADDLES") {
-//	  m_use_paddles = true;
-//	  m_state.resetPaddles(m_rlesystem->event());
-//  } else {
-//	  m_use_paddles = false;
-//  }
-
   m_num_reset_steps = 4;
 
   m_max_num_frames_per_episode = m_rlesystem->settings()->getInt("max_num_frames_per_episode");
@@ -243,18 +233,6 @@ bool RetroEnvironment::isTerminal() {
 
 void RetroEnvironment::emulate(const Action& player_a_action, const Action& player_b_action, size_t num_steps) {
 
-//  // Handle paddles separately: we have to manually update the paddle positions at each step
-//  if (m_use_paddles) {
-//    // Run emulator forward for 'num_steps'
-//    for (size_t t = 0; t < num_steps; t++) {
-//      // Update paddle position at every step
-//      m_state.applyActionPaddles(event, player_a_action, player_b_action);
-//
-//      m_rlesystem->console().mediaSource().update();
-//      m_settings->step(m_rlesystem->console().system());
-//    }
-//  }
-//  else {
     // In joystick mode we only need to set the action events once
 //    m_state.setActionJoysticks(player_a_action, player_b_action);
 	m_rlesystem->getRetroAgent()->SetActions(player_a_action,player_b_action);
@@ -263,10 +241,7 @@ void RetroEnvironment::emulate(const Action& player_a_action, const Action& play
     	m_rlesystem->step();
     	m_settings->step(*m_rlesystem);
     }
-//  }
 
-    // TODO SN : implement functions below
-  // Parse screen and RAM into their respective data structures
   processScreen();
 }
 
@@ -287,19 +262,16 @@ const RLEState& RetroEnvironment::getState() const {
 }
 
 void RetroEnvironment::processScreen() {
-//  if (m_colour_averaging) {
-//    // Perform phosphor averaging; the blender stores its result in the given screen
-//    m_phosphor_blend.process(m_screen);
-//  }
-//  else {
     // Copy screen over and we're done!
-//    memcpy(m_screen.getArray(),(uint32_t*) m_rlesystem->getCurrentFrameBuffer(), 4*m_rlesystem->getRetroAgent().getBufferSize()); //shai: consider adding min/max of size // *4 to go to pixel
-	int height = m_rlesystem->getRetroAgent()->getHeight();
-	int width = m_rlesystem->getRetroAgent()->getWidth();
+	size_t height = m_rlesystem->getRetroAgent()->getHeight();
+	size_t width = m_rlesystem->getRetroAgent()->getWidth();
+	if(m_screen.height() != height || m_screen.width() != width){
+		m_screen.setDims(width, height);
+	}
 	int Bpp = m_rlesystem->getRetroAgent()->getBpp() / 8;
 	int pitch = m_rlesystem->getRetroAgent()->getPitch();
 	uint8_t* buffer = m_rlesystem->getCurrentFrameBuffer();
-	for(int i = 0 ; i < height; ++i){
+	for(unsigned i = 0 ; i < height; ++i){
 		memcpy((uint8_t*)m_screen.getArray() + i*width *Bpp , buffer + i*pitch, width * Bpp);
 	}
 }

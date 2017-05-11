@@ -26,7 +26,6 @@
 
 
 static void rle_rearrangeRgb(uint8_t *dst_buffer, const pixel_t *src_buffer, size_t src_size , const RLEInterface *rle) {
-
   uint8_t *q = dst_buffer;
   uint8_t r, g, b;
   for(size_t i = 0; i < src_size; ++i, ++q){
@@ -38,12 +37,11 @@ static void rle_rearrangeRgb(uint8_t *dst_buffer, const pixel_t *src_buffer, siz
 }
 
 static void rle_rearrangeGrayscale(uint8_t *dst_buffer, const uint32_t *src_buffer, size_t src_size , const RLEInterface *rle) {
-
   uint8_t *q = dst_buffer;
   uint8_t r, g, b;
   for(size_t i = 0; i < src_size; ++i, ++q){
   	rle->getScreen().getRGB(((uint16_t*)src_buffer)[i], r, g, b);
-    *q = (unsigned char) (0.3*r + 0.5*g+0.2*b);
+    *q = (unsigned char) (0.3*r + 0.5*g + 0.2*b);
   }
 }
 

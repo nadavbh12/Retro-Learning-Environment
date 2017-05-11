@@ -14,7 +14,7 @@
 
 namespace rle {
 
-RLEScreen::RLEScreen(int h, int w):m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
+RLEScreen::RLEScreen(size_t h, size_t w) : m_rows(h), m_columns(w), m_pixels(m_rows * m_columns){
 
 	m_pixelFormat = new  pixelFormat();
 }
@@ -23,7 +23,7 @@ RLEScreen::~RLEScreen(){
 	delete m_pixelFormat;
 }
 
-RLEScreen::RLEScreen(const RLEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
+RLEScreen::RLEScreen(const RLEScreen &rhs) : m_rows(rhs.m_rows), m_columns(rhs.m_columns), m_pixels(rhs.m_pixels){
 
 	m_pixelFormat = new  pixelFormat();
 	m_pixelFormat->Bpp    = rhs.m_pixelFormat->Bpp   ;
@@ -39,9 +39,6 @@ RLEScreen::RLEScreen(const RLEScreen &rhs): m_rows(rhs.m_rows), m_columns(rhs.m_
 }
 
 RLEScreen& RLEScreen::operator=(const RLEScreen &rhs) {
-
-
-
   m_rows = rhs.m_rows;
   m_columns = rhs.m_columns;
   m_pixels = rhs.m_pixels;
@@ -96,22 +93,28 @@ void RLEScreen::getRGB(const uint32_t &pixel, uint8_t &red, uint8_t &green, uint
 }
 
 // pixel accessors, (row, column)-ordered
-inline pixel_t RLEScreen::get(int r, int c) const {
+inline pixel_t RLEScreen::get(unsigned r, unsigned c) const {
   // Perform some bounds-checking
   assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
   return m_pixels[r * m_columns + c];
 }
 
-inline pixel_t* RLEScreen::pixel(int r, int c) {
+inline pixel_t* RLEScreen::pixel(unsigned r, unsigned c) {
   // Perform some bounds-checking
   assert (r >= 0 && r < m_rows && c >= 0 && c < m_columns);
   return &m_pixels[r * m_columns + c];
 }
 
 // Access a whole row
-inline pixel_t* RLEScreen::getRow(int r) const {
+inline pixel_t* RLEScreen::getRow(unsigned r) const {
   assert (r >= 0 && r < m_rows);
   return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
+}
+
+void RLEScreen::setDims(const size_t width, const size_t height) {
+	m_rows = height;
+	m_columns = width;
+	m_pixels.resize(m_rows * m_columns);
 }
 
 } // namespace rle

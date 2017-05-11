@@ -104,27 +104,27 @@ typedef uint32_t Action;
 // a list of RLE actions
 typedef std::vector<Action> ActionVect;
 
-// type used to represent insantanteous reward
+// type used to represent instantaneous reward
 typedef int reward_t;
 
 typedef uint32_t pixel_t;
 
 typedef unsigned char byte_t;
 
-/** A simple wrapper around an Atari screen. */
+/** A simple wrapper around an emulator screen. */
 class RLEScreen {
   public:
-    RLEScreen(int h, int w);
+    RLEScreen(size_t h, size_t w);
     RLEScreen(const RLEScreen &rhs);
     ~RLEScreen();
     RLEScreen& operator=(const RLEScreen &rhs);
 
     /** pixel accessors, (row, column)-ordered */
-    pixel_t get(int r, int c) const;
-    pixel_t *pixel(int r, int c);
+    pixel_t get(unsigned r, unsigned c) const;
+    pixel_t *pixel(unsigned r, unsigned c);
 
     /** Access a whole row */
-    pixel_t *getRow(int r) const;
+    pixel_t *getRow(unsigned r) const;
 
     /** Access the whole array */
     const pixel_t *getArray() const { return &m_pixels[0]; }
@@ -142,16 +142,20 @@ class RLEScreen {
     bool equals(const RLEScreen &rhs) const;
 
     /** Returns a 32bit pixel in an R|G|B Format, 8 bits each */
-    pixel_t getRGBPixel(const uint32_t &pixel)const;
-    void  getRGB(const uint32_t &pixel ,uint8_t &red, uint8_t &green, uint8_t &blue)const;
+    pixel_t getRGBPixel(const pixel_t &pixel) const;
+    void  getRGB(const pixel_t &pixel ,uint8_t &red, uint8_t &green, uint8_t &blue) const;
 
     struct pixelFormat* m_pixelFormat;
 
-  protected:
-    int m_rows;
-    int m_columns; // in Pixels
-    std::vector<pixel_t> m_pixels;
+    /** Neccesary in case the dimensions of the screen changes.
+     *  Should be private+friend so only retro_environment can
+     *  change but would hurth PIML so its public **/
+    void setDims(const size_t width, const size_t height);
 
+  protected:
+    size_t m_rows;
+    size_t m_columns; // in Pixels
+    std::vector<pixel_t> m_pixels;
 };
 
 
