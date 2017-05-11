@@ -61,9 +61,17 @@ void SuperMarioKartSettings::step(const RleSystem& system) {
   
   m_score = playerScore;
 
-  int current_lives = getDecimalScore(0x0154, &system);
+  //Possible End Race flags
+  //0x012e/0x0144 -> 2 right after race ends/0 during race
+  //0x17f6 -> 1 right after race ends/255 otherwise
+  //0x17f7 -> 0 right after race ends/255 otherwise
+  int endRaceFlag = getDecimalScore(0x012e, &system);
 
-  if (current_lives < m_lives)
+  // Player position is 8 if the player is 5th
+
+  //The agent reaches a terminal state if it finished 5th or worse
+  // and a driver has arrived to the goal
+  if ((endRaceFlag > 0) && (playerPosition > 6))
     {
       //Reached a terminal state
       m_terminal = true;
