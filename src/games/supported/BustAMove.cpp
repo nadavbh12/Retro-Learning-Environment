@@ -47,7 +47,7 @@ void BustAMoveSettings::step(const RleSystem& system) {
     m_score = playerScore;
 //    cout << "Score: " << playerScore<<endl;
 //    update terminal status
-    int isAlive = readRam(&system, 0x906);
+    int isAlive = readRam(&system, 0x994);
     if (isAlive > 0){
     	m_terminal = true;
     }
