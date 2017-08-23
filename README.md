@@ -1,7 +1,7 @@
 # Retro-Learning-Environment
-A learning framework based on the Arcade Learning Environment (ALE) and LibRetro (Stella for Atari and SNES9X for the Super Nintendo Entertainment System).
+A learning framework based on the Arcade Learning Environment (ALE) and Libretro (Stella for Atari and SNES9X for the Super Nintendo Entertainment System).
 
-The environment provides an inreface to training and evaluating AI algorithms against different console games using its screen as input.
+The environment provides an interface to training and evaluating AI algorithms against different console games using its screen as input.
 
 The currently supported games can be found in the src/games/supported directory .
 Some popular games include: _Mortal Kombat, Super Mario All Stars, F-Zero, Castle Wolfenstein_ and _Gradius III_.
@@ -19,7 +19,7 @@ If you use RLE in your publication, please use the following BibTex entry:
 Quick Start
 ===============================
 
-Install main dependences:
+Install main dependencies:
 ```
 sudo apt-get install libsdl1.2-dev libsdl-gfx1.2-dev libsdl-image1.2-dev cmake
 ```
@@ -31,7 +31,7 @@ Either install via PyPi:
 ```
 $ pip install rle-python-interface
 ```
-or by cloneing the repository and running the following:
+or by cloning the repository and running the following:
 ```
 $ pip install .
 or
@@ -43,7 +43,7 @@ To use the shared_library interface:
 ```
 $ mkdir build && cd build
 $ cmake -DUSE_SDL=ON -DBUILD_EXAMPLES=ON ..
-$ make -j 4
+$ make -j4
 ```
 
 To install the lua (Torch) interface, the additional alewrap module is required:
