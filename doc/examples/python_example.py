@@ -10,7 +10,7 @@ from random import randrange
 from rle_python_interface import RLEInterface
 
 if len(sys.argv) < 2:
-  print 'Usage:', sys.argv[0], 'rom_file', 'core_file'
+  print('Usage:', sys.argv[0], 'rom_file', 'core_file')
   sys.exit()
 
 rle = RLEInterface()
@@ -38,12 +38,12 @@ rle.loadROM(sys.argv[1], sys.argv[2])
 minimal_actions = rle.getMinimalActionSet()
 
 # Play 10 episodes
-for episode in xrange(10):
+for episode in range(10):
   total_reward = 0
   while not rle.game_over():
     a = minimal_actions[randrange(len(minimal_actions))]
     # Apply an action and get the resulting reward
     reward = rle.act(a)
     total_reward += reward
-  print 'Episode', episode, 'ended with score:', total_reward
+  print('Episode', episode, 'ended with score:', total_reward)
   rle.reset_game()
