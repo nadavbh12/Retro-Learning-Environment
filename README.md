@@ -1,3 +1,7 @@
+# DEPRECATED
+RLE has been succeeded by the wonderful work of the folks at OpenAI under their repository [Gym-retro](https://github.com/openai/retro). 
+Since they now support all the consoles and games that we supported and most of our features, there's no reason to maintain this one.
+
 # Retro-Learning-Environment
 A learning framework based on the Arcade Learning Environment (ALE) and Libretro (Stella for Atari and SNES9X for the Super Nintendo Entertainment System).
 
